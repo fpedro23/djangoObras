@@ -62,6 +62,10 @@ class ClasificacionInLine(admin.StackedInline):
 class ObrasAdmin(admin.ModelAdmin):
     inlinesInversion = [InversionInLine]
     inlinesClasificacion = [ClasificacionInLine]
+    list_display = (
+        'denominacion', 'tipoObra', 'dependencia', 'senalizacion', 'inaugurada', 'inaugurador', 'fechaInicio',
+        'fechaTermino')
+
 
 
 admin.site.unregister(User)
