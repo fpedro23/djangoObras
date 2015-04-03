@@ -49,9 +49,7 @@ class DependenciaAdmin(admin.ModelAdmin):
                 Q(dependienteDe__id=request.user.usuario.dependencia.id)
             )
 
-        return qs.filter(  # Subdependencia
-                           Q(id=request.user.usuario.dependencia.dependienteDe.id)
-                           )
+        return qs.filter(Q(id=request.user.usuario.dependencia_id))
 
 
 class ClasificacionInLine(admin.StackedInline):

@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
 
+# Create your models here.
 class TipoObra(models.Model):
     nombreTipoObra = models.CharField(max_length=200)
 
@@ -21,8 +21,8 @@ class Dependencia(models.Model):
 
 class Estado(models.Model):
     nombreEstado = models.CharField(max_length=200)
-    latitud = models.CharField(max_length=200)
-    longitud = models.CharField(max_length=200)
+    latitud = models.FloatField()
+    longitud = models.FloatField()
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreEstado
@@ -44,6 +44,7 @@ class TipoInversion(models.Model):
 
 
 class TipoClasificacion(models.Model):
+    subclasificacionDe = models.ForeignKey('self', null=True, blank=True)
     nombreTipoClasificacion = models.CharField(max_length=200)
     nombreTipoClasificacionCorta = models.CharField(max_length=200)
 
@@ -79,6 +80,7 @@ class Usuario(models.Model):
     dependencia = models.ForeignKey(Dependencia, blank=True, null=True)
 
 
+
 class Obra(models.Model):
     tipoObra = models.ForeignKey(TipoObra)
     dependencia = models.ForeignKey(Dependencia)
@@ -107,6 +109,7 @@ class Obra(models.Model):
     inaugurada = models.BooleanField(default=False)
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
+    tipoMoneda = models.ForeignKey(TipoMoneda, blank=False)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
