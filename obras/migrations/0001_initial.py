@@ -6,6 +6,7 @@ from django.conf import settings
 
 
 class Migration(migrations.Migration):
+
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
@@ -28,8 +29,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('nombreEstado', models.CharField(max_length=200)),
-                ('latitud', models.CharField(max_length=200)),
-                ('longitud', models.CharField(max_length=200)),
+                ('latitud', models.FloatField()),
+                ('longitud', models.FloatField()),
             ],
             options={
             },
@@ -93,6 +94,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('nombreTipoClasificacion', models.CharField(max_length=200)),
                 ('nombreTipoClasificacionCorta', models.CharField(max_length=200)),
+                ('subclasificacionDe', models.ForeignKey(blank=True, to='obras.TipoClasificacion', null=True)),
             ],
             options={
             },
@@ -153,6 +155,12 @@ class Migration(migrations.Migration):
             model_name='obra',
             name='tipoInversion',
             field=models.ManyToManyField(to='obras.TipoInversion'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='obra',
+            name='tipoMoneda',
+            field=models.ForeignKey(blank=True, to='obras.TipoMoneda', null=True),
             preserve_default=True,
         ),
         migrations.AddField(
