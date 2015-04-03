@@ -1,8 +1,13 @@
 # Create your views here.
+import datetime
+import json
 from obras.models import *
 from oauth2_provider.views.generic import ProtectedResourceView
-from django.db import connection
+from django.db import connection, models
+from django.forms.models import model_to_dict
 from sp_models import *
+from django.http import HttpResponse
+from django.db.models import Q
 
 
 class BusquedaEndpoint(ProtectedResourceView):
@@ -35,19 +40,82 @@ class BusquedaEndpoint(ProtectedResourceView):
 
             # listaReporteEstado
             cursor.nextset()
-            listaReporteEstado = get_state_report(cursor.fetchall())
-
-            return create_full_report(listaObras, listaReporteDependencia, listaReporteEstado)
+            # listaReporteEstado = get_state_report(cursor.fetchall())
+            #
+            # return create_full_report(listaObras, listaReporteDependencia, listaReporteEstado)
         except():
             return None
 
         finally:
-            cursor.close()import datetime
+            cursor.close()
 
-from django.http import HttpResponse
-from django.db.models import Q
 
-from obras.models import *
+class EstadosEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        json_response = json.dumps(map(lambda estado: model_to_dict(estado), Estado.objects.all()))
+        return HttpResponse(json_response, 'application/json')
+
+
+class DependenciasEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.all())
+
+        for dict in dicts:
+            # We KNOW that this entry must be a FileField value
+            # (therefore, calling its name attribute is safe),
+            # so we need to mame it JSON serializable (Django objects
+            # are not by default and its built-in serializer sucks),
+            # namely, we only need the path
+            if dict['imagenDependencia'].name == '' or dict['imagenDependencia'].name == '':
+                dict['imagenDependencia'] = None
+            else:
+                dict['imagenDependencia'] = dict['imagenDependencia'].name
+
+        json_response = json.dumps(dicts)
+        return HttpResponse(json_response, 'application/json')
+
+
+class ImpactosEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        json_response = json.dumps(map(lambda impacto: model_to_dict(impacto), Impacto.objects.all()))
+        return HttpResponse(json_response, 'application/json')
+
+
+class InauguradorEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        json_response = json.dumps(map(lambda inaugurador: model_to_dict(inaugurador), Inaugurador.objects.all()))
+        return HttpResponse(json_response, 'application/json')
+
+
+class ClasificacionEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        if request.GET.get('id', False):
+            clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id=1)
+        else:
+            clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id__isnull=True)
+
+        json_response = json.dumps(map(lambda clasificacion: model_to_dict(clasificacion), clasificaciones))
+        return HttpResponse(json_response, 'application/json')
+
+
+
+class InversionEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        json_response = json.dumps(map(lambda inversion: model_to_dict(inversion), TipoInversion.objects.all()))
+        return HttpResponse(json_response, 'application/json')
+
+
+class TipoDeObraEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        json_response = json.dumps(map(lambda x: model_to_dict(x), TipoObra.objects.all()))
+        return HttpResponse(json_response, 'application/json')
 
 
 def index(request):
@@ -59,8 +127,6 @@ def balance_general(request):
     start_date = datetime.date(2012, 12, 01)
     end_date = datetime.date(2013, 12, 31)
     Obra.objects.filter(
-
         Q(fechaTermino__range=(start_date, end_date)),
         Q(tipoObra=3)
-
     )

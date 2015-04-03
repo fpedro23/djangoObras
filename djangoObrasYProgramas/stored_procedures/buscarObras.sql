@@ -3,7 +3,7 @@
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-
+DROP PROCEDURE IF EXISTS buscarObras
 CREATE DEFINER=`root`@`localhost` PROCEDURE `buscarObras`(
   inTipoObra            TEXT,
   inDependencia         TEXT,
@@ -163,26 +163,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `buscarObras`(
 
 
     SELECT
-      obras_obra.dependencia_id,
-      obras_dependencia.nombreDependencia,
+      dependencia_id,
+      nombreDependencia,
       count(*)            AS numeroObras,
-      SUM(obras_obra.inversionTotal * CASE obras_tipomoneda.nombreTipoDeMoneda WHEN 'MDP' THEN 1 WHEN 'MDD' THEN inValorDolar END) AS totalInvertido
+      SUM(inversionTotal * CASE nombreTipoDeMoneda WHEN 'MDP' THEN 1 WHEN 'MDD' THEN inValorDolar END) AS totalInvertido
     FROM resultados
-    GROUP BY obras_dependencia.nombreDependencia;
+    GROUP BY nombreDependencia;
 
     SELECT
-      obras_estado.id,
-      obras_estado.nombreEstado,
-      obras_estado.latitud,
-      obras_estado.longitud,
+      estado_id,
+      nombreEstado,
+      latitud,
+      longitud,
       count(*)            AS numeroObras,
-      SUM(obras_obra.inversionTotal * CASE obras_tipomoneda.nombreTipoDeMoneda WHEN 'MDP' THEN 1 WHEN 'MDD' THEN inValorDolar END) AS totalInvertido
+      SUM(inversionTotal * CASE nombreTipoDeMoneda WHEN 'MDP' THEN 1 WHEN 'MDD' THEN inValorDolar END) AS totalInvertido
     FROM resultados
-    GROUP BY obras_estado.nombreEstado;
+    GROUP BY nombreEstado;
 
     SELECT
       count(*)            AS numeroObras,
-      SUM(obras_obra.inversionTotal * CASE obras_tipomoneda.nombreTipoDeMoneda WHEN 'MDP' THEN 1 WHEN 'MDD' THEN inValorDolar END) AS totalInvertido
+      SUM(inversionTotal * CASE nombreTipoDeMoneda WHEN 'MDP' THEN 1 WHEN 'MDD' THEN inValorDolar END) AS totalInvertido
     FROM resultados;
 
 
