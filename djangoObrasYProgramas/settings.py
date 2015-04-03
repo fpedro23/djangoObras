@@ -87,14 +87,9 @@ WSGI_APPLICATION = 'djangoObrasYProgramas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        # 'ENGINE' : 'doj.db.backends.mysql',
-        'NAME': 'obrasyprogramas',
-        # Remote db
-        # 'HOST': '192.168.100.8',
-        # 'USER': 'marcelo',
-        # 'PASSWORD': 'marcelo',
+        'NAME': 'djangoobras',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root',
     }
 }
 
@@ -117,12 +112,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# SECURE_SSL_REDIRECT = True
-# SECURE_HSTS_SECONDS = 10
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_FRAME_DENY = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
