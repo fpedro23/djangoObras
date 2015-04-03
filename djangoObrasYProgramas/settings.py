@@ -63,6 +63,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+
 )
 
 
@@ -83,13 +84,9 @@ WSGI_APPLICATION = 'djangoObrasYProgramas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'obrasyprogramas',
-        # Remote db
-        # 'HOST': '192.168.100.8',
-        # 'USER': 'marcelo',
-        # 'PASSWORD': 'marcelo',
+        'NAME': 'djangoobras',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root',
     }
 }
 

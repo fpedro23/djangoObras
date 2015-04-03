@@ -80,7 +80,6 @@ class Usuario(models.Model):
     dependencia = models.ForeignKey(Dependencia, blank=True, null=True)
 
 
-
 class Obra(models.Model):
     tipoObra = models.ForeignKey(TipoObra)
     dependencia = models.ForeignKey(Dependencia)
@@ -109,7 +108,7 @@ class Obra(models.Model):
     inaugurada = models.BooleanField(default=False)
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
-    tipoMoneda = models.ForeignKey(TipoMoneda, blank=False)
+    tipoMoneda = models.ForeignKey(TipoMoneda, blank=True, null=True)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
