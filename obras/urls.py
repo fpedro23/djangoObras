@@ -18,4 +18,6 @@ urlpatterns = patterns('',
                        url(r'^reportes/informacion-entidad', views.hipervinculo_entidad),
                        url(r'^reportes/concluidas-proceso-proyectadas',
                            views.hipervinculo_concluidas_proceso_proyectadas),
+                       url(r'^buscar-obras/', views.consulta_web),
+
 )

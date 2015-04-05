@@ -448,3 +448,28 @@ def hipervinculo_concluidas_proceso_proyectadas(request):
         'total_invertido_proyectadas': total_invertido_proyectadas,
     })
     return HttpResponse(template.render(context))
+
+
+@login_required()
+def consulta_web(request):
+
+    if request.user.usuario.rol == 'SA':
+        dependencias = Dependencia.objects.all()
+    elif request.user.usuario.rol == 'AD':
+        dependencias = Dependencia.objects.filter(
+                Q(id=request.user.usuario.dependencia.id) |
+                Q(dependienteDe__id=request.user.usuario.dependencia.id))
+    elif request.user.usuario.rol == 'US':
+        dependencias = Dependencia.objects.filter(
+                    Q(id=request.user.usuario.dependencia.id)
+                    )
+    template = loader.get_template('consultas/busqueda_general.html')
+    context = RequestContext(request, {
+        'dependencias': dependencias,
+        'estados': Estado.objects.all(),
+        'tipo_inversiones': TipoInversion.objects.all(),
+        'impactos': Impacto.objects.all(),
+        'clasificacion': TipoClasificacion.objects.all(),
+        'inaugurador': Inaugurador.objects.all(),
+    })
+    return HttpResponse(template.render(context))

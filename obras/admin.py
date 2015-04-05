@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.db.models import Q
 from django.contrib.admin import SimpleListFilter
 from obras.models import *
+from obras.forms import AddObraForm
 
 
 # Register your models here.+
@@ -60,6 +61,7 @@ class ClasificacionInLine(admin.StackedInline):
     model = TipoClasificacion
     extra = 3
 
+
 class DependenciaListFilter(SimpleListFilter):
 
     # USAGE
@@ -82,27 +84,50 @@ class DependenciaListFilter(SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
+        if request.user.usuario.rol == 'SA':  # Secretaria tecnica
+            dependencias = Dependencia.objects.all()
+        if request.user.usuario.rol == 'AD':  # Dependencia
+            dependencias =  Dependencia.objects.filter(
+                Q(id=request.user.usuario.dependencia.id) |
+                Q(dependienteDe__id=request.user.usuario.dependencia.id)
+            )
+        if request.user.usuario.rol == 'US':
+            dependencias =  Dependencia.objects.filter(
+                Q(id=request.user.usuario.dependencia.id)
+            )
+
         list_tuple = []
-        dependencia = Dependencia.objects.get(id=1)
-        #print category
-        list_tuple.append((dependencia.id, dependencia.nombreDependencia))
+        for dependencia in dependencias:
+            list_tuple.append((dependencia.id, dependencia.nombreDependencia))
         return list_tuple
 
-
     def queryset(self, request, queryset):
-        return queryset.filter(id=1)
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
 
-
+        if self.value():
+            return queryset.filter(dependencia__id=self.value())
 
 
 class ObrasAdmin(admin.ModelAdmin):
-
+    form = AddObraForm
     inlinesInversion = [InversionInLine]
     inlinesClasificacion = [ClasificacionInLine]
     list_display = (
-        'denominacion', 'autorizada', 'tipoObra', 'dependencia', 'senalizacion', 'inaugurada', 'inaugurador', 'fechaInicio',
+        'identificador_unico',
+        'denominacion',
+        'autorizada',
+        'tipoObra',
+        'dependencia',
+        'senalizacion',
+        'inaugurada',
+        'fechaInicio',
         'fechaTermino')
-    list_filter =[DependenciaListFilter,]
+    list_filter = [DependenciaListFilter, 'autorizada']
+    readonly_fields = ('identificador_unico',)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "dependencia":
@@ -120,7 +145,6 @@ class ObrasAdmin(admin.ModelAdmin):
         return super(
             ObrasAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-
     def get_form(self, request, obj=None, **kwargs):
         print request.user.usuario.rol
         if request.user.usuario.rol == 'US':
@@ -132,13 +156,16 @@ class ObrasAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super(ObrasAdmin, self).get_queryset(request)
         if request.user.usuario.rol == 'SA':
+            print 'Query Set Superadmin'
             return qs
         elif request.user.usuario.rol == 'AD':
+            print 'Query Set Administrador dependencia'
             return qs.filter(
                 Q(dependencia=request.user.usuario.dependencia) |
                 Q(dependencia__dependienteDe=request.user.usuario.dependencia)
             )
         elif request.user.usuario.rol == 'US':
+                print 'Query Set Usuario'
                 return qs.filter(
                 Q(dependencia=request.user.usuario.dependencia)
                 )

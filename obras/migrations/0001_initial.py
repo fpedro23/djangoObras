@@ -20,9 +20,6 @@ class Migration(migrations.Migration):
                 ('imagenDependencia', models.FileField(null=True, upload_to=b'', blank=True)),
                 ('dependienteDe', models.ForeignKey(blank=True, to='obras.Dependencia', null=True)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Estado',
@@ -32,9 +29,6 @@ class Migration(migrations.Migration):
                 ('latitud', models.FloatField()),
                 ('longitud', models.FloatField()),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Impacto',
@@ -42,9 +36,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('nombreImpacto', models.CharField(max_length=200)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Inaugurador',
@@ -52,14 +43,12 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('nombreCargoInaugura', models.CharField(max_length=200)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Obra',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('identificador_unico', models.SlugField(unique=True, null=True)),
                 ('registroHacendario', models.CharField(max_length=200)),
                 ('registroAuditoria', models.CharField(max_length=200)),
                 ('denominacion', models.CharField(max_length=200)),
@@ -79,14 +68,12 @@ class Migration(migrations.Migration):
                 ('inaugurada', models.BooleanField(default=False)),
                 ('poblacionObjetivo', models.CharField(max_length=200)),
                 ('municipio', models.CharField(max_length=200)),
+                ('autorizada', models.BooleanField(default=False)),
                 ('dependencia', models.ForeignKey(to='obras.Dependencia')),
                 ('estado', models.ForeignKey(to='obras.Estado')),
                 ('impacto', models.ForeignKey(to='obras.Impacto')),
                 ('inaugurador', models.ForeignKey(to='obras.Inaugurador')),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='TipoClasificacion',
@@ -96,9 +83,6 @@ class Migration(migrations.Migration):
                 ('nombreTipoClasificacionCorta', models.CharField(max_length=200)),
                 ('subclasificacionDe', models.ForeignKey(blank=True, to='obras.TipoClasificacion', null=True)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='TipoInversion',
@@ -107,9 +91,6 @@ class Migration(migrations.Migration):
                 ('nombreTipoInversion', models.CharField(max_length=200)),
                 ('nombreTipoInversionCorta', models.CharField(max_length=200)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='TipoMoneda',
@@ -117,9 +98,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('nombreTipoDeMoneda', models.CharField(max_length=200)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='TipoObra',
@@ -127,46 +105,34 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('nombreTipoObra', models.CharField(max_length=200)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Usuario',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('rol', models.CharField(default=b'US', max_length=2, choices=[(b'SA', b'Administrador General'),
-                                                                               (b'AD', b'Administrador de Dependencia'),
-                                                                               (b'US', b'Usuario de Dependencia')])),
+                ('rol', models.CharField(default=b'US', max_length=2, choices=[(b'SA', b'Administrador General'), (b'AD', b'Administrador de Dependencia'), (b'US', b'Usuario de Dependencia')])),
                 ('dependencia', models.ForeignKey(blank=True, to='obras.Dependencia', null=True)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.AddField(
             model_name='obra',
             name='tipoClasificacion',
             field=models.ManyToManyField(to='obras.TipoClasificacion'),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='obra',
             name='tipoInversion',
             field=models.ManyToManyField(to='obras.TipoInversion'),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='obra',
             name='tipoMoneda',
             field=models.ForeignKey(blank=True, to='obras.TipoMoneda', null=True),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='obra',
             name='tipoObra',
             field=models.ForeignKey(to='obras.TipoObra'),
-            preserve_default=True,
         ),
     ]

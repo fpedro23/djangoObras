@@ -81,6 +81,7 @@ class Usuario(models.Model):
 
 
 class Obra(models.Model):
+    identificador_unico = models.SlugField(unique=True, null=True, )
     tipoObra = models.ForeignKey(TipoObra)
     dependencia = models.ForeignKey(Dependencia)
     estado = models.ForeignKey(Estado)
