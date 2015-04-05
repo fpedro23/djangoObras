@@ -37,6 +37,24 @@ class UserAdmin(UserAdmin):
         return obj.usuario.dependencia
     get_dependencia.short_description = 'Dependencia'
 
+    def get_queryset(self, request):
+        qs = super(UserAdmin, self).get_queryset(request)
+        if request.user.usuario.rol == 'SA':
+            print 'Query Set Superadmin'
+            return qs
+        elif request.user.usuario.rol == 'AD':
+            print 'Query Set Administrador dependencia'
+            return qs.filter(
+                Q(usuario__dependencia=request.user.usuario.dependencia) |
+                Q(usuario__dependencia__dependienteDe=request.user.usuario.dependencia)
+            )
+        elif request.user.usuario.rol == 'US':
+                print 'Query Set Usuario'
+                return qs.filter(
+                Q(usuerio__dependencia=request.user.usuario.dependencia)
+                )
+
+
 class InversionInLine(admin.StackedInline):
     model = TipoInversion
     extra = 3
@@ -56,6 +74,16 @@ class DependenciaAdmin(admin.ModelAdmin):
 
         return qs.filter(Q(id=request.user.usuario.dependencia_id))
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "dependienteDe":
+            if request.user.usuario.rol == 'SA':
+                kwargs["queryset"] = Dependencia.objects.filter(dependienteDe=None)
+                return super(DependenciaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+            elif request.user.usuario.rol == 'AD':
+                kwargs["queryset"] = Dependencia.objects.filter(
+                    Q(id=request.user.usuario.dependencia.id)
+                )
+                return super(DependenciaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 class ClasificacionInLine(admin.StackedInline):
     model = TipoClasificacion
