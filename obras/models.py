@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+#TODO agregar nombres verbose a los modelos
 
 # Create your models here.
 class TipoObra(models.Model):
@@ -81,6 +82,7 @@ class Usuario(models.Model):
 
 
 class Obra(models.Model):
+    #TODO agrupar semanticamente todos los campos de obras
     identificador_unico = models.SlugField(unique=True, null=True, )
     tipoObra = models.ForeignKey(TipoObra)
     dependencia = models.ForeignKey(Dependencia)

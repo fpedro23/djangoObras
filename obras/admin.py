@@ -37,6 +37,24 @@ class UserAdmin(UserAdmin):
         return obj.usuario.dependencia
     get_dependencia.short_description = 'Dependencia'
 
+    def get_queryset(self, request):
+        qs = super(UserAdmin, self).get_queryset(request)
+        if request.user.usuario.rol == 'SA':
+            print 'Query Set Superadmin'
+            return qs
+        elif request.user.usuario.rol == 'AD':
+            print 'Query Set Administrador dependencia'
+            return qs.filter(
+                Q(usuario__dependencia=request.user.usuario.dependencia) |
+                Q(usuario__dependencia__dependienteDe=request.user.usuario.dependencia)
+            )
+        elif request.user.usuario.rol == 'US':
+                print 'Query Set Usuario'
+                return qs.filter(
+                Q(usuerio__dependencia=request.user.usuario.dependencia)
+                )
+
+
 class InversionInLine(admin.StackedInline):
     model = TipoInversion
     extra = 3
@@ -56,6 +74,16 @@ class DependenciaAdmin(admin.ModelAdmin):
 
         return qs.filter(Q(id=request.user.usuario.dependencia_id))
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "dependienteDe":
+            if request.user.usuario.rol == 'SA':
+                kwargs["queryset"] = Dependencia.objects.filter(dependienteDe=None)
+                return super(DependenciaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+            elif request.user.usuario.rol == 'AD':
+                kwargs["queryset"] = Dependencia.objects.filter(
+                    Q(id=request.user.usuario.dependencia.id)
+                )
+                return super(DependenciaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 class ClasificacionInLine(admin.StackedInline):
     model = TipoClasificacion
@@ -68,8 +96,6 @@ class DependenciaListFilter(SimpleListFilter):
     # In your admin class, pass three filter class as tuple for the list_filter attribute:
     #
     # list_filter = (CategoryListFilter,)
-
-
     # Human-readable title which will be displayed in the
     # right admin sidebar just above the filter options.
     title = ('Dependencias')
@@ -92,7 +118,7 @@ class DependenciaListFilter(SimpleListFilter):
                 Q(dependienteDe__id=request.user.usuario.dependencia.id)
             )
         if request.user.usuario.rol == 'US':
-            dependencias =  Dependencia.objects.filter(
+            dependencias = Dependencia.objects.filter(
                 Q(id=request.user.usuario.dependencia.id)
             )
 
@@ -151,6 +177,7 @@ class ObrasAdmin(admin.ModelAdmin):
             self.exclude = ('autorizada',)
         else:
             print 'No excluir'
+            #TODO Incluir explicitamente todos los campos
         return super(ObrasAdmin, self).get_form(request, obj, **kwargs)
 
     def get_queryset(self, request):
