@@ -4,7 +4,7 @@ import json
 from django.db import connection
 from django.forms import model_to_dict
 import json
-
+from django.views.decorators.csrf import csrf_exempt
 from django.forms import model_to_dict
 from django.template import RequestContext, loader
 from django.http import HttpResponse
@@ -12,7 +12,7 @@ from django.db.models import Q
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
 from oauth2_provider.views import ProtectedResourceView
-
+from oauth2_provider.models import AccessToken
 from obras.models import *
 
 
@@ -26,18 +26,35 @@ class EstadosEndpoint(ProtectedResourceView):
 class DependenciasEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.all())
+        token = request.GET.get('access_token')
+        print '*************' + token
+        token_model = AccessToken.objects.get(token=token)
+        print token_model.user
 
-        for dict in dicts:
+        if token_model.user.usuario.rol == 'SA':
+            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.all())
+
+        elif token_model.user.usuario.rol == 'AD':
+            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.filter(
+                Q(id=token_model.user.usuario.dependencia.id) |
+                Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
+            )
+
+        else:
+            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.filter(
+                Q(id=token_model.user.usuario.dependencia.id))
+            )
+
+        for dictionary in dicts:
             # We KNOW that this entry must be a FileField value
             # (therefore, calling its name attribute is safe),
             # so we need to mame it JSON serializable (Django objects
             # are not by default and its built-in serializer sucks),
             # namely, we only need the path
-            if dict['imagenDependencia'].name == '' or dict['imagenDependencia'].name == '':
-                dict['imagenDependencia'] = None
+            if dictionary['imagenDependencia'].name == '' or dictionary['imagenDependencia'].name == '':
+                dictionary['imagenDependencia'] = None
             else:
-                dict['imagenDependencia'] = dict['imagenDependencia'].name
+                dictionary['imagenDependencia'] = dictionary['imagenDependencia'].name
 
         json_response = json.dumps(dicts)
         return HttpResponse(json_response, 'application/json')

@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 from obras import views
+from django.views.decorators.csrf import csrf_exempt
 
 
 urlpatterns = patterns('',
