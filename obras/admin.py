@@ -2,8 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.db.models import Q
 from django.contrib.admin import SimpleListFilter
+
 from obras.models import *
 from obras.forms import AddObraForm
+
 
 
 # Register your models here.+
@@ -51,7 +53,7 @@ class UserAdmin(UserAdmin):
         elif request.user.usuario.rol == 'US':
                 print 'Query Set Usuario'
                 return qs.filter(
-                Q(usuerio__dependencia=request.user.usuario.dependencia)
+                    Q(usuario__dependencia=request.user.usuario.dependencia)
                 )
 
 
@@ -138,6 +140,20 @@ class DependenciaListFilter(SimpleListFilter):
             return queryset.filter(dependencia__id=self.value())
 
 
+def make_authorized(obrasadmin, request, queryset):
+    queryset.update(autorizada=True)
+
+
+make_authorized.short_description = "Autorizar las obras seleccionadas"
+
+
+def make_unauthorized(obrasadmin, request, queryset):
+    queryset.update(autorizada=False)
+
+
+make_unauthorized.short_description = "No Autorizar las obras seleccionadas"
+
+
 class ObrasAdmin(admin.ModelAdmin):
     form = AddObraForm
     inlinesInversion = [InversionInLine]
@@ -154,6 +170,79 @@ class ObrasAdmin(admin.ModelAdmin):
         'fechaTermino')
     list_filter = [DependenciaListFilter, 'autorizada']
     readonly_fields = ('identificador_unico',)
+    actions = [make_authorized, make_unauthorized]
+
+    def get_fields(self, request, obj=None):
+        if request.user.usuario.rol == 'US':
+            fields = ('identificador_unico',
+                      'tipoObra',
+                      'dependencia',
+                      'estado',
+                      'impacto',
+                      'tipoInversion',
+                      'tipoClasificacion',
+                      'inaugurador',
+                      'registroHacendario',
+                      'registroAuditoria',
+                      'denominacion',
+                      'descripcion',
+                      'observaciones',
+                      'fechaInicio',
+                      'fechaTermino',
+                      'inversionTotal',
+                      'totalBeneficiarios',
+                      'senalizacion',
+                      'susceptibleInauguracion',
+                      'porcentajeAvance',
+                      'observaciones',
+                      'fotoAntes',
+                      'fotoDurante',
+                      'fotoDespues',
+                      'inaugurada',
+                      'poblacionObjetivo',
+                      'municipio',
+                      'tipoMoneda',
+                      )
+
+        else:
+            fields = ('identificador_unico',
+                      'autorizada',
+                      'tipoObra',
+                      'dependencia',
+                      'estado',
+                      'impacto',
+                      'tipoInversion',
+                      'tipoClasificacion',
+                      'inaugurador',
+                      'registroHacendario',
+                      'registroAuditoria',
+                      'denominacion',
+                      'descripcion',
+                      'observaciones',
+                      'fechaInicio',
+                      'fechaTermino',
+                      'inversionTotal',
+                      'totalBeneficiarios',
+                      'senalizacion',
+                      'susceptibleInauguracion',
+                      'porcentajeAvance',
+                      'observaciones',
+                      'fotoAntes',
+                      'fotoDurante',
+                      'fotoDespues',
+                      'inaugurada',
+                      'poblacionObjetivo',
+                      'municipio',
+                      'tipoMoneda',
+                      )
+        return fields
+
+    def get_actions(self, request):
+        actions = super(ObrasAdmin, self).get_actions(request)
+        if request.user.usuario.rol == 'US':
+            del actions['make_authorized']
+            del actions['make_unauthorized']
+        return actions
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "dependencia":
@@ -170,15 +259,6 @@ class ObrasAdmin(admin.ModelAdmin):
 
         return super(
             ObrasAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    def get_form(self, request, obj=None, **kwargs):
-        print request.user.usuario.rol
-        if request.user.usuario.rol == 'US':
-            self.exclude = ('autorizada',)
-        else:
-            print 'No excluir'
-            #TODO Incluir explicitamente todos los campos
-        return super(ObrasAdmin, self).get_form(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super(ObrasAdmin, self).get_queryset(request)
