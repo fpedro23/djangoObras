@@ -160,6 +160,7 @@ class ObrasAdmin(admin.ModelAdmin):
     inlinesClasificacion = [ClasificacionInLine]
     list_display = (
         'identificador_unico',
+        'estado',
         'denominacion',
         'autorizada',
         'tipoObra',

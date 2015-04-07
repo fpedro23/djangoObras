@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 #TODO agregar nombres verbose a los modelos
 
+
 # Create your models here.
 class TipoObra(models.Model):
     nombreTipoObra = models.CharField(max_length=200)

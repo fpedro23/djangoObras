@@ -4,7 +4,6 @@ import json
 from django.db import connection
 from django.forms import model_to_dict
 import json
-from django.views.decorators.csrf import csrf_exempt
 from django.forms import model_to_dict
 from django.template import RequestContext, loader
 from django.http import HttpResponse
@@ -14,7 +13,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from oauth2_provider.views import ProtectedResourceView
 from oauth2_provider.models import AccessToken
 from obras.models import *
-
+from obras.BuscarObras import BuscarObras
 
 class EstadosEndpoint(ProtectedResourceView):
 
@@ -84,7 +83,6 @@ class ClasificacionEndpoint(ProtectedResourceView):
 
         json_response = json.dumps(map(lambda clasificacion: model_to_dict(clasificacion), clasificaciones))
         return HttpResponse(json_response, 'application/json')
-
 
 
 class InversionEndpoint(ProtectedResourceView):
@@ -488,5 +486,17 @@ def consulta_web(request):
         'impactos': Impacto.objects.all(),
         'clasificacion': TipoClasificacion.objects.all(),
         'inaugurador': Inaugurador.objects.all(),
+    })
+    return HttpResponse(template.render(context))
+
+
+def buscar_obras_web(request):
+    #TODO cambiar los parametros 'None' por get del request
+    buscador = BuscarObras([1, 2, 3], None,None,None,None,None,None,None,None,None,None,None,None,None,None)
+    resultados = buscador.buscar()
+
+    template = loader.get_template('consultas/resultado_busqueda.html')
+    context = RequestContext(request, {
+        'resultados': resultados
     })
     return HttpResponse(template.render(context))

@@ -1,6 +1,6 @@
 __author__ = 'Pedro'
 from django.db.models import Q
-
+from django.db.models import Count, Sum
 from obras.models import *
 
 
@@ -75,4 +75,27 @@ class BuscarObras:
             obras = Obra.objects.filter(
                 query
             )
-        print obras
+
+        #Reporte general
+        obras_totales = obras.count()
+        total_invertido = obras.aggregate(Sum('inversionTotal'))
+
+        #Reporte Dependencia
+        reporte_dependencia = Obra.objects.values('dependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+
+        #Reporte Estado
+        reporte_estado = Obra.objects.values('estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
+
+        reporte_general = {
+            'obras_totales':obras_totales,
+            'total_invertido': total_invertido,
+        }
+
+        reportes = {
+            'obras': obras,
+            'reporte_general': reporte_general,
+            'reporte_dependencia': reporte_dependencia,
+            'reporte_estado': reporte_estado,
+        }
+
+        return reportes
