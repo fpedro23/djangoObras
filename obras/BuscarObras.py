@@ -6,11 +6,21 @@ from obras.models import *
 
 class BuscarObras:
     def __init__(
-            self, idtipoobra, iddependencias, estados, clasificaciones, inversiones, inauguradores, impactos,
+            self,
+            idtipoobra,
+            iddependencias,
+            estados,
+            clasificaciones,
+            inversiones,
+            inauguradores,
+            impactos,
             inaugurada,
-            inversion_minima, inversion_maxima,
-            fecha_inicio_primera, fecha_inicio_segunda,
-            fecha_fin_primera, fecha_fin_segunda,
+            inversion_minima,
+            inversion_maxima,
+            fecha_inicio_primera,
+            fecha_inicio_segunda,
+            fecha_fin_primera,
+            fecha_fin_segunda,
             denominacion,
     ):
         self.clasificaciones = clasificaciones
@@ -72,6 +82,7 @@ class BuscarObras:
             query = query & Q(denominacion__contains=self.denominacion)
 
         if query is not None:
+            print query
             obras = Obra.objects.filter(
                 query
             )

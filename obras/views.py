@@ -490,9 +490,30 @@ def consulta_web(request):
     return HttpResponse(template.render(context))
 
 
+def get_array_or_none(the_string):
+    if the_string is None:
+        return None
+    else:
+        return map(int, the_string.split(','))
+
 def buscar_obras_web(request):
     #TODO cambiar los parametros 'None' por get del request
-    buscador = BuscarObras([1, 2, 3], None,None,None,None,None,None,None,None,None,None,None,None,None,None)
+    buscador = BuscarObras(idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+                           iddependencias=get_array_or_none(request.GET.get('tipoDeObra')),
+                           estados=get_array_or_none(request.GET.get('tipoDeObra')),
+                           clasificaciones=get_array_or_none(request.GET.get('tipoDeObra')),
+                           inversiones=get_array_or_none(request.GET.get('tipoDeObra')),
+                           inauguradores=get_array_or_none(request.GET.get('tipoDeObra')),
+                           impactos=get_array_or_none(request.GET.get('tipoDeObra')),
+                           inaugurada=None,
+                           inversion_minima=None,
+                           inversion_maxima=None,
+                           fecha_inicio_primera=None,
+                           fecha_inicio_segunda=None,
+                           fecha_fin_primera=None,
+                           fecha_fin_segunda=None,
+                           denominacion=None,
+    )
     resultados = buscador.buscar()
 
     template = loader.get_template('consultas/resultado_busqueda.html')
