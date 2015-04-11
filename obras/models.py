@@ -116,3 +116,17 @@ class Obra(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
+
+
+# modelo temporal para probar ubicaciones de obras en mapa
+class Ubicacion(models.Model):
+    nombre = models.SlugField(unique=True, null=True, )
+    tipoObra = models.CharField(max_length=50)
+    lat = models.CharField(max_length=50)
+    lng = models.CharField(max_length=50)
+    estado = models.CharField(max_length=50)
+    dependencia = models.CharField(max_length=100)
+    # user = models.OneToOneField(User)  asi estaba debe ser foreign key
+
+    def __str__(self):
+        return self.nombre

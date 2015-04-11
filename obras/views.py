@@ -14,6 +14,157 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from oauth2_provider.views import ProtectedResourceView
 from oauth2_provider.models import AccessToken
 from obras.models import *
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.contrib import auth
+from django.core.context_processors import csrf
+from django.contrib.auth.forms import UserCreationForm
+from forms import AddUserForm
+from forms import AddObraForm
+from forms import AddAuthUserForm
+from forms import UbicacionForm
+import json
+from django.utils.timesince import timesince
+from obras.models import Obra
+from django.contrib.auth.models import User
+import datetime
+import qsstats
+
+
+def login(request):
+    c = {}
+    c.update(csrf(request))
+
+    return render_to_response('login.html', c)
+
+
+def auth_view(request):
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = auth.authenticate(username=username, password=password)
+
+    if user is not None:
+        auth.login(request, user)
+        return HttpResponseRedirect('loggedin')
+    else:
+        return HttpResponseRedirect('invalid_login')
+
+
+def loggedin(request):
+    return render_to_response('loggedin.html', {'full_name': request.user.username})
+
+
+def invalid_login(request):
+    return render_to_response('invalid_login.html')
+
+
+def logout(request):
+    auth.logout(request)
+    return render_to_response('logout.html')
+
+
+def create_authuser(request):
+    if request.method == 'POST':
+        form_a = AddAuthUserForm(request.POST)
+        form_b = UserCreationForm(request.POST)
+        ufirst_name = request.POST.get('first_name', '')
+        ulast_name = request.POST.get('last_name', '')
+        uemail = request.POST.get('email', '')
+
+        if form_a.is_valid() and form_b.is_valid():
+            form_b.save()
+            iduser = form_b.save()
+
+            User.objects.filter(id=iduser.id).update(first_name=ufirst_name,
+                                                     last_name=ulast_name,
+                                                     email=uemail
+                                                     )
+            return HttpResponseRedirect('create_user')
+
+    form_a = AddAuthUserForm()
+    form_b = UserCreationForm()
+
+    return render_to_response('register.html', {'form_a': form_a, 'form_b': form_b},
+                              context_instance=RequestContext(request))
+
+
+def create_user(request):
+    if request.method == 'POST':
+        form_c = AddUserForm(request.POST)
+        if form_c.is_valid():
+            form_c.save()
+            return HttpResponseRedirect('register_success')
+
+    args = {}
+    args.update(csrf(request))
+
+    args['form_c'] = AddUserForm()
+    print args
+    return render_to_response('registerperfil.html', args)
+
+
+def register_success(request):
+    return render_to_response('register_success.html')
+
+
+def see_map(request):
+    form = UbicacionForm()
+    ubicaciones = Ubicacion.objects.all()
+
+    return render_to_response('see_map.html', {'ubicaciones': ubicaciones, 'form': form}, context_instance=RequestContext(request))
+
+
+def coords_save(request):
+    if request.is_ajax():
+        form = UbicacionForm(request.POST)
+        print form.errors.as_data()
+        print form.errors.as_json()
+        if form.is_valid():
+            form.save()
+            ubicaciones = Ubicacion.objects.all()
+
+            data = '<ul>'
+            for ubicacion in ubicaciones:
+                data += "<li>%s %s %s %s</li>" % (ubicacion.nombre, ubicacion.estado, ubicacion.lat, ubicacion.lng)
+
+            data += '</ul>'
+
+            return HttpResponse(json.dumps({'ok': True, 'msg': data}),
+                                content_type="application/json")
+        else:
+            return HttpResponse(json.dumps({'ok': False, 'msg': form.errors.as_data()}),
+                                content_type="application/json")
+
+
+def do_chart(request):
+
+    GOOGLE_API_KEY = 'clave'
+
+    qs = Ubicacion.objects.all()
+    qss = qsstats.QuerySetStats(qs, 'fecha')
+
+    hoy = datetime.date.today()
+    hace_2_semanas = hoy - datetime.timedelta(weeks=2)
+
+    users_stats = qss.time_series(hace_2_semanas, hoy)
+
+    return render_to_response('reportes.html', locals(),
+                              context_instance=RequestContext(request))
+
+
+def create_obra(request):
+    if request.method == 'POST':
+        form = AddObraForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('register_success')
+
+    args = {}
+    args.update(csrf(request))
+
+    args['form'] = AddObraForm()
+    print args
+    return render_to_response('create_obra.html', args)
 
 
 class EstadosEndpoint(ProtectedResourceView):

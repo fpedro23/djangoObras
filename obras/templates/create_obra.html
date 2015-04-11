@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2> Registrar Obra</h2>
+    <form action="/create_obra" method="post">{% csrf_token %}
+        <table align="center">
+        {{ form.as_table }}
+        </table>
+        <input type="submit" value="Guardar obra" />
+    </form>
+{% endblock %}

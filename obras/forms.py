@@ -23,3 +23,21 @@ class AddObraForm(forms.ModelForm):
 
         print(instance.identificador_unico)
         return super(AddObraForm, self).save(commit=commit)
+
+
+class AddUserForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = '__all__'
+
+
+class AddAuthUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+
+class UbicacionForm(forms.ModelForm):
+    class Meta:
+        model = Ubicacion
+        fields = '__all__'
