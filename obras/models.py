@@ -15,6 +15,7 @@ class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
     imagenDependencia = models.FileField(blank=True, null=True)
     dependienteDe = models.ForeignKey('self', null=True, blank=True)
+    obraoprograma = models.CharField(max_length=1)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreDependencia
