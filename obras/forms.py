@@ -1,7 +1,8 @@
-from django import forms
-from django.utils.text import slugify
-from obras.models import Obra
 import itertools
+
+from django import forms
+
+from obras.models import *
 
 
 class AddObraForm(forms.ModelForm):

@@ -6,9 +6,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^obras/', include('obras.urls')),
-
-
-     # user auth URLs
+    # user auth URLs
 
     url(r'^login$', 'obras.views.login', name='login'),
     url(r'^auth_view$', 'obras.views.auth_view', name='auth_view'),

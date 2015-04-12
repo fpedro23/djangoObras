@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, url
 
 from obras import views
-from django.views.decorators.csrf import csrf_exempt
 
 
 urlpatterns = patterns('',
@@ -13,6 +12,9 @@ urlpatterns = patterns('',
                        url(r'^api/clasificaciones', views.ClasificacionEndpoint.as_view()),
                        url(r'^api/inversiones', views.InversionEndpoint.as_view()),
                        url(r'^api/tiposDeObra', views.TipoDeObraEndpoint.as_view()),
+                       # Mappings for the new (protected) implementation of the mobile API
+
+
                        url(r'^reportes/balance-general', views.balance_general),
                        url(r'^reportes/informacion-general', views.hipervinculo_informacion_general),
                        url(r'^reportes/informacion-sector', views.hipervinculo_sector),
