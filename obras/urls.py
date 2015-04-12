@@ -17,8 +17,15 @@ urlpatterns = patterns('',
                        url(r'^reportes/informacion-general', views.hipervinculo_informacion_general),
                        url(r'^reportes/informacion-sector', views.hipervinculo_sector),
                        url(r'^reportes/informacion-entidad', views.hipervinculo_entidad),
-                       url(r'^reportes/concluidas-proceso-proyectadas',
-                           views.hipervinculo_concluidas_proceso_proyectadas),
+                       url(r'^reportes/concluidas-proceso-proyectadas',views.hipervinculo_concluidas_proceso_proyectadas),
                        url(r'^buscar-obras/', views.consulta_web),
+
+                       # reportes predefinidos
+                       url(r'^reportes-predefinidos', views.reportes_predefinidos),
+                       url(r'^balance-general-ppt', views.balance_general_ppt),
+                       url(r'^hiper-info-general-ppt', views.hiper_info_general_ppt),
+                       url(r'^hiper-inauguradas-ppt', views.hiper_inauguradas_ppt),
+                       url(r'^hiper-por-sector-ppt', views.hiper_por_sector_ppt),
+                       url(r'^hiper-por-entidad-ppt', views.hiper_por_entidad_ppt),
 
 )
