@@ -1,10 +1,5 @@
 # Create your views here.
-import datetime
-import json
-from django.db import connection
-from django.forms import model_to_dict
-import json
-from django.views.decorators.csrf import csrf_exempt
+import os
 from django.forms import model_to_dict
 from django.template import RequestContext, loader
 from django.http import HttpResponse
@@ -13,8 +8,8 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
 from oauth2_provider.views import ProtectedResourceView
 from oauth2_provider.models import AccessToken
+from pptx import Presentation
 from obras.models import *
-from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
@@ -24,7 +19,6 @@ from forms import AddObraForm
 from forms import AddAuthUserForm
 from forms import UbicacionForm
 import json
-from django.utils.timesince import timesince
 from obras.models import Obra
 from django.contrib.auth.models import User
 import datetime
