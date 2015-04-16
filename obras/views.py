@@ -98,6 +98,136 @@ class TipoDeObraEndpoint(ProtectedResourceView):
         json_response = json.dumps(map(lambda x: model_to_dict(x), TipoObra.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
+class BuscadorEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        buscador = BuscarObras(idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+                           iddependencias=get_array_or_none(request.GET.get('tipoDeObra')),
+                           estados=get_array_or_none(request.GET.get('tipoDeObra')),
+                           clasificaciones=get_array_or_none(request.GET.get('tipoDeObra')),
+                           inversiones=get_array_or_none(request.GET.get('tipoDeObra')),
+                           inauguradores=get_array_or_none(request.GET.get('tipoDeObra')),
+                           impactos=get_array_or_none(request.GET.get('tipoDeObra')),
+                           inaugurada=None,
+                           inversion_minima=None,
+                           inversion_maxima=None,
+                           fecha_inicio_primera=None,
+                           fecha_inicio_segunda=None,
+                           fecha_fin_primera=None,
+                           fecha_fin_segunda=None,
+                           denominacion=None,
+        )
+        resultados = buscador.buscar()
+
+        json_map = {}
+
+        json_map['reporte_dependencia'] = []
+        for reporte in resultados['reporte_dependencia']:
+            map = {}
+            map['nombreDependencia'] = reporte['dependencia__nombreDependencia']
+            map['numero_obras'] = reporte['numero_obras']
+            if reporte['sumatotal'] is None:
+                map['sumatotal'] = 0
+            else:
+                map['sumatotal'] = int(reporte['sumatotal'])
+            json_map['reporte_dependencia'].append(map)
+
+        json_map['obras'] = []
+        for obra in resultados['obras']:
+            map = {}
+
+            map['identificador'] = obra.identificador_unico
+            map['tipoObra'] = obra.tipoObra.nombreTipoObra
+            map['dependencia'] = obra.dependencia.nombreDependencia
+            map['estado'] = obra.estado.nombreEstado
+            map['impacto'] = obra.impacto.nombreImpacto
+
+            map['tipoInversion'] = []
+            for tipoInversion in obra.tipoInversion.all():
+                tipo = {}
+                tipo['nombreTipoInversion'] = tipoInversion.nombreTipoInversion
+                tipo['nombreTipoInversionCorta'] = tipoInversion.nombreTipoInversionCorta
+
+                map['tipoInversion'].append(tipo)
+
+            map['tipoClasificacion'] = []
+            for tipoClasificacion in obra.tipoClasificacion.all():
+                tipo = {}
+                tipo['nombreTipoClasificacion'] = tipoClasificacion.nombreTipoClasificacion
+                tipo['nombreTipoClasificacionCorta'] = tipoClasificacion.nombreTipoClasificacionCorta
+
+                map['tipoClasificacion'].append(tipo)
+
+            map['inaugurador'] = obra.inaugurador.nombreCargoInaugura
+            map['registroHacendario'] = obra.registroHacendario
+            map['registroAuditoria'] = obra.registroAuditoria
+            map['denominacion'] = obra.denominacion
+            map['descripcion'] = obra.descripcion
+            map['observaciones'] = obra.observaciones
+            map['fechaInicio'] = obra.fechaInicio
+            map['fechaTermino'] = obra.fechaTermino
+            if obra.inversionTotal is None:
+                map['inversionTotal'] = 0.0
+            else:
+                map['inversionTotal'] = float(obra.inversionTotal)
+            if obra.totalBeneficiarios is None:
+                map['totalBeneficiarios'] = 0
+            else:
+                map['totalBeneficiarios'] = int(obra.totalBeneficiarios)
+            map['senalizacion'] = obra.senalizacion
+            map['susceptibleInauguracion'] = obra.susceptibleInauguracion
+            if obra.porcentajeAvance is None:
+                map['porcentajeAvance'] = 0.0
+            else:
+                map['porcentajeAvance'] = float(obra.porcentajeAvance)
+            if obra.fotoAntes is None:
+                map['fotoAntes'] = None
+            else:
+                map['fotoAntes'] = obra.fotoAntes.name
+            if obra.fotoDurante is None:
+                map['fotoAntes'] = None
+            else:
+                map['fotoAntes'] = obra.fotoDurante.name
+            if obra.fotoDespues is None:
+                map['fotoAntes'] = None
+            else:
+                map['fotoAntes'] = obra.fotoDespues.name
+            map['inaugurada'] = obra.inaugurada
+            map['poblacionObjetivo'] = obra.poblacionObjetivo
+            map['municipio'] = obra.municipio
+            if obra.tipoMoneda is None:
+                map['tipoMoneda'] = None
+            else:
+                map['tipoMoneda'] = obra.tipoMoneda.nombreTipoDeMoneda
+
+            json_map['obras'].append(map)
+
+        json_map['reporte_estado'] = []
+        for reporte_estado in resultados['reporte_estado']:
+            map = {}
+            if reporte_estado['sumatotal'] is None:
+                map['sumatotal'] = 0.0
+            else:
+                map['sumatotal'] = float(reporte_estado['sumatotal'])
+            map['estado'] = reporte_estado['estado__nombreEstado']
+            map['numeroObras'] = reporte_estado['numero_obras']
+
+            json_map['reporte_estado'].append(map)
+
+        json_map['reporte_general'] = {}
+        json_map['reporte_general']['obrasTotales'] = resultados['reporte_general']['obras_totales']
+
+        total = resultados['reporte_general']['total_invertido']['inversionTotal__sum']
+        if total is None:
+            total = 0.0
+        else:
+            total = float(total)
+        json_map['reporte_general']['total_invertido'] = total
+
+        json_map['reporte_general']['obras_totales'] = resultados['reporte_general']['obras_totales']
+
+        return HttpResponse(json_map.__str__(), 'application/json')
+
 
 def is_super_admin(user):
     return user.usuario.rol == 'SA'
