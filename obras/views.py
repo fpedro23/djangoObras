@@ -164,8 +164,14 @@ class BuscadorEndpoint(ProtectedResourceView):
             map['denominacion'] = obra.denominacion
             map['descripcion'] = obra.descripcion
             map['observaciones'] = obra.observaciones
-            map['fechaInicio'] = obra.fechaInicio
-            map['fechaTermino'] = obra.fechaTermino
+            if obra.fechaInicio is None:
+                map['fechaInicio'] = None
+            else:
+                map['fechaInicio'] = obra.fechaInicio.__str__()
+            if obra.fechaTermino is None:
+                map['fechaTermino'] = None
+            else:
+                map['fechaTermino'] = obra.fechaTermino.__str__()
             if obra.inversionTotal is None:
                 map['inversionTotal'] = 0.0
             else:
@@ -226,7 +232,7 @@ class BuscadorEndpoint(ProtectedResourceView):
 
         json_map['reporte_general']['obras_totales'] = resultados['reporte_general']['obras_totales']
 
-        return HttpResponse(json_map.__str__(), 'application/json')
+        return HttpResponse(json.dumps(json_map), 'application/json')
 
 
 def is_super_admin(user):
