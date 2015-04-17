@@ -5,12 +5,19 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+from django.forms import model_to_dict
+
+
 class TipoObra(models.Model):
     nombreTipoObra = models.CharField(max_length=200)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreTipoObra
 
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
 
 class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
@@ -19,6 +26,26 @@ class Dependencia(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreDependencia
+
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        if ans['dependienteDe'] is None:
+            ans['dependienteDe'] = None
+        else:
+            ans['dependienteDe'] = str(self.dependienteDe_id)
+
+        # We KNOW that this entry must be a FileField value
+        # (therefore, calling its name attribute is safe),
+        # so we need to mame it JSON serializable (Django objects
+        # are not by default and its built-in serializer sucks),
+        # namely, we only need the path
+        if self.imagenDependencia is None or self.imagenDependencia.name == '' or self.imagenDependencia.name == '':
+            ans['imagenDependencia'] = None
+        else:
+            ans['imagenDependencia'] = self.imagenDependencia.name
+
+        return ans
 
 
 class Estado(models.Model):
@@ -29,12 +56,22 @@ class Estado(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreEstado
 
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
+
 
 class Impacto(models.Model):
     nombreImpacto = models.CharField(max_length=200)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreImpacto
+
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
 
 
 class TipoInversion(models.Model):
@@ -43,6 +80,11 @@ class TipoInversion(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreTipoInversion
+
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
 
 
 class TipoClasificacion(models.Model):
@@ -53,12 +95,26 @@ class TipoClasificacion(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreTipoClasificacion
 
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        if ans['subclasificacionDe'] is not None:
+            ans['subclasificacionDe'] = str(self.subclasificacionDe_id)
+        else:
+            ans['subclasificacionDe'] = None
+        return ans
 
 class Inaugurador(models.Model):
     nombreCargoInaugura = models.CharField(max_length=200)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreCargoInaugura
+
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
+
 
 
 class TipoMoneda(models.Model):
@@ -117,3 +173,6 @@ class Obra(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
+
+    def to_serializable_dict(self):
+        return model_to_dict(self)

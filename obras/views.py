@@ -18,7 +18,7 @@ from obras.BuscarObras import BuscarObras
 class EstadosEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        json_response = json.dumps(map(lambda estado: model_to_dict(estado), Estado.objects.all()))
+        json_response = json.dumps(map(lambda estado: estado.to_serializable_dict(), Estado.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
 
@@ -31,29 +31,18 @@ class DependenciasEndpoint(ProtectedResourceView):
         print token_model.user
 
         if token_model.user.usuario.rol == 'SA':
-            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.all())
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.all())
 
         elif token_model.user.usuario.rol == 'AD':
-            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.filter(
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id) |
                 Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
             )
 
         else:
-            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.filter(
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
             )
-
-        for dictionary in dicts:
-            # We KNOW that this entry must be a FileField value
-            # (therefore, calling its name attribute is safe),
-            # so we need to mame it JSON serializable (Django objects
-            # are not by default and its built-in serializer sucks),
-            # namely, we only need the path
-            if dictionary['imagenDependencia'].name == '' or dictionary['imagenDependencia'].name == '':
-                dictionary['imagenDependencia'] = None
-            else:
-                dictionary['imagenDependencia'] = dictionary['imagenDependencia'].name
 
         json_response = json.dumps(dicts)
         return HttpResponse(json_response, 'application/json')
@@ -62,14 +51,14 @@ class DependenciasEndpoint(ProtectedResourceView):
 class ImpactosEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        json_response = json.dumps(map(lambda impacto: model_to_dict(impacto), Impacto.objects.all()))
+        json_response = json.dumps(map(lambda impacto: impacto.to_serializable_dict(), Impacto.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
 
 class InauguradorEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        json_response = json.dumps(map(lambda inaugurador: model_to_dict(inaugurador), Inaugurador.objects.all()))
+        json_response = json.dumps(map(lambda inaugurador: inaugurador.to_serializable_dict(), Inaugurador.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
 
@@ -81,21 +70,21 @@ class ClasificacionEndpoint(ProtectedResourceView):
         else:
             clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id__isnull=True)
 
-        json_response = json.dumps(map(lambda clasificacion: model_to_dict(clasificacion), clasificaciones))
+        json_response = json.dumps(map(lambda clasificacion: clasificacion.to_serializable_dict(), clasificaciones))
         return HttpResponse(json_response, 'application/json')
 
 
 class InversionEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        json_response = json.dumps(map(lambda inversion: model_to_dict(inversion), TipoInversion.objects.all()))
+        json_response = json.dumps(map(lambda inversion: inversion.to_serializable_dict(), TipoInversion.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
 
 class TipoDeObraEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        json_response = json.dumps(map(lambda x: model_to_dict(x), TipoObra.objects.all()))
+        json_response = json.dumps(map(lambda tipo: tipo.to_serializable_dict(), TipoObra.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
 class BuscadorEndpoint(ProtectedResourceView):
