@@ -126,28 +126,22 @@ class BuscadorEndpoint(ProtectedResourceView):
             map = {}
 
             map['identificador'] = obra.identificador_unico
-            map['tipoObra'] = obra.tipoObra.nombreTipoObra
-            map['dependencia'] = obra.dependencia.nombreDependencia
-            map['estado'] = obra.estado.nombreEstado
-            map['impacto'] = obra.impacto.nombreImpacto
+            map['tipoObra'] = obra.tipoObra.to_serializable_dict()
+            map['dependencia'] = obra.dependencia.to_serializable_dict()
+            map['estado'] = obra.estado.to_serializable_dict()
+            map['impacto'] = obra.impacto.to_serializable_dict()
 
             map['tipoInversion'] = []
             for tipoInversion in obra.tipoInversion.all():
-                tipo = {}
-                tipo['nombreTipoInversion'] = tipoInversion.nombreTipoInversion
-                tipo['nombreTipoInversionCorta'] = tipoInversion.nombreTipoInversionCorta
-
+                tipo = tipoInversion.to_serializable_dict()
                 map['tipoInversion'].append(tipo)
 
             map['tipoClasificacion'] = []
             for tipoClasificacion in obra.tipoClasificacion.all():
-                tipo = {}
-                tipo['nombreTipoClasificacion'] = tipoClasificacion.nombreTipoClasificacion
-                tipo['nombreTipoClasificacionCorta'] = tipoClasificacion.nombreTipoClasificacionCorta
-
+                tipo = tipoClasificacion.to_serializable_dict()
                 map['tipoClasificacion'].append(tipo)
 
-            map['inaugurador'] = obra.inaugurador.nombreCargoInaugura
+            map['inaugurador'] = obra.inaugurador.to_serializable_dict()
             map['registroHacendario'] = obra.registroHacendario
             map['registroAuditoria'] = obra.registroAuditoria
             map['denominacion'] = obra.denominacion
@@ -193,7 +187,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             if obra.tipoMoneda is None:
                 map['tipoMoneda'] = None
             else:
-                map['tipoMoneda'] = obra.tipoMoneda.nombreTipoDeMoneda
+                map['tipoMoneda'] = obra.tipoMoneda.to_serializable_dict()
 
             json_map['obras'].append(map)
 

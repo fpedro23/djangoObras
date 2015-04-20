@@ -123,6 +123,11 @@ class TipoMoneda(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreTipoDeMoneda
 
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
+
 
 class Usuario(models.Model):
     SUPERADMIN = 'SA'
