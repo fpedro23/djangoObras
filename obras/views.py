@@ -113,7 +113,7 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['reporte_dependencia'] = []
         for reporte in resultados['reporte_dependencia']:
             map = {}
-            map['nombreDependencia'] = reporte['dependencia__nombreDependencia']
+            map['dependencia'] = Dependencia.objects.get(nombreDependencia=reporte['dependencia__nombreDependencia']).to_serializable_dict()
             map['numero_obras'] = reporte['numero_obras']
             if reporte['sumatotal'] is None:
                 map['sumatotal'] = 0
@@ -198,7 +198,7 @@ class BuscadorEndpoint(ProtectedResourceView):
                 map['sumatotal'] = 0.0
             else:
                 map['sumatotal'] = float(reporte_estado['sumatotal'])
-            map['estado'] = reporte_estado['estado__nombreEstado']
+            map['estado'] = Estado.objects.get(nombreEstado=reporte_estado['estado__nombreEstado']).to_serializable_dict()
             map['numeroObras'] = reporte_estado['numero_obras']
 
             json_map['reporte_estado'].append(map)
@@ -216,6 +216,7 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['reporte_general']['obras_totales'] = resultados['reporte_general']['obras_totales']
 
         return HttpResponse(json.dumps(json_map), 'application/json')
+        # return HttpResponse(resultados.__str__(), 'application/json')
 
 
 def is_super_admin(user):
