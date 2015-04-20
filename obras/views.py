@@ -203,20 +203,19 @@ class BuscadorEndpoint(ProtectedResourceView):
 
             json_map['reporte_estado'].append(map)
 
-        json_map['reporte_general'] = {}
-        json_map['reporte_general']['obrasTotales'] = resultados['reporte_general']['obras_totales']
-
+        json_map['reporte_general'] = []
+        map = {}
         total = resultados['reporte_general']['total_invertido']['inversionTotal__sum']
         if total is None:
             total = 0.0
         else:
             total = float(total)
-        json_map['reporte_general']['total_invertido'] = total
+        map['total_invertido'] = total
 
-        json_map['reporte_general']['obras_totales'] = resultados['reporte_general']['obras_totales']
+        map['obras_totales'] = resultados['reporte_general']['obras_totales']
+        json_map['reporte_general'].append(map)
 
         return HttpResponse(json.dumps(json_map), 'application/json')
-        # return HttpResponse(resultados.__str__(), 'application/json')
 
 
 def is_super_admin(user):
