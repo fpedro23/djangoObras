@@ -20,4 +20,4 @@ urlpatterns = patterns(
     url(r'^see_map$', 'obras.views.see_map', name='see_map'),
     url(r'^do_chart$', 'obras.views.do_chart', name='do_chart'),
     url(r'^coords_save$', 'coords_save', name='coords_save'),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

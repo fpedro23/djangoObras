@@ -8,6 +8,7 @@ from obras.forms import AddObraForm
 
 
 
+
 # Register your models here.+
 
 # Define an inline admin descriptor for Usuario model
@@ -92,6 +93,11 @@ class ClasificacionInLine(admin.StackedInline):
     extra = 3
 
 
+class DocumentoFuenteInline(admin.TabularInline):
+    model = DocumentoFuente
+    extra = 1
+
+
 class DependenciaListFilter(SimpleListFilter):
 
     # USAGE
@@ -100,7 +106,7 @@ class DependenciaListFilter(SimpleListFilter):
     # list_filter = (CategoryListFilter,)
     # Human-readable title which will be displayed in the
     # right admin sidebar just above the filter options.
-    title = ('Dependencias')
+    title = ('Dependencias',)
 
     parameter_name = 'dependencia'
 
@@ -158,6 +164,7 @@ class ObrasAdmin(admin.ModelAdmin):
     form = AddObraForm
     inlinesInversion = [InversionInLine]
     inlinesClasificacion = [ClasificacionInLine]
+    inlines = [DocumentoFuenteInline]
     list_display = (
         'identificador_unico',
         'denominacion',
@@ -172,17 +179,31 @@ class ObrasAdmin(admin.ModelAdmin):
     readonly_fields = ('identificador_unico',)
     actions = [make_authorized, make_unauthorized]
 
+    # def get_fieldsets(self, request, obj=None):
+    # fieldsets = [
+    #                     ('Hacienda',
+    #                         {'fields':
+    #                             ['registroHacendario',
+    #                              'montoRegistroHacendario'
+    #                             ]
+    #                          }
+    #                     ),
+    #                 ]
+    #     return fieldsets
+
     def get_fields(self, request, obj=None):
         if request.user.usuario.rol == 'US':
             fields = ('identificador_unico',
                       'tipoObra',
                       'dependencia',
+                      'instanciaEjecutora',
                       'estado',
                       'impacto',
                       'tipoInversion',
                       'tipoClasificacion',
                       'inaugurador',
                       'registroHacendario',
+                      'montoRegistroHacendario',
                       'registroAuditoria',
                       'denominacion',
                       'descripcion',
@@ -204,17 +225,20 @@ class ObrasAdmin(admin.ModelAdmin):
                       'tipoMoneda',
                       )
 
+
         else:
             fields = ('identificador_unico',
                       'autorizada',
                       'tipoObra',
+                      'instanciaEjecutora',
                       'dependencia',
                       'estado',
                       'impacto',
                       'tipoInversion',
                       'tipoClasificacion',
                       'inaugurador',
-                      'registroHacendario',
+                      ('registroHacendario',
+                       'montoRegistroHacendario',),
                       'registroAuditoria',
                       'denominacion',
                       'descripcion',
@@ -290,3 +314,4 @@ admin.site.register(TipoMoneda)
 admin.site.register(TipoInversion)
 admin.site.register(TipoClasificacion)
 admin.site.register(Obra, ObrasAdmin)
+admin.site.register(InstanciaEjecutora)
