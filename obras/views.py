@@ -307,15 +307,15 @@ class BuscadorEndpoint(ProtectedResourceView):
             else:
                 map['fechaTermino'] = obra.fechaTermino.__str__()
             if obra.inversionTotal is None:
-                map['inversionTotal'] = 0.0
+                map['inversionTotal'] = str(0.0)
             else:
-                map['inversionTotal'] = float(obra.inversionTotal)
+                map['inversionTotal'] = str(obra.inversionTotal)
             if obra.totalBeneficiarios is None:
-                map['totalBeneficiarios'] = 0
+                map['totalBeneficiarios'] = str(0)
             else:
-                map['totalBeneficiarios'] = int(obra.totalBeneficiarios)
-            map['senalizacion'] = obra.senalizacion
-            map['susceptibleInauguracion'] = obra.susceptibleInauguracion
+                map['totalBeneficiarios'] = str(obra.totalBeneficiarios)
+            map['senalizacion'] = str(obra.senalizacion)
+            map['susceptibleInauguracion'] = str(obra.susceptibleInauguracion)
             if obra.porcentajeAvance is None:
                 map['porcentajeAvance'] = 0.0
             else:
@@ -332,13 +332,14 @@ class BuscadorEndpoint(ProtectedResourceView):
                 map['fotoAntes'] = None
             else:
                 map['fotoAntes'] = obra.fotoDespues.name
-            map['inaugurada'] = obra.inaugurada
+            map['inaugurada'] = str(obra.inaugurada)
             map['poblacionObjetivo'] = obra.poblacionObjetivo
             map['municipio'] = obra.municipio
+            map['fechaModificacion'] = obra.fechaModificacion.isoformat()
             if obra.tipoMoneda is None:
                 map['tipoMoneda'] = None
             else:
-                map['tipoMoneda'] = obra.tipoMoneda.to_serializable_dict()
+                map['tipoMoneda'] = obra.tipoMoneda.nombreTipoDeMoneda
 
             json_map['obras'].append(map)
 

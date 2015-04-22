@@ -44,7 +44,7 @@ class Dependencia(models.Model):
         if self.imagenDependencia is None or self.imagenDependencia.name == '' or self.imagenDependencia.name == '':
             ans['imagenDependencia'] = None
         else:
-            ans['imagenDependencia'] = self.imagenDependencia.name
+            ans['imagenDependencia'] = self.imagenDependencia.url
 
         return ans
 
@@ -55,6 +55,9 @@ class Estado(models.Model):
     longitud = models.FloatField()
 
     def __str__(self):  # __unicode__ on Python 2
+        return self.nombreEstado
+
+    def __unicode__(self):  # __unicode__ on Python 2
         return self.nombreEstado
 
     def to_serializable_dict(self):
@@ -182,7 +185,7 @@ class Obra(models.Model):
     fotoAntes = models.FileField(blank=True, null=True)
     fotoDurante = models.FileField(blank=True, null=True)
     fotoDespues = models.FileField(blank=True, null=True)
-    fechaModificacion = models.DateField(auto_now=True)
+    fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True)
     inaugurada = models.BooleanField(default=False)
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
@@ -193,7 +196,7 @@ class Obra(models.Model):
         return self.denominacion
 
     def to_serializable_dict(self):
-        return model_to_dict(self)        return self.denominacion
+        return model_to_dict(self)
 
 
 class DocumentoFuente(models.Model):
