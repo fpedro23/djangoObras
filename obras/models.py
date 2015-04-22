@@ -81,6 +81,12 @@ class Usuario(models.Model):
     dependencia = models.ForeignKey(Dependencia, blank=True, null=True)
 
 
+class InstanciaEjecutora(models.Model):
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.nombre
+
 class Obra(models.Model):
     #TODO agrupar semanticamente todos los campos de obras
     identificador_unico = models.SlugField(unique=True, null=True, )
@@ -88,10 +94,12 @@ class Obra(models.Model):
     dependencia = models.ForeignKey(Dependencia)
     estado = models.ForeignKey(Estado)
     impacto = models.ForeignKey(Impacto)
+    instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
+    registroHacendario = models.CharField(max_length=200, blank=True, null=True)
+    montoRegistroHacendario = models.FloatField(blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion)
     tipoClasificacion = models.ManyToManyField(TipoClasificacion)
     inaugurador = models.ForeignKey(Inaugurador)
-    registroHacendario = models.CharField(max_length=200)
     registroAuditoria = models.CharField(max_length=200)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
@@ -116,3 +124,9 @@ class Obra(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
+
+
+class DocumentoFuente(models.Model):
+    descripcion = models.TextField(blank=True, null=True)
+    documento = models.FileField(blank=True, null=True)
+    obra = models.ForeignKey('Obra', blank=True, null=True)
