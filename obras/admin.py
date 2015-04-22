@@ -181,7 +181,7 @@ class ObrasAdmin(admin.ModelAdmin):
 
     # def get_fieldsets(self, request, obj=None):
     # fieldsets = [
-    #                     ('Hacienda',
+    # ('Hacienda',
     #                         {'fields':
     #                             ['registroHacendario',
     #                              'montoRegistroHacendario'

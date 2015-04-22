@@ -85,8 +85,12 @@ class Usuario(models.Model):
 class InstanciaEjecutora(models.Model):
     nombre = models.CharField(max_length=100)
 
-    def __str__(self):  # __unicode__ on Python 2
+    def __str__(self):
         return self.nombre
+
+    def __unicode__(self):
+        return self.nombre
+
 
 class Obra(models.Model):
     #TODO agrupar semanticamente todos los campos de obras
@@ -130,7 +134,13 @@ class Obra(models.Model):
 class DocumentoFuente(models.Model):
     descripcion = models.TextField(blank=True, null=True)
     documento = models.FileField(blank=True, null=True)
-    obra = models.ForeignKey('Obra', blank=True, null=True)        return self.denominacion
+    obra = models.ForeignKey('Obra', blank=True, null=True)
+
+    def __str__(self):
+        return self.descripcion
+
+    def __unicode__(self):
+        return self.descripcion
 
 
 # modelo temporal para probar ubicaciones de obras en mapa
