@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Mapa de Obras{% endblock %}
+{% block content %}
+    <h1>Obras </h1>
+    <div id="mapa" class="capas"></div>
+    <div id="datos" class="capas">
+        <div id="form" class="form">
+            <form action="coords_save" method="post" id="form_coords">{% csrf_token %}
+                <table>
+                {{ form.as_table }}
+                </table>
+                <p>
+                    <input type="submit" value="Guardar ubicación">
+                </p>
+            </form>
+        </div>
+        <div id="data">
+            <ul>
+                {% for ubicacion in ubicaciones %}
+                   <li>{{ ubicacion.nombre }} {{ ubicacion.dependencia }} {{ ubicacion.estado }} {{ ubicacion.lat }} , {{ ubicacion.lng }}</li>
+                    <script>
+                        var point = new google.maps.LatLng({{ubicacion.lat}},{{ubicacion.lng}});
+                        addMarker(point,"{{ ubicacion.nombre }}") ;
+                     </script>
+                {% endfor %}
+             </ul>
+        </div>
+    </div>
+{% endblock %}

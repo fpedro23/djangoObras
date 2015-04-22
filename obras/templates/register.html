@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2> Registrar Usuario</h2>
+    <div id="auth_user"></div>
+       <form action="/create_authuser" method="post">{% csrf_token %}
+        <table align="left">
+        {{ form_a.as_table }}
+        {{ form_b.as_table }}
+        </table>
+        <input type="submit" value="Guardar usuario" />
+    </form>
+
+{% endblock %}
