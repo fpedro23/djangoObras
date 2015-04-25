@@ -640,3 +640,8 @@ def buscar_obras_web(request):
         'resultados': resultados
     })
     return HttpResponse(template.render(context))
+
+
+def ajax_prueba(request):
+    template = loader.get_template('prueba.html')
+    return HttpResponse(template.render(RequestContext(request)))

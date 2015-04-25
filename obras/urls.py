@@ -22,5 +22,6 @@ urlpatterns = patterns('',
                            views.hipervinculo_concluidas_proceso_proyectadas),
                        url(r'^buscar-obras/', views.consulta_web),
                        url(r'^consultar-obras', views.buscar_obras_web),
+                       url(r'^prueba', views.ajax_prueba),
 
 )
