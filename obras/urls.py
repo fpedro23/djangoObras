@@ -21,13 +21,15 @@ urlpatterns = patterns('',
                        url(r'^reportes/informacion-entidad', views.hipervinculo_entidad),
                        url(r'^reportes/concluidas-proceso-proyectadas',views.hipervinculo_concluidas_proceso_proyectadas),
                        url(r'^buscar-obras/', views.consulta_web),
+                       url(r'^consultar-obras', views.buscar_obras_web),
+                       url(r'^prueba', views.ajax_prueba),
 
                        # reportes predefinidos
-                       url(r'^reportes-predefinidos', views.reportes_predefinidos),
-                       url(r'^balance-general-ppt', views.balance_general_ppt),
-                       url(r'^hiper-info-general-ppt', views.hiper_info_general_ppt),
-                       url(r'^hiper-inauguradas-ppt', views.hiper_inauguradas_ppt),
-                       url(r'^hiper-por-sector-ppt', views.hiper_por_sector_ppt),
-                       url(r'^hiper-por-entidad-ppt', views.hiper_por_entidad_ppt),
+                       #url(r'^reportes-predefinidos', views.reportes_predefinidos),
+                       #url(r'^balance-general-ppt', views.balance_general_ppt),
+                       #url(r'^hiper-info-general-ppt', views.hiper_info_general_ppt),
+                       #url(r'^hiper-inauguradas-ppt', views.hiper_inauguradas_ppt),
+                       #url(r'^hiper-por-sector-ppt', views.hiper_por_sector_ppt),
+                       #url(r'^hiper-por-entidad-ppt', views.hiper_por_entidad_ppt),
 
 )

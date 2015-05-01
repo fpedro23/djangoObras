@@ -34,7 +34,6 @@ function verDatos() {
     //       alert(dep);
     //}
 
-    $('#iframe_a').load('obras/consultar-obras');
 
-    //$.get('obras/consultar-obras');
+    $.get('http://127.0.0.1:8000/obras/consultar-obras');
 }
