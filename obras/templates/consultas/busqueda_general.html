@@ -12,5 +12,10 @@
 <p>{{ clasificacion }}</p>
 <p>{{ inaugurador }}</p>
 
+
+{% for dep in dependencias %}
+    Identificador:  {{dep.id}} <br>
+{% endfor %}
+
 </body>
 </html>

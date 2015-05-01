@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <link rel="stylesheet" type="text/css" href="../../static/assets/jquery-mulsel/css/jquery.multiselect.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/assets/jquery-mulsel/css/style.css" />
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css" />
+
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../static/assets/jquery-mulsel/js/jquery.multiselect.js"></script>
+
+    <script type="text/javascript" src="../../static/assets/js/ajax-consulta.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../../static/assets/bootstrap/css/bootstrap.css" />
+
+    <script type="text/javascript">
+    $(function(){
+
+
+        // off
+        $("#msEstatusObra").multiselect({
+            header: true,
+            checkAllText: 'Marcar todos',
+            uncheckAllText: 'Desmarcar todos',
+            noneSelectedText: 'Status de la obra',
+            selectedText: '# Status de la obra'
+
+        });
+        // off
+        $("#msDependencias").multiselect({
+            header: true,
+            checkAllText: 'Marcar todas',
+            uncheckAllText: 'Desmarcar todas',
+            noneSelectedText: 'Dependencias',
+            selectedText: '# Dependencias'
+
+        });
+        // off
+        $("#msEstados").multiselect({
+            header: true,
+            checkAllText: 'Marcar todos',
+            uncheckAllText: 'Desmarcar todos',
+            noneSelectedText: 'Estados',
+            selectedText: '# Estados'
+        });
+        // off
+        $("#msTipoInversion").multiselect({
+            header: true,
+            minWidth: 250,
+            checkAllText: 'Marcar todos',
+            uncheckAllText: 'Desmarcar todos',
+            noneSelectedText: 'Tipo de Inversión',
+            selectedText: '# Tipos de Inversión'
+        });
+
+
+        // off
+        $("#msClasificacion").multiselect({
+            header: true,
+            minWidth: 250,
+            checkAllText: 'Marcar todas',
+            uncheckAllText: 'Desmarcar todas',
+            noneSelectedText: 'Clasificación',
+            selectedText: '# Clasificaciones'
+        });
+        // off
+        $("#msImpacto").multiselect({
+            header: true,
+            minWidth: 250,
+            checkAllText: 'Marcar todos',
+            uncheckAllText: 'Desmarcar todos',
+            noneSelectedText: 'Impacto',
+            selectedText: '# Impactos'
+        });
+        // off
+        $("#msInaugurador").multiselect({
+            header: true,
+            minWidth: 250,
+            checkAllText: 'Marcar todos',
+            uncheckAllText: 'Desmarcar todos',
+            noneSelectedText: 'Inaugurador',
+            selectedText: '# Inauguradores'
+        });
+
+
+    });
+    </script>
+
+
+<style>
+	body{
+		font: 100% "Trebuchet MS", sans-serif;
+		margin: 50px;
+	}
+	.demoHeaders {
+		margin-top: 2em;
+	}
+	#dialog-link {
+		padding: .4em 1em .4em 20px;
+		text-decoration: none;
+		position: relative;
+	}
+	#dialog-link span.ui-icon {
+		margin: 0 5px 0 0;
+		position: absolute;
+		left: .2em;
+		top: 50%;
+		margin-top: -8px;
+	}
+	#icons {
+		margin: 0;
+		padding: 0;
+	}
+	#icons li {
+		margin: 2px;
+		position: relative;
+		padding: 4px 0;
+		cursor: pointer;
+		float: left;
+		list-style: none;
+	}
+	#icons span.ui-icon {
+		float: left;
+		margin: 0 4px;
+	}
+	.fakewindowcontain .ui-widget-overlay {
+		position: absolute;
+	}
+	select {
+		width: 200px;
+	}
+	</style>
+
+
+
+
+
+</head>
+<body>
+   <header>
+		<!DOCTYPE><h1>PARÁMETROS DE CONSULTA</h1>
+	</header>
+	<section id="wrapper">
+		<section id="side">
+            <div class="container-fluid" >
+                <div class="rowP">
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center><label>Registro de Cartera de Inversi&oacute;n</label></center>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><center>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> SI
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> NO
+                                </label></center>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center><label>Rango de Fecha</label></center>
+                            </div>
+                        </div>
+                        <div class="row"><center>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                                <span class="input-label">De:</span>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="item item-input">
+                                    <input type="date">
+                                </label>
+                            </div></center>
+                        </div>
+                        <div class="row"><center>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                                <span class="input-label">A:</span>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="item item-input">
+                                    <input type="date">
+                                </label>
+                            </div></center>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <select id="msTipoInversion" multiple="multiple" size="3">
+                                    {% for obj in estatusObra %}
+                                         <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center><label>Rango de Inversi&oacute;n</label></center>
+                            </div>
+                        </div>
+                        <div class="row"><center>
+                            <div class="col-md-1">
+                                <span class="input-label">De:</span>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="item item-input">
+                                    <input type="number" name="inversionInicial" id="inversionInicial">
+                                </label>
+                            </div></center>
+                            <div class="col-md-1">
+                                <span class="input-label">MDP</span>
+                            </div>
+                        </div>
+                        <div class="row"><center>
+                            <div class="col-md-1">
+                                <span class="input-label">A:</span>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="item item-input">
+                                    <input type="number" name="inversionFinal" id="inversionFinal">
+                                </label>
+                            </div></center>
+                            <div class="col-md-1">
+                                <span class="input-label">MDP</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <select id="msEstatusObra" multiple="multiple" size="3">
+                                    {% for obj in estatusObra %}
+                                         <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select id="msDependencias" multiple="multiple" size="3">
+                                    {% for dep in dependencias %}
+                                         <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select id="msEstados" multiple="multiple" size="3">
+                                    {% for obj in estados %}
+                                         <option value={{obj.id}}>{{obj.nombreEstado}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <select id="msClasificacion" multiple="multiple" size="3">
+                                    {% for obj in estatusObra %}
+                                         <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select id="msImpacto" multiple="multiple" size="3">
+                                    {% for dep in dependencias %}
+                                         <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select id="msInaugurador" multiple="multiple" size="3">
+                                    {% for obj in estados %}
+                                         <option value={{obj.id}}>{{obj.nombreEstado}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <article id="ver_datos">
+                                    <button id="button">Ver datos</button>
+                                </article>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="input-label">Inauguradas</span>
+                            </div>
+                            <div class="col-md-1">
+                                <input type="checkbox" id="inlineCheckbox1" value="option1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="input-label">Sin Inauguraci&oacute;n</span>
+                            </div>
+                            <div class="col-md-1">
+                                <input type="checkbox" id="inlineCheckbox1" value="option2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="input-label">No Inauguradas</span>
+                            </div>
+                            <div class="col-md-1">
+                                <input type="checkbox" id="inlineCheckbox1" value="option3">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+		</section>
+	</section>
+<iframe src="" name="iframe_a" id="iframe_a" width="96%" height="400px" class="Frame"></iframe>
+
+<!-- Initialize the plugin: -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#msEstatusObra').multiselect({
+            selectAllText: 'Seleccionar Todos',
+            nonSelectedText: 'Seleccione estatus',
+            allSelectedText: 'Todos Seleccionados',
+            includeSelectAllOption: true
+        });
+
+        $('#msDependencias').multiselect({
+            selectAllText: 'Seleccionar Todas',
+            nonSelectedText: 'Seleccione dependencias',
+            allSelectedText: 'Todas Seleccionadas',
+            includeSelectAllOption: true
+        });
+
+        $('#msEstados').multiselect({
+            selectAllText: 'Seleccionar Todos',
+            nonSelectedText: 'Seleccione estados',
+            allSelectedText: 'Todos Seleccionados',
+            includeSelectAllOption: true
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
