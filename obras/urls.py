@@ -12,6 +12,7 @@ urlpatterns = patterns('',
                        url(r'^api/clasificaciones', views.ClasificacionEndpoint.as_view()),
                        url(r'^api/inversiones', views.InversionEndpoint.as_view()),
                        url(r'^api/tiposDeObra', views.TipoDeObraEndpoint.as_view()),
+                       url(r'^api/busqueda', views.BuscadorEndpoint.as_view()),
                        # Mappings for the new (protected) implementation of the mobile API
 
 

@@ -30,10 +30,21 @@ function verDatos() {
                                     }).get();
 
     alert(arrayDependencias);
-    //for ( in dependencias.value) {
-    //       alert(dep);
-    //}
+    $.ajax({
+        url: '/obras/api/busqueda',
+        type: 'get',
+        data: {
+            access_token: 'KRmZyQFQJAUPUQ0tOyHhwfkQ56opZ3',
+            dependencia:arrayDependencias.toString()
+        },
+        success: function(data) {
+            //$('#datos').html
+            alert(data.obras[0].tipoObra.nombreTipoObra);
 
-
-    $.get('http://127.0.0.1:8000/obras/consultar-obras');
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
+    //$.get('http://127.0.0.1:8000/obras/consultar-obras');
 }

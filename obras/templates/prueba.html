@@ -8,14 +8,15 @@
             $(document).ready(function(){
                 $.ajax({
                     url: 'http://localhost:8000/obras/api/estados',
+                    type: 'get',
                     data: {
-                        access_token: 'tJGQFoupDbSkolSWJ8J891vbX85bWt'
+                        access_token: 'KRmZyQFQJAUPUQ0tOyHhwfkQ56opZ3'
                     },
-                    success: function(data, textStatus, jqXHR) {
+                    success: function(data) {
                         alert('success!!! ' + data[0].nombreEstado);
 
                     },
-                    error: function(data, textStaus, error) {
+                    error: function(data) {
                         alert('error!!! ' + data.status);
                     }
                 });
@@ -27,7 +28,7 @@
         </script>
 
         <h1>test</h1>
-        <form>
+        <form>{% csrf_token %}
             <select id="select_dependences">
                 <option value="1">dependencia 1</option>
                 <option value="2">dependencia 2</option>
