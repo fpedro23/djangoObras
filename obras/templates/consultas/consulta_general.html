@@ -5,27 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
 
+    <link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">
+
+
+    <link rel="stylesheet" href="../../static/assets/tablesorter/css/jq.css" type="text/css" media="print, projection, screen" />
+    <link rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/style.css" type="text/css" media="print, projection, screen" />
+	<script type="text/javascript" src="../../static/assets/tablesorter/jquery-latest.min.js"></script>
+
+    <script src="../../static/assets/tablesorter/widget-scroller.js"></script>
+
+	<script type="text/javascript" src="../../static/assets/tablesorter/jquery.tablesorter.js"></script>
+    <link rel="stylesheet" href="../../static/assets/tablesorter/addons/pager/jquery.tablesorter.pager.css">
+	<script type="text/javascript" src="../../static/assets/tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
+	<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>
+
+
+	<script type="text/javascript">
+	$(function() {
+		$("table")
+			.tablesorter({widthFixed: true,showProcessing: true,headerTemplate : '{content} {icon}', widgets: ['uitheme','zebra', 'scroller'],
+                          widgetOptions : {
+                          scroller_height : 300,
+                          scroller_upAfterSort: true,
+                          scroller_jumpToHeader: true,
+                          scroller_barWidth : null}
+                        })
+			.tablesorterPager({container: $("#pager")});
+	});
+	</script>
+
     <link rel="stylesheet" type="text/css" href="../../static/assets/jquery-mulsel/css/jquery.multiselect.css" />
     <link rel="stylesheet" type="text/css" href="../../static/assets/jquery-mulsel/css/style.css" />
-<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css" />
+
 
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 
-
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.js"></script>
     <script type="text/javascript" src="../../static/assets/jquery-mulsel/js/jquery.multiselect.js"></script>
 
-    <script type="text/javascript" src="../../static/assets/js/ajax-consulta.js"></script>
+
 
     <link rel="stylesheet" type="text/css" href="../../static/assets/bootstrap/css/bootstrap.css" />
 
     <script type="text/javascript">
-    $(function(){
+        var $l = jQuery.noConflict();
+    $l(function(){
 
 
         // off
-        $("#msEstatusObra").multiselect({
+        $l("#msEstatusObra").multiselect({
             header: true,
             checkAllText: 'Marcar todos',
             uncheckAllText: 'Desmarcar todos',
@@ -34,7 +64,7 @@
 
         });
         // off
-        $("#msDependencias").multiselect({
+        $l("#msDependencias").multiselect({
             header: true,
             checkAllText: 'Marcar todas',
             uncheckAllText: 'Desmarcar todas',
@@ -43,7 +73,7 @@
 
         });
         // off
-        $("#msEstados").multiselect({
+        $l("#msEstados").multiselect({
             header: true,
             checkAllText: 'Marcar todos',
             uncheckAllText: 'Desmarcar todos',
@@ -51,7 +81,7 @@
             selectedText: '# Estados'
         });
         // off
-        $("#msTipoInversion").multiselect({
+        $l("#msTipoInversion").multiselect({
             header: true,
             minWidth: 250,
             checkAllText: 'Marcar todos',
@@ -62,7 +92,7 @@
 
 
         // off
-        $("#msClasificacion").multiselect({
+        $l("#msClasificacion").multiselect({
             header: true,
             minWidth: 250,
             checkAllText: 'Marcar todas',
@@ -71,7 +101,7 @@
             selectedText: '# Clasificaciones'
         });
         // off
-        $("#msImpacto").multiselect({
+        $l("#msImpacto").multiselect({
             header: true,
             minWidth: 250,
             checkAllText: 'Marcar todos',
@@ -80,7 +110,7 @@
             selectedText: '# Impactos'
         });
         // off
-        $("#msInaugurador").multiselect({
+        $l("#msInaugurador").multiselect({
             header: true,
             minWidth: 250,
             checkAllText: 'Marcar todos',
@@ -92,6 +122,9 @@
 
     });
     </script>
+
+     <script type="text/javascript" src="../../static/assets/js/ajax-consulta.js"></script>
+
 
 
 <style>
@@ -347,39 +380,79 @@
                 </div>
             </div>
 		</section>
-	</section>
-   <div id="datos">
+    </section>
+   <div class="row">
+       <div class="col-md-3" id="datos">
+               <table cellspacing="1" class="tablesorter">
+                    <thead>
+
+
+
+                        <tr>
+                            <th>ID</th>
+                            <th>DENOMINACI&Oacute;N</th>
+                            <th>ESTADO</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>DENOMINACI&Oacute;N</th>
+                            <th>ESTADO</th>
+                        </tr>
+                        <tr>
+                          <td  colspan="3"></td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                    </tbody>
+               </table>
        </div>
+       <div class="col-md-6">
+       </div>
+       <div class="col-md-3">
+       </div>
+   </div>
 
-<!-- Initialize the plugin: -->
+
+
+
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#msEstatusObra').multiselect({
-            selectAllText: 'Seleccionar Todos',
-            nonSelectedText: 'Seleccione estatus',
-            allSelectedText: 'Todos Seleccionados',
-            includeSelectAllOption: true
-        });
-
-        $('#msDependencias').multiselect({
-            selectAllText: 'Seleccionar Todas',
-            nonSelectedText: 'Seleccione dependencias',
-            allSelectedText: 'Todas Seleccionadas',
-            includeSelectAllOption: true
-        });
-
-        $('#msEstados').multiselect({
-            selectAllText: 'Seleccionar Todos',
-            nonSelectedText: 'Seleccione estados',
-            allSelectedText: 'Todos Seleccionados',
-            includeSelectAllOption: true
-        });
-
-
-    });
+_uacct = "UA-2189649-2";
+urchinTracker();
 </script>
-
-
-
 </body>
 </html>
