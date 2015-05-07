@@ -35,12 +35,11 @@ function verDatos() {
         url: '/obras/api/busqueda',
         type: 'get',
         data: {
-            access_token: 'KSGhWbjEGiBbePxl0EuGup8rreu4Vk',
+            access_token: '7IfNOl1kJ6n73vt0Kx44scoIdlQFhZ',
             dependencia:arrayDependencias.toString()
         },
         success: function(data) {
             //$('#datos').html
-            alert(data.obras[0].tipoObra.nombreTipoObra);
             tabla(data);
 
         },
@@ -67,7 +66,7 @@ function tabla(Datos){
                             +'<th>ESTADO</th>'
                         +'</tr>'
 
-                        +'<tr><td class="pager" id="pager" colspan="3"><form>'
+                        +'<tr><td class="pager" id="pager" colspan="3">'
                         +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first"/>'
                         +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev"/>'
                         +'<input type="text" class="pagedisplay"/>'
@@ -78,7 +77,7 @@ function tabla(Datos){
                         +'    <option value="20">20</option>'
                         +'    <option value="30">30</option>'
                         +'    <option  value="40">40</option>'
-                        +'</select></form></td></tr>'
+                        +'</select></td></tr>'
 
                     +'</tfoot>'
                     +'<tbody>';
@@ -92,17 +91,20 @@ function tabla(Datos){
 
         sHtml +='</tbody>'
                 +'</table>'
+                //+'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
+                //+'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>'
                 +'<script type="text/javascript">'
+                //+'$S=jQuery.noConflict();'
                 +'$(function() {'
                 +'    $("table")'
-                +'        .tablesorter({widthFixed: true,showProcessing: true,headerTemplate : "{content} {icon}", widgets: ["zebra", "scroller"],'
+                +'        .tablesorter({theme: "blue",showProcessing: true,headerTemplate : "{content} {icon}", widgets: ["uitheme","pager","zebra", "scroller"],'
                 +'          widgetOptions : {'
                 +'          scroller_height : 300,'
                 +'          scroller_upAfterSort: true,'
                 +'          scroller_jumpToHeader: true,'
                 +'          scroller_barWidth : null}'
                 +'        })'
-                +'        .tablesorterPager({container: $("#pager")});'
+                //+'        .tablesorterPager({container: $("#pager")});'
                 +'});'
                 +'</script>';
 
