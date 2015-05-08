@@ -30,12 +30,12 @@ function verDatos() {
                                          return this.value;
                                     }).get();
 
-    alert(arrayDependencias);
+    //alert(arrayDependencias);
     $j.ajax({
         url: '/obras/api/busqueda',
         type: 'get',
         data: {
-            access_token: '7IfNOl1kJ6n73vt0Kx44scoIdlQFhZ',
+            access_token: '8CSN5gJyCxnZMucvRLYdxnKqj0u9Xn',
             dependencia:arrayDependencias.toString()
         },
         success: function(data) {
@@ -51,7 +51,7 @@ function verDatos() {
 }
 
 function tabla(Datos){
-    var sHtml='<table cellspacing="1" class="tablesorter">'
+    var sHtml='<table cellspacing="1" class="tablesorter" id="tablaIzquierda">'
                     +'<thead>'
                         +'<tr>'
                             +'<th>ID</th>'
@@ -66,13 +66,13 @@ function tabla(Datos){
                             +'<th>ESTADO</th>'
                         +'</tr>'
 
-                        +'<tr><td class="pager" id="pager" colspan="3">'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev"/>'
-                        +'<input type="text" class="pagedisplay"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last"/>'
-                        +'<select class="pagesize">'
+                        +'<tr><td class="pager" id="pagerI" colspan="3">'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>'
+                        +'<input type="text" class="pagedisplay" id="pagedisplayI"/>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextI"/>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastI"/>'
+                        +'<select class="pagesize" id="pagesizeI">'
                         +'<option selected="selected"  value="10">10</option>'
                         +'    <option value="20">20</option>'
                         +'    <option value="30">30</option>'
@@ -91,21 +91,30 @@ function tabla(Datos){
 
         sHtml +='</tbody>'
                 +'</table>'
-                //+'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
-                //+'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>'
-                +'<script type="text/javascript">'
-                //+'$S=jQuery.noConflict();'
+
+                +'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
+                +'<link class="theme blue" rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/theme.blue.css">'
+                +'<script type="text/javascript" src="../../static/assets/tablesorter/jquery.tablesorter.js"></script>'
+                +'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
+                +'<script type="text/javascript" src="../../static/assets/tablesorter/widget-pager.js"></script>'
+                +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>'
+
+                +'<script id="js" type="text/javascript">'
                 +'$(function() {'
-                +'    $("table")'
-                +'        .tablesorter({theme: "blue",showProcessing: true,headerTemplate : "{content} {icon}", widgets: ["uitheme","pager","zebra", "scroller"],'
-                +'          widgetOptions : {'
-                +'          scroller_height : 300,'
-                +'          scroller_upAfterSort: true,'
-                +'          scroller_jumpToHeader: true,'
-                +'          scroller_barWidth : null}'
-                +'        })'
-                //+'        .tablesorterPager({container: $("#pager")});'
+                +'    $("#tablaIzquierda").tablesorter({'
+                +'    theme: "blue",'
+                +'    showProcessing: true,'
+                +'    headerTemplate : "{content} {icon}",'
+                +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
+                +'    widgetOptions : {'
+                +'        scroller_height : 300,'
+                +'        scroller_upAfterSort: true,'
+                +'        scroller_jumpToHeader: true,'
+                +'        scroller_barWidth : null'
+                +'    }'
                 +'});'
+                +'});'
+
                 +'</script>';
 
 

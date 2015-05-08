@@ -17,10 +17,10 @@ ts.addWidget({
 	options : {
 		// output default: '{page}/{totalPages}'
 		// possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
-		pager_output: '{startRow} to {endRow} of {totalRows} rows', // '{page}/{totalPages}'
+		pager_output: '{page}/{totalPages}', // '{page}/{totalPages}'
 
 		// apply disabled classname to the pager arrows when the rows at either extreme is visible
-		pager_updateArrows: true,
+		pager_updateArrows: false,
 
 		// starting page of the pager (zero based index)
 		pager_startPage: 0,
