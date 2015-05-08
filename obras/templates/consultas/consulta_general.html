@@ -99,7 +99,6 @@
         // off
         $l("#msTipoInversion").multiselect({
             header: true,
-            minWidth: 250,
             checkAllText: 'Marcar todos',
             uncheckAllText: 'Desmarcar todos',
             noneSelectedText: 'Tipo de Inversión',
@@ -110,7 +109,6 @@
         // off
         $l("#msClasificacion").multiselect({
             header: true,
-            minWidth: 250,
             checkAllText: 'Marcar todas',
             uncheckAllText: 'Desmarcar todas',
             noneSelectedText: 'Clasificación',
@@ -119,7 +117,6 @@
         // off
         $l("#msImpacto").multiselect({
             header: true,
-            minWidth: 250,
             checkAllText: 'Marcar todos',
             uncheckAllText: 'Desmarcar todos',
             noneSelectedText: 'Impacto',
@@ -128,7 +125,6 @@
         // off
         $l("#msInaugurador").multiselect({
             header: true,
-            minWidth: 250,
             checkAllText: 'Marcar todos',
             uncheckAllText: 'Desmarcar todos',
             noneSelectedText: 'Inaugurador',
@@ -254,8 +250,8 @@
 
                     <div class="col-md-2">
                         <div class="row">
-                            <div class="col-md-12">
-                                <select id="msTipoInversion" multiple="multiple" size="3" style="max-width: 100%;height: auto;">
+                            <div class="col-md-10">
+                                <select id="msTipoInversion" multiple="multiple"  style="width: 100%;height: auto;">
                                     {% for obj in estatusObra %}
                                          <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
                                     {% endfor %}
@@ -271,7 +267,7 @@
                             <div class="col-md-1">
                                 <span class="input-label">De:</span>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <label class="item item-input">
                                     <input type="number" name="inversionInicial" id="inversionInicial">
                                 </label>
@@ -284,7 +280,7 @@
                             <div class="col-md-1">
                                 <span class="input-label">A:</span>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <label class="item item-input">
                                     <input type="number" name="inversionFinal" id="inversionFinal">
                                 </label>
@@ -296,11 +292,11 @@
 
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-10">
 
-                                <select id="msEstatusObra" multiple="multiple" size="3" style="max-width: 100%;height: auto;">
+                                <select id="msEstatusObra" multiple="multiple" style="width: 100%;height: auto;">
                                     {% for obj in estatusObra %}
                                          <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
                                     {% endfor %}
@@ -308,8 +304,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <select id="msDependencias" multiple="multiple" size="3" style="max-width: 100%;height: auto;">
+                            <div class="col-md-10">
+                                <select id="msDependencias" multiple="multiple" style="width: 100%;height: auto;">
                                     {% for dep in dependencias %}
                                          <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
                                     {% endfor %}
@@ -317,8 +313,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <select id="msEstados" multiple="multiple" size="3" style="max-width: 100%;height: auto;">
+                            <div class="col-md-10">
+                                <select id="msEstados" multiple="multiple"  style="width: 100%;height: auto;">
                                     {% for obj in estados %}
                                          <option value={{obj.id}}>{{obj.nombreEstado}}</option>
                                     {% endfor %}
@@ -328,11 +324,11 @@
 
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-10">
 
-                                <select id="msClasificacion" multiple="multiple" size="3" style="max-width: 100%;height: auto;">
+                                <select id="msClasificacion" multiple="multiple" style="width: 100%;height: auto;">
                                     {% for obj in estatusObra %}
                                          <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
                                     {% endfor %}
@@ -340,8 +336,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <select id="msImpacto" multiple="multiple" size="3" style="max-width: 100%;height: auto;">
+                            <div class="col-md-10">
+                                <select id="msImpacto" multiple="multiple" style="width: 100%;height: auto;">
                                     {% for dep in dependencias %}
                                          <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
                                     {% endfor %}
@@ -349,8 +345,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <select id="msInaugurador" multiple="multiple" size="3" style="max-width: 100%;height: auto;">
+                            <div class="col-md-10">
+                                <select id="msInaugurador" multiple="multiple" style="width: 100%;height: auto;">
                                     {% for obj in estados %}
                                          <option value={{obj.id}}>{{obj.nombreEstado}}</option>
                                     {% endfor %}
@@ -358,7 +354,7 @@
                             </div>
                         </div><br>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <article id="ver_datos">
                                     {% csrf_token %}
                                     <button id="button">Ver datos</button>
@@ -371,26 +367,26 @@
 
                     <div class="col-md-2">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-10">
                                 <span class="input-label">Inauguradas</span>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <input type="checkbox" id="inlineCheckbox1" value="option1">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-10">
                                 <span class="input-label">Sin Inauguraci&oacute;n</span>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <input type="checkbox" id="inlineCheckbox1" value="option2">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-10">
                                 <span class="input-label">No Inauguradas</span>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <input type="checkbox" id="inlineCheckbox1" value="option3">
                             </div>
                         </div>
@@ -420,7 +416,7 @@
                         <tr><td class="pager" id="pagerI" colspan="3">
                         <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>
-                        <input type="text" class="pagedisplay" id="pagedisplayI"/>
+                        <span class="pagedisplayI"></span>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextI"/>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastI"/>
                         <select class="pagesize" id="pagesizeI">
@@ -461,7 +457,6 @@
                             <td></td>
                             <td></td>
                         </tr>
-
                     </tbody>
                </table>
        </div>
@@ -486,7 +481,7 @@
                         <tr><td class="pager" id="pager2" colspan="3">
                         <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first"/>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev"/>
-                        <input type="text" class="pagedisplay"/>
+                        <span class="pagedisplay"></span>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next"/>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last"/>
                         <select class="pagesize">

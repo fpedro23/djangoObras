@@ -35,7 +35,7 @@ function verDatos() {
         url: '/obras/api/busqueda',
         type: 'get',
         data: {
-            access_token: '8CSN5gJyCxnZMucvRLYdxnKqj0u9Xn',
+            access_token: 'TtXhoxrKoy2zh8BjzMRPaXtm2S4Quq',
             dependencia:arrayDependencias.toString()
         },
         success: function(data) {
@@ -81,6 +81,7 @@ function tabla(Datos){
 
                     +'</tfoot>'
                     +'<tbody>';
+
     for(var i= 0;i<Datos.obras.length;i++){
         sHtml +='<tr>'
                 +'<td>' + i +'</td>'
@@ -92,12 +93,12 @@ function tabla(Datos){
         sHtml +='</tbody>'
                 +'</table>'
 
-                +'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
+               /*+'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
                 +'<link class="theme blue" rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/theme.blue.css">'
                 +'<script type="text/javascript" src="../../static/assets/tablesorter/jquery.tablesorter.js"></script>'
                 +'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
                 +'<script type="text/javascript" src="../../static/assets/tablesorter/widget-pager.js"></script>'
-                +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>'
+                +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>' */
 
                 +'<script id="js" type="text/javascript">'
                 +'$(function() {'
@@ -110,11 +111,20 @@ function tabla(Datos){
                 +'        scroller_height : 300,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
-                +'        scroller_barWidth : null'
+                +'        scroller_barWidth : null,'
+                +'          pager_selectors: {'
+                +'                container   : "#pagerI",       // target the pager markup'
+                +'                first       : "#firstI",       // go to first page arrow'
+                +'                prev        : "#prevI",        // previous page arrow'
+                +'                next        : "#nextI",        // next page arrow'
+                +'                last        : "#lastI",        // go to last page arrow'
+                +'                gotoPage    : "#gotoPageI",    // go to page selector - select dropdown that sets the current page'
+                +'                pageDisplay : "#pagedisplayI", // location of where the "output" is displayed'
+                +'                pageSize    : "#pagesizeI"     // page size selector - select dropdown that sets the "size" option'
+                +'        }'
                 +'    }'
                 +'});'
                 +'});'
-
                 +'</script>';
 
 
