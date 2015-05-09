@@ -135,9 +135,23 @@
     });
     </script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+
      <script type="text/javascript" src="../../static/assets/js/ajax-consulta.js"></script>
+ <script type="text/javascript">
+         google.maps.event.addDomListener(window, 'load', initialize);
+         function initialize() {
+          var mapOptions = {
+            zoom: 5,
+            center: new google.maps.LatLng(19.2941124,-99.6312135)
+          }
+          var map = new google.maps.Map(document.getElementById('map-canvas'),
+                                        mapOptions);
 
+          //setMarkers(map, beaches);
+        }
 
+    </script>
 
 <style>
 	body{
@@ -193,12 +207,15 @@
 </head>
 <body>
    <header>
-		<!DOCTYPE><h1>PARÁMETROS DE CONSULTA</h1>
+		<!--<!DOCTYPE><h1>PARÁMETROS DE CONSULTA</h1> -->
 	</header>
 	<section id="wrapper">
 		<section id="side">
             <div class="container-fluid" >
                 <div class="rowP">
+                    <div class="col-md-12">
+                        <h1>PARÁMETROS DE CONSULTA</h1>
+                    </div>
                     <div class="col-md-2">
                         <div class="row">
                             <div class="col-md-12">
@@ -264,28 +281,28 @@
                             </div>
                         </div>
                         <div class="row"><center>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <span class="input-label">De:</span>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-8">
                                 <label class="item item-input">
                                     <input type="number" name="inversionInicial" id="inversionInicial">
                                 </label>
                             </div></center>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <span class="input-label">MDP</span>
                             </div>
                         </div>
                         <div class="row"><center>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <span class="input-label">A:</span>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-8">
                                 <label class="item item-input">
                                     <input type="number" name="inversionFinal" id="inversionFinal">
                                 </label>
                             </div></center>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <span class="input-label">MDP</span>
                             </div>
                         </div>
@@ -416,7 +433,7 @@
                         <tr><td class="pager" id="pagerI" colspan="3">
                         <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>
-                        <span class="pagedisplayI"></span>
+                        <span class="pagedisplay" id="pagedisplayI"></span>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextI"/>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastI"/>
                         <select class="pagesize" id="pagesizeI">
@@ -460,9 +477,11 @@
                     </tbody>
                </table>
        </div>
-       <div class="col-md-6">
+       <div class="col-md-6" >
+           <div id="map-canvas" style="height: 400px;margin: 0px;padding: 0px;" >
+           </div>
        </div>
-       <div class="col-md-3" id="tablaDerecha">
+       <div class="col-md-3" id="datostablaDerecha">
            <table cellspacing="1" class="tablesorter" id="tablaDer">
                     <thead>
 
@@ -524,7 +543,30 @@
                         </tr>
 
                     </tbody>
-               </table>
+           </table>
+           <fieldset>
+               <div class="row"><div class="col-xs-8">
+                   Dependencia
+                   </div>
+                   <div class="col-xs-4">
+                        <input type="radio" name="tipoReporte" value="Dependencia" onclick="verDatos()"/>
+                   </div>
+               </div>
+               <div class="row"><div class="col-xs-8">
+                   Estado
+                   </div>
+                   <div class="col-xs-4">
+                        <input type="radio" name="tipoReporte" value="Estado" onclick="verDatos()"/>
+                   </div>
+               </div>
+               <div class="row"><div class="col-xs-8">
+                   RCI
+                   </div>
+                   <div class="col-xs-4">
+                        <input type="radio" name="tipoReporte" value="RCI" onclick="verDatos()"/>
+                   </div>
+               </div>
+            </fieldset>
        </div>
    </div>
 
