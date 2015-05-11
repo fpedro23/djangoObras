@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
 
+
     <script type="text/javascript" src="../../static/assets/tablesorter/jquery-latest.min.js"></script>
 
     <link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">
@@ -67,8 +68,9 @@
 
     <script type="text/javascript">
         var $l = jQuery.noConflict();
-    $l(function(){
 
+    $l(function(){
+        $l("#ajaxProgress").hide();
 
         // off
         $l("#msEstatusObra").multiselect({
@@ -142,8 +144,9 @@
          google.maps.event.addDomListener(window, 'load', initialize);
          function initialize() {
           var mapOptions = {
-            zoom: 5,
-            center: new google.maps.LatLng(19.2941124,-99.6312135)
+            zoom: 4,
+            center: new google.maps.LatLng(22.6526121, -100.1780452),
+              mapTypeId: google.maps.MapTypeId.SATELLITE
           }
           var map = new google.maps.Map(document.getElementById('map-canvas'),
                                         mapOptions);
@@ -200,7 +203,7 @@
 
 	</style>
 
-
+    <link href="../../static/assets/bootstrap/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 
 
 
@@ -214,7 +217,7 @@
             <div class="container-fluid" >
                 <div class="rowP">
                     <div class="col-md-12">
-                        <h1>PARÁMETROS DE CONSULTA</h1>
+                        <h4>PARÁMETROS DE CONSULTA</h4>
                     </div>
                     <div class="col-md-2">
                         <div class="row">
@@ -235,31 +238,29 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <center><label>Rango de Fecha</label></center>
+                                <center><label>Rango de Fecha de Inicio</label></center>
                             </div>
                         </div>
                         <div class="row"><center>
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-1">
-                                <span class="input-label">De:</span>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="item item-input">
-                                    <input type="date">
-                                </label>
+                            <div class="col-md-6"><div id="pick" class="form-group">
+                                <input type="text" class="form-control" id="fechaInicial1" placeholder="Desde">
+                            </div></div></center>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="fechaInicial2" placeholder="Hasta">
                             </div></center>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center><label>Rango de Fecha de T&eacute;rmino</label></center>
+                            </div>
+                        </div>
                         <div class="row"><center>
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-1">
-                                <span class="input-label">A:</span>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="item item-input">
-                                    <input type="date">
-                                </label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="fechaFinal1" placeholder="Desde">
+                            </div></center>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="fechaFinal2" placeholder="Hasta">
                             </div></center>
                         </div>
 
@@ -269,8 +270,8 @@
                         <div class="row">
                             <div class="col-md-10">
                                 <select id="msTipoInversion" multiple="multiple"  style="width: 100%;height: auto;">
-                                    {% for obj in estatusObra %}
-                                         <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
+                                    {% for obj in tipo_inversiones %}
+                                         <option value={{obj.id}}>{{obj.nombreTipoInversion}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -346,8 +347,8 @@
                             <div class="col-md-10">
 
                                 <select id="msClasificacion" multiple="multiple" style="width: 100%;height: auto;">
-                                    {% for obj in estatusObra %}
-                                         <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
+                                    {% for obj in clasificacion %}
+                                         <option value={{obj.id}}>{{obj.nombreTipoClasificacion}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -355,8 +356,8 @@
                         <div class="row">
                             <div class="col-md-10">
                                 <select id="msImpacto" multiple="multiple" style="width: 100%;height: auto;">
-                                    {% for dep in dependencias %}
-                                         <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
+                                    {% for dep in impactos %}
+                                         <option value={{dep.id}}>{{dep.nombreImpacto}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -364,8 +365,8 @@
                         <div class="row">
                             <div class="col-md-10">
                                 <select id="msInaugurador" multiple="multiple" style="width: 100%;height: auto;">
-                                    {% for obj in estados %}
-                                         <option value={{obj.id}}>{{obj.nombreEstado}}</option>
+                                    {% for obj in inaugurador %}
+                                         <option value={{obj.id}}>{{obj.nombreCargoInaugura}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -413,8 +414,11 @@
             </div>
 		</section>
     </section>
+   <br>
    <div class="row">
-       <div class="col-md-3" id="datos">
+       <div class="col-md-3-box" id="datos" style="margin-right: 10px; padding-right: 4px;padding-left: 4px">
+           <h4>RESULTADOS</h4>
+
                <table cellspacing="1" class="tablesorter" id="tablaIzquierda">
                     <thead>
 
@@ -476,12 +480,23 @@
                         </tr>
                     </tbody>
                </table>
-       </div>
-       <div class="col-md-6" >
-           <div id="map-canvas" style="height: 400px;margin: 0px;padding: 0px;" >
+       </div >
+       <div class="col-md-6-box" >
+           <div class="row">
+               <div class="col-md-3">
+                   <h4>MAPA</h4>
+               </div>
+
+               <div class="col-md-9" id="ajaxProgress">
+                    cargando...<img src="../../static/gifs/loading-barra2.gif">
+               </div>
            </div>
+           <div id="map-canvas" style="height: 343px;margin: 0px;padding: 0px;" >
+           </div>
+           <br>
        </div>
-       <div class="col-md-3" id="datostablaDerecha">
+       <div class="col-md-3-box" id="datostablaDerecha" style="margin-left: 10px; padding-right: 4px;padding-left: 4px">
+           <h4>REPORTE</h4>
            <table cellspacing="1" class="tablesorter" id="tablaDer">
                     <thead>
 
@@ -549,7 +564,7 @@
                    Dependencia
                    </div>
                    <div class="col-xs-4">
-                        <input type="radio" name="tipoReporte" value="Dependencia" onclick="verDatos()"/>
+                        <input type="radio" name="tipoReporte" value="Dependencia" onclick="verDatos()" checked/>
                    </div>
                </div>
                <div class="row"><div class="col-xs-8">
@@ -573,7 +588,24 @@
 
 
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="../../static/assets/bootstrap/js/bootstrap-datepicker.js"></script>
+   <script type="text/javascript">
+    var $dp = jQuery.noConflict();
+	$dp('#pick input').datepicker({
+        autoclose:true
+	});
+       $dp('#fechaInicial2').datepicker({
+        autoclose:true
+	});
+       $dp('#fechaFinal1').datepicker({
+        autoclose:true
+	});
+       $dp('#fechaFinal2').datepicker({
+        autoclose:true
+	});
+ 	</script>
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
 <script type="text/javascript">
 _uacct = "UA-2189649-2";

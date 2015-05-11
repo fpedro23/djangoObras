@@ -26,26 +26,51 @@ function main_consulta() {
 
 
 function verDatos() {
-    var arrayDependencias = $j("#msDependencias").multiselect("getChecked").map(function(){
-                                         return this.value;
-                                    }).get();
+    var arrayTipoInversion = $j("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstatusObra = $j("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayDependencias = $j("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstados = $j("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayClasificacion = $j("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayImpacto = $j("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $j("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
 
     //alert(arrayDependencias);
+    var ajax_data = {
+      "access_token"  : 'UXF5LnLABpc2oG6ZBZx9wKKFQXxHgK'
+    };
+
+    if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
+    if(arrayEstatusObra.toString()!=""){ajax_data.tipoDeObra=arrayEstatusObra.toString();}
+    if(arrayEstados.toString()!=""){ajax_data.estado=arrayEstados.toString();}
+    if(arrayClasificacion.toString()!=""){ajax_data.clasificacion=arrayClasificacion.toString();}
+    if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
+    if(arrayInaugurador.toString()!=""){ajax_data.inaugurador=arrayInaugurador.toString();}
+    if(arrayImpacto.toString()!=""){ajax_data.impacto=arrayImpacto.toString();}
+
+    $j("#ajaxProgress").show();
     $j.ajax({
         url: '/obras/api/busqueda',
         type: 'get',
-        data: {
-            access_token: 'FvQONn8eLTV7sadyxv1tqLqmgLNT2Q',
-            dependencia:arrayDependencias.toString()
-        },
+        data: ajax_data,//{
+            //access_token: 'udUzKCtMeNJEA1bx3xADH0WGeiKtDy',
+            //dependencia:arrayDependencias.toString(),
+            //tipoDeObra:arrayEstatusObra.toString(),
+            //estado:arrayEstados.toString(),
+            //clasificacion:arrayClasificacion.toString(),
+            //tipoDeInversion:arrayTipoInversion.toString(),
+            //inaugurador:arrayInaugurador.toString(),
+            //impacto:arrayImpacto.toString()
+
+        //},
         success: function(data) {
             //$('#datos').html
             tablaI(data);
             tablaD(data);
 
             var mapOptions = {
-                zoom: 5,
-                center: new google.maps.LatLng(19.2941124,-99.6312135)
+                zoom: 4,
+                center: new google.maps.LatLng(22.6526121, -100.1780452),
+                mapTypeId: google.maps.MapTypeId.SATELLITE
             }
             var map = new google.maps.Map(document.getElementById('map-canvas'),
                                         mapOptions)
@@ -55,12 +80,14 @@ function verDatos() {
 
 
             google.maps.event.addDomListener(window, 'load', initialize);
-
+            $l("#ajaxProgress").hide();
         },
         error: function(data) {
             alert('error!!! ' + data.status);
+            $l("#ajaxProgress").hide();
         }
     });
+
     //$.get('http://127.0.0.1:8000/obras/consultar-
 
 }
@@ -83,7 +110,6 @@ function puntosMapa(Datos) {
 
 
 function setMarkers(mapa, lugares) {
-    alert(lugares);
   for (var i = 0; i < lugares.length; i++) {
     var puntos = lugares[i];
     var myLatLng = new google.maps.LatLng(puntos[1], puntos[2]);
@@ -99,7 +125,7 @@ function setMarkers(mapa, lugares) {
 
 
 function tablaI(Datos){
-    var sHtml='<table cellspacing="1" class="tablesorter" id="tablaIzquierda">'
+    var sHtml='<h4>RESULTADOS</h4><table cellspacing="1" class="tablesorter" id="tablaIzquierda">'
                     +'<thead>'
                         +'<tr>'
                             +'<th>Id</th>'
@@ -156,7 +182,7 @@ function tablaI(Datos){
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 300,'
+                +'        scroller_height : 250,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
@@ -185,9 +211,11 @@ function tablaI(Datos){
 // llena la tabla del lado derecho
 function tablaD(Datos){
     var tipoReporte = $j('input:radio[name=tipoReporte]:checked').val();
+    var dependenciasChecked="";
+    var estadosChecked="";
 
     //alert($j('input:radio[name=tipoReporte]:checked').val());
-    var sHtml='<table cellspacing="1" class="tablesorter" id="tablaDerecha">'
+    var sHtml='<h4>REPORTES</h4><table cellspacing="1" class="tablesorter" id="tablaDerecha">'
                     +'<thead>'
                         +'<tr>'
                             +'<th>Tipo Inversi&oacute;n</th>'
@@ -197,9 +225,9 @@ function tablaD(Datos){
                     +'</thead>'
                     +'<tfoot>'
                         +'<tr>'
-                            +'<th>Tipo Inversi&oacute;n</th>'
-                            +'<th>No. de Obras</th>'
-                            +'<th>Monto</th>'
+                            +'<th>TOTALES</th>'
+                            +'<th>'+ Datos.reporte_general[0].obras_totales +'</th>'
+                            +'<th>'+ Datos.reporte_general[0].total_invertido +'</th>'
                         +'</tr>'
 
                         +'<tr><td class="pager" id="pagerD" colspan="3">'
@@ -219,6 +247,7 @@ function tablaD(Datos){
                     +'<tbody>';
 
     if (tipoReporte=="Dependencia") {
+        dependenciasChecked="checked";
         for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
@@ -229,6 +258,7 @@ function tablaD(Datos){
     }
 
     if (tipoReporte=="Estado") {
+        estadosChecked="checked";
         for (var i = 0; i < Datos.reporte_estado.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
@@ -246,14 +276,14 @@ function tablaD(Datos){
                 +'       Dependencia'
                 +'       </div>'
                 +'       <div class="col-xs-4">'
-                +'            <input type="radio" name="tipoReporte" value="Dependencia" onclick="verDatos()"/>'
+                +'            <input type="radio" name="tipoReporte" value="Dependencia" onclick="verDatos()"' + dependenciasChecked +'/>'
                 +'       </div>'
                 +'   </div>'
                 +'   <div class="row"><div class="col-xs-8">'
                 +'       Estado'
                 +'       </div>'
                 +'       <div class="col-xs-4">'
-                +'            <input type="radio" name="tipoReporte" value="Estado" onclick="verDatos()"/>'
+                +'            <input type="radio" name="tipoReporte" value="Estado" onclick="verDatos()"' + estadosChecked +'/>'
                 +'       </div>'
                 +'   </div>'
                 +'   <div class="row"><div class="col-xs-8">'
@@ -282,7 +312,7 @@ function tablaD(Datos){
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 200,'
+                +'        scroller_height : 150,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
