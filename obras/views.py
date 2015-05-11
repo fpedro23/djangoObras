@@ -15,6 +15,25 @@ from oauth2_provider.models import AccessToken
 from obras.models import *
 from obras.BuscarObras import BuscarObras
 
+
+class HoraEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+        json_response = {}
+        date = datetime.datetime.now()
+        time = date.time()
+
+        json_response['dia'] = date.day
+        json_response['mes'] = date.month
+        json_response['ano'] = date.year
+
+        json_response['hora'] = time.hour
+        json_response['minuto'] = time.minute
+        json_response['segundo'] = time.second
+
+        return HttpResponse(json.dumps(json_response), 'application/json')
+
+
 class EstadosEndpoint(ProtectedResourceView):
 
     def get(self, request):
