@@ -101,7 +101,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             inversion_minima=request.GET.get('inversionMinima', None),
             inversion_maxima=request.GET.get('inversionMaxima', None),
             fecha_inicio_primera=request.GET.get('fechaInicio', None),
-            fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+            fecha_inicio_segunda=request.GET.get('fechaInicioSegunda', None),
             fecha_fin_primera=request.GET.get('fechaFin', None),
             fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
             denominacion=request.GET.get('denominacion', None),

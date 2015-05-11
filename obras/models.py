@@ -23,6 +23,7 @@ class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
     imagenDependencia = models.FileField(blank=True, null=True)
     dependienteDe = models.ForeignKey('self', null=True, blank=True)
+    obraoprograma = models.CharField(max_length=1)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreDependencia
@@ -43,7 +44,7 @@ class Dependencia(models.Model):
         if self.imagenDependencia is None or self.imagenDependencia.name == '' or self.imagenDependencia.name == '':
             ans['imagenDependencia'] = None
         else:
-            ans['imagenDependencia'] = self.imagenDependencia.name
+            ans['imagenDependencia'] = self.imagenDependencia.url
 
         return ans
 
@@ -54,6 +55,9 @@ class Estado(models.Model):
     longitud = models.FloatField()
 
     def __str__(self):  # __unicode__ on Python 2
+        return self.nombreEstado
+
+    def __unicode__(self):  # __unicode__ on Python 2
         return self.nombreEstado
 
     def to_serializable_dict(self):
@@ -143,6 +147,16 @@ class Usuario(models.Model):
     dependencia = models.ForeignKey(Dependencia, blank=True, null=True)
 
 
+class InstanciaEjecutora(models.Model):
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+
+    def __unicode__(self):
+        return self.nombre
+
+
 class Obra(models.Model):
     #TODO agrupar semanticamente todos los campos de obras
     identificador_unico = models.SlugField(unique=True, null=True, )
@@ -150,10 +164,12 @@ class Obra(models.Model):
     dependencia = models.ForeignKey(Dependencia)
     estado = models.ForeignKey(Estado)
     impacto = models.ForeignKey(Impacto)
+    instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
+    registroHacendario = models.CharField(max_length=200, blank=True, null=True)
+    montoRegistroHacendario = models.FloatField(blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion)
     tipoClasificacion = models.ManyToManyField(TipoClasificacion)
     inaugurador = models.ForeignKey(Inaugurador)
-    registroHacendario = models.CharField(max_length=200)
     registroAuditoria = models.CharField(max_length=200)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
@@ -169,15 +185,43 @@ class Obra(models.Model):
     fotoAntes = models.FileField(blank=True, null=True)
     fotoDurante = models.FileField(blank=True, null=True)
     fotoDespues = models.FileField(blank=True, null=True)
-    fechaModificacion = models.DateField(auto_now=True)
+    fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True)
     inaugurada = models.BooleanField(default=False)
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=True, null=True)
     autorizada = models.BooleanField(default=False)
+    latitud = models.FloatField()
+    longitud = models.FloatField()
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
 
     def to_serializable_dict(self):
         return model_to_dict(self)
+
+
+class DocumentoFuente(models.Model):
+    descripcion = models.TextField(blank=True, null=True)
+    documento = models.FileField(blank=True, null=True)
+    obra = models.ForeignKey('Obra', blank=True, null=True)
+
+    def __str__(self):
+        return self.descripcion
+
+    def __unicode__(self):
+        return self.descripcion
+
+
+# modelo temporal para probar ubicaciones de obras en mapa
+class Ubicacion(models.Model):
+    nombre = models.SlugField(unique=True, null=True, )
+    tipoObra = models.CharField(max_length=50)
+    lat = models.CharField(max_length=50)
+    lng = models.CharField(max_length=50)
+    estado = models.CharField(max_length=50)
+    dependencia = models.CharField(max_length=100)
+    # user = models.OneToOneField(User)  asi estaba debe ser foreign key
+
+    def __str__(self):
+        return self.nombre

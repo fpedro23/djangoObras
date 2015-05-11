@@ -13,13 +13,13 @@ import requests
 #print requests.post('http://127.0.0.1:8000/o/token/', payload).text
 
 
-SECRET = 'uRdI2v2nOxq0iIvoPnJGQuNorLwhYS4NyynuByZJtQq9MZXwXRVmfvx6JBwYUojjQBAjqoTfacgREDadJDfoLoF7TPV6JJmsx2q855INlWsBapzZzKhikYP3EXDNdFT7'
+SECRET = '1JXqeFguf0067xCikRp9tEe0xA19aKqhPxgCOE4u1n9lwLT20qr6sldy0QuPn3JmE72B5Lgaz7EjnAwb1omFDsWJXUzP5GAw2tgfarhBcwTWyWXAjrADMpYtrSZMhLjj'
 
 payload = {
     'grant_type': 'password',
     'username': 'ags',
     'password': 'ags',
-    'client_id': 'IZouS8x2DexzbwHifHWR499NNgsIMIggbbbJ3lkt',
+    'client_id': 'iFwBOhpqO5BC2spDEQp00rrxqzTfqxEGqCyRqiM4',
     'client_secret': SECRET,
     'scope': 'write read'
 }

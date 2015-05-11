@@ -33,10 +33,16 @@ function verDatos() {
     var arrayClasificacion = $j("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayImpacto = $j("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayInaugurador = $j("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
+    var fechaInicio1 = $j("#fechaInicial1").val();
+    var fechaInicio2 = $j("#fechaInicial2").val();
+    var fechaFin1 = $j("#fechaFinal1").val();
+    var fechaFin2 = $j("#fechaFinal2").val();
+    var inversionInicial = $j("#inversionInicial").val();
+    var inversionFinal = $j("#inversionFinal").val();
 
-    //alert(arrayDependencias);
+
     var ajax_data = {
-      "access_token"  : 'UXF5LnLABpc2oG6ZBZx9wKKFQXxHgK'
+      "access_token"  : 'IEqCElMyQNXq3jkOnwlpVwWRfCoW8s'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -46,6 +52,13 @@ function verDatos() {
     if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
     if(arrayInaugurador.toString()!=""){ajax_data.inaugurador=arrayInaugurador.toString();}
     if(arrayImpacto.toString()!=""){ajax_data.impacto=arrayImpacto.toString();}
+    if(fechaInicio1!=""){ajax_data.fechaInicio=$.date(fechaInicio1);}
+    if(fechaInicio2!=""){ajax_data.fechaInicioSegunda=$.date(fechaInicio2);}
+    if(fechaFin1!=""){ajax_data.fechaFin=$.date(fechaFin1);}
+    if(fechaFin2!=""){ajax_data.fechaFinSegunda=$.date(fechaFin2);}
+    if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
+    if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
+    if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
 
     $j("#ajaxProgress").show();
     $j.ajax({
@@ -92,13 +105,30 @@ function verDatos() {
 
 }
 
+
+$.date = function(dateObject) {
+    var d = new Date(dateObject);
+    var day = d.getDate();
+    var month = d.getMonth() + 1;
+    var year = d.getFullYear();
+    if (day < 10) {
+        day = "0" + day;
+    }
+    if (month < 10) {
+        month = "0" + month;
+    }
+    var date = year + "-" + month + "-" + day;
+
+    return date;
+};
+
 function puntosMapa(Datos) {
   var arregloSimple=new Array();
   var arregloDoble=new Array();
     var arregloObjeto = new Object();
     for(var i= 0;i<Datos.obras.length;i++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.obras[i].estado.nombreEstado);
+        arregloSimple.push(Datos.obras[i].estado.nombreEstado + ", " + Datos.obras[i].dependencia.nombreDependencia);
         arregloSimple.push(Datos.obras[i].estado.latitud);
         arregloSimple.push(Datos.obras[i].estado.longitud);
         arregloSimple.push(i);
@@ -110,6 +140,7 @@ function puntosMapa(Datos) {
 
 
 function setMarkers(mapa, lugares) {
+  var infowindow = new google.maps.InfoWindow();
   for (var i = 0; i < lugares.length; i++) {
     var puntos = lugares[i];
     var myLatLng = new google.maps.LatLng(puntos[1], puntos[2]);
@@ -119,6 +150,13 @@ function setMarkers(mapa, lugares) {
         title: puntos[0],
         zIndex: puntos[3]
     });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, puntos) {
+        return function() {
+          infowindow.setContent(puntos[0]);
+          infowindow.open(mapa, marker);
+        }
+      })(marker, puntos));
   }
 }
 
@@ -158,7 +196,7 @@ function tablaI(Datos){
 
     for(var i= 0;i<Datos.obras.length;i++){
         sHtml +='<tr>'
-                +'<td>' + i +'</td>'
+                +'<td>' + Datos.obras[i].identificador +'</td>'
                 +'<td>' + Datos.obras[i].denominacion +'</td>'
                 +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
                 +'</tr>'
