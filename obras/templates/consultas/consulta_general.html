@@ -495,9 +495,11 @@
            </div>
            <br>
        </div>
-       <div class="col-md-3-box" id="datostablaDerecha" style="margin-left: 10px; padding-right: 4px;padding-left: 4px">
-           <h4>REPORTE</h4>
-           <table cellspacing="1" class="tablesorter" id="tablaDer">
+       <div class="col-md-3-box"  style="margin-left: 10px; padding-right: 4px;padding-left: 4px">
+           <div class="row">
+               <div class="col-md-12" id="datostablaDerecha">
+                    <h4>REPORTE</h4>
+                    <table cellspacing="1" class="tablesorter" id="tablaDer">
                     <thead>
 
                         <tr>
@@ -558,30 +560,42 @@
                         </tr>
 
                     </tbody>
-           </table>
-           <fieldset>
+                    </table>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-md-12">
+                    <fieldset>
                <div class="row"><div class="col-xs-8">
                    Dependencia
                    </div>
                    <div class="col-xs-4">
-                        <input type="radio" name="tipoReporte" value="Dependencia" onclick="verDatos()" checked/>
+                       <article id="ver_tabla_dependencia">
+                           {% csrf_token %}
+                            <input type="radio" name="tipoReporte" id="dependencia" value="Dependencia" checked/>
+                        </article>
                    </div>
                </div>
                <div class="row"><div class="col-xs-8">
                    Estado
                    </div>
                    <div class="col-xs-4">
-                        <input type="radio" name="tipoReporte" value="Estado" onclick="verDatos()"/>
+                       <article id="ver_tabla_estado">
+                           {% csrf_token %}
+                            <input type="radio" name="tipoReporte" id="estado" value="Estado"/>
+                        </article>
                    </div>
                </div>
                <div class="row"><div class="col-xs-8">
                    RCI
                    </div>
                    <div class="col-xs-4">
-                        <input type="radio" name="tipoReporte" value="RCI" onclick="verDatos()"/>
+                        <input type="radio" name="tipoReporte" value="RCI" />
                    </div>
                </div>
             </fieldset>
+               </div>
+           </div>
        </div>
    </div>
 

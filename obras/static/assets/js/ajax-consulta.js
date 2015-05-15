@@ -7,6 +7,8 @@
 var $j = jQuery.noConflict();
 $j(document).on('ready', main_consulta);
 
+var datosJson;
+
 function main_consulta() {
     $j.ajaxSetup({
 		beforeSend: function(xhr, settings) {
@@ -20,6 +22,8 @@ function main_consulta() {
 	});
 
 	$j('#ver_datos button').on('click', verDatos);
+    $j('#ver_tabla_estado #estado').on('click', mostrarTablas);
+    $j('#ver_tabla_dependencia #dependencia').on('click', mostrarTablas)
 }
 
 
@@ -42,7 +46,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'IEqCElMyQNXq3jkOnwlpVwWRfCoW8s'
+      "access_token"  : '4Scjmypz1NZJo7ePo2xm7w9qoCzEBa'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -64,22 +68,12 @@ function verDatos() {
     $j.ajax({
         url: '/obras/api/busqueda',
         type: 'get',
-        data: ajax_data,//{
-            //access_token: 'udUzKCtMeNJEA1bx3xADH0WGeiKtDy',
-            //dependencia:arrayDependencias.toString(),
-            //tipoDeObra:arrayEstatusObra.toString(),
-            //estado:arrayEstados.toString(),
-            //clasificacion:arrayClasificacion.toString(),
-            //tipoDeInversion:arrayTipoInversion.toString(),
-            //inaugurador:arrayInaugurador.toString(),
-            //impacto:arrayImpacto.toString()
-
-        //},
+        data: ajax_data,
         success: function(data) {
             //$('#datos').html
             tablaI(data);
             tablaD(data);
-
+            datosJson=data;
             var mapOptions = {
                 zoom: 4,
                 center: new google.maps.LatLng(22.6526121, -100.1780452),
@@ -100,10 +94,14 @@ function verDatos() {
             $l("#ajaxProgress").hide();
         }
     });
-
-    //$.get('http://127.0.0.1:8000/obras/consultar-
-
 }
+
+
+function mostrarTablas() {
+
+            tablaD(datosJson);
+}
+
 
 
 $.date = function(dateObject) {
@@ -309,29 +307,32 @@ function tablaD(Datos){
         sHtml +='</tbody>'
                 +'</table>'
 
-                +'<fieldset>'
-                +'   <div class="row"><div class="col-xs-8">'
-                +'       Dependencia'
-                +'       </div>'
-                +'       <div class="col-xs-4">'
-                +'            <input type="radio" name="tipoReporte" value="Dependencia" onclick="verDatos()"' + dependenciasChecked +'/>'
-                +'       </div>'
-                +'   </div>'
-                +'   <div class="row"><div class="col-xs-8">'
-                +'       Estado'
-                +'       </div>'
-                +'       <div class="col-xs-4">'
-                +'            <input type="radio" name="tipoReporte" value="Estado" onclick="verDatos()"' + estadosChecked +'/>'
-                +'       </div>'
-                +'   </div>'
-                +'   <div class="row"><div class="col-xs-8">'
-                +'       RCI'
-                +'       </div>'
-                +'       <div class="col-xs-4">'
-                +'            <input type="radio" name="tipoReporte" value="RCI" onclick="verDatos()"/>'
-                +'       </div>'
-                +'   </div>'
-                +'</fieldset>'
+                //+'<fieldset>'
+                //+'   <div class="row"><div class="col-xs-8">'
+                //+'       Dependencia'
+                //+'       </div>'
+                //+'       <div class="col-xs-4">'
+                //+'            <input type="radio" name="tipoReporte" value="Dependencia" ' + dependenciasChecked +'/>'   //onclick="verDatos()"
+                //+'       </div>'
+                //+'   </div>'
+                //+'   <div class="row"><div class="col-xs-8">'
+                //+'       Estado'
+                //+'       </div>'
+                //+'       <div class="col-xs-4">'
+                //+'            <article id="ver_tablas">'
+                //+'            <input type="radio" name="tipoReporte" value="Estado" ' + estadosChecked +'/>'
+                //+'       </article>'
+                //+'            <input type="radio" name="tipoReporte" value="Estado" ' + estadosChecked +'/>'
+                //+'       </div>'
+                //+'   </div>'
+                //+'   <div class="row"><div class="col-xs-8">'
+                //+'       RCI'
+                //+'       </div>'
+                //+'       <div class="col-xs-4">'
+                //+'            <input type="radio" name="tipoReporte" value="RCI" "/>'
+               // +'       </div>'
+               // +'   </div>'
+               // +'</fieldset>'
 
 
 
