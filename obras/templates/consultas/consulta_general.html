@@ -150,6 +150,8 @@
           }
           var map = new google.maps.Map(document.getElementById('map-canvas'),
                                         mapOptions);
+          var map2 = new google.maps.Map(document.getElementById('mapa'),
+                                        mapOptions);
 
           //setMarkers(map, beaches);
         }
@@ -206,12 +208,132 @@
     <link href="../../static/assets/bootstrap/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 
 
+    <style type="text/css">
+#container {
+	height: 600px;
+	min-width: 310px;
+	max-width: 800px;
+	margin: 0 auto;
+}
+		</style>
+
+    <!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="../../static/assets/Popup/magnific-popup.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!-- Magnific Popup core JS file -->
+<script src="../../static/assets/Popup/jquery.magnific-popup.js"></script>
+<!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="../../static/assets/Popup/site.css">
+<script>
+
+var $pp = jQuery.noConflict();
+
+$pp(function () {
+	  $pp('.popup-modal').magnificPopup({
+	    type: 'inline',
+	    preloader: true,
+	    modal: true
+	  });
+	  $pp(document).on('click', '.popup-modal-dismiss', function (e) {
+	    e.preventDefault();
+	    $pp('#errorPopupRechazo').empty();
+	    $pp.magnificPopup.close();
+	  });
+
+	  $pp(document).on('click', '.popup-modal-rechaza', function (e) {
+		  var razonRechazo = $pp("#razonRechazo").val();
+		  var listaErrores = $pp("#listaErrores").val();
+		  alert("razon rechazo : " + razonRechazo);
+		  alert("lista errores : " + listaErrores);
+          if(razonRechazo!="" || listaErrores!=null){
+        	  var input = $("<input>")
+        	              .attr("type", "hidden")
+        	               .attr("id", "action")
+        	              .attr("name", "action").val("Rechazar");
+        	  var input2 = $("<input>")
+              .attr("type", "hidden")
+               .attr("id", "razonRechazo")
+              .attr("name", "razonRechazo").val($j('#razonRechazo').val());
+
+        	  var input3 = $("<input>")
+              .attr("type", "hidden")
+               .attr("id", "listaErrores")
+              .attr("name", "listaErrores").val($j('#listaErrores').val());
+
+        	  $pp('#forma').append($pp(input));
+        	  $pp('#forma').append($pp(input2));
+        	  $pp('#forma').append($pp(input3));
+        	  $pp('#forma').submit();
+          }else{   //if(razonRechazo!="")
+        	  $pp('#errorPopupRechazo').html("<strong>Error!</strong> Debe seleccionar un error de la lista o capturar la razón del rechazo.");
+          }  // else of if(razonRechazo!="")
+
+
+	  });
+
+
+      $pp('#container2').highcharts({
+        chart: {
+            type: 'column',
+            margin: 75,
+            options3d: {
+                enabled: true,
+                alpha: 10,
+                beta: 25,
+                depth: 70
+            }
+        },
+        title: {
+            text: '3D chart with null values'
+        },
+        subtitle: {
+            text: 'Notice the difference between a 0 value and a null point'
+        },
+        plotOptions: {
+            column: {
+                depth: 25
+            }
+        },
+        xAxis: {
+            categories: Highcharts.getOptions().lang.shortMonths
+        },
+        yAxis: {
+            title: {
+                text: null
+            }
+        },
+        series: [{
+            name: 'Sales',
+            data: [2, 3, null, 4, 0, 5, 1, 50, 6, 3]
+        }]
+    });
+});
+
+</script>
+<script src="../../static/assets/graficas/highcharts/js/highcharts.js"></script>
+<script src="../../static/assets/graficas/highcharts/js/highcharts-3d.js"></script>
+<script src="../../static/assets/graficas/highcharts/js/modules/exporting.js"></script>
 
 </head>
 <body>
    <header>
 		<!--<!DOCTYPE><h1>PARÁMETROS DE CONSULTA</h1> -->
 	</header>
+    <div id="container2" style="width:100%;height: 400px;" class="white-popup-block mfp-hide"></div>
+
+    <div id="test-modal" class="white-popup-block mfp-hide">
+			<h1>GR&Aacute;FICAS</h1>
+
+
+             <div class="row">
+                   <div class="col-md-12" id="container" style="width: 100%;height: 500px;">
+
+                   </div>
+             </div>
+
+             <input type="button" value="Regresar" class="popup-modal-dismiss btn btn-primary fancybox-media italic" />
+	</div>
+
 	<section id="wrapper">
 		<section id="side">
             <div class="container-fluid" >
@@ -377,6 +499,10 @@
                                     {% csrf_token %}
                                     <button id="button">Ver datos</button>
                                 </article>
+                                <article id="ver_variable">
+                                    {% csrf_token %}
+                                    <button id="button">Ver variable</button>
+                                </article>
                             </div>
                         </div>
 
@@ -491,7 +617,7 @@
                     cargando...<img src="../../static/gifs/loading-barra2.gif">
                </div>
            </div>
-           <div id="map-canvas" style="height: 343px;margin: 0px;padding: 0px;" >
+           <div id="map-canvas" style="height: 343px;margin: 0px;padding: 0px;">
            </div>
            <br>
        </div>
@@ -586,11 +712,18 @@
                         </article>
                    </div>
                </div>
-               <div class="row"><div class="col-xs-8">
+               <div class="row"><div class="col-xs-5">
                    RCI
                    </div>
-                   <div class="col-xs-4">
+                   <div class="col-xs-2">
                         <input type="radio" name="tipoReporte" value="RCI" />
+                   </div>
+                   <div class="col-xs-5">
+                       <article id="ver_grafica">
+                           {% csrf_token %}
+                           <button id="button" href="#test-modal" class="popup-modal btn btn-primary fancybox-media italic" >Grafica</button>
+                       </article>
+
                    </div>
                </div>
             </fieldset>

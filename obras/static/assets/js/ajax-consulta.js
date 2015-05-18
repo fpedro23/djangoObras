@@ -24,6 +24,7 @@ function main_consulta() {
 	$j('#ver_datos button').on('click', verDatos);
     $j('#ver_tabla_estado #estado').on('click', mostrarTablas);
     $j('#ver_tabla_dependencia #dependencia').on('click', mostrarTablas)
+    $j('#ver_grafica button').on('click', graficas)
 }
 
 
@@ -46,7 +47,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : '4Scjmypz1NZJo7ePo2xm7w9qoCzEBa'
+      "access_token"  : '0tjtAv920a6W2ORX8YOblDnpUSql8V'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -56,10 +57,10 @@ function verDatos() {
     if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
     if(arrayInaugurador.toString()!=""){ajax_data.inaugurador=arrayInaugurador.toString();}
     if(arrayImpacto.toString()!=""){ajax_data.impacto=arrayImpacto.toString();}
-    if(fechaInicio1!=""){ajax_data.fechaInicio=$.date(fechaInicio1);}
-    if(fechaInicio2!=""){ajax_data.fechaInicioSegunda=$.date(fechaInicio2);}
-    if(fechaFin1!=""){ajax_data.fechaFin=$.date(fechaFin1);}
-    if(fechaFin2!=""){ajax_data.fechaFinSegunda=$.date(fechaFin2);}
+    if(fechaInicio1!=""){ajax_data.fechaInicio=$j.date(fechaInicio1);}
+    if(fechaInicio2!=""){ajax_data.fechaInicioSegunda=$j.date(fechaInicio2);}
+    if(fechaFin1!=""){ajax_data.fechaFin=$j.date(fechaFin1);}
+    if(fechaFin2!=""){ajax_data.fechaFinSegunda=$j.date(fechaFin2);}
     if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
     if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
     if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
@@ -70,10 +71,12 @@ function verDatos() {
         type: 'get',
         data: ajax_data,
         success: function(data) {
-            //$('#datos').html
+            //$j('#datos').html
             tablaI(data);
             tablaD(data);
+            graficas;
             datosJson=data;
+            // MAPA
             var mapOptions = {
                 zoom: 4,
                 center: new google.maps.LatLng(22.6526121, -100.1780452),
@@ -84,17 +87,19 @@ function verDatos() {
             var lugares =  new Array();
             lugares=puntosMapa(data);
             setMarkers(map,lugares);
-
-
             google.maps.event.addDomListener(window, 'load', initialize);
-            $l("#ajaxProgress").hide();
+            // mapa
+            // graficas
+
+            $j("#ajaxProgress").hide();
         },
         error: function(data) {
             alert('error!!! ' + data.status);
-            $l("#ajaxProgress").hide();
+            $j("#ajaxProgress").hide();
         }
     });
 }
+
 
 
 function mostrarTablas() {
@@ -102,9 +107,52 @@ function mostrarTablas() {
             tablaD(datosJson);
 }
 
+function graficas(){
+    //var $jt = jQuery.noConflict();
+    var categorias = new Array();
+    var datas = new Array();
+    for (var i = 0; i < datosJson.reporte_dependencia.length; i++) {
+        categorias.push(datosJson.reporte_dependencia[i].dependencia.nombreDependencia);
+        datas.push(datosJson.reporte_dependencia[i].numero_obras);
+    }
+    $pp('#container').highcharts({
+        chart: {
+            type: 'column',
+            margin: 75,
+            options3d: {
+                enabled: true,
+                alpha: 10,
+                beta: 25,
+                depth: 70
+            }
+        },
+        title: {
+            text: '3D chart with null values'
+        },
+        subtitle: {
+            text: 'Notice the difference between a 0 value and a null point'
+        },
+        plotOptions: {
+            column: {
+                depth: 25
+            }
+        },
+        xAxis: {
+            categories: categorias
+        },
+        yAxis: {
+            title: {
+                text: null
+            }
+        },
+        series: [{
+            name: 'Número de obras',
+            data: datas
+        }]
+    });
+}
 
-
-$.date = function(dateObject) {
+$j.date = function(dateObject) {
     var d = new Date(dateObject);
     var day = d.getDate();
     var month = d.getMonth() + 1;

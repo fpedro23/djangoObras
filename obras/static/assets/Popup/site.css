@@ -1,0 +1,10 @@
+
+.white-popup-block {
+  background: #FFF;
+  padding: 20px 30px;
+  text-align: center;
+  max-width: 100%;
+  margin: 40px auto;
+  position: relative;
+}
+
