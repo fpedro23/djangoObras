@@ -25,6 +25,8 @@ function main_consulta() {
     $j('#ver_tabla_estado #estado').on('click', mostrarTablas);
     $j('#ver_tabla_dependencia #dependencia').on('click', mostrarTablas)
     $j('#ver_grafica button').on('click', graficas)
+    $j('#ver_grafica_estado #estado').on('click', graficas);
+    $j('#ver_grafica_dependencia #dependencia').on('click', graficas);
 }
 
 
@@ -47,7 +49,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : '0tjtAv920a6W2ORX8YOblDnpUSql8V'
+      "access_token"  : 'egE2YWdVkqGyB3yOf7TFZbiyCKlzHb'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -74,7 +76,6 @@ function verDatos() {
             //$j('#datos').html
             tablaI(data);
             tablaD(data);
-            graficas;
             datosJson=data;
             // MAPA
             var mapOptions = {
@@ -108,17 +109,37 @@ function mostrarTablas() {
 }
 
 function graficas(){
-    //var $jt = jQuery.noConflict();
+
+    columnaGrafica();
+    $j.tablaGrafica(datosJson);
+}
+
+function columnaGrafica(){
+    var tipoReporte = $j('input:radio[name=graficaTipo]:checked').val();
     var categorias = new Array();
     var datas = new Array();
-    for (var i = 0; i < datosJson.reporte_dependencia.length; i++) {
-        categorias.push(datosJson.reporte_dependencia[i].dependencia.nombreDependencia);
-        datas.push(datosJson.reporte_dependencia[i].numero_obras);
+    var montos = new Array();
+    if (tipoReporte=="Dependencia") {
+        for (var i = 0; i < datosJson.reporte_dependencia.length; i++) {
+            categorias.push(datosJson.reporte_dependencia[i].dependencia.nombreDependencia);
+            datas.push(datosJson.reporte_dependencia[i].numero_obras);
+            montos.push(datosJson.reporte_dependencia[i].sumatotal);
+        }
+    }else{
+        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
+            categorias.push(datosJson.reporte_estado[i].estado.nombreEstado);
+            datas.push(datosJson.reporte_estado[i].numeroObras);
+            montos.push(datosJson.reporte_estado[i].sumatotal);
+        }
     }
-    $pp('#container').highcharts({
+
+    $pp('#containerGrafica').highcharts({
         chart: {
             type: 'column',
-            margin: 75,
+            margin: 110,
+            marginLeft: 50,
+            marginRight: 50,
+            marginTop: 50,
             options3d: {
                 enabled: true,
                 alpha: 10,
@@ -126,15 +147,22 @@ function graficas(){
                 depth: 70
             }
         },
-        title: {
-            text: '3D chart with null values'
+        credits: {
+            enabled: false
         },
+        title: {
+            text: 'Número de obras por Dependencia'
+        },
+
         subtitle: {
-            text: 'Notice the difference between a 0 value and a null point'
+            text: ''
         },
         plotOptions: {
             column: {
                 depth: 25
+            },
+            series: {
+                pointWidth: 30
             }
         },
         xAxis: {
@@ -148,9 +176,12 @@ function graficas(){
         series: [{
             name: 'Número de obras',
             data: datas
-        }]
+        },{
+            name: 'Monto Total',
+            data: montos}]
     });
 }
+
 
 $j.date = function(dateObject) {
     var d = new Date(dateObject);
@@ -422,4 +453,107 @@ function tablaD(Datos){
 
 
     $j('#datostablaDerecha').html(sHtml);
+    $j('#tablaGrafica').html(sHtml);
+}
+
+// llena la tabla del lado derecho
+
+$j.tablaGrafica = function(Datos){
+    var tipoReporte = $j('input:radio[name=graficaTipo]:checked').val();
+    var dependenciasChecked="";
+    var estadosChecked="";
+
+
+    //alert($j('input:radio[name=tipoReporte]:checked').val());
+    var sHtml= '<h4>REPORTES</h4> <table cellspacing="1"  class="tablesorter" id="tablaGrafica">'
+                    +'<thead>'
+                        +'<tr>'
+                            +'<th>Tipo Inversi&oacute;n</th>'
+                            +'<th>No. de Obras</th>'
+                            +'<th>Monto</th>'
+                        +'</tr>'
+                    +'</thead>'
+                    +'<tfoot>'
+                        +'<tr>'
+                            +'<th>TOTALES</th>'
+                            +'<th>'+ Datos.reporte_general[0].obras_totales +'</th>'
+                            +'<th>'+ Datos.reporte_general[0].total_invertido +'</th>'
+                        +'</tr>'
+
+                        +'<tr><td class="pager" id="pagerG" colspan="3">'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstG"/>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevG"/>'
+                        +'<span class="pagedisplay" id="displayPageG"></span>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextG"/>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastG"/>'
+                        +'<select class="pagesize" id="pagesizeG">'
+                        +'<option selected="selected"  value="10">10</option>'
+                        +'    <option value="20">20</option>'
+                        +'    <option value="30">30</option>'
+                        +'    <option  value="40">40</option>'
+                        +'</select></td></tr>'
+
+                    +'</tfoot>'
+                    +'<tbody>';
+
+    if (tipoReporte=="Dependencia") {
+        dependenciasChecked="checked";
+        for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
+            sHtml += '<tr>'
+            + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
+            + '<td>' + Datos.reporte_dependencia[i].numero_obras + '</td>'
+            + '<td>' + Datos.reporte_dependencia[i].sumatotal + '</td>'
+            + '</tr>'
+        }
+    }
+
+    if (tipoReporte=="Estado") {
+        estadosChecked="checked";
+        for (var i = 0; i < Datos.reporte_estado.length; i++) {
+            sHtml += '<tr>'
+            + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
+            + '<td>' + Datos.reporte_estado[i].numeroObras + '</td>'
+            + '<td>' + Datos.reporte_estado[i].sumatotal + '</td>'
+            + '</tr>'
+        }
+    }
+
+        sHtml +='</tbody>'
+                +'</table>'
+                +'<script src="http://mottie.github.io/tablesorter/docs/js/jquery-latest.min.js"></script>'
+                +'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
+                +'<link class="theme blue" rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/theme.blue.css">'
+                +'<script type="text/javascript" src="../../static/assets/tablesorter/jquery.tablesorter.js"></script>'
+                +'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
+                +'<script type="text/javascript" src="../../static/assets/tablesorter/widget-pager.js"></script>'
+                +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>'
+                +'<script id="js" type="text/javascript">'
+                +'$(function() {'
+                +'    $("#tablaGrafica").tablesorter({'
+                +'    theme: "blue",'
+                +'    showProcessing: true,'
+                +'    headerTemplate : "{content} {icon}",'
+                +'    widgets: [ "uitheme", "zebra", "pager"],'
+                +'    widgetOptions : {'
+                //+'        scroller_height : 150,'
+                //+'        scroller_upAfterSort: true,'
+                //+'        scroller_jumpToHeader: true,'
+                //+'        scroller_barWidth : null,'
+                +'          pager_selectors: {'
+                +'                container   : "#pagerG",'
+                +'                first       : "#firstG",'
+                +'                prev        : "#prevG",'
+                +'                next        : "#nextG",'
+                +'                last        : "#lastG",'
+                +'                gotoPage    : "#gotoPageG",'
+                +'                pageDisplay : "#displayPageG",'
+                +'                pageSize    : "#pagesizeG"'
+                +'        }'
+                +'    }'
+                +'});'
+                +'});'
+                +'</script>';
+
+        $j('#divTablaGrafica').html($j(sHtml));
+
 }
