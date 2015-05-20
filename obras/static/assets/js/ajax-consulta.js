@@ -27,6 +27,8 @@ function main_consulta() {
     $j('#ver_grafica button').on('click', graficas)
     $j('#ver_grafica_estado #estado').on('click', graficas);
     $j('#ver_grafica_dependencia #dependencia').on('click', graficas);
+    $j('#ver_grafica_tipos #tipoGrafica').on('change', graficas);
+    $j('#ver_grafica_datos #datosGrafica').on('change', graficas);
 }
 
 
@@ -49,7 +51,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'egE2YWdVkqGyB3yOf7TFZbiyCKlzHb'
+      "access_token"  : 'bmFwfosGCeTYGwRYGgAJuidO0D16Zk'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -109,41 +111,143 @@ function mostrarTablas() {
 }
 
 function graficas(){
-
-    columnaGrafica();
-    $j.tablaGrafica(datosJson);
-}
-
-function columnaGrafica(){
     var tipoReporte = $j('input:radio[name=graficaTipo]:checked').val();
+    var tipoGrafica = $j("#tipoGrafica").val();
+    var datosGrafica = $j("#datosGrafica").val();
+    var titulo="";
     var categorias = new Array();
     var datas = new Array();
     var montos = new Array();
+
+
     if (tipoReporte=="Dependencia") {
         for (var i = 0; i < datosJson.reporte_dependencia.length; i++) {
             categorias.push(datosJson.reporte_dependencia[i].dependencia.nombreDependencia);
             datas.push(datosJson.reporte_dependencia[i].numero_obras);
             montos.push(datosJson.reporte_dependencia[i].sumatotal);
+            titulo="Número de obras por Dependencia";
         }
     }else{
         for (var i = 0; i < datosJson.reporte_estado.length; i++) {
             categorias.push(datosJson.reporte_estado[i].estado.nombreEstado);
             datas.push(datosJson.reporte_estado[i].numeroObras);
             montos.push(datosJson.reporte_estado[i].sumatotal);
+            titulo="Número de obras por Estado";
         }
     }
 
+    Highcharts.setOptions({
+        lang: {
+                downloadJPEG: "Descargar imágen JPEG",
+                downloadPDF: "Descargar documento PDF",
+                downloadPNG: "Descargar imágen PNG",
+                downloadSVG: "Descargar vector de imágen SVG",
+                loading: "Cargando...",
+                printChart: "Imprimir Gráfica",
+                resetZoom: "Quitar zoom",
+                resetZoomTitle: "Quitar el nivel de zoom ",
+                numericSymbols: [' mil', ' millones']
+            }
+    });
+
+
+    switch (tipoGrafica) {
+        case "Columna3D":
+            if(datosGrafica=="Numero"){
+                columnaGrafica(categorias,datas,titulo,"Número de obras");
+            }else{
+                columnaGrafica(categorias,montos,titulo,"Monto Total");
+            }
+            break;
+        case "Columna2D":
+            if(datosGrafica=="Numero"){
+                columna2DGrafica(categorias,datas,titulo,"Número de obras");
+            }else{
+                columna2DGrafica(categorias,montos,titulo,"Monto Total");
+            }
+
+            break;
+        case "Pastel":
+            if(datosGrafica=="Numero") {
+                pieGrafica(arregloDataGrafica(datosJson, tipoReporte,datosGrafica), titulo, 0,"Número de obras");
+            }else{
+                pieGrafica(arregloDataGrafica(datosJson, tipoReporte,datosGrafica), titulo, 0,"Monto Total");
+            }
+            break;
+        case "Dona":
+            if(datosGrafica=="Numero") {
+                pieGrafica(arregloDataGrafica(datosJson, tipoReporte,datosGrafica), titulo, 100,"Número de obras");
+            }else{
+                pieGrafica(arregloDataGrafica(datosJson, tipoReporte,datosGrafica), titulo, 100,"Monto Total");
+            }
+            break;
+        case "Barra":
+            if(datosGrafica=="Numero"){
+                barraGrafica(categorias,datas,titulo,"Número de obras","Mil"," Mil");
+            }else{
+                barraGrafica(categorias,montos,titulo,"Monto Total","Millones"," MDP");
+            }
+            break;
+        case "Lineal":
+
+            break;
+    }
+
+
+    $j.tablaGrafica(datosJson);
+}
+
+
+function arregloDataGrafica(Datos,tipoReporte,datosGrafica) {
+    var arregloSimple=new Array();
+    var arregloDoble=new Array();
+    var arregloObjeto = new Object();
+
+    if (tipoReporte=="Dependencia") {
+        for(var i= 0;i<Datos.reporte_dependencia.length;i++){
+            var arregloSimple=new Array();
+            arregloSimple.push(Datos.reporte_dependencia[i].dependencia.nombreDependencia);
+            if(datosGrafica=="Numero") {
+                arregloSimple.push(Datos.reporte_dependencia[i].numero_obras);
+            }else{
+                arregloSimple.push(Datos.reporte_dependencia[i].sumatotal);
+            }
+            arregloDoble.push(arregloSimple);
+        }
+    }else{
+        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
+            var arregloSimple=new Array();
+            arregloSimple.push(Datos.reporte_estado[i].estado.nombreEstado);
+            if(datosGrafica=="Numero") {
+                arregloSimple.push(Datos.reporte_estado[i].numeroObras);
+            }else{
+                arregloSimple.push(Datos.reporte_estado[i].sumatotal);
+            }
+            arregloDoble.push(arregloSimple);
+        }
+    }
+    arregloObjeto = arregloDoble;
+    return arregloObjeto;
+}
+
+function columnaGrafica(categorias,datas,titulo,nombreData){
+
+
     $pp('#containerGrafica').highcharts({
         chart: {
+            renderTo: 'container',
             type: 'column',
-            margin: 110,
+            margin: 120,
             marginLeft: 50,
             marginRight: 50,
             marginTop: 50,
+            zoomType: 'x',
+            panning: true,
+            panKey: 'shift',
             options3d: {
                 enabled: true,
                 alpha: 10,
-                beta: 25,
+                beta: 10,
                 depth: 70
             }
         },
@@ -151,7 +255,7 @@ function columnaGrafica(){
             enabled: false
         },
         title: {
-            text: 'Número de obras por Dependencia'
+            text: titulo
         },
 
         subtitle: {
@@ -162,8 +266,9 @@ function columnaGrafica(){
                 depth: 25
             },
             series: {
-                pointWidth: 30
+                pointWidth: 15
             }
+
         },
         xAxis: {
             categories: categorias
@@ -174,11 +279,162 @@ function columnaGrafica(){
             }
         },
         series: [{
-            name: 'Número de obras',
+            name: nombreData,
             data: datas
-        },{
-            name: 'Monto Total',
-            data: montos}]
+        }]
+    });
+}
+
+
+function pieGrafica(datas,titulo,dona,nombreData) {
+
+    $pp('#containerGrafica').highcharts({
+        chart: {
+            type: 'pie',
+            zoomType: 'x',
+            panning: true,
+            panKey: 'shift',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: titulo
+        },
+        credits: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                innerSize: dona,
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: nombreData,
+            data: datas
+        }]
+    });
+}
+
+function barraGrafica(categorias,datas,titulo,nombreData,unidades,sufijo){
+    Highcharts.setOptions({
+        lang: {
+                numericSymbols: [unidades]
+            }
+    });
+    $pp('#containerGrafica').highcharts({
+        chart: {
+            type: 'bar',
+            zoomType: 'x',
+            panning: true,
+            panKey: 'shift'
+        },
+        title: {
+            text: titulo
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: categorias,
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: sufijo
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 100,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: nombreData,
+            data: datas
+        }]
+    });
+}
+
+function columna2DGrafica(categorias,datas,titulo,nombreData){
+    $pp('#containerGrafica').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: titulo
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: categorias,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Rainfall (mm)'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: nombreData,
+            data: datas
+
+        }]
     });
 }
 

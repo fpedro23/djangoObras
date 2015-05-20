@@ -70,6 +70,7 @@
         var $l = jQuery.noConflict();
 
     $l(function(){
+
         $l("#ajaxProgress").hide();
 
         // off
@@ -160,7 +161,7 @@
 
 <style>
 	body{
-		font: 100% "Trebuchet MS", sans-serif;
+		font: 120% "Trebuchet MS", sans-serif;
 		margin: 50px;
 	}
 	.demoHeaders {
@@ -210,10 +211,10 @@
 
     <style type="text/css">
 #containerGrafica {
-	height: 400px;
-    width: 800px;
+	height: 500px;
+    width: 100%;
 	min-width: 310px;
-	max-width: 800px;
+	max-width: 1000px;
 	margin: 0 auto;
 }
 
@@ -431,42 +432,98 @@ $pp(function () {
 			<h1>GR&Aacute;FICAS</h1>
 
 
-             <div class="row">
+             <div class="row" >
                    <div class="col-md-3">
-                       <fieldset>
-                           <div class="row"><div class="col-xs-4">
-                               Dependencia
-                               </div>
-                               <div class="col-xs-2">
-                                   <article id="ver_grafica_dependencia">
-                                       {% csrf_token %}
-                                        <input type="radio" name="graficaTipo" id="dependencia" value="Dependencia" checked/>
-                                    </article>
-                               </div>
-                           </div>
-                           <div class="row"><div class="col-xs-4">
-                               Estado
-                               </div>
-                               <div class="col-xs-2">
-                                   <article id="ver_grafica_estado">
-                                       {% csrf_token %}
-                                        <input type="radio" name="graficaTipo" id="estado" value="Estado"/>
-                                    </article>
-                               </div>
-                           </div>
-                           <div class="row"><div class="col-xs-4">
-                               RCI
-                               </div>
-                               <div class="col-xs-2">
-                                   <article id="ver_grafica_rci">
-                                       {% csrf_token %}
-                                        <input type="radio" name="graficaTipo" id="estado" value="RCI"/>
-                                    </article>
-                               </div>
-                           </div>
-                        </fieldset>
+                       <div class="panel panel-default panel-table">
+                            <div class="panel-heading">
+                                <div class="tr">
+                                    <div class="td" ><h5>MOSTRAR GR&Aacute;FICA POR: </h5></div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="tr">
+                                    <div class="row">
+                                        <div class="col-xs-10">
+                                           <p>Dependencia</p>
+                                       </div>
+                                       <div class="col-xs-2">
+                                           <article id="ver_grafica_dependencia">
+                                               {% csrf_token %}
+                                                <input type="radio" name="graficaTipo" id="dependencia" value="Dependencia" checked/>
+                                            </article>
+                                       </div>
+                                    </div>
+                                    <div class="row"><div class="col-xs-10">
+                                       <p>Estado</p>
+                                       </div>
+                                       <div class="col-xs-2">
+                                           <article id="ver_grafica_estado">
+                                               {% csrf_token %}
+                                                <input type="radio" name="graficaTipo" id="estado" value="Estado"/>
+                                            </article>
+                                       </div>
+                                    </div>
+                                    <div class="row"><div class="col-xs-10">
+                                       <p>RCI</p>
+                                       </div>
+                                       <div class="col-xs-2">
+                                           <article id="ver_grafica_rci">
+                                               {% csrf_token %}
+                                                <input type="radio" name="graficaTipo" id="estado" value="RCI"/>
+                                            </article>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
+
+                       <div class="panel panel-default panel-table">
+                            <div class="panel-heading">
+                                <div class="tr">
+                                    <div class="td" ><h5>CONFIGURAR GR&Aacute;FICA </h5></div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="tr">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <p>Datos a graficar</p>
+                                        </div>
+                                        <div class="col-xs-2">
+                                           <article id="ver_grafica_datos">
+                                                {% csrf_token %}
+                                                <select class="selectpicker" data-size="5" id="datosGrafica">
+                                                      <option value="Numero">N&uacute;mero de obras</option>
+                                                      <option value="Monto">Monto total</option>
+                                                </select>
+                                           </article>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <p>Tipo de gr&aacute;fica</p>
+                                        </div>
+                                        <div class="col-xs-2">
+                                           <article id="ver_grafica_tipos">
+                                                {% csrf_token %}
+                                                <select class="selectpicker" data-size="5" id="tipoGrafica">
+                                                      <option value="Columna3D">Columna 3D</option>
+                                                      <option value="Columna2D">Columna 2D</option>
+                                                      <option value="Pastel">Pastel</option>
+                                                      <option value="Dona">Dona</option>
+                                                      <option value="Barra">Barras</option>
+                                                      <option Value="Lineal">Lineal</option>
+                                                </select>
+                                           </article>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                    </div>
-                   <div  class="col-md-8" id="containerGrafica" >
+                   <div  class="col-md-12"  id="containerGrafica" >
                    </div>
              </div>
              <div class="row">

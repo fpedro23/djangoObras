@@ -39,8 +39,8 @@ template {
 
 html {
   font-family: sans-serif;
-  -webkit-text-size-adjust: 70%;
-      -ms-text-size-adjust: 70%;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -943,6 +943,7 @@ pre code {
 .col-xs-9,
 .col-sm-9,
 .col-md-9,
+.col-md-9-box,
 .col-lg-9,
 .col-xs-10,
 .col-sm-10,
@@ -1363,6 +1364,7 @@ pre code {
   .col-md-7,
   .col-md-8,
   .col-md-9,
+  .col-md-9-box,
   .col-md-10,
   .col-md-11,
   .col-md-12 {
@@ -1379,6 +1381,11 @@ pre code {
   }
   .col-md-9 {
     width: 75%;
+  }
+  .col-md-9-box {
+    width: 75%;
+      height: 400px;
+      border: 1px solid #1fa314;
   }
   .col-md-8 {
     width: 66.66666666666666%;
