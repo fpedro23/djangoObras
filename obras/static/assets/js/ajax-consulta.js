@@ -51,7 +51,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'MaEPPjXGZaj9JV8DavEseBS974ep3Z'
+      "access_token"  : 'rlSlaamKUF45XZ470aFdByLDiUAfLu'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -776,13 +776,7 @@ $j.tablaGrafica = function(Datos){
 
         sHtml +='</tbody>'
                 +'</table>'
-                +'<script src="http://mottie.github.io/tablesorter/docs/js/jquery-latest.min.js"></script>'
-                +'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
-                +'<link class="theme blue" rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/theme.blue.css">'
-                +'<script type="text/javascript" src="../../static/assets/tablesorter/jquery.tablesorter.js"></script>'
-                +'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
-                +'<script type="text/javascript" src="../../static/assets/tablesorter/widget-pager.js"></script>'
-                +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>'
+
                 +'<script id="js" type="text/javascript">'
                 +'$(function() {'
                 +'    $("#tablaGrafica").tablesorter({'

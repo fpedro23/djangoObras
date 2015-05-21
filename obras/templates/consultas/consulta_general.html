@@ -8,12 +8,6 @@
 
     <script type="text/javascript" src="../../static/assets/tablesorter/jquery-latest.min.js"></script>
 
-    <link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">
-    <script type="text/javascript" src="../../static/assets/tablesorter/jquery-ui.min.js"></script>
-    <link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jq.css">
-    <link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/prettify.css">
-    <script type="text/javascript" src="../../static/assets/tablesorter/js/prettify.js"></script>
-    <script type="text/javascript" src="../../static/assets/tablesorter/js/docs.js"></script>
 
     <link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">
     <link class="theme blue" rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/theme.blue.css">
@@ -51,10 +45,11 @@
 	});
 	</script>
 
+    <link rel="stylesheet" type="text/css" href="../../static/assets/bootstrap/css/bootstrap.css" />
 
     <link rel="stylesheet" type="text/css" href="../../static/assets/jquery-mulsel/css/jquery.multiselect.css" />
     <link rel="stylesheet" type="text/css" href="../../static/assets/jquery-mulsel/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css" />
 
 
 
@@ -64,7 +59,7 @@
     <script type="text/javascript" src="../../static/assets/jquery-mulsel/js/jquery.multiselect.js"></script>
 
 
-    <link rel="stylesheet" type="text/css" href="../../static/assets/bootstrap/css/bootstrap.css" />
+
 
     <script type="text/javascript">
         var $l = jQuery.noConflict();
@@ -161,6 +156,7 @@
 
 <style>
 	body{
+
 		font: 120% "Trebuchet MS", sans-serif;
 		margin: 50px;
 	}
@@ -531,10 +527,9 @@ $pp(function () {
              <input type="button" value="Regresar" class="popup-modal-dismiss btn btn-primary fancybox-media italic" />
 	</div>
 
-	<section id="wrapper">
-		<section id="side">
-            <div class="container-fluid" >
-                <div class="rowP">
+
+                <div class="row" style="padding-bottom: 4px;">
+                    <div class="rowP" >
                     <div class="col-md-12">
                         <h4>PARÁMETROS DE CONSULTA</h4>
                     </div>
@@ -734,13 +729,13 @@ $pp(function () {
 
                     </div>
                 </div>
-            </div>
-		</section>
-    </section>
-   <br>
+                </div>
+
+
    <div class="row">
-       <div class="col-md-3-box" id="datos" style="margin-right: 10px; padding-right: 4px;padding-left: 4px">
-           <h4>RESULTADOS</h4>
+       <div class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
+            <div class="col-md-12-box" id="datos" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
+               <h4>RESULTADOS</h4>
 
                <table cellspacing="1" class="tablesorter" id="tablaIzquierda">
                     <thead>
@@ -804,21 +799,25 @@ $pp(function () {
                     </tbody>
                </table>
        </div >
-       <div class="col-md-6-box" >
-           <div class="row">
-               <div class="col-md-3">
-                   <h4>MAPA</h4>
-               </div>
-
-               <div class="col-md-9" id="ajaxProgress">
-                    cargando...<img src="../../static/gifs/loading-barra2.gif">
-               </div>
-           </div>
-           <div id="map-canvas" style="height: 343px;margin: 0px;padding: 0px;">
-           </div>
-           <br>
        </div>
-       <div class="col-md-3-box"  style="margin-left: 10px; padding-right: 4px;padding-left: 4px">
+       <div class="col-md-6" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
+           <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
+               <div class="row">
+                   <div class="col-md-3">
+                       <h4>MAPA</h4>
+                   </div>
+
+                   <div class="col-md-9" id="ajaxProgress">
+                        cargando...<img src="../../static/gifs/loading-barra2.gif">
+                   </div>
+               </div>
+               <div id="map-canvas" style="height: 343px;margin: 0px;padding: 0px;">
+               </div>
+               <br>
+           </div>
+       </div>
+       <div class="col-md-3" style="margin-right: 0px;margin-left: 0px; padding-left: 0px; padding-right: 0px; ">
+            <div class="col-md-12-box"  style="margin-left: 0px; padding-right: 4px;padding-left: 4px">
            <div class="row">
                <div class="col-md-12" id="datostablaDerecha">
                     <h4>REPORTE</h4>
@@ -927,6 +926,7 @@ $pp(function () {
                </div>
            </div>
        </div>
+       </div>
    </div>
 
 
@@ -937,7 +937,7 @@ $pp(function () {
 <script src="../../static/assets/bootstrap/js/bootstrap-datepicker.js"></script>
    <script type="text/javascript">
     var $dp = jQuery.noConflict();
-	$dp('#pick input').datepicker({
+	$dp('#fechaInicial1').datepicker({
         autoclose:true
 	});
        $dp('#fechaInicial2').datepicker({
