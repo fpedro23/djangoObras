@@ -21,10 +21,10 @@ function main_consulta() {
 		}
 	});
 
-	$j('#ver_datos button').on('click', verDatos);
+	$j('#ver_datos #button').on('click', verDatos);
     $j('#ver_tabla_estado #estado').on('click', mostrarTablas);
     $j('#ver_tabla_dependencia #dependencia').on('click', mostrarTablas)
-    $j('#ver_grafica button').on('click', graficas)
+    $j('#ver_grafica #grafica').on('click', graficas)
     $j('#ver_grafica_estado #estado').on('click', graficas);
     $j('#ver_grafica_dependencia #dependencia').on('click', graficas);
     $j('#ver_grafica_tipos #tipoGrafica').on('change', graficas);
@@ -51,7 +51,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'DxpTXKtq4yqktgXu0QW0MIPshCma1z'
+      "access_token"  : 'iU4yMULvcnHanBYpqzhrbWfwDmMHrC'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}

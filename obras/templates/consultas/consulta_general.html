@@ -158,7 +158,7 @@
 
 
     <link href="../../static/assets/bootstrap/css/bootstrap-datepicker3.min.css" rel="stylesheet">
-
+    <link href="../../static/css/styles.css" rel="stylesheet">
 
     <style type="text/css">
 
@@ -663,12 +663,14 @@ $pp(function () {
                             </div>
                         </div>
                         <div class="row">
-                             <div class="col-md-12">
+                             <div class="col-md-6">
                                   <article id="ver_datos">
                                      {% csrf_token %}
-                                     <button id="button">Ver datos</button>
-                                     </article>
-                              </div>
+                                     <div class="col-md-2 consultarBTN" id="button" style="height: 30px">
+                                     </div>
+                                  </article>
+                             </div>
+
                         </div>
                     </div>
                     <div class="col-md-2" >
@@ -863,38 +865,44 @@ $pp(function () {
            <div class="row">
                <div class="col-md-12">
                     <fieldset>
-               <div class="row"><div class="col-xs-8">
+               <div class="row"><div class="col-xs-5">
                    Dependencia
                    </div>
-                   <div class="col-xs-4">
+                   <div class="col-xs-2">
                        <article id="ver_tabla_dependencia">
                            {% csrf_token %}
                             <input type="radio" name="tipoReporte" id="dependencia" value="Dependencia" checked/>
                         </article>
                    </div>
                </div>
-               <div class="row"><div class="col-xs-8">
+               <div class="row"><div class="col-xs-5">
                    Estado
                    </div>
-                   <div class="col-xs-4">
+                   <div class="col-xs-2">
                        <article id="ver_tabla_estado">
                            {% csrf_token %}
                             <input type="radio" name="tipoReporte" id="estado" value="Estado"/>
                         </article>
                    </div>
                </div>
-               <div class="row"><div class="col-xs-5">
+               <div class="row">
+                   <div class="col-xs-5">
                    RCI
                    </div>
                    <div class="col-xs-2">
                         <input type="radio" name="tipoReporte" value="RCI" />
                    </div>
-                   <div class="col-xs-5">
+                   <div class="col-xs-2">
                        <article id="ver_grafica">
                            {% csrf_token %}
-                           <button id="button" href="#test-modal" class="popup-modal btn btn-primary fancybox-media italic" >Grafica</button>
+                           <div class="col-xs-2 exportarBTN"  id="exportar" style="height: 30px"></div>
                        </article>
-
+                   </div>
+                   <div class="col-xs-2">
+                       <article id="ver_grafica">
+                           {% csrf_token %}
+                           <div class="col-xs-2 graficoBTN popup-modal" href="#test-modal" id="grafica" style="height: 30px"></div>
+                       </article>
                    </div>
                </div>
             </fieldset>
