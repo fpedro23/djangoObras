@@ -198,6 +198,40 @@ input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
+
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"] {
+    line-height: 34px;
+  }
+  input[type="date"].input-sm,
+  input[type="time"].input-sm,
+  input[type="datetime-local"].input-sm,
+  input[type="month"].input-sm,
+  .input-group-sm input[type="date"],
+  .input-group-sm input[type="time"],
+  .input-group-sm input[type="datetime-local"],
+  .input-group-sm input[type="month"] {
+    line-height: 30px;
+  }
+  input[type="date"].input-lg,
+  input[type="time"].input-lg,
+  input[type="datetime-local"].input-lg,
+  input[type="month"].input-lg,
+  .input-group-lg input[type="date"],
+  .input-group-lg input[type="time"],
+  .input-group-lg input[type="datetime-local"],
+  .input-group-lg input[type="month"] {
+    line-height: 46px;
+  }
+}
+
+
+
+
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   padding: 0;
@@ -308,6 +342,8 @@ body {
   line-height: 1.428571429;
   color: #333333;
   background-color: #ffffff;
+  /*  font: 120% "Trebuchet MS", sans-serif;*/
+		margin: 0px;
 }
 
 input,
@@ -5687,7 +5723,7 @@ a.list-group-item.active:focus .list-group-item-text {
 }
 
 .panel {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   background-color: #ffffff;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -5696,7 +5732,7 @@ a.list-group-item.active:focus .list-group-item-text {
 }
 
 .panel-body {
-  padding: 15px;
+  padding: 5px;
 }
 
 .panel-body:before,

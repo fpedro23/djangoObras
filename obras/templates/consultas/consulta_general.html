@@ -47,6 +47,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../static/assets/bootstrap/css/bootstrap.css" />
 
+
     <link rel="stylesheet" type="text/css" href="../../static/assets/jquery-mulsel/css/jquery.multiselect.css" />
     <link rel="stylesheet" type="text/css" href="../../static/assets/jquery-mulsel/css/style.css" />
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css" />
@@ -154,53 +155,7 @@
 
     </script>
 
-<style>
-	body{
 
-		font: 120% "Trebuchet MS", sans-serif;
-		margin: 50px;
-	}
-	.demoHeaders {
-		margin-top: 2em;
-	}
-	#dialog-link {
-		padding: .4em 1em .4em 20px;
-		text-decoration: none;
-		position: relative;
-	}
-	#dialog-link span.ui-icon {
-		margin: 0 5px 0 0;
-		position: absolute;
-		left: .2em;
-		top: 50%;
-		margin-top: -8px;
-	}
-	#icons {
-		margin: 0;
-		padding: 0;
-	}
-	#icons li {
-		margin: 2px;
-		position: relative;
-		padding: 4px 0;
-		cursor: pointer;
-		float: left;
-		list-style: none;
-	}
-	#icons span.ui-icon {
-		float: left;
-		margin: 0 4px;
-	}
-	.fakewindowcontain .ui-widget-overlay {
-		position: absolute;
-	}
-	.selectResponsive {
-		max-width: 100%;
-        height: auto;
-	}
-
-
-	</style>
 
     <link href="../../static/assets/bootstrap/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 
@@ -527,212 +482,232 @@ $pp(function () {
              <input type="button" value="Regresar" class="popup-modal-dismiss btn btn-primary fancybox-media italic" />
 	</div>
 
-
+   <div class= "container" style="margin-top:0px;">
                 <div class="row" style="padding-bottom: 4px;">
-                    <div class="rowP" >
+                    <div class="rowP" style="padding-right: 5px;">
                     <div class="col-md-12">
                         <h4>PARÁMETROS DE CONSULTA</h4>
                     </div>
-                    <div class="col-md-2">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <center><label>Registro de Cartera de Inversi&oacute;n</label></center>
+                    <div class="col-md-3" >
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-body">
+                                <div class="tr">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Registro de Cartera de Inversi&oacute;n</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12"><center>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> SI
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> NO
+                                            </label></center>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12"><center>
-                                <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> SI
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> NO
-                                </label></center>
-                            </div>
-                        </div>
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-body">
+                                <div class="tr">
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <center><label>Rango de Fecha de Inicio</label></center>
+                                        </div>
+                                    </div>
+                                    <div class="row" ><center>
+                                        <div class="col-md-6"><div id="pick" class="form-group">
+                                            <input type="text" class="form-control" id="fechaInicial1" placeholder="Desde">
+                                        </div></div></center>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="fechaInicial2" placeholder="Hasta">
+                                        </div></center>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-12" >
+                                            <center><label>Rango de Fecha de T&eacute;rmino</label></center>
+                                        </div>
+                                    </div>
+                                    <div class="row" ><center>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="fechaFinal1" placeholder="Desde">
+                                        </div></center>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <center><label>Rango de Fecha de Inicio</label></center>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="fechaFinal2" placeholder="Hasta">
+                                        </div></center>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row"><center>
-                            <div class="col-md-6"><div id="pick" class="form-group">
-                                <input type="text" class="form-control" id="fechaInicial1" placeholder="Desde">
-                            </div></div></center>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" id="fechaInicial2" placeholder="Hasta">
-                            </div></center>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" >
-                                <center><label>Rango de Fecha de T&eacute;rmino</label></center>
-                            </div>
-                        </div>
-                        <div class="row" style="padding-bottom: 7px;"><center>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" id="fechaFinal1" placeholder="Desde">
-                            </div></center>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" id="fechaFinal2" placeholder="Hasta">
-                            </div></center>
-                        </div>
-
                     </div>
 
-                    <div class="col-md-2">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <select id="msTipoInversion" multiple="multiple"  style="width: 100%;height: auto;">
-                                    {% for obj in tipo_inversiones %}
-                                         <option value={{obj.id}}>{{obj.nombreTipoInversion}}</option>
-                                    {% endfor %}
-                                </select>
+                    <div class="col-md-3" >
+                         <div class="panel panel-default panel-table">
+                            <div class="panel-body">
+                                <div class="tr">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <select id="msTipoInversion" multiple="multiple"  style="width: 100%;height: auto;">
+                                                {% for obj in tipo_inversiones %}
+                                                     <option value={{obj.id}}>{{obj.nombreTipoInversion}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <center><label>Rango de Inversi&oacute;n</label></center>
+                                        </div>
+                                    </div>
+                                    <div class="row"><center>
+                                        <div class="col-md-2">
+                                           De:
+                                        </div>
+                                        <div class="col-md-7">
+                                                <input type="text" class="form-control" id="inversionInicial" placeholder="0.00">
+                                        </div></center>
+                                        <div class="col-md-2">
+                                            MDP
+                                        </div>
+                                    </div>
+                                    <div class="row"><center>
+                                        <div class="col-md-2">
+                                            A:
+                                        </div>
+                                        <div class="col-md-7">
+                                                <input type="text" class="form-control" id="inversionFinal" placeholder="0.00">
+                                        </div></center>
+                                        <div class="col-md-2">
+                                            MDP
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <center><label>Rango de Inversi&oacute;n</label></center>
-                            </div>
-                        </div>
-                        <div class="row"><center>
-                            <div class="col-md-2">
-                                <span class="input-label">De:</span>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="item item-input">
-                                    <input type="text" class="form-control" id="inversionInicial" placeholder="0.00">
-                                </label>
-                            </div></center>
-                            <div class="col-md-2">
-                                <span class="input-label">MDP</span>
-                            </div>
-                        </div>
-                        <div class="row"><center>
-                            <div class="col-md-2">
-                                <span class="input-label">A:</span>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="item item-input">
-                                    <input type="text" class="form-control" id="inversionFinal" placeholder="0.00">
-                                </label>
-                            </div></center>
-                            <div class="col-md-2">
-                                <span class="input-label">MDP</span>
-                            </div>
-                        </div>
-
+                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-10">
+                    <div class="col-md-2" >
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-body">
+                                <div class="tr">
+                                    <div class="row">
+                                        <div class="col-md-10">
 
-                                <select id="msEstatusObra" multiple="multiple" style="width: 100%;height: auto;">
-                                    {% for obj in estatusObra %}
-                                         <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
-                                    {% endfor %}
-                                </select>
+                                            <select id="msEstatusObra" multiple="multiple" style="width: 100%;height: auto;">
+                                                {% for obj in estatusObra %}
+                                                     <option value={{obj.id}}>{{obj.nombreTipoObra}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <select id="msDependencias" multiple="multiple" style="width: 100%;height: auto;">
+                                                {% for dep in dependencias %}
+                                                     <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <select id="msEstados" multiple="multiple"  style="width: 100%;height: auto;">
+                                                {% for obj in estados %}
+                                                     <option value={{obj.id}}>{{obj.nombreEstado}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <select id="msDependencias" multiple="multiple" style="width: 100%;height: auto;">
-                                    {% for dep in dependencias %}
-                                         <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <select id="msEstados" multiple="multiple"  style="width: 100%;height: auto;">
-                                    {% for obj in estados %}
-                                         <option value={{obj.id}}>{{obj.nombreEstado}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-10">
+                    <div class="col-md-2" >
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-body">
+                                <div class="tr">
+                                    <div class="row">
+                                        <div class="col-md-10">
 
-                                <select id="msClasificacion" multiple="multiple" style="width: 100%;height: auto;">
-                                    {% for obj in clasificacion %}
-                                         <option value={{obj.id}}>{{obj.nombreTipoClasificacion}}</option>
-                                    {% endfor %}
-                                </select>
+                                            <select id="msClasificacion" multiple="multiple" style="width: 100%;height: auto;">
+                                                {% for obj in clasificacion %}
+                                                     <option value={{obj.id}}>{{obj.nombreTipoClasificacion}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <select id="msImpacto" multiple="multiple" style="width: 100%;height: auto;">
+                                                {% for dep in impactos %}
+                                                     <option value={{dep.id}}>{{dep.nombreImpacto}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <select id="msInaugurador" multiple="multiple" style="width: 100%;height: auto;">
+                                                {% for obj in inaugurador %}
+                                                     <option value={{obj.id}}>{{obj.nombreCargoInaugura}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-10">
-                                <select id="msImpacto" multiple="multiple" style="width: 100%;height: auto;">
-                                    {% for dep in impactos %}
-                                         <option value={{dep.id}}>{{dep.nombreImpacto}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                             <div class="col-md-12">
+                                  <article id="ver_datos">
+                                     {% csrf_token %}
+                                     <button id="button">Ver datos</button>
+                                     </article>
+                              </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <select id="msInaugurador" multiple="multiple" style="width: 100%;height: auto;">
-                                    {% for obj in inaugurador %}
-                                         <option value={{obj.id}}>{{obj.nombreCargoInaugura}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <article id="ver_datos">
-                                    {% csrf_token %}
-                                    <button id="button">Ver datos</button>
-                                </article>
-                                <article id="ver_variable">
-                                    {% csrf_token %}
-                                    <button id="button">Ver variable</button>
-                                </article>
-                            </div>
-                        </div>
-
-
                     </div>
-
-                    <div class="col-md-2">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <span class="input-label">Inauguradas</span>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="inauguradas" value="option1">
+                    <div class="col-md-2" >
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-body">
+                                <div class="tr">
+                                    <div class="row" >
+                                        <div class="col-md-9">
+                                            <span class="input-label">Inauguradas</span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" id="inauguradas" value="option1">
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-9">
+                                            <span class="input-label">Sin Inauguraci&oacute;n</span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" id="sinInauguracion" value="option2">
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-9">
+                                            <span class="input-label">No Inauguradas</span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" id="noInauguradas" value="option3">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <span class="input-label">Sin Inauguraci&oacute;n</span>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="sinInauguracion" value="option2">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <span class="input-label">No Inauguradas</span>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="noInauguradas" value="option3">
-                            </div>
-                        </div>
-
                     </div>
                 </div>
                 </div>
 
 
-   <div class="row">
+        <div class="row">
        <div class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
             <div class="col-md-12-box" id="datos" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
                <h4>RESULTADOS</h4>
@@ -927,6 +902,7 @@ $pp(function () {
            </div>
        </div>
        </div>
+   </div>
    </div>
 
 

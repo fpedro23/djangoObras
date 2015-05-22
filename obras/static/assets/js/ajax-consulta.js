@@ -51,7 +51,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'rlSlaamKUF45XZ470aFdByLDiUAfLu'
+      "access_token"  : 'DxpTXKtq4yqktgXu0QW0MIPshCma1z'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -709,7 +709,7 @@ function tablaD(Datos){
 
 
     $j('#datostablaDerecha').html(sHtml);
-    $j('#tablaGrafica').html(sHtml);
+
 }
 
 // llena la tabla del lado derecho
