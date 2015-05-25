@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}
+
+    <link href="{% static "css/menu.css" %}" rel="stylesheet">
+{% endblock %}
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+    <div id="regresarBTN" onclick="location.href='/obras/catalogo'">
+   </div>
+  <div id="welcome">
+    	I N A U G U R A D O R</div>
+
+  <div class="inauguradorADD" onclick="location.href='/admin/obras/inaugurador/add'">
+  </div>
+
+  <div class="inauguradorSEARCH" onclick="location.href='/admin/obras/inaugurador/'">
+  </div>
+
+  <div class="inauguradorEDIT" onclick="location.href='/admin/obras/inaugurador/'">
+  </div>
+
+  <div class="inauguradorDEL" onclick="location.href='/admin/obras/inaugurador/'">
+  </div>
+
+{% endblock %}

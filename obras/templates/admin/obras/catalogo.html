@@ -1,0 +1,38 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static admin_urls %}
+{% block extrastyle %}{{ block.super }}
+
+    <link href="{% static "css/menu.css" %}" rel="stylesheet">
+{% endblock %}
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+
+
+    <div id="regresarBTN" onclick="location.href='{% url 'admin:index' %}'">
+    </div>
+
+  <div id="welcome">
+    	C A T Á L O G O S
+  </div>
+
+  <div class="clasificacionCATALOGO" onclick="location.href='/obras/c_clasificacion'">
+  </div>
+
+  <div class="dependenciasCATALOGO" onclick="location.href='/obras/c_dependencia'">
+  </div>
+
+  <div class="inauguradorCATALOGO" onclick="location.href='/obras/c_inaugurador'">
+  </div>
+
+  <div class="impactoCATALOGO" onclick="location.href='/obras/c_impacto'">
+  </div>
+
+  <div class="inversionCATALOGO" onclick="location.href='/obras/c_inversion'">
+  </div>
+
+  <div class="subdependenciasCATALOGO" onclick="location.href='/obras/c_subdependencia'">
+  </div>
+
+{% endblock %}

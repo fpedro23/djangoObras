@@ -1,0 +1,155 @@
+.bienvenida{
+	font-family: "Myriad Pro";
+	font-size: 18px;
+	color: #6A6B6C;
+	width: 924px;
+	height: 40px;
+	position: absolute;
+	top: 61px;
+	left: 50px;
+}
+
+
+.campos01{
+	font-family: "Myriad Pro";
+	font-size: 18px;
+	color: #6A6B6C;
+	width: 400px;
+	height: 300px;
+	position: absolute;
+	left: 123px;
+	top: 116px;
+}
+
+.campos02{
+	font-family: "Myriad Pro";
+	font-size: 18px;
+	color: #6A6B6C;
+	width: 400px;
+	height: 300px;
+	position: absolute;
+	left: 573px;
+	top: 116px;
+}
+
+.campopag{
+	font-family: "Myriad Pro";
+	font-size: 18px;
+	color: #6A6B6C;
+	width: 400px;
+	height: 40px;
+	position: absolute;
+	left: 123px;
+	top: 430px;
+}
+
+.salirBTN{
+	width: 51px;
+	height: 30px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -726px -1925px;
+	position: absolute;
+	top: 419px;
+	left: 573px;
+}
+
+.salirBTN:hover{
+	background-position: -726px -1956px;
+}
+
+.guardarotroBTN{
+	width: 204px;
+	height: 30px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -780px -1925px;
+	position: absolute;
+	top: 419px;
+	left: 630px;
+}
+
+.guardarotroBTN:hover{
+	background-position: -780px -1956px;
+}
+
+.guardarsalirBTN{
+	width: 133px;
+	height: 30px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -907px -1861px;
+	position: absolute;
+	top: 419px;
+	left: 839px;
+}
+
+.guardarsalirBTN:hover{
+	background-position: -907px -1892px;
+}
+
+#regresarBTN{
+	 width: 80px;
+	 height: 22px;
+	 background-image:url(../img/bigBackground.fw.png);
+	 background-position: -300px 0px;
+}
+
+#regresarBTN:hover{
+	background-position: -300px -21px;
+}
+
+.set-errmsg {
+     position: relative;
+     width: 540px;
+     height: 40px;
+     border: 0px solid black;
+     margin-top: 0px;
+     margin-left: 0px;
+     font-size: 12px;
+    font-weight: bold;
+    color: #B92025;
+    top: 300px;
+	left: 439px;
+ }
+
+.error__msg {
+  font-size: 12px;
+  font-weight: bold;
+  color: #B92025;
+}
+
+.eliminarBTN{
+	width: 80px;
+	height: 30px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -724px -1789px;
+	position: absolute;
+	top: 419px;
+	left: 546px;
+}
+
+.eliminarBTN:hover{
+	background-position: -724px -1819px;
+}
+fieldset table {
+    border-right: 0px solid #eee;
+}
+
+tr.row-label td {
+    font-size: 9px;
+    padding-top: 2px;
+    padding-bottom: 0;
+    border-bottom: none;
+    color: #666;
+    margin-top: -1px;
+}
+
+tr.alt {
+    background: #f6f6f6;
+}
+
+.row1 {
+    background: #e1e1e1;
+}
+
+.row2 {
+    background: #fff;
+}

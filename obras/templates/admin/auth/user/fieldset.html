@@ -1,0 +1,82 @@
+
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+
+ <div class="set-catalogo">
+
+
+
+{% for line in fieldset %}
+  {% for field in line %}
+
+      {% if field.field.name == "username" %}
+        <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+              <div class="col-md-5"  >
+                        <label class="required" for="id_username">Nombre de usuario:</label>
+                    </div>
+            <div class="col-md-1" >
+                            <input id="id_username" maxlength="30" name="username" type="text" value="{{ field.field.value|default_if_none:"" }}" />
+
+                        <p class="help"></p>
+            </div>
+
+        </div>
+        {% endif %}
+
+        {% if field.field.name == "password1" %}
+            <div class="row field-password1" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                 <div class="col-md-5">
+                        <label class="required" for="id_password1">Contraseña:</label>
+                </div>
+                <div class="col-md-1" >
+                            <input id="id_password1" name="password1" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
+
+                </div>
+             </div>
+        {% endif %}
+
+          {% if field.field.name == "password2" %}
+                <div class="row field-password2" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+
+                        <div class="col-md-5">
+                                <label class="required" for="id_password2">Contraseña:</label>
+                        </div>
+                        <div class="col-md-1" >
+                                    <input id="id_password1" name="password2" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
+                                     <p class="help"></p>
+                        </div>
+                </div>
+        {% endif %}
+
+       {% if field.field.name == "rol" %}
+        <div class="row field-rol">
+            <div class="col-md-5" >
+                        <label class="required" for="id_rol">Rol:</label>
+            </div>
+             <div class="col-md-1" >
+                            <select id="id_rol" name="rol">
+                            <option value="SA">Administrador General</option>
+                            <option value="AD">Administrador de Dependencia</option>
+                            <option value="US" selected="selected">Usuario de Dependencia</option>
+                            </select>
+
+                </div>
+            </div>
+        {% endif %}
+
+        {% if field.field.name == "dependencia" %}
+         <div class="row field-dependencia">
+                <div class="col-md-5" >
+                    <label for="id_usuario-0-dependencia">Dependencia:</label>
+                </div>
+                <div class="col-md-1" >
+                    {{ field.field }}
+                </div>
+            </div>
+        {% endif %}
+
+
+  {% endfor %}
+   {% endfor %}
+
+</div>
+</fieldset>

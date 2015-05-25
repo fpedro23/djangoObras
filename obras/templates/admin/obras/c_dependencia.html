@@ -1,0 +1,30 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}
+
+    <link href="{% static "css/menu.css" %}" rel="stylesheet">
+{% endblock %}
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+       <div id="regresarBTN" onclick="location.href='/obras/catalogo'">
+   </div>
+
+  <div id="welcome">
+    	D E P E N D E N C I A S
+  </div>
+
+  <div class="dependenciaADD" onclick="location.href='/admin/obras/dependencia/add/'">
+  </div>
+
+  <div class="dependenciaSEARCH" onclick="location.href='/admin/obras/dependencia/'">
+  </div>
+
+  <div class="dependenciaEDIT" onclick="location.href='/admin/obras/dependencia/'">
+  </div>
+
+  <div class="dependenciaDEL" onclick="location.href='/admin/obras/dependencia/'">
+  </div>
+
+{% endblock %}

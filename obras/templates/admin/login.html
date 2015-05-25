@@ -1,0 +1,72 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}
+     <!-- bxSlider Javascript file -->
+    <script src="{% static "galeria/jquery.bxslider.min.js" %}"></script>
+    <!-- bxSlider CSS file -->
+    <link href="{% static "galeria/jquery.bxslider.css" %}" rel="stylesheet" />
+    <link href="{% static "galeria/scripts.js" %}" rel="stylesheet" />
+    <link href="{% static "css/login.css"%}" rel="stylesheet">
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login {% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+    <div class="galeria">
+          <ul class="bxslider" style=" -webkit-padding-start:0px">
+              <li><img src="{% static "img/FotoGalereria/001_gal.jpg" %}" /></li>
+              <li><img src="{% static "img/FotoGalereria/002_gal.jpg" %}" /></li>
+              <li><img src="{% static "img/FotoGalereria/003_gal.jpg" %}" /></li>
+              <li><img src="{% static "img/FotoGalereria/004_gal.jpg" %}" /></li>
+          </ul>
+    </div>
+
+        <div class="botGAL">
+        </div>
+
+        <div class="logIn">
+        <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+        	<p class="titulo">INICIAR SESIÓN</p>
+            <br />
+            <p>
+                    <label for="id_username" id="tit_1">
+                        <span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
+                        Usuario :
+                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{ form.username }}</p>
+            <p><label for="id_password" id="tit_1"><span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
+                        Contraseña</label>&nbsp;&nbsp;{{ form.password }}
+                        <input type="hidden" name="next" value="{{ next }}" />
+            </p>
+            {% if form.errors and not form.non_field_errors %}
+                <p class="error__msg">
+                {% if form.errors.items|length == 1 %} {{"Campos marcados con (*) son obligatorios"}} {% else %}{{ "Campos marcados con (*) son obligatorios" }} {% endif %}
+                </p>
+            {% endif %}
+            <div id="botLI" onclick="document.getElementById('login-form').submit();">
+            </div>
+        </form>
+                {% url 'admin_password_reset' as password_reset_url %}
+            <div id="olvidarPW" onclick="location.href='{{ password_reset_url }}'">
+            </div>
+		</div>
+
+
+                <script type="text/javascript">
+                document.getElementById('id_username').focus()
+                var $j = jQuery.noConflict()
+               $j(document).ready(function(){
+                $j('.bxslider').bxSlider({
+                    auto: true,
+                    mode: 'fade'
+                  });
+               });
+                </script>
+
+{% endblock %}

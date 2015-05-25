@@ -1,0 +1,73 @@
+
+/*elementos del DIV BODY correspondientes a la página de LOG IN*/
+ .galeria{
+	 position:relative;
+	 width:540px;
+	 height:360px;
+	 border: 1px solid black;
+	 margin-top:55px;
+	 margin-left:50px;
+}
+
+.botGAL{
+	width:55px;
+	height:10px;
+	position:absolute;
+	top: 365px;
+	left: 295px;
+	border: 1px solid black;
+}
+
+.logIn {
+	position: absolute;
+	left: 630px;
+	top: 55px;
+	width: 345px;
+	height: 360px;
+	z-index: 1;
+	/*border: 1px solid black;*/
+
+	font: "Soberana Texto";
+	font-size:18px;
+	font-weight:normal;
+	color: #6A6B6C;
+
+}
+
+.titulo{
+	font: "Soberana Titular";
+	font-size:25px;
+	font-weight:bold;
+	color: #6A6B6C;
+
+}
+
+#botLI{
+	width:126px;
+	height:45px;
+	position:absolute;
+	top: 250px;
+	left:217px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position:0px 0px;
+}
+
+#botLI:hover{
+	background-position: 0px -45px;
+}
+
+#olvidarPW{
+	width: 224px;
+	height:40px;
+
+	position:absolute;
+	top:320px;
+
+	background-image:url(../img/bigBackground.fw.png);
+	background-position:-127px -187px;
+}
+
+#olvidarPW:hover{
+	background-position: -127px -230px;
+}
+/*Cierre de elementos del DIV BODY correspondientes a la página de LOG IN*/

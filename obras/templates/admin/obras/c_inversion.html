@@ -1,0 +1,30 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}
+
+    <link href="{% static "css/menu.css" %}" rel="stylesheet">
+{% endblock %}
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+    <div id="regresarBTN" onclick="location.href='/obras/catalogo'">
+   </div>
+
+  <div id="welcome">
+    	I N V E R S I Ó N
+  </div>
+
+  <div class="inversionADD" onclick="location.href='/admin/obras/tipoinversion/add'">
+  </div>
+
+  <div class="inversionSEARCH" onclick="location.href='/admin/obras/tipoinversion/'">
+  </div>
+
+  <div class="inversionEDIT" onclick="location.href='/admin/obras/tipoinversion/'">
+  </div>
+
+  <div class="inversionDEL" onclick="location.href='/admin/obras/tipoinversion/'">
+  </div>
+
+{% endblock %}

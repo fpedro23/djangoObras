@@ -1,0 +1,247 @@
+/*elementos del DIV BODY correspondientes a la página de LOG IN*/
+
+ .en2015{
+	 position:absolute;
+	 padding:6px;
+	 width:456px;
+	 height:360px;
+	 top:25px;
+	 left:50px;
+	 background-image:url(../img/bigBackground.fw.png);
+	 background-position:-400px 0px;
+
+	font: "Soberana Titular";
+	font-size:25px;
+	font-weight:bold;
+	color: #FFFFFF;
+}
+
+#proceso{
+	width: 422px;
+	height: 25px;
+	padding-left: 3px;
+	position: absolute;
+	top: 246px;
+	left: 12px;
+}
+
+.logoPRCS{
+	width:27px;
+	height:25px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position:-250px 0px;
+}
+
+#proyectadas{
+	width: 422px;
+	height: 25px;
+	padding-left: 3px;
+	position: absolute;
+	top: 281px;
+	left: 12px;
+}
+
+.logoPRYC{
+	width:27px;
+	height:25px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position:-250px -29px;
+}
+
+#concluidas{
+	width: 422px;
+	height: 25px;
+	padding-left: 3px;
+	position: absolute;
+	top: 315px;
+	left: 12px;
+}
+
+.logoCNCL{
+	width:27px;
+	height:25px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position: -250px -59px;
+}
+
+.mapa {
+	position: absolute;
+	left: 523px;
+	width: 443px;
+	height: 360px;
+	z-index: 1;
+	border-color: #327451;
+	border-style: solid;
+	top: 27px;
+}
+
+.infografico{
+	position:absolute;
+	left:50px;
+	top:395px;
+	width:924px;
+	height:128px;
+	border-color: #327451;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: 0px -614px;
+}
+
+#info2012{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 79px;
+	position: absolute;
+	top: 12px;
+	left: 7px;
+	background-color: #DD3C40;
+}
+
+#info2013{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 79px;
+	position: absolute;
+	top: 12px;
+	left: 160px;
+	background-color: #CF242A;
+}
+
+#info2014{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 79px;
+	position: absolute;
+	top: 12px;
+	left: 313px;
+	background-color: #B92025;
+}
+
+#info2015{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 79px;
+	position: absolute;
+	top: 12px;
+	left: 466px;
+	background-color: #A31D20;
+}
+
+#info2016{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 79px;
+	position: absolute;
+	top: 12px;
+	left: 619px;
+	background-color: #911A1D;
+}
+
+#info2017{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+
+	width: 147px;
+	height: 79px;
+
+	position: absolute;
+	top: 12px;
+	left: 771px;
+	background-color: #951A1D;
+}
+
+#year2012{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 20px;
+	position: absolute;
+	top: 100px;
+	left: 7px;
+}
+
+#year2013{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 20px;
+	position: absolute;
+	top: 100px;
+	left: 160px;
+}
+
+#year2014{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 20px;
+	position: absolute;
+	top: 100px;
+	left: 313px;
+}
+
+#year2015{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 20px;
+	position: absolute;
+	top: 100px;
+	left: 466px;
+}
+
+#year2016{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 20px;
+	position: absolute;
+	top: 100px;
+	left: 619px;
+}
+
+#year2017{
+	font: "soberana Sans";
+	font-size: 15px;
+	color: #FFFFFF;
+	text-align: center;
+	width: 147px;
+	height: 20px;
+	position: absolute;
+	top: 100px;
+	left: 771px;
+}
+#titulo{
+	font: "Soberana Titular";
+	font-size:25px;
+	color: #6A6B6C;
+
+}
+
+/*Cierre de elementos del DIV BODY correspondientes a la página de LOG IN*/

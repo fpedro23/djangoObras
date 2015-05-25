@@ -1,0 +1,92 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}
+   <link href="{% static "css/index.css"%}" rel="stylesheet">{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+
+  <div id="welcome">
+    	B I E N V E N I D O
+    </div>
+
+    	<div class="en2015">
+        	En 2015
+
+            <div id="proceso">
+           	    <div class="logoPRCS">
+                </div>
+            </div>
+
+           <div id="proyectadas">
+            	<div class="logoPRYC">
+                </div>
+            </div>
+
+           <div id="concluidas">
+       		    <div class="logoCNCL">
+                </div>
+            </div>
+
+  </div>
+
+        <div class="mapa">
+		</div>
+
+  <div class="infografico">
+   	<div id ="info2012">
+    	gkjnkjtuilm
+    </div>
+
+    <div id="info2013">
+    	hjlkjly
+    </div>
+
+    <div id="info2014">
+    	fsfasgsa
+    </div>
+
+    <div id="info2015">
+    	khlkhjk
+    </div>
+
+    <div id="info2016">
+    	juñljlkbgkui
+    </div>
+
+    <div id="info2017">
+    	klhkmb nbfkul
+    </div>
+
+    <div id="year2012">
+    	2012
+    </div>
+
+    <div id="year2013">
+        2013
+    </div>
+
+    <div id="year2014">
+        2014
+    </div>
+
+    <div id="year2015">
+      	2015
+    </div>
+
+    <div id="year2016">
+      	2016
+    </div>
+
+    <div id="year2017">
+        2017
+    </div>
+  </div>
+
+{% endblock %}

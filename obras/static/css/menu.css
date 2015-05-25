@@ -1,0 +1,516 @@
+.altaOBRA{
+	width:180px;
+	height:190px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position: -1215px 0px;
+
+	position:absolute;
+	top: 149px;
+	left: 322px;
+}
+
+.altaOBRA:hover{
+	background-position: -1215px -190px;
+}
+
+.modificarOBRA{
+	width: 180px;
+	height:190px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position: -1395px 0px;
+
+	position:absolute;
+	top: 149px;
+	left:512px;
+}
+
+.modificarOBRA:hover{
+	background-position:-1395px -190px;
+}
+
+#regresarBTN{
+	 width: 80px;
+	 height: 22px;
+	 background-image:url(../img/bigBackground.fw.png);
+	 background-position: -300px 0px;
+}
+
+#regresarBTN:hover{
+	background-position: -300px -21px;
+}
+
+.filtroCONSULTAS{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1575px 0px;
+	position: absolute;
+	top: 153px;
+	left: 229px;
+}
+
+.filtroCONSULTAS:hover{
+	background-position: -1575px -190px;
+}
+
+.predefinidaCONSULTAS{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1755px 0px;
+	position: absolute;
+	top: 153px;
+	left: 419px;
+}
+
+.predefinidaCONSULTAS:hover{
+	background-position:-1755px -190px;
+}
+
+.guardadaCONSULTAS{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1035px -380px;
+	position: absolute;
+	top: 153px;
+	left: 610px;
+}
+
+.guardadaCONSULTAS:hover{
+	background-position:-1035px -570px;
+}
+
+
+.clasificacionCATALOGO{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1215px -380px;
+	position: absolute;
+	top: 53px;
+	left: 229px;
+}
+
+.clasificacionCATALOGO:hover{
+	background-position: -1215px -570px;
+}
+
+.dependenciasCATALOGO{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1395px -380px;
+	position: absolute;
+	top: 53px;
+	left: 419px;
+}
+
+.dependenciasCATALOGO:hover{
+	background-position:-1395px -570px;
+}
+
+.inauguradorCATALOGO{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1575px -380px;
+	position: absolute;
+	top: 53px;
+	left: 610px;
+}
+
+.inauguradorCATALOGO:hover{
+	background-position:-1575px -570px;
+}
+
+.impactoCATALOGO{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1755px -380px;
+	position: absolute;
+	top: 260px;
+	left: 229px;
+}
+
+.impactoCATALOGO:hover{
+	background-position:-1755px -570px;
+}
+
+.inversionCATALOGO{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1035px -760px;
+	position: absolute;
+	top: 260px;
+	left: 419px;
+}
+
+.inversionCATALOGO:hover{
+	background-position:-1035px -950px;
+}
+
+.subdependenciasCATALOGO{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1215px -760px;
+	position: absolute;
+	top: 260px;
+	left: 610px;
+}
+
+.subdependenciasCATALOGO:hover{
+	background-position:-1215px -950px;
+}
+
+
+
+.usuarioADD{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: 0px -744px;
+	position: absolute;
+	top: 53px;
+	left: 229px;
+}
+
+.usuarioADD:hover{
+	background-position: 0px -934px;
+}
+
+.usuarioSEARCH{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -180px -744px;
+	position: absolute;
+	top: 53px;
+	left: 419px;
+}
+
+.usuarioSEARCH:hover{
+	background-position:-180px -934px;
+}
+
+.usuarioEDIT{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -360px -744px;
+	position: absolute;
+	top: 53px;
+	left: 610px;
+}
+
+.usuarioEDIT:hover{
+	background-position:-360px -934px;
+}
+
+
+.usuarioDEL{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -540px -744px;
+	position: absolute;
+	top: 260px;
+	left: 419px;
+}
+
+.usuarioDEL:hover{
+	background-position:-540px -934px;
+}
+
+
+.clasifADD{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: 0px -1124px;
+	position: absolute;
+	top: 53px;
+	left: 229px;
+}
+
+.clasifADD:hover{
+	background-position: 0px -1314px;
+}
+
+.clasifSEARCH{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -180px -1124px;
+	position: absolute;
+	top: 53px;
+	left: 419px;
+}
+
+.clasifSEARCH:hover{
+	background-position:-180px -1314px;
+}
+
+.clasifEDIT{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -360px -1124px;
+	position: absolute;
+	top: 53px;
+	left: 610px;
+}
+
+.clasifEDIT:hover{
+	background-position:-360px -1314px;
+}
+
+
+.clasifDEL{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -540px -1124px;
+	position: absolute;
+	top: 260px;
+	left: 419px;
+}
+
+.clasifDEL:hover{
+	background-position:-540px -1314px;
+}
+
+.dependenciaADD{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: 0px -1504px;
+	position: absolute;
+	top: 53px;
+	left: 229px;
+}
+
+.dependenciaADD:hover{
+	background-position: 0px -1694px;
+}
+
+.dependenciaSEARCH{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -180px -1504px;
+	position: absolute;
+	top: 53px;
+	left: 419px;
+}
+
+.dependenciaSEARCH:hover{
+	background-position:-180px -1694px;
+}
+
+.dependenciaEDIT{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -360px -1504px;
+	position: absolute;
+	top: 53px;
+	left: 610px;
+}
+
+.dependenciaEDIT:hover{
+	background-position:-360px -1694px;
+}
+
+
+.dependenciaDEL{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -540px -1504px;
+	position: absolute;
+	top: 260px;
+	left: 419px;
+}
+
+.dependenciaDEL:hover{
+	background-position:-540px -1694px;
+}
+
+
+.impactoADD{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: 0px -2264px;
+	position: absolute;
+	top: 53px;
+	left: 229px;
+}
+
+.impactoADD:hover{
+	background-position: 0px -2454px;
+}
+
+.impactoSEARCH{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -180px -2264px;
+	position: absolute;
+	top: 53px;
+	left: 419px;
+}
+
+.impactoSEARCH:hover{
+	background-position:-180px -2454px;
+}
+
+.impactoEDIT{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -360px -2264px;
+	position: absolute;
+	top: 53px;
+	left: 610px;
+}
+
+.impactoEDIT:hover{
+	background-position:-360px -2454px;
+}
+
+
+.impactoDEL{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -540px -2264px;
+	position: absolute;
+	top: 260px;
+	left: 419px;
+}
+
+.impactoDEL:hover{
+	background-position:-540px -2454px;
+}
+
+
+
+.inauguradorADD{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: 0px -1884px;
+	position: absolute;
+	top: 53px;
+	left: 229px;
+}
+
+.inauguradorADD:hover{
+	background-position: 0px -2074px;
+}
+
+.inauguradorSEARCH{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -180px -1884px;
+	position: absolute;
+	top: 53px;
+	left: 419px;
+}
+
+.inauguradorSEARCH:hover{
+	background-position:-180px -2074px;
+}
+
+.inauguradorEDIT{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -360px -1884px;
+	position: absolute;
+	top: 53px;
+	left: 610px;
+}
+
+.inauguradorEDIT:hover{
+	background-position:-360px -2074px;
+}
+
+
+.inauguradorDEL{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -540px -1884px;
+	position: absolute;
+	top: 260px;
+	left: 419px;
+}
+
+.inauguradorDEL:hover{
+	background-position:-540px -2074px;
+}
+
+
+.inversionADD{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: 0px -2644px;
+	position: absolute;
+	top: 53px;
+	left: 229px;
+}
+
+.inversionADD:hover{
+	background-position: 0px -2834px;
+}
+
+.inversionSEARCH{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -180px -2644px;
+	position: absolute;
+	top: 53px;
+	left: 419px;
+}
+
+.inversionSEARCH:hover{
+	background-position:-180px -2834px;
+}
+
+.inversionEDIT{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -360px -2644px;
+	position: absolute;
+	top: 53px;
+	left: 610px;
+}
+
+.inversionEDIT:hover{
+	background-position:-360px -2834px;
+}
+
+
+.inversionDEL{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -540px -2644px;
+	position: absolute;
+	top: 260px;
+	left: 419px;
+}
+
+.inversionDEL:hover{
+	background-position:-540px -2834px;
+}

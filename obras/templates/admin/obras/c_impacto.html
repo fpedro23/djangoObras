@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}
+
+    <link href="{% static "css/menu.css" %}" rel="stylesheet">
+{% endblock %}
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+    <div id="regresarBTN" onclick="location.href='/obras/catalogo'">
+   </div>
+
+
+  <div id="welcome">
+    	I M P A C T O
+  </div>
+
+  <div class="impactoADD" onclick="location.href='/admin/obras/impacto/add'">
+  </div>
+
+  <div class="impactoSEARCH" onclick="location.href='/admin/obras/impacto/'">
+  </div>
+
+  <div class="impactoEDIT" onclick="location.href='/admin/obras/impacto/'">
+  </div>
+
+  <div class="impactoDEL" onclick="location.href='/admin/obras/impacto/'">
+  </div>
+
+{% endblock %}

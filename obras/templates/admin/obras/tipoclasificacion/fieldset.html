@@ -1,0 +1,36 @@
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+  <div class="campos01">
+   <p>&nbsp;</p><p>&nbsp;</p>
+  {% for line in fieldset %}
+  {% for field in line %}
+      {% if field.field.name == "nombreTipoClasificacion" %}
+
+        <div class="row field-nombreTipoClasificacion" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+            <div class="col-md-7" align="left"><label id="label-fld" for="id_nombreTipoClasificacion">
+                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                Nombre de Clasificación:</label></div>
+
+            <div class="col-md-1"><input class="vTextField" id="id_nombreTipoClasificacion" maxlength="200" name="nombreTipoClasificacion" type="text"
+                                value="{{ field.field.value|default_if_none:"" }}"/></div>
+            </div>
+        {% endif %}
+
+       {% if field.field.name == "nombreTipoClasificacionCorta" %}
+        <div class="row field-nombreTipoClasificacionCorta" align="center" >
+              <div class="col-md-7" align="left">
+                        <label class="required" id="label-fld" for="id_nombreTipoClasificacionCorta">
+                             <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                            Nombre Corto:</label>
+              </div>
+                <div class="col-md-1">
+                    <input class="vTextField" id="id_nombreTipoClasificacionCorta" maxlength="200" name="nombreTipoClasificacionCorta" type="text" value="{{ field.field.value|default_if_none:"" }}"/>
+
+                </div>
+        </div>
+        {% endif %}
+  {% endfor %}
+   {% endfor %}
+        </div>
+</fieldset>
+
+
