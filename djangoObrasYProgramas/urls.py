@@ -27,6 +27,7 @@ urlpatterns = patterns(
     url(r'^obras/c_guardada$', 'obras.views.c_guardada', name='c_guardada'),
     url(r'^obras/c_predefinida$', 'obras.views.c_predefinida', name='c_predefinida'),
     url(r'^obras/usuarios$', 'obras.views.usuarios', name='usuarios'),
+    url(r'^obras/consulta_filtros', 'obras.views.consulta_web', name='consulta_filtros'),
 
 
    ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
