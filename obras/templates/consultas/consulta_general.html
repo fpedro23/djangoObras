@@ -299,7 +299,7 @@
 <script>
 
 var $pp = jQuery.noConflict();
-
+$pp('#tabla-exporta').hide();
 $pp(function () {
 	  $pp('.popup-modal').magnificPopup({
 	    type: 'inline',
@@ -318,6 +318,27 @@ $pp(function () {
 		mainClass: 'my-mfp-zoom-in'
 	  });
 	  $pp(document).on('click', '.popup-modal-dismiss', function (e) {
+	    e.preventDefault();
+	    $pp.magnificPopup.close();
+	  });
+
+      $pp('.popup-exporta').magnificPopup({
+	    type: 'inline',
+	    preloader: false,
+	    modal: true,
+          fixedContentPos: false,
+		fixedBgPos: true,
+
+		overflowY: 'auto',
+
+		closeBtnInside: true,
+		preloader: false,
+
+		midClick: true,
+		removalDelay: 300,
+		mainClass: 'my-mfp-zoom-in'
+	  });
+	  $pp(document).on('click', '.popup-exporta-dismiss', function (e) {
 	    e.preventDefault();
 	    $pp.magnificPopup.close();
 	  });
@@ -366,12 +387,58 @@ $pp(function () {
     <script src="../../static/assets/graficas/highcharts/js/themes/grid-light.js"></script>
 <script src="../../static/assets/graficas/highcharts/js/modules/exporting.js"></script>
 
+    <!--libs para exportar a excel, pdf y power point -->
+    <script type="text/javascript" src="../../static/assets/export/tableExport.js"></script>
+	<script type="text/javascript" src="../../static/assets/export/jquery.base64.js"></script>
+	<script type="text/javascript" src="../../static/assets/export/html2canvas.js"></script>
+	<script type="text/javascript" src="../../static/assets/export/jspdf/libs/sprintf.js"></script>
+	<script type="text/javascript" src="../../static/assets/export/jspdf/jspdf.js"></script>
+	<script type="text/javascript" src="../../static/assets/export/jspdf/libs/base64.js"></script>
+
 </head>
 <body>
-   <header>
+    <header>
 		<!--<!DOCTYPE><h1>PARÁMETROS DE CONSULTA</h1> -->
 	</header>
 
+    <div id="tabla-exporta" style="height: 0px;"></div>
+
+    <div id="modal-exporta" class="white-popup-block mfp-hide centerDiv"  style="width: 50%;">
+        <div class="panel panel-default panel-table">
+            <div class="panel-body">
+                <div class="tr">
+                    <h1>EXPORTAR</h1>
+                    <div class="row centerDiv">
+                        <div class="col-md-4">
+                            <article id="ver_datos">
+                                {% csrf_token %}
+                                <div class="col-md-2 imprimePDF" id="enviaPDF" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'pdf',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                            </article>
+                        </div>
+                        <div class="col-md-4">
+                            <article id="ver_datos">
+                                {% csrf_token %}
+                                <div class="col-md-2 imprimeEXCEL" id="enviaEXCEL" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'excel',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                            </article>
+                        </div>
+                        <div class="col-md-4">
+                            <article id="ver_datos">
+                                {% csrf_token %}
+                                <div class="col-md-2 imprimePPT" id="enviaPPT" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'powerpoint',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row centerDiv">
+            <article id="salir_exporta">
+                {% csrf_token %}
+                <div class="col-md-6 salirBTN popup-exporta-dismiss" id="salirExporta" style="height: 30px">
+                </div>
+            </article>
+        </div>
+    </div>
 
     <div id="test-modal" class="white-popup-block mfp-hide" >
 			<h1>GR&Aacute;FICAS</h1>
@@ -670,7 +737,6 @@ $pp(function () {
                                      </div>
                                   </article>
                              </div>
-
                         </div>
                     </div>
                     <div class="col-md-2" >
@@ -893,9 +959,9 @@ $pp(function () {
                         <input type="radio" name="tipoReporte" value="RCI" />
                    </div>
                    <div class="col-xs-2">
-                       <article id="ver_grafica">
+                       <article id="ver_exporta">
                            {% csrf_token %}
-                           <div class="col-xs-2 exportarBTN"  id="exportar" style="height: 30px"></div>
+                           <div class="col-xs-2 exportarBTN popup-exporta" href="#modal-exporta" id="exportar" style="height: 30px"></div>
                        </article>
                    </div>
                    <div class="col-xs-2">

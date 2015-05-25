@@ -67,6 +67,21 @@
     cursor: pointer;
 }
 
+.salirBTN{
+	width: 60px;
+	height: 30px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -806px -1788px;
+	position: relative;
+    display: inline-block;
+}
+
+.salirBTN:hover{
+	background-position: -806px -1818px;
+    cursor: pointer;
+}
+
+
 .exportarBTN{
 	width: 30px;
 	height: 30px;
@@ -93,4 +108,53 @@
 .graficoBTN:hover{
 	background-position:-709px -399px;
     cursor: pointer;
+}
+
+.imprimePDF{
+	width: 77px;
+	height: 99px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -1006px -2258px;
+	position: relative;
+    display: inline-block;
+}
+
+.imprimePDF:hover{
+	background-position: -1006px -2258px;
+    cursor: pointer;
+}
+
+.imprimeEXCEL{
+	width: 77px;
+	height: 99px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -920px -2257px;
+	position: relative;
+    display: inline-block;
+}
+
+.imprimeEXCEL:hover{
+	background-position: -920px -2257px;
+    cursor: pointer;
+}
+
+.imprimePPT{
+	width: 77px;
+	height: 99px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -1098px -2258px;
+	position: relative;
+    display: inline-block;
+}
+
+.imprimePPT:hover{
+	background-position: -1098px -2258px;
+    cursor: pointer;
+}
+
+.centerDiv {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+
 }

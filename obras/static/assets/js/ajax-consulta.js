@@ -51,7 +51,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'iU4yMULvcnHanBYpqzhrbWfwDmMHrC'
+      "access_token"  : '3vhc09ukMvE5HMYtDSkuN046Hx7HFB'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -584,10 +584,12 @@ function tablaD(Datos){
     var tipoReporte = $j('input:radio[name=tipoReporte]:checked').val();
     var dependenciasChecked="";
     var estadosChecked="";
+    var sHtmlExporta='<h4>REPORTES</h4><table cellspacing="1" id="tablaExporta">';
+    var sHtmlShorter='<h4>REPORTES</h4><table cellspacing="1" class="tablesorter" id="tablaDerecha">';
 
     //alert($j('input:radio[name=tipoReporte]:checked').val());
-    var sHtml='<h4>REPORTES</h4><table cellspacing="1" class="tablesorter" id="tablaDerecha">'
-                    +'<thead>'
+
+    var sHtml='<thead>'
                         +'<tr>'
                             +'<th>Tipo Inversi&oacute;n</th>'
                             +'<th>No. de Obras</th>'
@@ -701,14 +703,13 @@ function tablaD(Datos){
                 +'                pageSize    : "#pagesizeD"'
                 +'        }'
                 +'    }'
-                +'});'
+                 +'});'
                 +'});'
                 +'</script>';
 
-
-
-
-    $j('#datostablaDerecha').html(sHtml);
+    $j('#tabla-exporta').hide();
+    $j('#datostablaDerecha').html(sHtmlShorter + sHtml);
+    $j('#tabla-exporta').html(sHtmlExporta + sHtml);
 
 }
 
