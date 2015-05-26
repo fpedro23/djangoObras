@@ -18,6 +18,7 @@ urlpatterns = patterns(
     url(r'^obras/catalogo$', 'obras.views.catalogo', name='catalogo'),
     url(r'^obras/c_clasificacion$', 'obras.views.c_clasificacion', name='c_clasificacion'),
     url(r'^obras/c_dependencia$', 'obras.views.c_dependencia', name='c_dependencia'),
+     url(r'^obras/c_subdependencia$', 'obras.views.c_subdependencia', name='c_subdependencia'),
     url(r'^obras/c_inaugurador$', 'obras.views.c_inaugurador', name='c_inaugurador'),
     url(r'^obras/c_impacto$', 'obras.views.c_impacto', name='c_impacto'),
     url(r'^obras/c_inversion$', 'obras.views.c_inversion', name='c_inversion'),

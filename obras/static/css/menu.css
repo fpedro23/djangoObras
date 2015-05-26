@@ -514,3 +514,62 @@
 .inversionDEL:hover{
 	background-position:-540px -2834px;
 }
+
+
+
+.subdepADD{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1395px -760px;
+	position: absolute;
+	top: 53px;
+	left: 229px;
+}
+
+.subdepADD:hover{
+	background-position: -1395px -950px;
+}
+
+.subdepSEARCH{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1575px -760px;
+	position: absolute;
+	top: 53px;
+	left: 419px;
+}
+
+.subdepSEARCH:hover{
+	background-position:-1575px -950px;
+}
+
+.subdepEDIT{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1755px -760px;
+	position: absolute;
+	top: 53px;
+	left: 610px;
+}
+
+.subdepEDIT:hover{
+	background-position:-1755px -950px;
+}
+
+
+.subdepDEL{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1035px -1140px;
+	position: absolute;
+	top: 260px;
+	left: 419px;
+}
+
+.subdepDEL:hover{
+	background-position:-1035px -1330px;
+}

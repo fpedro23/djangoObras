@@ -37,6 +37,10 @@ def c_dependencia(request):
     return render_to_response('admin/obras/c_dependencia.html', locals(),
                               context_instance=RequestContext(request))
 
+def c_subdependencia(request):
+    return render_to_response('admin/obras/c_subdependencia.html', locals(),
+                              context_instance=RequestContext(request))
+
 
 def c_impacto(request):
     return render_to_response('admin/obras/c_impacto.html', locals(),

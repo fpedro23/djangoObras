@@ -17,30 +17,34 @@
 
 {% if not is_popup %}
     {% block breadcrumbs %}
-        <div class="breadcrumbs">
-            <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-            &rsaquo; <a
-                href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
-            &rsaquo; {% if has_change_permission %}
-            <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}
-            {{ opts.verbose_name_plural|capfirst }}{% endif %}
-            &rsaquo;
-            {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
-        </div>
     {% endblock %}
 {% endif %}
 
 {% block content %}
-    <div id="content-main">
+      <div id="regresarBTN" onclick="location.href='/obras/c_impacto'">
+   </div>
+
+  <div id="welcome">
+        {% if not change %}
+            Agregar
+        {% else %}
+            Modificar
+        {% endif %}
+        Tipo de Impacto
+  </div>
+
+  <div class="bienvenida">
+      {% if not change %}
+            Bienvenido a Agregar Tipo de Impacto. Los campos marcados con asterisco (*) son obligatorios para el registro exitoso del mismo.
+        {% else %}
+            Bienvenido a Modificar Tipo de Impacto. Realice los cambios al Tipo de Impacto seleccionado y seleccione Guardar.
+        {% endif %}
+ </div>
+
         {% block object-tools %}
             {% if change %}{% if not is_popup %}
                 <ul class="object-tools">
                     {% block object-tools-items %}
-                        <li>
-                            {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
-                            <a href="{% add_preserved_filters history_url %}"
-                               class="historylink">{% trans "History" %}</a>
-                        </li>
                         {% if has_absolute_url %}
                             <li><a href="{{ absolute_url }}" class="viewsitelink">{% trans "View on site" %}</a></li>
                         {% endif %}
@@ -134,5 +138,5 @@
             </div>
 
         </form>
-    </div>
+
 {% endblock %}

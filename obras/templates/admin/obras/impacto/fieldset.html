@@ -1,12 +1,29 @@
-<h1>Alta de Impacto</h1>
+
  <fieldset class="module aligned ">
 
-    <div class="form-row field-nombreImpacto">
-         <div>
-            <label for="id_nombreImpacto">Impacto:</label>
-             <input class="vTextField" id="id_nombreImpacto" maxlength="200" name="nombreImpacto" type="text" />
-            <input id="id_nombreImpacto" name="nombreImpacto" type="file" />
-         </div>
-     </div>
+    <div class="campos01">
+
+              <p>&nbsp;</p><p>&nbsp;</p>
+         {% for line in fieldset %}
+            {% for field in line %}
+
+                {% if field.field.name == "nombreImpacto" %}
+                    <div class="row field-nombreImpacto" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-4" align="left"><label id="label-fld" for="id_nombreImpacto">
+                        <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                       Impacto:</label></div>
+
+                    <div class="col-md-1"><input class="vTextField" id="id_nombreImpacto" maxlength="200" name="nombreImpacto" type="text"
+                                        value="{{ field.field.value|default_if_none:"" }}"/></div>
+                    </div>
+                {% endif %}
+
+                   <input id="id_nombreImpacto" name="nombreImpacto" type="file"  value="{{ field.field.value|default_if_none:"" }}" />
+
+    {% endfor %}
+   {% endfor %}
+        </div>
+
+
  </fieldset>
 
