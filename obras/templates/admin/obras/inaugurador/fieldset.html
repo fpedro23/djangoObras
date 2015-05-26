@@ -1,0 +1,25 @@
+
+
+  <fieldset class="module aligned ">
+
+<div class="campos01">
+{% for line in fieldset %}
+  {% for field in line %}
+      {% if field.field.name == "nombreCargoInaugura" %}
+
+        <div class="row field-nombreCargoInaugura" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+            <div class="col-md-7" align="left"><label id="label-fld" for="id_nombreCargoInaugura">
+                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                Nombre de Inaugurador:</label></div>
+
+            <div class="col-md-1"><input class="vTextField" id="id_nombreCargoInaugura" maxlength="200" name="nombreCargoInaugura" type="text"
+                                value="{{ field.field.value|default_if_none:"" }}"/></div>
+            </div>
+        {% endif %}
+
+
+{% endfor %}
+   {% endfor %}
+</div>
+</fieldset>
+
