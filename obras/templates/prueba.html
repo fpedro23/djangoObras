@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $.ajax({
+                    url: 'http://localhost:8000/obras/api/estados',
+                    type: 'get',
+                    data: {
+                        access_token: 'KRmZyQFQJAUPUQ0tOyHhwfkQ56opZ3'
+                    },
+                    success: function(data) {
+                        alert('success!!! ' + data[0].nombreEstado);
+
+                    },
+                    error: function(data) {
+                        alert('error!!! ' + data.status);
+                    }
+                });
+            });
+
+            var onselect = function() {
+
+            }
+        </script>
+
+        <h1>test</h1>
+        <form>{% csrf_token %}
+            <select id="select_dependences">
+                <option value="1">dependencia 1</option>
+                <option value="2">dependencia 2</option>
+            </select>
+        </form>
+    </body>
+</html>

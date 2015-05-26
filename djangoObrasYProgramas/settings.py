@@ -39,8 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'obras',
     'oauth2_provider',
-    # 'djangosecure',
-    # 'sslify',
+    #'djangosecure',
+    #'sslify',
 )
 
 # MIDDLEWARE_CLASSES = (
@@ -55,8 +55,8 @@ INSTALLED_APPS = (
 # )
 
 MIDDLEWARE_CLASSES = (
-    # 'sslify.middleware.SSLifyMiddleware',
-    'djangosecure.middleware.SecurityMiddleware',
+    #'sslify.middleware.SSLifyMiddleware',
+    #'djangosecure.middleware.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -94,6 +94,13 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': 'db.sqlite3',
+#    }
+#}
 
 MEDIA_ROOT = '/djangoApps/'
 MEDIA_URL = '/media/'

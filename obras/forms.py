@@ -1,8 +1,7 @@
-import itertools
-
 from django import forms
-
-from obras.models import *
+from django.utils.text import slugify
+from obras.models import Obra
+import itertools
 
 
 class AddObraForm(forms.ModelForm):
@@ -24,21 +23,3 @@ class AddObraForm(forms.ModelForm):
 
         print(instance.identificador_unico)
         return super(AddObraForm, self).save(commit=commit)
-
-
-class AddUserForm(forms.ModelForm):
-    class Meta:
-        model = Usuario
-        fields = '__all__'
-
-
-class AddAuthUserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
-
-
-class UbicacionForm(forms.ModelForm):
-    class Meta:
-        model = Ubicacion
-        fields = '__all__'

@@ -1,4 +1,7 @@
 # Create your views here.
+import datetime
+import json
+from django.shortcuts import render_to_response
 import os
 from django.forms import model_to_dict
 import json
@@ -10,8 +13,10 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
 from oauth2_provider.views import ProtectedResourceView
 from oauth2_provider.models import AccessToken
+
 # from pptx import Presentation
 from obras.models import *
+from obras.BuscarObras import BuscarObras
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
@@ -89,6 +94,9 @@ def usuarios(request):
 
 class EstadosEndpoint(ProtectedResourceView):
 
+    def get(self, request, *args, **kwargs):
+        json_response = json.dumps(map(lambda estado: estado.to_serializable_dict(), Estado.objects.all()))
+        return HttpResponse(json_response,'application/json')
     def get(self, request):
         json_response = json.dumps(map(lambda estado: estado.to_serializable_dict(), Estado.objects.all()))
         return HttpResponse(json_response, 'application/json')
@@ -103,18 +111,29 @@ class DependenciasEndpoint(ProtectedResourceView):
         print token_model.user
 
         if token_model.user.usuario.rol == 'SA':
-            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.all())
+            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.all())
 
         elif token_model.user.usuario.rol == 'AD':
-            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id) |
                 Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
             )
 
         else:
-            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+            dicts = map(lambda dependencia: model_to_dict(dependencia), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
             )
+
+        for dictionary in dicts:
+            # We KNOW that this entry must be a FileField value
+            # (therefore, calling its name attribute is safe),
+            # so we need to mame it JSON serializable (Django objects
+            # are not by default and its built-in serializer sucks),
+            # namely, we only need the path
+            if dictionary['imagenDependencia'].name == '' or dictionary['imagenDependencia'].name == '':
+                dictionary['imagenDependencia'] = None
+            else:
+                dictionary['imagenDependencia'] = dictionary['imagenDependencia'].name
 
         json_response = json.dumps(dicts)
         return HttpResponse(json_response, 'application/json')
@@ -123,14 +142,14 @@ class DependenciasEndpoint(ProtectedResourceView):
 class ImpactosEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        json_response = json.dumps(map(lambda impacto: impacto.to_serializable_dict(), Impacto.objects.all()))
+        json_response = json.dumps(map(lambda impacto: model_to_dict(impacto), Impacto.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
 
 class InauguradorEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        json_response = json.dumps(map(lambda inaugurador: inaugurador.to_serializable_dict(), Inaugurador.objects.all()))
+        json_response = json.dumps(map(lambda inaugurador: model_to_dict(inaugurador), Inaugurador.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
 
@@ -142,7 +161,7 @@ class ClasificacionEndpoint(ProtectedResourceView):
         else:
             clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id__isnull=True)
 
-        json_response = json.dumps(map(lambda clasificacion: clasificacion.to_serializable_dict(), clasificaciones))
+        json_response = json.dumps(map(lambda clasificacion: model_to_dict(clasificacion), clasificaciones))
         return HttpResponse(json_response, 'application/json')
 
 
@@ -150,7 +169,7 @@ class ClasificacionEndpoint(ProtectedResourceView):
 class InversionEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        json_response = json.dumps(map(lambda inversion: inversion.to_serializable_dict(), TipoInversion.objects.all()))
+        json_response = json.dumps(map(lambda inversion: model_to_dict(inversion), TipoInversion.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
 
@@ -160,7 +179,6 @@ class TipoDeObraEndpoint(ProtectedResourceView):
         json_response = json.dumps(map(lambda x: model_to_dict(x), TipoObra.objects.all()))
         return HttpResponse(json_response, 'application/json')
 
-class BuscadorEndpoint(ProtectedResourceView):
 
     def get(self, request):
         buscador = BuscarObras(
@@ -291,6 +309,138 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['reporte_general'].append(map)
 
         return HttpResponse(json.dumps(json_map), 'application/json')
+
+
+    def get(self, request):
+        buscador = BuscarObras(
+            idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+            iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            estados=get_array_or_none(request.GET.get('estado')),
+            clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
+            inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
+            inauguradores=get_array_or_none(request.GET.get('inaugurador')),
+            impactos=get_array_or_none(request.GET.get('impacto')),
+            inaugurada=request.GET.get('inaugurada', None),
+            inversion_minima=request.GET.get('inversionMinima', None),
+            inversion_maxima=request.GET.get('inversionMaxima', None),
+            fecha_inicio_primera=request.GET.get('fechaInicio', None),
+            fecha_inicio_segunda=request.GET.get('fechaInicioSegunda', None),
+            fecha_fin_primera=request.GET.get('fechaFin', None),
+            fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+            denominacion=request.GET.get('denominacion', None),
+        )
+        resultados = buscador.buscar()
+
+        json_map = {}
+
+        json_map['reporte_dependencia'] = []
+        for reporte in resultados['reporte_dependencia']:
+            map = {}
+            map['dependencia'] = Dependencia.objects.get(nombreDependencia=reporte['dependencia__nombreDependencia']).to_serializable_dict()
+            map['numero_obras'] = reporte['numero_obras']
+            if reporte['sumatotal'] is None:
+                map['sumatotal'] = 0
+            else:
+                map['sumatotal'] = int(reporte['sumatotal'])
+            json_map['reporte_dependencia'].append(map)
+
+        json_map['obras'] = []
+        for obra in resultados['obras']:
+            map = {}
+
+            map['identificador'] = obra.identificador_unico
+            map['tipoObra'] = obra.tipoObra.to_serializable_dict()
+            map['dependencia'] = obra.dependencia.to_serializable_dict()
+            map['estado'] = obra.estado.to_serializable_dict()
+            map['impacto'] = obra.impacto.to_serializable_dict()
+
+            map['tipoInversion'] = []
+            for tipoInversion in obra.tipoInversion.all():
+                tipo = tipoInversion.to_serializable_dict()
+                map['tipoInversion'].append(tipo)
+
+            map['tipoClasificacion'] = []
+            for tipoClasificacion in obra.tipoClasificacion.all():
+                tipo = tipoClasificacion.to_serializable_dict()
+                map['tipoClasificacion'].append(tipo)
+
+            map['inaugurador'] = obra.inaugurador.to_serializable_dict()
+            map['registroHacendario'] = obra.registroHacendario
+            map['registroAuditoria'] = obra.registroAuditoria
+            map['denominacion'] = obra.denominacion
+            map['descripcion'] = obra.descripcion
+            map['observaciones'] = obra.observaciones
+            if obra.fechaInicio is None:
+                map['fechaInicio'] = None
+            else:
+                map['fechaInicio'] = obra.fechaInicio.__str__()
+            if obra.fechaTermino is None:
+                map['fechaTermino'] = None
+            else:
+                map['fechaTermino'] = obra.fechaTermino.__str__()
+            if obra.inversionTotal is None:
+                map['inversionTotal'] = str(0.0)
+            else:
+                map['inversionTotal'] = str(obra.inversionTotal)
+            if obra.totalBeneficiarios is None:
+                map['totalBeneficiarios'] = str(0)
+            else:
+                map['totalBeneficiarios'] = str(obra.totalBeneficiarios)
+            map['senalizacion'] = str(obra.senalizacion)
+            map['susceptibleInauguracion'] = str(obra.susceptibleInauguracion)
+            if obra.porcentajeAvance is None:
+                map['porcentajeAvance'] = 0.0
+            else:
+                map['porcentajeAvance'] = float(obra.porcentajeAvance)
+            if obra.fotoAntes is None:
+                map['fotoAntes'] = None
+            else:
+                map['fotoAntes'] = obra.fotoAntes.name
+            if obra.fotoDurante is None:
+                map['fotoAntes'] = None
+            else:
+                map['fotoAntes'] = obra.fotoDurante.name
+            if obra.fotoDespues is None:
+                map['fotoAntes'] = None
+            else:
+                map['fotoAntes'] = obra.fotoDespues.name
+            map['inaugurada'] = str(obra.inaugurada)
+            map['poblacionObjetivo'] = obra.poblacionObjetivo
+            map['municipio'] = obra.municipio
+            map['fechaModificacion'] = obra.fechaModificacion.isoformat()
+            if obra.tipoMoneda is None:
+                map['tipoMoneda'] = None
+            else:
+                map['tipoMoneda'] = obra.tipoMoneda.nombreTipoDeMoneda
+
+            json_map['obras'].append(map)
+
+        json_map['reporte_estado'] = []
+        for reporte_estado in resultados['reporte_estado']:
+            map = {}
+            if reporte_estado['sumatotal'] is None:
+                map['sumatotal'] = 0.0
+            else:
+                map['sumatotal'] = float(reporte_estado['sumatotal'])
+            map['estado'] = Estado.objects.get(nombreEstado=reporte_estado['estado__nombreEstado']).to_serializable_dict()
+            map['numeroObras'] = reporte_estado['numero_obras']
+
+            json_map['reporte_estado'].append(map)
+
+        json_map['reporte_general'] = []
+        map = {}
+        total = resultados['reporte_general']['total_invertido']['inversionTotal__sum']
+        if total is None:
+            total = 0.0
+        else:
+            total = float(total)
+        map['total_invertido'] = total
+
+        map['obras_totales'] = resultados['reporte_general']['obras_totales']
+        json_map['reporte_general'].append(map)
+
+        return HttpResponse(json.dumps(json_map), 'application/json')
+
 
 
 def is_super_admin(user):
@@ -672,6 +822,7 @@ def consulta_web(request):
         dependencias = Dependencia.objects.filter(
                     Q(id=request.user.usuario.dependencia.id)
                     )
+    template = loader.get_template('consultas/consulta_general.html')
     #template = loader.get_template('consultas/busqueda_general.html')
     template = loader.get_template('admin/obras/consulta_filtros/consulta-filtros.html')
     context = RequestContext(request, {
@@ -681,39 +832,6 @@ def consulta_web(request):
         'impactos': Impacto.objects.all(),
         'clasificacion': TipoClasificacion.objects.all(),
         'inaugurador': Inaugurador.objects.all(),
-    })
-    return HttpResponse(template.render(context))
-
-
-def get_array_or_none(the_string):
-    if the_string is None:
-        return None
-    else:
-        return map(int, the_string.split(','))
-
-def buscar_obras_web(request):
-    #TODO cambiar los parametros 'None' por get del request
-    buscador = BuscarObras(idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
-                           iddependencias=get_array_or_none(request.GET.get('tipoDeObra')),
-                           estados=get_array_or_none(request.GET.get('tipoDeObra')),
-                           clasificaciones=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inversiones=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inauguradores=get_array_or_none(request.GET.get('tipoDeObra')),
-                           impactos=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inaugurada=None,
-                           inversion_minima=None,
-                           inversion_maxima=None,
-                           fecha_inicio_primera=None,
-                           fecha_inicio_segunda=None,
-                           fecha_fin_primera=None,
-                           fecha_fin_segunda=None,
-                           denominacion=None,
-    )
-    resultados = buscador.buscar()
-
-    template = loader.get_template('consultas/resultado_busqueda.html')
-    context = RequestContext(request, {
-        'resultados': resultados
     })
     return HttpResponse(template.render(context))
 

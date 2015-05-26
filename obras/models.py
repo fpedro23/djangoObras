@@ -191,6 +191,8 @@ class Obra(models.Model):
     municipio = models.CharField(max_length=200)
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=True, null=True)
     autorizada = models.BooleanField(default=False)
+    latitud = models.FloatField()
+    longitud = models.FloatField()
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion

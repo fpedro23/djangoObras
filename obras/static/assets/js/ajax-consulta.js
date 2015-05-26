@@ -51,7 +51,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'MFzwdBR2em5CIt6MUkoJ36KKyNZNwO'
+      "access_token"  : '3vhc09ukMvE5HMYtDSkuN046Hx7HFB'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -546,14 +546,14 @@ function tablaI(Datos){
                 +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>' */
 
                 +'<script id="js" type="text/javascript">'
-                +'$ts(function() {'
-                +'    $ts("#tablaIzquierda").tablesorter({'
+                +'$(function() {'
+                +'    $("#tablaIzquierda").tablesorter({'
                 +'    theme: "blue",'
                 +'    showProcessing: true,'
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 190,'
+                +'        scroller_height : 250,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
@@ -683,12 +683,15 @@ function tablaD(Datos){
                 +'<script id="js" type="text/javascript">'
                 +'$ts(function() {'
                 +'    $ts("#tablaDerecha").tablesorter({'
+                +'$(function() {'
+                +'    $("#tablaDerecha").tablesorter({'
                 +'    theme: "blue",'
                 +'    showProcessing: true,'
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
                 +'        scroller_height : 90,'
+                +'        scroller_height : 150,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
@@ -779,8 +782,8 @@ $j.tablaGrafica = function(Datos){
                 +'</table>'
 
                 +'<script id="js" type="text/javascript">'
-                +'$ts(function() {'
-                +'    $ts("#tablaGrafica").tablesorter({'
+                +'$(function() {'
+                +'    $("#tablaGrafica").tablesorter({'
                 +'    theme: "blue",'
                 +'    showProcessing: true,'
                 +'    headerTemplate : "{content} {icon}",'
