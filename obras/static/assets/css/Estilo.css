@@ -1,0 +1,12 @@
+.left-column, .right-column{
+  float:left;
+}
+
+.left-column{
+  width:30%; 
+}
+
+.right-column{
+  width:60%; 
+}
+
