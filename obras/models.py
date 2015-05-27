@@ -19,9 +19,10 @@ class TipoObra(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
-    imagenDependencia = models.FileField(blank=True, null=True)
+    imagenDependencia = models.FileField(upload_to="/", blank=True, null=True)
     dependienteDe = models.ForeignKey('self', null=True, blank=True)
     obraoprograma = models.CharField(max_length=1)
 
@@ -182,9 +183,9 @@ class Obra(models.Model):
     susceptibleInauguracion = models.BooleanField(default=False)
     porcentajeAvance = models.DecimalField(max_digits=3, decimal_places=2)
     observaciones = models.CharField(max_length=200)
-    fotoAntes = models.FileField(blank=True, null=True)
-    fotoDurante = models.FileField(blank=True, null=True)
-    fotoDespues = models.FileField(blank=True, null=True)
+    fotoAntes = models.FileField(upload_to="/", blank=True, null=True)
+    fotoDurante = models.FileField(upload_to="/", blank=True, null=True)
+    fotoDespues = models.FileField(upload_to="/", blank=True, null=True)
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True)
     inaugurada = models.BooleanField(default=False)
     poblacionObjetivo = models.CharField(max_length=200)
@@ -203,7 +204,7 @@ class Obra(models.Model):
 
 class DocumentoFuente(models.Model):
     descripcion = models.TextField(blank=True, null=True)
-    documento = models.FileField(blank=True, null=True)
+    documento = models.FileField(upload_to="/", blank=True, null=True)
     obra = models.ForeignKey('Obra', blank=True, null=True)
 
     def __str__(self):
