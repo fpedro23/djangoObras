@@ -4,27 +4,15 @@
       <p>&nbsp;</p><p>&nbsp;</p>
   {% for line in fieldset %}
   {% for field in line %}
-
-          {% if field.field.name == "nombreDependencia" %}
-              <div class="row field-nombreDependencia" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                <div class="col-md-7" align="left"><label id="label-fld" for="id_nombreDependencia">
-                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
-                Nombre de Dependencia</label></div>
-
-            <div class="col-md-1"><input class="vTextField" id="id_nombreDependencia" maxlength="200" name="nombreDependencia" type="text"
-                                value="{{ field.field.value|default_if_none:"" }}"/></div>
-            </div>
-       {% endif %}
-
       {% if field.field.name == "dependienteDe" %}
 
-        <div class="row field-dependienteDe" align="center" style="border-bottom: 15px; padding-bottom: 10px;" id="depde" hidden="true">
+        <div class="row field-dependienteDe" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
             <div class="col-md-7" align="left"><label id="label-fld" for="id_dependienteDe">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
-                Dependiente de:</label></div>
+                Nombre de Dependencia:</label></div>
 
-            <div class="col-md-1">
-                                {{ field.field }}</div>
+            <div class="col-md-1"><input class="vTextField" id="id_dependienteDe" maxlength="200" name="dependienteDe" type="text"
+                                value="{{ field.field.value|default_if_none:"" }}"/></div>
             </div>
         {% endif %}
 
@@ -53,10 +41,8 @@
         {% endif %}
 
 
-
      {% endfor %}
    {% endfor %}
-
+  <input  name="nombreDependencia" id="id_nombreDependencia" type="hidden" value="null">
         </div>
 </fieldset>
-

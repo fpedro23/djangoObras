@@ -5,64 +5,6 @@
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
     <link href="{% static "css/formas.css" %}" rel="stylesheet">
     {{ media }}
-
-
-
-<script type="text/javascript">
-(
-
-
-        function($) {
-
-
-function $_GET(param)
-{
-/* Obtener la url completa */
-url = document.URL;
-/* Buscar a partir del signo de interrogación ? */
-url = String(url.match(/\?+.+/));
-/* limpiar la cadena quitándole el signo ? */
-url = url.replace("?", "");
-/* Crear un array con parametro=valor */
-url = url.split("&");
-
-/*
-Recorrer el array url
-obtener el valor y dividirlo en dos partes a través del signo =
-0 = parametro
-1 = valor
-Si el parámetro existe devolver su valor
-*/
-x = 0;
-while (x < url.length)
-{
-p = url[x].split("=");
-if (p[0] == param)
-{
-return decodeURIComponent(p[1]);
-}
-x++;
-}
-
-
-
-}
-    $(document).ready(function($) {
-
-        if ($_GET("s")==1) {
-           $("#depde").show();
-
-        }
-        else{
-           $("#depde").hide();
-
-
-        }
-
-
-    });
-})(django.jQuery);
-</script>
 {% endblock %}
 
 {% block extrastyle %}{{ block.super }}
@@ -79,7 +21,7 @@ x++;
 {% endif %}
 
 {% block content %}
-    <div id="regresarBTN" onclick="location.href='/obras/c_dependencia'">
+    <div id="regresarBTN" onclick="location.href='/obras/c_subdependencia'">
    </div>
 
   <div id="welcome">
@@ -88,14 +30,14 @@ x++;
         {% else %}
             Modificar
         {% endif %}
-        Dependencia
+        Subdependencia
   </div>
 
   <div class="bienvenida">
       {% if not change %}
-            Bienvenido a Agregar Dependencia. Los campos marcados con asterisco (*) son obligatorios para el registro exitoso del mismo.
+            Bienvenido a Agregar Subdepencencia. Los campos marcados con asterisco (*) son obligatorios para el registro exitoso del mismo.
         {% else %}
-            Bienvenido a Modificar Dependencia. Realice los cambios a la Subdependencia seleccionado y seleccione Guardar.
+            Bienvenido a Modificar Subdependencia. Realice los cambios a la Subdependencia seleccionado y seleccione Guardar.
         {% endif %}
  </div>
 
@@ -127,7 +69,7 @@ x++;
 
                 {% block field_sets %}
                     {% for fieldset in adminform %}
-                        {% include "admin/obras/dependencia/fieldset.html" %}
+                        {% include "admin/obras/subdependencia/dependencia/fieldset.html" %}
 
                     {% endfor %}
                 {% endblock %}

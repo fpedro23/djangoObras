@@ -22,7 +22,7 @@ class TipoObra(models.Model):
 
 class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
-    imagenDependencia = models.FileField(upload_to="/", blank=True, null=True)
+    imagenDependencia = models.FileField(upload_to="./", blank=True, null=True)
     dependienteDe = models.ForeignKey('self', null=True, blank=True)
     obraoprograma = models.CharField(max_length=1)
 
