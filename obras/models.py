@@ -121,7 +121,6 @@ class Inaugurador(models.Model):
         return ans
 
 
-
 class TipoMoneda(models.Model):
     nombreTipoDeMoneda = models.CharField(max_length=200)
 
@@ -167,25 +166,24 @@ class Obra(models.Model):
     impacto = models.ForeignKey(Impacto)
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
-    montoRegistroHacendario = models.FloatField(blank=True, null=True)
+    montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion)
     tipoClasificacion = models.ManyToManyField(TipoClasificacion)
     inaugurador = models.ForeignKey(Inaugurador)
-    registroAuditoria = models.CharField(max_length=200)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
     observaciones = models.CharField(max_length=200)
     fechaInicio = models.DateField()
-    fechaTermino = models.DateField()
+    fechaTermino = models.DateField(verbose_name="Fecha de Termino")
     inversionTotal = models.DecimalField(max_digits=19, decimal_places=10)
     totalBeneficiarios = models.DecimalField(max_digits=19, decimal_places=10)
     senalizacion = models.BooleanField(default=False)
     susceptibleInauguracion = models.BooleanField(default=False)
     porcentajeAvance = models.DecimalField(max_digits=3, decimal_places=2)
     observaciones = models.CharField(max_length=200)
-    fotoAntes = models.FileField(upload_to="/", blank=True, null=True)
-    fotoDurante = models.FileField(upload_to="/", blank=True, null=True)
-    fotoDespues = models.FileField(upload_to="/", blank=True, null=True)
+    fotoAntes = models.FileField(blank=True, null=True)
+    fotoDurante = models.FileField(blank=True, null=True)
+    fotoDespues = models.FileField(blank=True, null=True)
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True)
     inaugurada = models.BooleanField(default=False)
     poblacionObjetivo = models.CharField(max_length=200)
