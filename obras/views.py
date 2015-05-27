@@ -908,7 +908,7 @@ def buscar_obras_web(request):
     )
     resultados = buscador.buscar()
 
-    template = loader.get_template('consultas/resultado_busqueda.html')
+    template = loader.get_template('admin/obras/consulta_filtros/consulta-filtros.html')
     context = RequestContext(request, {
         'resultados': resultados
     })
