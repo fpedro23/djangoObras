@@ -84,23 +84,24 @@ WSGI_APPLICATION = 'djangoObrasYProgramas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+# DATABASES = {
+#    'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'obrasnueva',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': '',
+#         'PORT': '',
+#     }
+# }
+
+
 DATABASES = {
    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'obrasnueva',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '',
-        'PORT': '',
-    }
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': 'db.sqlite3',
+   }
 }
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': 'db.sqlite3',
-#    }
-#}
 
 MEDIA_ROOT = '/djangoApps/'
 MEDIA_URL = '/media/'
@@ -126,7 +127,7 @@ STATIC_URL = '/static/'
 
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'obras/templates'),
+    os.path.join(BASE_DIR, 'obras/templates/'),
 )
 
 STATICFILES_DIRS = (

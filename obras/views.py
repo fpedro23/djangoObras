@@ -281,7 +281,6 @@ class EstadosEndpoint(ProtectedResourceView):
         return HttpResponse(json_response,'application/json')
 
 
-
 class DependenciasEndpoint(ProtectedResourceView):
 
     def get(self, request):
@@ -357,6 +356,7 @@ class TipoDeObraEndpoint(ProtectedResourceView):
     def get(self, request):
         json_response = json.dumps(map(lambda tipo: tipo.to_serializable_dict(), TipoObra.objects.all()))
         return HttpResponse(json_response, 'application/json')
+
 
 class BuscadorEndpoint(ProtectedResourceView):
 
@@ -868,8 +868,9 @@ def consulta_web(request):
         dependencias = Dependencia.objects.filter(
                     Q(id=request.user.usuario.dependencia.id)
                     )
-    template = loader.get_template('consultas/busqueda_general.html')
+    template = loader.get_template('consultas/consulta_general.html')
     context = RequestContext(request, {
+        'estatusObra': TipoObra.objects.all(),
         'dependencias': dependencias,
         'estados': Estado.objects.all(),
         'tipo_inversiones': TipoInversion.objects.all(),
@@ -885,6 +886,7 @@ def get_array_or_none(the_string):
         return None
     else:
         return map(int, the_string.split(','))
+
 
 def buscar_obras_web(request):
     #TODO cambiar los parametros 'None' por get del request

@@ -39,21 +39,13 @@ template {
 
 html {
   font-family: sans-serif;
-<<<<<<< HEAD
   -webkit-text-size-adjust: 70%;
       -ms-text-size-adjust: 70%;
-=======
-  -webkit-text-size-adjust: 100%;
-      -ms-text-size-adjust: 100%;
->>>>>>> origin/consultas
 }
 
 body {
   margin: 0;
-<<<<<<< HEAD
   font: 70% sans-serif;
-=======
->>>>>>> origin/consultas
 }
 
 a {
@@ -347,11 +339,7 @@ html {
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-<<<<<<< HEAD
   font-size: 20px;
-=======
-  font-size: 14px;
->>>>>>> origin/consultas
   line-height: 1.428571429;
   color: #333333;
   background-color: #ffffff;
@@ -830,84 +818,48 @@ pre code {
   overflow-y: scroll;
 }
 
-<<<<<<< HEAD
 .container2 {
   padding-right: 160px;
   padding-left: 15px;
-=======
-.container {
-  padding-right: 5px;
-  padding-left: 5px;
->>>>>>> origin/consultas
   margin-right: auto;
   margin-left: auto;
     min-height: 900px;
 }
 
-<<<<<<< HEAD
 .container2:before,
 .container2:after {
-=======
-.container:before,
-.container:after {
->>>>>>> origin/consultas
   display: table;
   content: " ";
 }
 
-<<<<<<< HEAD
 .container2:after {
   clear: both;
 }
 
 .container2:before,
 .container2:after {
-=======
-.container:after {
-  clear: both;
-}
-
-.container:before,
-.container:after {
->>>>>>> origin/consultas
   display: table;
   content: " ";
 }
 
-<<<<<<< HEAD
 .container2:after {
-=======
-.container:after {
->>>>>>> origin/consultas
   clear: both;
 }
 
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .container2 {
-=======
-  .container {
->>>>>>> origin/consultas
     width: 750px;
   }
 }
 
 @media (min-width: 992px) {
-<<<<<<< HEAD
   .container2 {
-=======
-  .container {
->>>>>>> origin/consultas
     width: 970px;
   }
 }
 
 @media (min-width: 1200px) {
-<<<<<<< HEAD
   .container2 {
-=======
-  .container {
->>>>>>> origin/consultas
     width: 1170px;
   }
 }
@@ -1464,11 +1416,7 @@ pre code {
   }
   .col-md-12-box {
     width: 100%;
-<<<<<<< HEAD
       height: 325px;
-=======
-      height: 400px;
->>>>>>> origin/consultas
       border: 2px solid #327451;
 	  border-radius: 2px;
   }
@@ -2111,19 +2059,11 @@ output {
   vertical-align: middle;
 }
 
-<<<<<<< HEAD
 .form-control2 {
   display: block;
   width: 100%;
   height: 20px;
   padding: 2px 5px;
-=======
-.form-control {
-  display: block;
-  width: 100%;
-  height: 20px;
-  padding: 6px 12px;
->>>>>>> origin/consultas
   font-size: 10px;
   line-height: 1.428571429;
   color: #555555;
@@ -2138,35 +2078,22 @@ output {
           transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 
-<<<<<<< HEAD
 .form-control2:focus {
-=======
-.form-control:focus {
->>>>>>> origin/consultas
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 
-<<<<<<< HEAD
 .form-control2:-moz-placeholder {
   color: #999999;
 }
 
 .form-control2::-moz-placeholder {
-=======
-.form-control:-moz-placeholder {
-  color: #999999;
-}
-
-.form-control::-moz-placeholder {
->>>>>>> origin/consultas
   color: #999999;
   opacity: 1;
 }
 
-<<<<<<< HEAD
 .form-control2:-ms-input-placeholder {
   color: #999999;
 }
@@ -2178,28 +2105,11 @@ output {
 .form-control2[disabled],
 .form-control2[readonly],
 fieldset[disabled] .form-control2 {
-=======
-.form-control:-ms-input-placeholder {
-  color: #999999;
-}
-
-.form-control::-webkit-input-placeholder {
-  color: #999999;
-}
-
-.form-control[disabled],
-.form-control[readonly],
-fieldset[disabled] .form-control {
->>>>>>> origin/consultas
   cursor: not-allowed;
   background-color: #eeeeee;
 }
 
-<<<<<<< HEAD
 textarea.form-control2 {
-=======
-textarea.form-control {
->>>>>>> origin/consultas
   height: auto;
 }
 
@@ -2312,21 +2222,13 @@ textarea.input-lg {
   color: #8a6d3b;
 }
 
-<<<<<<< HEAD
 .has-warning .form-control2 {
-=======
-.has-warning .form-control {
->>>>>>> origin/consultas
   border-color: #8a6d3b;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
-<<<<<<< HEAD
 .has-warning .form-control2:focus {
-=======
-.has-warning .form-control:focus {
->>>>>>> origin/consultas
   border-color: #66512c;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
@@ -2347,21 +2249,13 @@ textarea.input-lg {
   color: #a94442;
 }
 
-<<<<<<< HEAD
 .has-error .form-control2 {
-=======
-.has-error .form-control {
->>>>>>> origin/consultas
   border-color: #a94442;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
-<<<<<<< HEAD
 .has-error .form-control2:focus {
-=======
-.has-error .form-control:focus {
->>>>>>> origin/consultas
   border-color: #843534;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
@@ -2400,11 +2294,7 @@ textarea.input-lg {
   border-color: #3c763d;
 }
 
-<<<<<<< HEAD
 .form-control2-static {
-=======
-.form-control-static {
->>>>>>> origin/consultas
   margin-bottom: 0;
 }
 
@@ -2421,17 +2311,10 @@ textarea.input-lg {
     margin-bottom: 0;
     vertical-align: middle;
   }
-<<<<<<< HEAD
   .form-inline .form-control2 {
     display: inline-block;
   }
   .form-inline select.form-control2 {
-=======
-  .form-inline .form-control {
-    display: inline-block;
-  }
-  .form-inline select.form-control {
->>>>>>> origin/consultas
     width: auto;
   }
   .form-inline .radio,
@@ -2488,11 +2371,7 @@ textarea.input-lg {
   clear: both;
 }
 
-<<<<<<< HEAD
 .form-horizontal .form-control2-static {
-=======
-.form-horizontal .form-control-static {
->>>>>>> origin/consultas
   padding-top: 7px;
 }
 
@@ -4169,20 +4048,12 @@ input[type="button"].btn-block {
   padding-left: 0;
 }
 
-<<<<<<< HEAD
 .input-group .form-control2 {
-=======
-.input-group .form-control {
->>>>>>> origin/consultas
   width: 100%;
   margin-bottom: 0;
 }
 
-<<<<<<< HEAD
 .input-group-lg > .form-control2,
-=======
-.input-group-lg > .form-control,
->>>>>>> origin/consultas
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .btn {
   height: 46px;
@@ -4192,32 +4063,20 @@ input[type="button"].btn-block {
   border-radius: 6px;
 }
 
-<<<<<<< HEAD
 select.input-group-lg > .form-control2,
-=======
-select.input-group-lg > .form-control,
->>>>>>> origin/consultas
 select.input-group-lg > .input-group-addon,
 select.input-group-lg > .input-group-btn > .btn {
   height: 46px;
   line-height: 46px;
 }
 
-<<<<<<< HEAD
 textarea.input-group-lg > .form-control2,
-=======
-textarea.input-group-lg > .form-control,
->>>>>>> origin/consultas
 textarea.input-group-lg > .input-group-addon,
 textarea.input-group-lg > .input-group-btn > .btn {
   height: auto;
 }
 
-<<<<<<< HEAD
 .input-group-sm > .form-control2,
-=======
-.input-group-sm > .form-control,
->>>>>>> origin/consultas
 .input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .btn {
   height: 30px;
@@ -4227,22 +4086,14 @@ textarea.input-group-lg > .input-group-btn > .btn {
   border-radius: 3px;
 }
 
-<<<<<<< HEAD
 select.input-group-sm > .form-control2,
-=======
-select.input-group-sm > .form-control,
->>>>>>> origin/consultas
 select.input-group-sm > .input-group-addon,
 select.input-group-sm > .input-group-btn > .btn {
   height: 30px;
   line-height: 30px;
 }
 
-<<<<<<< HEAD
 textarea.input-group-sm > .form-control2,
-=======
-textarea.input-group-sm > .form-control,
->>>>>>> origin/consultas
 textarea.input-group-sm > .input-group-addon,
 textarea.input-group-sm > .input-group-btn > .btn {
   height: auto;
@@ -4250,21 +4101,13 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .input-group-addon,
 .input-group-btn,
-<<<<<<< HEAD
 .input-group .form-control2 {
-=======
-.input-group .form-control {
->>>>>>> origin/consultas
   display: table-cell;
 }
 
 .input-group-addon:not(:first-child):not(:last-child),
 .input-group-btn:not(:first-child):not(:last-child),
-<<<<<<< HEAD
 .input-group .form-control2:not(:first-child):not(:last-child) {
-=======
-.input-group .form-control:not(:first-child):not(:last-child) {
->>>>>>> origin/consultas
   border-radius: 0;
 }
 
@@ -4317,11 +4160,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   border-right: 0;
 }
 
-<<<<<<< HEAD
 .input-group .form-control2:last-child,
-=======
-.input-group .form-control:last-child,
->>>>>>> origin/consultas
 .input-group-addon:last-child,
 .input-group-btn:last-child > .btn,
 .input-group-btn:last-child > .dropdown-toggle,
@@ -4728,25 +4567,15 @@ textarea.input-group-sm > .input-group-btn > .btn {
   }
 }
 
-<<<<<<< HEAD
 .container2 > .navbar-header,
 .container2 > .navbar-collapse {
-=======
-.container > .navbar-header,
-.container > .navbar-collapse {
->>>>>>> origin/consultas
   margin-right: -15px;
   margin-left: -15px;
 }
 
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .container2 > .navbar-header,
   .container2 > .navbar-collapse {
-=======
-  .container > .navbar-header,
-  .container > .navbar-collapse {
->>>>>>> origin/consultas
     margin-right: 0;
     margin-left: 0;
   }
@@ -4802,11 +4631,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .navbar > .container2 .navbar-brand {
-=======
-  .navbar > .container .navbar-brand {
->>>>>>> origin/consultas
     margin-left: -15px;
   }
 }
@@ -4918,17 +4743,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
     margin-bottom: 0;
     vertical-align: middle;
   }
-<<<<<<< HEAD
   .navbar-form .form-control2 {
     display: inline-block;
   }
   .navbar-form select.form-control2 {
-=======
-  .navbar-form .form-control {
-    display: inline-block;
-  }
-  .navbar-form select.form-control {
->>>>>>> origin/consultas
     width: auto;
   }
   .navbar-form .radio,
@@ -5554,19 +5372,11 @@ a.list-group-item.active > .badge,
   line-height: 1.4;
 }
 
-<<<<<<< HEAD
 .container2 .jumbotron {
   border-radius: 6px;
 }
 
 .jumbotron .container2 {
-=======
-.container .jumbotron {
-  border-radius: 6px;
-}
-
-.jumbotron .container {
->>>>>>> origin/consultas
   max-width: 100%;
 }
 
@@ -5575,11 +5385,7 @@ a.list-group-item.active > .badge,
     padding-top: 48px;
     padding-bottom: 48px;
   }
-<<<<<<< HEAD
   .container2 .jumbotron {
-=======
-  .container .jumbotron {
->>>>>>> origin/consultas
     padding-right: 60px;
     padding-left: 60px;
   }
