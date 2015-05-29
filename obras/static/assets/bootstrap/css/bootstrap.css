@@ -824,6 +824,7 @@ pre code {
   margin-right: auto;
   margin-left: auto;
     min-height: 900px;
+    background: #ffffff;
 }
 
 .container2:before,
@@ -863,6 +864,13 @@ pre code {
     width: 1170px;
   }
 }
+
+
+
+
+
+
+
 
 .row {
   margin-right: -15px;

@@ -35,23 +35,23 @@ function main_consulta() {
 
 
 function verDatos() {
-    var arrayTipoInversion = $j("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
-    var arrayEstatusObra = $j("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
-    var arrayDependencias = $j("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
-    var arrayEstados = $j("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
-    var arrayClasificacion = $j("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
-    var arrayImpacto = $j("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
-    var arrayInaugurador = $j("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
-    var fechaInicio1 = $j("#fechaInicial1").val();
-    var fechaInicio2 = $j("#fechaInicial2").val();
-    var fechaFin1 = $j("#fechaFinal1").val();
-    var fechaFin2 = $j("#fechaFinal2").val();
-    var inversionInicial = $j("#inversionInicial").val();
-    var inversionFinal = $j("#inversionFinal").val();
+    var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
+    var fechaInicio1 = $l("#fechaInicial1").val();
+    var fechaInicio2 = $l("#fechaInicial2").val();
+    var fechaFin1 = $l("#fechaFinal1").val();
+    var fechaFin2 = $l("#fechaFinal2").val();
+    var inversionInicial = $l("#inversionInicial").val();
+    var inversionFinal = $l("#inversionFinal").val();
 
 
     var ajax_data = {
-      "access_token"  : '3vhc09ukMvE5HMYtDSkuN046Hx7HFB'
+      "access_token"  : 'sU4b8Y11WWQC3DcoyOEMTNYaUbP18a'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -68,6 +68,7 @@ function verDatos() {
     if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
     if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
     if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
+
 
     $j("#ajaxProgress").show();
     $j.ajax({
@@ -496,7 +497,12 @@ function setMarkers(mapa, lugares) {
 
 
 function tablaI(Datos){
-    var sHtml='<h4>RESULTADOS</h4><table cellspacing="1" class="tablesorter" id="tablaIzquierda">'
+    var sHtml='<div class="row titulo">'
+                    + '<div class="col-md-6">'
+                    +     'Resultados'
+                   + ' </div>'
+               + '</div>'
+        +'<table cellspacing="1" class="tablesorter" id="tablaIzquierda">'
                     +'<thead>'
                         +'<tr>'
                             +'<th>Id</th>'
@@ -546,14 +552,14 @@ function tablaI(Datos){
                 +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>' */
 
                 +'<script id="js" type="text/javascript">'
-                +'$(function() {'
-                +'    $("#tablaIzquierda").tablesorter({'
+                +'$ts(function() {'
+                +'    $ts("#tablaIzquierda").tablesorter({'
                 +'    theme: "blue",'
                 +'    showProcessing: true,'
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 250,'
+                +'        scroller_height : 190,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
@@ -584,9 +590,21 @@ function tablaD(Datos){
     var tipoReporte = $j('input:radio[name=tipoReporte]:checked').val();
     var dependenciasChecked="";
     var estadosChecked="";
-    var sHtmlExporta='<h4>REPORTES</h4><table cellspacing="1" id="tablaExporta">';
-    var sHtmlShorter='<h4>REPORTES</h4><table cellspacing="1" class="tablesorter" id="tablaDerecha">';
+    var sHtmlExporta="";
+    var sHtmlShorter="";
 
+    sHtmlExporta= '<div class="row titulo">'
+                    + '<div class="col-md-6">'
+                    +     'Reporte'
+                   + ' </div>'
+               + '</div>'
+                +'<table cellspacing="1" id="tablaExporta">';
+    sHtmlShorter ='<div class="row titulo">'
+                    + '<div class="col-md-6">'
+                    +     'Reporte'
+                   + ' </div>'
+               + '</div>'
+                +'<table cellspacing="1" class="tablesorter" id="tablaDerecha">';
     //alert($j('input:radio[name=tipoReporte]:checked').val());
 
     var sHtml='<thead>'
@@ -604,6 +622,7 @@ function tablaD(Datos){
                         +'</tr>'
 
                         +'<tr><td class="pager" id="pagerD" colspan="3">'
+                        //+'<div class="first principioFLECHA" id="firstD" style="height:11px"></div>'
                         +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstD"/>'
                         +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevD"/>'
                         +'<span class="pagedisplay" id="displayPage"></span>'
@@ -683,15 +702,12 @@ function tablaD(Datos){
                 +'<script id="js" type="text/javascript">'
                 +'$ts(function() {'
                 +'    $ts("#tablaDerecha").tablesorter({'
-                +'$(function() {'
-                +'    $("#tablaDerecha").tablesorter({'
                 +'    theme: "blue",'
                 +'    showProcessing: true,'
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
                 +'        scroller_height : 90,'
-                +'        scroller_height : 150,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
@@ -725,7 +741,12 @@ $j.tablaGrafica = function(Datos){
 
 
     //alert($j('input:radio[name=tipoReporte]:checked').val());
-    var sHtml= '<h4>REPORTES</h4> <table cellspacing="1"  class="tablesorter" id="tablaGrafica">'
+    var sHtml= '<div class="row titulo">'
+                    + '<div class="col-md-6">'
+                    +     'Reporte'
+                   + ' </div>'
+               + '</div>'
+                    +'<table cellspacing="1"  class="tablesorter" id="tablaGrafica">'
                     +'<thead>'
                         +'<tr>'
                             +'<th>Tipo Inversi&oacute;n</th>'
@@ -782,17 +803,17 @@ $j.tablaGrafica = function(Datos){
                 +'</table>'
 
                 +'<script id="js" type="text/javascript">'
-                +'$(function() {'
-                +'    $("#tablaGrafica").tablesorter({'
+                +'$ts(function() {'
+                +'    $ts("#tablaGrafica").tablesorter({'
                 +'    theme: "blue",'
                 +'    showProcessing: true,'
                 +'    headerTemplate : "{content} {icon}",'
-                +'    widgets: [ "uitheme", "zebra", "pager"],'
+                +'    widgets: [ "uitheme", "zebra", "pager","scroller" ],'
                 +'    widgetOptions : {'
-                //+'        scroller_height : 150,'
-                //+'        scroller_upAfterSort: true,'
-                //+'        scroller_jumpToHeader: true,'
-                //+'        scroller_barWidth : null,'
+                +'        scroller_height : 110,'
+                +'        scroller_upAfterSort: true,'
+                +'        scroller_jumpToHeader: true,'
+                +'        scroller_barWidth : null,'
                 +'          pager_selectors: {'
                 +'                container   : "#pagerG",'
                 +'                first       : "#firstG",'

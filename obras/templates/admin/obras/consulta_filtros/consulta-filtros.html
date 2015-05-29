@@ -118,7 +118,7 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
 
-     <script type="text/javascript" src="{% static "assets/js/ajax-consulta.js"%}"></script>
+
 
  <script type="text/javascript">
          google.maps.event.addDomListener(window, 'load', initialize);
@@ -259,7 +259,7 @@ $pp('#tabla-exporta').hide();
 $pp(function () {
 	  $pp('.popup-modal').magnificPopup({
 	    type: 'inline',
-	    preloader: false,
+	    preloader: true,
 	    modal: true,
           fixedContentPos: false,
 		fixedBgPos: true,
@@ -344,14 +344,17 @@ $pp(function () {
 
 
 
+
+<script type="text/javascript" src="{% static "assets/js/ajax-consulta.js"%}"></script>
+
 {% endblock %}
 {% block breadcrumbs %}
 {% endblock %}
 
 {% block content %}
 
-<body style="font: 100% sans-serif;">
-    <div id="regresarBTN" onclick="location.href='{% url 'admin:index' %}'">
+<body style="font: 100% sans-serif;background: #ffffff;height: 600px;">
+    <div id="regresarBTN" onclick="location.href='/obras/consultas'">
     </div>   <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
 
     <div id="welcome">Consulta Mediante Filtros</div>
@@ -359,57 +362,66 @@ $pp(function () {
   <!-- inicio contenido de la consulta por filtros-->
     <div id="tabla-exporta" style="height: 0px;"></div>
 
-    <div id="modal-exporta" class="white-popup-block mfp-hide centerDiv"  style="width: 50%;">
-        <div class="panel panel-default panel-table">
-            <div class="panel-body">
-                <div class="tr">
-                    <h1>EXPORTAR</h1>
-                    <div class="row centerDiv">
-                        <div class="col-md-4">
+    <div id="modal-exporta" class="green-popup-block mfp-hide centerDiv"  style="width: 30%;">
+        <div class="row" style="background:linear-gradient(#206341,#206341,#1E613F,#276947,#206341)  ;border: 2px solid #ffffff;">
+            <div class="row exportarALERTA" style="padding-top: 15px;padding-left: 20px;width:100%"> EXPORTAR RESULTADOS </div>
+            <div class="row textoEXPORTAR" style="padding-left: 20px;width:100%;padding-top: 15px;">Elija el formato en el que desea exportar los resultados. </div>
+                    <div class="row " style="width: 60%;padding-top: 15px;margin-left: auto;margin-right: auto">
+                        <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="imprimePDF" id="enviaPDF" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'pdf',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                                <div class="pdf"  id="enviaPDF" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'pdf',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
                             </article>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="imprimeEXCEL" id="enviaEXCEL" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'excel',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                                <div class="excel" id="enviaEXCEL" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'excel',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
                             </article>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="imprimePPT" id="enviaPPT" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'powerpoint',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                                <div class="ppt"  id="enviaPPT" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'powerpoint',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
                             </article>
                         </div>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="row centerDiv">
-            <article id="salir_exporta">
-                {% csrf_token %}
-                <div class="salirBTN popup-exporta-dismiss" id="salirExporta" style="height: 30px">
-                </div>
-            </article>
+            <div class="row" style="width: 60%;padding-top: 15px;margin-left: auto;margin-right: auto">
+                <article id="salir_exporta">
+                    {% csrf_token %}
+                    <div class="salirBTN popup-exporta-dismiss" id="salirExporta" style="height: 30px">
+                    </div>
+                </article>
+            </div><br>
         </div>
     </div>
 
-    <div id="test-modal" class="white-popup-block mfp-hide" >
-			<h1>GR&Aacute;FICAS</h1>
+    <div class= " white-popup-block mfp-hide centerDiv" id="test-modal" style="width: 70%;height: 40%;">
+        <div class="row" style="padding-top: 15px;margin-left: auto;margin-right: auto">
+                <article id="salir_exporta">
+                    {% csrf_token %}
+                    <div class="popup-modal-dismiss" id="regresarBTN" style="height: 25px">
+                    </div>
+                </article>
+        </div>
+       <div class="row" style="padding-bottom: 4px;padding-left: 20px;padding-right: 20px;">
+           <div class="rowP" style="padding-right: 5px;padding-left: 3px; padding-bottom: 0px; padding-top: 0px;height: auto; ">
+               <div   id="containerGrafica" ></div>
+           </div>
+       </div>
 
 
-             <div class="row" >
-                   <div class="col-md-3">
-                       <div class="panel panel-default panel-table">
-                            <div class="panel-heading">
-                                <div class="tr">
+       <div class="row" style="padding-left: 20px;padding-right: 20px;">
+           <div class="col-md-4" style="padding-left: 0px; padding-right: 0px; ">
+                <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 230px; ">
+                      <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                            <div class="panel-heading" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
+                                <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 2px; padding-top: 2px ">
                                     <div class="td" ><h5>MOSTRAR GR&Aacute;FICA POR: </h5></div>
                                 </div>
                             </div>
-                            <div class="panel-body">
-                                <div class="tr">
+                            <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                <div class="tr"  style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="row">
                                         <div class="col-xs-10">
                                            <p>Dependencia</p>
@@ -431,28 +443,18 @@ $pp(function () {
                                             </article>
                                        </div>
                                     </div>
-                                    <div class="row"><div class="col-xs-10">
-                                       <p>RCI</p>
-                                       </div>
-                                       <div class="col-xs-2">
-                                           <article id="ver_grafica_rci">
-                                               {% csrf_token %}
-                                                <input type="radio" name="graficaTipo" id="estado" value="RCI"/>
-                                            </article>
-                                       </div>
-                                    </div>
                                 </div>
                             </div>
                        </div>
 
-                       <div class="panel panel-default panel-table">
-                            <div class="panel-heading">
-                                <div class="tr">
+                       <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                            <div class="panel-heading" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="td" ><h5>CONFIGURAR GR&Aacute;FICA </h5></div>
                                 </div>
                             </div>
-                            <div class="panel-body">
-                                <div class="tr">
+                            <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <p>Datos a graficar</p>
@@ -488,28 +490,29 @@ $pp(function () {
                                 </div>
                             </div>
                         </div>
+               </div >
+           </div>
+           <div class="col-md-8" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px; ">
+               <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px;height: 230px; ">
+                   <div id="divTablaGrafica"  > </div>
+               </div>
+           </div>
+       </div>
+
+   </div>
 
 
-                   </div>
-                   <div  class="col-md-9"  id="containerGrafica" >
-                   </div>
-             </div>
-             <div class="row">
-                   <div class="col-md-6" id="divTablaGrafica"  >
-                 </div>
-             </div>
 
 
-
-
-             <input type="button" value="Regresar" class="popup-modal-dismiss btn btn-primary fancybox-media italic" />
-	</div>
-
-   <div class= "container2" style="margin-top:0px;">
+   <div class= "container2" >
                 <div class="row" style="padding-bottom: 4px;">
                     <div class="rowP" style="padding-right: 5px;padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                    <div class="col-md-12">
-                        <h4>PARÁMETROS DE CONSULTA</h4>
+                    <div class="col-md-12 titulo">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Par&aacute;metros de Consulta
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-3" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                         <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
@@ -684,7 +687,7 @@ $pp(function () {
                              <div class="col-md-12" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                   <article id="ver_datos">
                                      {% csrf_token %}
-                                     <div class="consultar2BTN" id="button" style="height: 30px"></div>
+                                     <div class="consultarBTN" id="button" style="height: 30px"></div>
                                   </article>
                              </div>
                         </div>
@@ -728,7 +731,11 @@ $pp(function () {
         <div class="row">
        <div class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
             <div class="col-md-12-box" id="datos" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
-               <h4>RESULTADOS</h4>
+                <div class="row titulo">
+                     <div class="col-md-6">
+                         Resultados
+                     </div>
+                </div>
 
                <table cellspacing="1" class="tablesorter" id="tablaIzquierda">
                     <thead>
@@ -746,6 +753,7 @@ $pp(function () {
                             <th>Estado</th>
                         </tr>
                         <tr><td class="pager" id="pagerI" colspan="3">
+
                         <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>
                         <span class="pagedisplay" id="pagedisplayI"></span>
@@ -795,10 +803,10 @@ $pp(function () {
        </div>
        <div class="col-md-6" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
            <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
-               <div class="row">
-                   <div class="col-md-3">
-                       <h4>MAPA</h4>
-                   </div>
+               <div class="row" style="padding-bottom: 4px;">
+                     <div class="col-md-3 titulo">
+                         Mapa
+                     </div>
 
                    <div class="col-md-9" id="ajaxProgress">
                         cargando...<img src="../../static/gifs/loading-barra2.gif">
@@ -813,7 +821,11 @@ $pp(function () {
             <div class="col-md-12-box"  style="margin-left: 0px; padding-right: 4px;padding-left: 4px">
            <div class="row">
                <div class="col-md-12" id="datostablaDerecha">
-                    <h4>REPORTE</h4>
+                    <div class="row titulo">
+                         <div class="col-md-6">
+                             Reporte
+                         </div>
+                    </div>
                     <table cellspacing="1" class="tablesorter" id="tablaDer">
                     <thead>
 
@@ -903,10 +915,8 @@ $pp(function () {
                </div>
                <div class="row">
                    <div class="col-xs-5">
-                   RCI
                    </div>
                    <div class="col-xs-2">
-                        <input type="radio" name="tipoReporte" value="RCI" />
                    </div>
                    <div class="col-xs-2">
                        <article id="ver_exporta">
@@ -957,3 +967,5 @@ $pp(function () {
   </body>
   <!-- Final contenido de la consulta por filtros-->
 {% endblock %}
+
+

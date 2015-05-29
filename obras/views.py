@@ -361,21 +361,22 @@ class TipoDeObraEndpoint(ProtectedResourceView):
 class BuscadorEndpoint(ProtectedResourceView):
 
     def get(self, request):
-        buscador = BuscarObras(idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
-                           iddependencias=get_array_or_none(request.GET.get('tipoDeObra')),
-                           estados=get_array_or_none(request.GET.get('tipoDeObra')),
-                           clasificaciones=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inversiones=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inauguradores=get_array_or_none(request.GET.get('tipoDeObra')),
-                           impactos=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inaugurada=None,
-                           inversion_minima=None,
-                           inversion_maxima=None,
-                           fecha_inicio_primera=None,
-                           fecha_inicio_segunda=None,
-                           fecha_fin_primera=None,
-                           fecha_fin_segunda=None,
-                           denominacion=None,
+        buscador = BuscarObras(
+            idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+            iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            estados=get_array_or_none(request.GET.get('estado')),
+            clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
+            inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
+            inauguradores=get_array_or_none(request.GET.get('inaugurador')),
+            impactos=get_array_or_none(request.GET.get('impacto')),
+            inaugurada=request.GET.get('inaugurada', None),
+            inversion_minima=request.GET.get('inversionMinima', None),
+            inversion_maxima=request.GET.get('inversionMaxima', None),
+            fecha_inicio_primera=request.GET.get('fechaInicio', None),
+            fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+            fecha_fin_primera=request.GET.get('fechaFin', None),
+            fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+            denominacion=request.GET.get('denominacion', None),
         )
         resultados = buscador.buscar()
 
