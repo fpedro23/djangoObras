@@ -98,6 +98,13 @@
     cursor: pointer;
 }
 
+.fondoExporta{
+    width: 100%;
+	height: 100%;
+	background: url(../img-botones/fondoExporta.jpg);
+    background-repeat: no-repeat;
+}
+
 .graficoBTN{
 	width: 30px;
 	height: 30px;
@@ -157,8 +164,8 @@
 .centerDiv {
     margin-left: auto;
     margin-right: auto;
-    width: 60%;
-
+    width: auto;
+    height: auto;
 }
 
 .guardarBTN{
@@ -248,15 +255,15 @@
 
 .imprimePDF{
 	width: 77px;
-	height: 99px;
+	height: 98px;
 	background-image: url(../img-botones/bigBackground.fw.png);
-	background-position: -1006px -2258px;
+	background-position: -1006px -2259px;
 	position: relative;
     display: inline-block;
 }
 
 .imprimePDF:hover{
-	background-position: -1006px -2258px;
+	background-position: -1006px -2259px;
     cursor: pointer;
 }
 
@@ -264,27 +271,27 @@
 	width: 77px;
 	height: 99px;
 	background-image: url(../img-botones/bigBackground.fw.png);
-	background-position: -920px -2257px;
+	background-position: -920px -2258px;
 	position: relative;
     display: inline-block;
 }
 
 .imprimeEXCEL:hover{
-	background-position: -920px -2257px;
+	background-position: -920px -2258px;
     cursor: pointer;
 }
 
 .imprimePPT{
 	width: 77px;
-	height: 99px;
+	height: 98px;
 	background-image: url(../img-botones/bigBackground.fw.png);
-	background-position: -1098px -2258px;
+	background-position: -1098px -2260px;
 	position: relative;
     display: inline-block;
 }
 
 .imprimePPT:hover{
-	background-position: -1098px -2258px;
+	background-position: -1098px -2260px;
     cursor: pointer;
 }
 
@@ -293,4 +300,106 @@
     margin-right: auto;
     width: 60%;
 
+}
+
+.textoEXPORTAR{
+	font-family: "soberana Sans";
+	color: #FFFFFF;
+	font-size: 15px;
+	text-align: center;
+	position: relative;
+}
+
+.exportarALERTA{
+	font-family: "Soberana Titular";
+	font-size: 24px;
+	text-align: center;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.titulo{
+	font-family: "Soberana Titular";
+	font-size:24px;
+	color: #6A6B6C;
+	font-weight: bold;
+}
+
+
+#regresarBTN{
+	 width: 80px;
+	 height: 22px;
+	 background-image:url(../img-botones/bigBackground.fw.png);
+	 background-position: -300px 0px;
+    position: relative;
+}
+
+#regresarBTN:hover{
+	background-position: -300px -21px;
+    cursor: pointer;
+}
+
+#welcome{
+	width: 400px;
+	height: 22px;
+	text-align: center;
+	position: absolute;
+	top: 2px;
+	left: 302px;
+	font-style: italic;
+}
+
+.principioFLECHA{
+	width: 14px;
+	height: 11px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -725px -2325px;
+	position: relative;
+
+}
+
+.principioFLECHA:hover{
+	background-position: -771px -2326px;
+}
+
+
+.excel{
+	width: 78px;
+	height: 82px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -920px -2257px;
+	position: relative;
+
+}
+
+.excel:hover{
+	background-position: -920px -2340px;
+    cursor: pointer;
+}
+
+.pdf{
+	width: 78px;
+	height: 82px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -1006px -2259px;
+	position: relative;
+
+}
+
+.pdf:hover{
+	background-position: -1003px -2349px;
+    cursor: pointer;
+}
+
+.ppt{
+	width: 78px;
+	height: 82px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -1098px -2260px;
+	position: relative;
+
+}
+
+.ppt:hover{
+	background-position:-1095px -2350px;
+    cursor: pointer;
 }

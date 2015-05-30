@@ -20,7 +20,7 @@
 /* header */
 .tablesorter-blue th,
 .tablesorter-blue thead td {
-	font: bold 12px/18px Arial, Sans-serif;
+	font: bold 10px/12px Arial, Sans-serif;
 	color: #000;
 	background-color: #e4e6e4;
 	border-collapse: collapse;
@@ -86,7 +86,7 @@
 
 /* tbody */
 .tablesorter-blue td {
-    font: 10px/18px Arial, Sans-serif;
+    font: 10px/12px Arial, Sans-serif;
 	color: #3d3d3d;
 	background-color: #fff;
 	padding: 4px;

@@ -195,6 +195,7 @@ class ObrasAdmin(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
         if request.user.usuario.rol == 'US':
             fields = ('identificador_unico',
+                      'denominacion',
                       'dependencia',
                       'instanciaEjecutora',
                       'estado',

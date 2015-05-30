@@ -17,7 +17,6 @@
     <script id="js" type="text/javascript">
     var $ts = jQuery.noConflict();
 	$ts(function() {
-
         $ts('.tablesorter').tablesorter({
 		theme: 'blue',
 		// widthFixed: true, // <- now automatically set by the scroller widget
@@ -37,8 +36,6 @@
 			// scroller_idPrefix : 's_'
 		}
     });
-
-
 	});
 	</script>
 
@@ -58,11 +55,8 @@
 
     <script type="text/javascript">
         var $l = jQuery.noConflict();
-
     $l(function(){
-
         $l("#ajaxProgress").hide();
-
         // off
         $l("#msEstatusObra").multiselect({
             header: true,
@@ -70,7 +64,6 @@
             uncheckAllText: 'Desmarcar todos',
             noneSelectedText: 'Status de la obra',
             selectedText: '# Status de la obra'
-
         });
         // off
         $l("#msDependencias").multiselect({
@@ -79,7 +72,6 @@
             uncheckAllText: 'Desmarcar todas',
             noneSelectedText: 'Dependencias',
             selectedText: '# Dependencias'
-
         });
         // off
         $l("#msEstados").multiselect({
@@ -97,8 +89,6 @@
             noneSelectedText: 'Tipo de Inversión',
             selectedText: '# Tipos de Inversión'
         });
-
-
         // off
         $l("#msClasificacion").multiselect({
             header: true,
@@ -123,14 +113,12 @@
             noneSelectedText: 'Inaugurador',
             selectedText: '# Inauguradores'
         });
-
-
     });
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
 
-     <script type="text/javascript" src="{% static "assets/js/ajax-consulta.js"%}"></script>
+
 
  <script type="text/javascript">
          google.maps.event.addDomListener(window, 'load', initialize);
@@ -144,10 +132,8 @@
                                         mapOptions);
           var map2 = new google.maps.Map(document.getElementById('mapa'),
                                         mapOptions);
-
           //setMarkers(map, beaches);
         }
-
     </script>
 
 
@@ -156,42 +142,31 @@
     <link href="{% static "css/styles.css"%}" rel="stylesheet">
 
     <style type="text/css">
-
-
-
         /**
  * Fade-zoom animation for first dialog
  */
-
 /* start state */
 .my-mfp-zoom-in .zoom-anim-dialog {
 	opacity: 0;
-
 	-webkit-transition: all 0.2s ease-in-out;
 	-moz-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
-
-
-
 	-webkit-transform: scale(0.8);
 	-moz-transform: scale(0.8);
 	-ms-transform: scale(0.8);
 	-o-transform: scale(0.8);
 	transform: scale(0.8);
 }
-
 /* animate in */
 .my-mfp-zoom-in.mfp-ready .zoom-anim-dialog {
 	opacity: 1;
-
 	-webkit-transform: scale(1);
 	-moz-transform: scale(1);
 	-ms-transform: scale(1);
 	-o-transform: scale(1);
 	transform: scale(1);
 }
-
 /* animate out */
 .my-mfp-zoom-in.mfp-removing .zoom-anim-dialog {
 	-webkit-transform: scale(0.8);
@@ -199,10 +174,8 @@
 	-ms-transform: scale(0.8);
 	-o-transform: scale(0.8);
 	transform: scale(0.8);
-
 	opacity: 0;
 }
-
 /* Dark overlay, start state */
 .my-mfp-zoom-in.mfp-bg {
 	opacity: 0;
@@ -219,13 +192,9 @@
 .my-mfp-zoom-in.mfp-removing.mfp-bg {
 	opacity: 0;
 }
-
-
-
 /**
  * Fade-move animation for second dialog
  */
-
 /* at start */
 .my-mfp-slide-bottom .zoom-anim-dialog {
 	opacity: 0;
@@ -233,15 +202,12 @@
 	-moz-transition: all 0.2s ease-out;
 	-o-transition: all 0.2s ease-out;
 	transition: all 0.2s ease-out;
-
 	-webkit-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
 	-moz-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
 	-ms-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
 	-o-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
 	transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
-
 }
-
 /* animate in */
 .my-mfp-slide-bottom.mfp-ready .zoom-anim-dialog {
 	opacity: 1;
@@ -251,22 +217,18 @@
 	-o-transform: translateY(0) perspective( 600px ) rotateX( 0deg );
 	transform: translateY(0) perspective( 600px ) rotateX( 0deg );
 }
-
 /* animate out */
 .my-mfp-slide-bottom.mfp-removing .zoom-anim-dialog {
 	opacity: 0;
-
 	-webkit-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
 	-moz-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
 	-ms-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
 	-o-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
 	transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
 }
-
 /* Dark overlay, start state */
 .my-mfp-slide-bottom.mfp-bg {
 	opacity: 0;
-
 	-webkit-transition: opacity 0.3s ease-out;
 	-moz-transition: opacity 0.3s ease-out;
 	-o-transition: opacity 0.3s ease-out;
@@ -280,9 +242,6 @@
 .my-mfp-slide-bottom.mfp-removing.mfp-bg {
 	opacity: 0;
 }
-
-
-
 		</style>
 
     <!-- Magnific Popup core CSS file -->
@@ -295,22 +254,18 @@
 
 
 <script>
-
 var $pp = jQuery.noConflict();
 $pp('#tabla-exporta').hide();
 $pp(function () {
 	  $pp('.popup-modal').magnificPopup({
 	    type: 'inline',
-	    preloader: false,
+	    preloader: true,
 	    modal: true,
           fixedContentPos: false,
 		fixedBgPos: true,
-
 		overflowY: 'auto',
-
 		closeBtnInside: true,
 		preloader: false,
-
 		midClick: true,
 		removalDelay: 300,
 		mainClass: 'my-mfp-zoom-in'
@@ -319,19 +274,15 @@ $pp(function () {
 	    e.preventDefault();
 	    $pp.magnificPopup.close();
 	  });
-
       $pp('.popup-exporta').magnificPopup({
 	    type: 'inline',
 	    preloader: false,
 	    modal: true,
           fixedContentPos: false,
 		fixedBgPos: true,
-
 		overflowY: 'auto',
-
 		closeBtnInside: true,
 		preloader: false,
-
 		midClick: true,
 		removalDelay: 300,
 		mainClass: 'my-mfp-zoom-in'
@@ -340,7 +291,6 @@ $pp(function () {
 	    e.preventDefault();
 	    $pp.magnificPopup.close();
 	  });
-
       $pp('#container2').highcharts({
         chart: {
             type: 'column',
@@ -377,7 +327,6 @@ $pp(function () {
         }]
     });
 });
-
 </script>
 <script src="{% static "assets/graficas/highcharts/js/highcharts.js"%}"></script>
 <script src="{% static "assets/graficas/highcharts/js/highcharts-3d.js"%}"></script>
@@ -395,14 +344,17 @@ $pp(function () {
 
 
 
+
+<script type="text/javascript" src="{% static "assets/js/ajax-consulta.js"%}"></script>
+
 {% endblock %}
 {% block breadcrumbs %}
 {% endblock %}
 
 {% block content %}
 
-<body style="font: 100% sans-serif;">
-    <div id="regresarBTN" onclick="location.href='{% url 'admin:index' %}'">
+<body style="font: 100% sans-serif;background: #ffffff;height: 600px;">
+    <div id="regresarBTN" onclick="location.href='/obras/consultas'">
     </div>   <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
 
     <div id="welcome">Consulta Mediante Filtros</div>
@@ -410,57 +362,66 @@ $pp(function () {
   <!-- inicio contenido de la consulta por filtros-->
     <div id="tabla-exporta" style="height: 0px;"></div>
 
-    <div id="modal-exporta" class="white-popup-block mfp-hide centerDiv"  style="width: 50%;">
-        <div class="panel panel-default panel-table">
-            <div class="panel-body">
-                <div class="tr">
-                    <h1>EXPORTAR</h1>
-                    <div class="row centerDiv">
-                        <div class="col-md-4">
+    <div id="modal-exporta" class="green-popup-block mfp-hide centerDiv"  style="width: 30%;">
+        <div class="row" style="background:linear-gradient(#206341,#206341,#1E613F,#276947,#206341)  ;border: 2px solid #ffffff;">
+            <div class="row exportarALERTA" style="padding-top: 15px;padding-left: 20px;width:100%"> EXPORTAR RESULTADOS </div>
+            <div class="row textoEXPORTAR" style="padding-left: 20px;width:100%;padding-top: 15px;">Elija el formato en el que desea exportar los resultados. </div>
+                    <div class="row " style="width: 60%;padding-top: 15px;margin-left: auto;margin-right: auto">
+                        <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="col-md-2 imprimePDF" id="enviaPDF" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'pdf',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                                <div class="pdf"  id="enviaPDF" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'pdf',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
                             </article>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="col-md-2 imprimeEXCEL" id="enviaEXCEL" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'excel',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                                <div class="excel" id="enviaEXCEL" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'excel',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
                             </article>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="col-md-2 imprimePPT" id="enviaPPT" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'powerpoint',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                                <div class="ppt"  id="enviaPPT" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'powerpoint',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
                             </article>
                         </div>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="row centerDiv">
-            <article id="salir_exporta">
-                {% csrf_token %}
-                <div class="col-md-6 salirBTN popup-exporta-dismiss" id="salirExporta" style="height: 30px">
-                </div>
-            </article>
+            <div class="row" style="width: 60%;padding-top: 15px;margin-left: auto;margin-right: auto">
+                <article id="salir_exporta">
+                    {% csrf_token %}
+                    <div class="salirBTN popup-exporta-dismiss" id="salirExporta" style="height: 30px">
+                    </div>
+                </article>
+            </div><br>
         </div>
     </div>
 
-    <div id="test-modal" class="white-popup-block mfp-hide" >
-			<h1>GR&Aacute;FICAS</h1>
+    <div class= " white-popup-block mfp-hide centerDiv" id="test-modal" style="width: 70%;height: 40%;">
+        <div class="row" style="padding-top: 15px;margin-left: auto;margin-right: auto">
+                <article id="salir_exporta">
+                    {% csrf_token %}
+                    <div class="popup-modal-dismiss" id="regresarBTN" style="height: 25px">
+                    </div>
+                </article>
+        </div>
+       <div class="row" style="padding-bottom: 4px;padding-left: 20px;padding-right: 20px;">
+           <div class="rowP" style="padding-right: 5px;padding-left: 3px; padding-bottom: 0px; padding-top: 0px;height: auto; ">
+               <div   id="containerGrafica" ></div>
+           </div>
+       </div>
 
 
-             <div class="row" >
-                   <div class="col-md-3">
-                       <div class="panel panel-default panel-table">
-                            <div class="panel-heading">
-                                <div class="tr">
+       <div class="row" style="padding-left: 20px;padding-right: 20px;">
+           <div class="col-md-4" style="padding-left: 0px; padding-right: 0px; ">
+                <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 230px; ">
+                      <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                            <div class="panel-heading" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
+                                <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 2px; padding-top: 2px ">
                                     <div class="td" ><h5>MOSTRAR GR&Aacute;FICA POR: </h5></div>
                                 </div>
                             </div>
-                            <div class="panel-body">
-                                <div class="tr">
+                            <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                <div class="tr"  style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="row">
                                         <div class="col-xs-10">
                                            <p>Dependencia</p>
@@ -482,28 +443,18 @@ $pp(function () {
                                             </article>
                                        </div>
                                     </div>
-                                    <div class="row"><div class="col-xs-10">
-                                       <p>RCI</p>
-                                       </div>
-                                       <div class="col-xs-2">
-                                           <article id="ver_grafica_rci">
-                                               {% csrf_token %}
-                                                <input type="radio" name="graficaTipo" id="estado" value="RCI"/>
-                                            </article>
-                                       </div>
-                                    </div>
                                 </div>
                             </div>
                        </div>
 
-                       <div class="panel panel-default panel-table">
-                            <div class="panel-heading">
-                                <div class="tr">
+                       <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                            <div class="panel-heading" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="td" ><h5>CONFIGURAR GR&Aacute;FICA </h5></div>
                                 </div>
                             </div>
-                            <div class="panel-body">
-                                <div class="tr">
+                            <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <p>Datos a graficar</p>
@@ -539,40 +490,41 @@ $pp(function () {
                                 </div>
                             </div>
                         </div>
+               </div >
+           </div>
+           <div class="col-md-8" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px; ">
+               <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px;height: 230px; ">
+                   <div id="divTablaGrafica"  > </div>
+               </div>
+           </div>
+       </div>
+
+   </div>
 
 
-                   </div>
-                   <div  class="col-md-9"  id="containerGrafica" >
-                   </div>
-             </div>
-             <div class="row">
-                   <div class="col-md-6" id="divTablaGrafica"  >
-                 </div>
-             </div>
 
 
-
-
-             <input type="button" value="Regresar" class="popup-modal-dismiss btn btn-primary fancybox-media italic" />
-	</div>
-
-   <div class= "container2" style="margin-top:0px;">
+   <div class= "container2" >
                 <div class="row" style="padding-bottom: 4px;">
-                    <div class="rowP" style="padding-right: 5px;">
-                    <div class="col-md-12">
-                        <h4>PARÁMETROS DE CONSULTA</h4>
+                    <div class="rowP" style="padding-right: 5px;padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                    <div class="col-md-12 titulo">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Par&aacute;metros de Consulta
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3" >
-                        <div class="panel panel-default panel-table">
-                            <div class="panel-body">
-                                <div class="tr">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label>Registro de Cartera de Inversi&oacute;n</label>
+                    <div class="col-md-3" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                        <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                            <div class="panel-body" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
+                                <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 3px; padding-top: 3px ">
+                                    <div class="row" >
+                                        <div class="col-md-12" style="padding-right: 4px; padding-left: 15px; padding-bottom: 1px; padding-top: 1px ">
+                                            Registro de Cartera de Inversi&oacute;n
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12"><center>
+                                        <div class="col-md-12" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 1px "><center>
                                             <label class="radio-inline">
                                                 <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> SI
                                             </label>
@@ -583,29 +535,29 @@ $pp(function () {
                                     </div>
 
                                     <div class="row" >
-                                        <div class="col-md-12">
-                                            <center><label>Rango de Fecha de Inicio</label></center>
+                                        <div class="col-md-12" style="padding-right: 4px; padding-left: 15px; padding-bottom: 1px; padding-top: 1px ">
+                                            <center>Rango de Fecha de Inicio</center>
                                         </div>
                                     </div>
                                     <div class="row" ><center>
-                                        <div class="col-md-6"><div id="pick" class="form-group">
+                                        <div class="col-md-6" style="padding-right: 4px; padding-left: 15px; padding-bottom: 1px; padding-top: 1px ">
                                             <input type="text" class="form-control2" id="fechaInicial1" placeholder="Desde" >
-                                        </div></div></center>
-                                        <div class="col-md-6">
+                                        </div></center>
+                                        <div class="col-md-6" style="padding-bottom: 1px; padding-top: 1px">
                                             <input type="text" class="form-control2" id="fechaInicial2" placeholder="Hasta">
                                         </div></center>
                                     </div>
                                     <div class="row" >
-                                        <div class="col-md-12" >
-                                            <center><label>Rango de Fecha de T&eacute;rmino</label></center>
+                                        <div class="col-md-12" style="padding-right: 4px; padding-left: 15px; padding-bottom: 1px; padding-top: 1px ">
+                                            <center>Rango de Fecha de T&eacute;rmino</center>
                                         </div>
                                     </div>
                                     <div class="row" ><center>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="padding-right: 4px; padding-left: 15px; padding-bottom: 1px; padding-top: 1px ">
                                             <input type="text" class="form-control2" id="fechaFinal1" placeholder="Desde">
                                         </div></center>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="padding-bottom: 1px; padding-top: 1px">
                                             <input type="text" class="form-control2" id="fechaFinal2" placeholder="Hasta">
                                         </div></center>
                                     </div>
@@ -614,12 +566,12 @@ $pp(function () {
                         </div>
                     </div>
 
-                    <div class="col-md-3" >
-                         <div class="panel panel-default panel-table">
-                            <div class="panel-body">
+                    <div class="col-md-3 " style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                         <div class="panel panel-default panel-table ">
+                            <div class="panel-body " style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
                                 <div class="tr">
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-10 " style="padding-right: 4px; padding-left: 15px; padding-bottom: 5px; padding-top: 0px ">
                                             <select id="msTipoInversion" multiple="multiple"  style="width: 100%;height: auto;">
                                                 {% for obj in tipo_inversiones %}
                                                      <option value={{obj.id}}>{{obj.nombreTipoInversion}}</option>
@@ -628,29 +580,29 @@ $pp(function () {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 " style="padding-right: 4px; padding-left: 4px; padding-bottom: 0px; padding-top: 0px ">
                                             <center><label>Rango de Inversi&oacute;n</label></center>
                                         </div>
                                     </div>
                                     <div class="row"><center>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 " style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                            De:
                                         </div>
-                                        <div class="col-md-7">
+                                        <div class="col-md-7" style=" padding-bottom: 0px; padding-top: 0px ">
                                                 <input type="text" class="form-control2" id="inversionInicial" placeholder="0.00">
                                         </div></center>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 " style="padding-bottom: 0px; padding-top: 0px ">
                                             MDP
                                         </div>
                                     </div>
                                     <div class="row"><center>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 " style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             A:
                                         </div>
-                                        <div class="col-md-7">
+                                        <div class="col-md-7 " style=" padding-bottom: 0px; padding-top: 0px ">
                                                 <input type="text" class="form-control2" id="inversionFinal" placeholder="0.00">
                                         </div></center>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2" style=" padding-bottom: 0px; padding-top: 0px ">
                                             MDP
                                         </div>
                                     </div>
@@ -659,12 +611,12 @@ $pp(function () {
                          </div>
                     </div>
 
-                    <div class="col-md-2" >
+                    <div class="col-md-2" style="padding-right: 4px; padding-left: 4px; padding-bottom: 0px; padding-top: 0px ">
                         <div class="panel panel-default panel-table">
-                            <div class="panel-body">
+                            <div class="panel-body" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
                                 <div class="tr">
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
 
                                             <select id="msEstatusObra" multiple="multiple" style="width: 100%;height: auto;">
                                                 {% for obj in estatusObra %}
@@ -674,7 +626,7 @@ $pp(function () {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <select id="msDependencias" multiple="multiple" style="width: 100%;height: auto;">
                                                 {% for dep in dependencias %}
                                                      <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
@@ -683,7 +635,7 @@ $pp(function () {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <select id="msEstados" multiple="multiple"  style="width: 100%;height: auto;">
                                                 {% for obj in estados %}
                                                      <option value={{obj.id}}>{{obj.nombreEstado}}</option>
@@ -696,12 +648,12 @@ $pp(function () {
                         </div>
                     </div>
 
-                    <div class="col-md-2" >
+                    <div class="col-md-2" style="padding-right: 4px; padding-left: 4px; padding-bottom: 0px; padding-top: 0px ">
                         <div class="panel panel-default panel-table">
-                            <div class="panel-body">
+                            <div class="panel-body" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
                                 <div class="tr">
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
 
                                             <select id="msClasificacion" multiple="multiple" style="width: 100%;height: auto;">
                                                 {% for obj in clasificacion %}
@@ -711,7 +663,7 @@ $pp(function () {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <select id="msImpacto" multiple="multiple" style="width: 100%;height: auto;">
                                                 {% for dep in impactos %}
                                                      <option value={{dep.id}}>{{dep.nombreImpacto}}</option>
@@ -720,7 +672,7 @@ $pp(function () {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <select id="msInaugurador" multiple="multiple" style="width: 100%;height: auto;">
                                                 {% for obj in inaugurador %}
                                                      <option value={{obj.id}}>{{obj.nombreCargoInaugura}}</option>
@@ -732,40 +684,39 @@ $pp(function () {
                             </div>
                         </div>
                         <div class="row">
-                             <div class="col-md-6">
+                             <div class="col-md-12" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                   <article id="ver_datos">
                                      {% csrf_token %}
-                                     <div class="col-md-6 consultar2BTN" id="button" style="height: 30px">
-                                     </div>
+                                     <div class="consultarBTN" id="button" style="height: 30px"></div>
                                   </article>
                              </div>
                         </div>
                     </div>
-                    <div class="col-md-2" >
+                    <div class="col-md-2" style="padding-right: 4px; padding-left: 4px; padding-bottom: 0px; padding-top: 0px ">
                         <div class="panel panel-default panel-table">
-                            <div class="panel-body">
+                            <div class="panel-body" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
                                 <div class="tr">
                                     <div class="row" >
-                                        <div class="col-md-9">
+                                        <div class="col-md-9" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <span class="input-label">Inauguradas</span>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2" style=" padding-bottom: 0px; padding-top: 0px ">
                                             <input type="checkbox" id="inauguradas" value="option1">
                                         </div>
                                     </div>
                                     <div class="row" >
-                                        <div class="col-md-9">
+                                        <div class="col-md-9" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <span class="input-label">Sin Inauguraci&oacute;n</span>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2" style=" padding-bottom: 0px; padding-top: 0px ">
                                             <input type="checkbox" id="sinInauguracion" value="option2">
                                         </div>
                                     </div>
                                     <div class="row" >
-                                        <div class="col-md-9">
+                                        <div class="col-md-9" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <span class="input-label">No Inauguradas</span>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2" style="padding-bottom: 0px; padding-top: 0px ">
                                             <input type="checkbox" id="noInauguradas" value="option3">
                                         </div>
                                     </div>
@@ -780,7 +731,11 @@ $pp(function () {
         <div class="row">
        <div class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
             <div class="col-md-12-box" id="datos" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
-               <h4>RESULTADOS</h4>
+                <div class="row titulo">
+                     <div class="col-md-6">
+                         Resultados
+                     </div>
+                </div>
 
                <table cellspacing="1" class="tablesorter" id="tablaIzquierda">
                     <thead>
@@ -798,6 +753,7 @@ $pp(function () {
                             <th>Estado</th>
                         </tr>
                         <tr><td class="pager" id="pagerI" colspan="3">
+
                         <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>
                         <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>
                         <span class="pagedisplay" id="pagedisplayI"></span>
@@ -847,10 +803,10 @@ $pp(function () {
        </div>
        <div class="col-md-6" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
            <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
-               <div class="row">
-                   <div class="col-md-3">
-                       <h4>MAPA</h4>
-                   </div>
+               <div class="row" style="padding-bottom: 4px;">
+                     <div class="col-md-3 titulo">
+                         Mapa
+                     </div>
 
                    <div class="col-md-9" id="ajaxProgress">
                         cargando...<img src="../../static/gifs/loading-barra2.gif">
@@ -865,7 +821,11 @@ $pp(function () {
             <div class="col-md-12-box"  style="margin-left: 0px; padding-right: 4px;padding-left: 4px">
            <div class="row">
                <div class="col-md-12" id="datostablaDerecha">
-                    <h4>REPORTE</h4>
+                    <div class="row titulo">
+                         <div class="col-md-6">
+                             Reporte
+                         </div>
+                    </div>
                     <table cellspacing="1" class="tablesorter" id="tablaDer">
                     <thead>
 
@@ -955,10 +915,8 @@ $pp(function () {
                </div>
                <div class="row">
                    <div class="col-xs-5">
-                   RCI
                    </div>
                    <div class="col-xs-2">
-                        <input type="radio" name="tipoReporte" value="RCI" />
                    </div>
                    <div class="col-xs-2">
                        <article id="ver_exporta">
@@ -1009,3 +967,5 @@ $pp(function () {
   </body>
   <!-- Final contenido de la consulta por filtros-->
 {% endblock %}
+
+
