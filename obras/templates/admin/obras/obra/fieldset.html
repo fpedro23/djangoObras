@@ -19,7 +19,7 @@
              <table width="100%" border="0px" cellpadding="0px" cellspacing="3px">
           <tr>
               <td>ID Único:</td>
-              <td><input id="id_identificador_unico" maxlength="20" name="identificador_unico" type="text" value="{{ field.field.value|default_if_none:"" }}"/></td>
+              <td><label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label></td>
           </tr>
           {% endif %}
           {% if field.field.name == "denominacion" %}

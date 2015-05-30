@@ -47,7 +47,7 @@
         <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post"
               id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
             {% if errors %}
-
+{{ errors }}
                     {% if adminform.form.non_field_errors|length == 1 %} * Favor de verificar los datos {% else %}
                         * Favor de verificar los datos {% endif %} {{ adminform.form.non_field_errors }}
                 {% endif %}
