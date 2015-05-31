@@ -332,3 +332,9 @@ ul li {
 a {
     color:#6A6B6C;
 }
+
+.error__msg {
+  font-size: 12px;
+  font-weight: bold;
+  color: #B92025;
+}

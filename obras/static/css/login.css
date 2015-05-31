@@ -71,3 +71,151 @@
 	background-position: -127px -230px;
 }
 /*Cierre de elementos del DIV BODY correspondientes a la página de LOG IN*/
+
+ #regresarBTN{
+	 width: 80px;
+	 height: 22px;
+	 background-image:url(../img/bigBackground.fw.png);
+	 background-position: -300px 0px;
+}
+
+#regresarBTN:hover{
+	background-position: -300px -21px;
+}
+
+ .recuperarCon{
+	 position:relative;
+	 width:460px;
+	 height:330px;
+	 margin-top:55px;
+	 margin-left:50px;
+
+	font: "Myriad Pro";
+    font-size:18px;
+    font-weight: regular;
+    color: #6A6B6C;
+
+}
+
+.botENVIAR{
+	width:126px;
+	height:45px;
+	position:absolute;
+	top: 340px;
+	left: 365px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position: 0px -184px;
+}
+
+.botENVIAR:hover{
+	background-position:0px -229px;
+}
+
+
+
+.titulo{
+	font: "Soberana Titular";
+	font-size:25px;
+	font-weight:bold;
+	color: #6A6B6C;
+
+}
+
+#alertaMAIL{
+	width:400px;
+	height:250px;
+	position:absolute;
+	left:17px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position:-721px -1520px;
+}
+
+.logIn2 {
+	position: absolute;
+	left: 300px;
+	top: 76px;
+	width: 435px;
+	height: 337px;
+	z-index: 1;
+}
+
+.recuperarCon{
+	 position:relative;
+	 width:460px;
+	 height:330px;
+	 margin-top:33px;
+	 margin-left:50px;
+
+	font: "Myriad Pro";
+    font-size:18px;
+    font-weight: regular;
+    color: #6A6B6C;
+
+}
+
+.botCAMBIAR{
+	width:126px;
+	height:45px;
+	position:absolute;
+	top: 340px;
+	left: 365px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position: 0px -524px;
+}
+
+.botCAMBIAR:hover{
+	background-position:0px -569px;
+}
+
+
+.aceptarBTN{
+	width:92px;
+	height:30px;
+
+	background-image:url(../img/bigBackground.fw.png);
+	background-position:-724px -2256px;
+
+	position:absolute;
+	top:180px;
+	left:100px;
+}
+
+.aceptarBTN:hover{
+	background-position:-724px -2287px;
+}
+
+
+.alertaVENTANA{
+	width: 400px;
+	height:250px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position:-721px -2000px;
+    position: relative;
+}
+
+.tituloALERTA{
+	font-family: "Soberana Titular";
+	font-size: 24px;
+	text-align: center;
+	color: #FFFFFF;
+	font-weight: bold;
+	width: 360px;
+	height: 40px;
+	position: absolute;
+	left: 26px;
+	top: 48px;
+}
+
+.textoALERTA{
+	font-family:"soberana Sans";
+	color:#FFFFFF;
+	font-size:15px;
+	text-align:center;
+
+	width:360px;
+	height:60px;
+
+	position:absolute;
+	left:26px;
+	top:100px;
+}
