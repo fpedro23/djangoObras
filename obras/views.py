@@ -249,6 +249,11 @@ def movimientos(request):
                               context_instance=RequestContext(request))
 
 
+def modifica(request):
+    return render_to_response('admin/obras/obra/modifica.html', locals(),
+                              context_instance=RequestContext(request))
+
+
 def consultas(request):
     return render_to_response('admin/obras/consultas.html', locals(),
                               context_instance=RequestContext(request))

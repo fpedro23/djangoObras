@@ -5,6 +5,66 @@
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
      <link href="{% static "css/formas.css" %}" rel="stylesheet">
     {{ media }}
+    <script type="text/javascript">
+(
+
+
+        function($) {
+
+
+function $_GET(param)
+{
+/* Obtener la url completa */
+url = document.URL;
+/* Buscar a partir del signo de interrogación ? */
+url = String(url.match(/\?+.+/));
+/* limpiar la cadena quitándole el signo ? */
+url = url.replace("?", "");
+/* Crear un array con parametro=valor */
+url = url.split("&");
+
+/*
+Recorrer el array url
+obtener el valor y dividirlo en dos partes a través del signo =
+0 = parametro
+1 = valor
+Si el parámetro existe devolver su valor
+*/
+x = 0;
+while (x < url.length)
+{
+p = url[x].split("=");
+if (p[0] == param)
+{
+return decodeURIComponent(p[1]);
+}
+x++;
+}
+
+
+
+}
+    $(document).ready(function($) {
+        $("tr input.action-select").actions();
+        if ($_GET("m")==1) {
+            $("#walta").hide();
+            $("#wmod").show();
+            $("#buscar").show();
+            $("#buscarICO").show();
+
+        }
+        else {
+            $("#walta").show();
+            $("#wmod").hide();
+             $("#buscar").hide();
+            $("#buscarICO").hide();
+
+        }
+
+
+    });
+})(django.jQuery);
+</script>
 {% endblock %}
 
 {% block extrastyle %}{{ block.super }}
@@ -26,11 +86,19 @@
 
   <div id="welcome">
         {% if not change %}
-           Alta
+           <span id="walta">Alta
         {% else %}
-            Modificar
+            <span id="wmod">Modificar
         {% endif %}
-        Obra
+        Obra</span>
+
+  </div>
+
+     <div id="buscar" hidden="true">
+     <input class="buscar" type="text" name="idobra" value="" id="idobra">
+  </div>
+
+  <div id="buscarICO" hidden="true" onclick="location.href='/admin/obras/obra/'+document.getElementById('idobra').value+'/?m=1'">
   </div>
 
         {% block object-tools %}
