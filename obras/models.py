@@ -157,6 +157,10 @@ class InstanciaEjecutora(models.Model):
     def __unicode__(self):
         return self.nombre
 
+    def to_serializable_dict(self):
+        map = {'nombre': self.nombre}
+        return map
+
 
 class Obra(models.Model):
     #TODO agrupar semanticamente todos los campos de obras
@@ -199,7 +203,75 @@ class Obra(models.Model):
         return self.denominacion
 
     def to_serializable_dict(self):
-        return model_to_dict(self)
+        map = {}
+
+        map['identificador'] = self.identificador_unico
+        map['tipoObra'] = self.tipoObra.to_serializable_dict()
+        map['dependencia'] = self.dependencia.to_serializable_dict()
+        map['estado'] = self.estado.to_serializable_dict()
+        map['impacto'] = self.impacto.to_serializable_dict()
+        map['instanciaEjecutora'] = self.instanciaEjecutora.to_serializable_dict()
+
+        map['tipoInversion'] = []
+        for tipoInversion in self.tipoInversion.all():
+            tipo = tipoInversion.to_serializable_dict()
+            map['tipoInversion'].append(tipo)
+
+        map['tipoClasificacion'] = []
+        for tipoClasificacion in self.tipoClasificacion.all():
+            tipo = tipoClasificacion.to_serializable_dict()
+            map['tipoClasificacion'].append(tipo)
+
+        map['inaugurador'] = self.inaugurador.to_serializable_dict()
+        map['registroHacendario'] = self.registroHacendario
+        map['registroAuditoria'] = self.registroAuditoria
+        map['denominacion'] = self.denominacion
+        map['descripcion'] = self.descripcion
+        map['observaciones'] = self.observaciones
+        if self.fechaInicio is None:
+            map['fechaInicio'] = None
+        else:
+            map['fechaInicio'] = self.fechaInicio.__str__()
+        if self.fechaTermino is None:
+            map['fechaTermino'] = None
+        else:
+            map['fechaTermino'] = self.fechaTermino.__str__()
+        if self.inversionTotal is None:
+            map['inversionTotal'] = 0.0
+        else:
+            map['inversionTotal'] = float(self.inversionTotal)
+        if self.totalBeneficiarios is None:
+            map['totalBeneficiarios'] = 0
+        else:
+            map['totalBeneficiarios'] = int(self.totalBeneficiarios)
+        map['senalizacion'] = self.senalizacion
+        map['susceptibleInauguracion'] = self.susceptibleInauguracion
+        if self.porcentajeAvance is None:
+            map['porcentajeAvance'] = 0.0
+        else:
+            map['porcentajeAvance'] = float(self.porcentajeAvance)
+        if self.fotoAntes is None:
+            map['fotoAntes'] = None
+        else:
+            map['fotoAntes'] = self.fotoAntes.name
+        if self.fotoDurante is None:
+            map['fotoAntes'] = None
+        else:
+            map['fotoAntes'] = self.fotoDurante.name
+        if self.fotoDespues is None:
+            map['fotoAntes'] = None
+        else:
+            map['fotoAntes'] = self.fotoDespues.name
+        map['inaugurada'] = self.inaugurada
+        map['poblacionObjetivo'] = self.poblacionObjetivo
+        map['municipio'] = self.municipio
+        if self.tipoMoneda is None:
+            map['tipoMoneda'] = None
+        else:
+            map['tipoMoneda'] = self.tipoMoneda.to_serializable_dict()
+
+        return map
+
 
 
 class DocumentoFuente(models.Model):

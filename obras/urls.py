@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 from obras import views
+from obras import api
 
 
 urlpatterns = patterns('',
@@ -16,9 +17,9 @@ urlpatterns = patterns('',
                        # Mappings for the new (protected) implementation of the mobile API
 
 
-                       url(r'^api/hora', views.HoraEndpoint.as_view()),
-                       url(r'^api/obras_iniciadas', views.ObrasIniciadasEndpoint.as_view()),
-                       url(r'^api/obras_vencidas', views.ObrasVencidasEndpoint.as_view()),
+                       url(r'^api/hora', api.HoraEndpoint.as_view()),
+                       url(r'^api/obras_iniciadas', api.ObrasIniciadasEndpoint.as_view()),
+                       url(r'^api/obras_vencidas', api.ObrasVencidasEndpoint.as_view()),
 
                        url(r'^reportes/balance-general', views.balance_general),
                        url(r'^reportes/informacion-general', views.hipervinculo_informacion_general),
