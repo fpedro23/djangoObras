@@ -2,12 +2,14 @@ import json
 import datetime
 from django.db.models import Q
 from django.http import HttpResponse
+from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
-from obras.models import Obra
+from obras.BuscarObras import BuscarObras
+from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador
+from obras.views import get_array_or_none
 
 
 class HoraEndpoint(ProtectedResourceView):
-
     def get(self, request):
         json_response = {}
         date = datetime.datetime.now()
@@ -25,160 +27,165 @@ class HoraEndpoint(ProtectedResourceView):
 
 
 class ObrasIniciadasEndpoint(ProtectedResourceView):
-
     def get(self, request):
-        json_response = []
         today = datetime.datetime.now().date()
-
         obras = Obra.objects.filter(Q(fechaInicio__lte=today)).all()
 
-        for obra in obras:
-            map = {}
-
-            map['identificador'] = obra.identificador_unico
-            map['tipoObra'] = obra.tipoObra.to_serializable_dict()
-            map['dependencia'] = obra.dependencia.to_serializable_dict()
-            map['estado'] = obra.estado.to_serializable_dict()
-            map['impacto'] = obra.impacto.to_serializable_dict()
-
-            map['tipoInversion'] = []
-            for tipoInversion in obra.tipoInversion.all():
-                tipo = tipoInversion.to_serializable_dict()
-                map['tipoInversion'].append(tipo)
-
-            map['tipoClasificacion'] = []
-            for tipoClasificacion in obra.tipoClasificacion.all():
-                tipo = tipoClasificacion.to_serializable_dict()
-                map['tipoClasificacion'].append(tipo)
-
-            map['inaugurador'] = obra.inaugurador.to_serializable_dict()
-            map['registroHacendario'] = obra.registroHacendario
-            map['registroAuditoria'] = obra.registroAuditoria
-            map['denominacion'] = obra.denominacion
-            map['descripcion'] = obra.descripcion
-            map['observaciones'] = obra.observaciones
-            if obra.fechaInicio is None:
-                map['fechaInicio'] = None
-            else:
-                map['fechaInicio'] = obra.fechaInicio.__str__()
-            if obra.fechaTermino is None:
-                map['fechaTermino'] = None
-            else:
-                map['fechaTermino'] = obra.fechaTermino.__str__()
-            if obra.inversionTotal is None:
-                map['inversionTotal'] = 0.0
-            else:
-                map['inversionTotal'] = float(obra.inversionTotal)
-            if obra.totalBeneficiarios is None:
-                map['totalBeneficiarios'] = 0
-            else:
-                map['totalBeneficiarios'] = int(obra.totalBeneficiarios)
-            map['senalizacion'] = obra.senalizacion
-            map['susceptibleInauguracion'] = obra.susceptibleInauguracion
-            if obra.porcentajeAvance is None:
-                map['porcentajeAvance'] = 0.0
-            else:
-                map['porcentajeAvance'] = float(obra.porcentajeAvance)
-            if obra.fotoAntes is None:
-                map['fotoAntes'] = None
-            else:
-                map['fotoAntes'] = obra.fotoAntes.name
-            if obra.fotoDurante is None:
-                map['fotoAntes'] = None
-            else:
-                map['fotoAntes'] = obra.fotoDurante.name
-            if obra.fotoDespues is None:
-                map['fotoAntes'] = None
-            else:
-                map['fotoAntes'] = obra.fotoDespues.name
-            map['inaugurada'] = obra.inaugurada
-            map['poblacionObjetivo'] = obra.poblacionObjetivo
-            map['municipio'] = obra.municipio
-            if obra.tipoMoneda is None:
-                map['tipoMoneda'] = None
-            else:
-                map['tipoMoneda'] = obra.tipoMoneda.to_serializable_dict()
-
-            json_response.append(map)
-
-        return HttpResponse(json.dumps(json_response), 'application/json')
+        return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
 
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
-
     def get(self, request):
-        json_response = []
         today = datetime.datetime.now().date()
-
         obras = Obra.objects.filter(Q(fechaTermino__lte=today))
 
-        for obra in obras:
+        return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
+
+
+class DependenciasEndpoint(ProtectedResourceView):
+    def get(self, request):
+        token = request.GET.get('access_token')
+        print '*************' + token
+        token_model = AccessToken.objects.get(token=token)
+        print token_model.user
+
+        if token_model.user.usuario.rol == 'SA':
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.all())
+
+        elif token_model.user.usuario.rol == 'AD':
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+                Q(id=token_model.user.usuario.dependencia.id) |
+                Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
+            )
+
+        else:
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+                    Q(id=token_model.user.usuario.dependencia.id))
+            )
+
+        return HttpResponse(json.dumps(dicts), 'application/json')
+
+
+class ImpactosEndpoint(ProtectedResourceView):
+    def get(self, request):
+        return HttpResponse(json.dumps(map(lambda impacto: impacto.to_serializable_dict(), Impacto.objects.all())),
+                            'application/json')
+
+
+class EstadosEndpoint(ProtectedResourceView):
+    def get(self, request):
+        return HttpResponse(json.dumps(map(lambda estado: estado.to_serializable_dict(), Estado.objects.all())),
+                            'application/json')
+
+
+class DependenciasTreeEndpoint(ProtectedResourceView):
+    def get(self, request):
+        token = request.GET.get('access_token')
+        token_model = AccessToken.objects.get(token=token)
+
+        if request.GET.get('id', None):
+            dependencia_id = request.GET.get('id')
+        else:
+            dependencia_id = token_model.user.usuario.dependencia_id
+
+        dependencia = Dependencia.objects.get(id=dependencia_id)
+        ans = dependencia.get_tree()
+
+        return HttpResponse(json.dumps(ans), 'application/json')
+
+
+class ClasificacionEndpoint(ProtectedResourceView):
+    def get(self, request):
+        if request.GET.get('id', False):
+            clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id=1)
+        else:
+            clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id__isnull=True)
+
+        return HttpResponse(
+            json.dumps(map(lambda clasificacion: clasificacion.to_serializable_dict(), clasificaciones)),
+            "application/json")
+
+
+class InversionEndpoint(ProtectedResourceView):
+    def get(self, request):
+        return HttpResponse(
+            json.dumps(map(lambda inversion: inversion.to_serializable_dict(), TipoInversion.objects.all())),
+            'application/json')
+
+
+class TipoDeObraEndpoint(ProtectedResourceView):
+    def get(self, request):
+        return HttpResponse(json.dumps(map(lambda tipo: tipo.to_serializable_dict(), TipoObra.objects.all())),
+                            'application/json')
+
+
+class BuscadorEndpoint(ProtectedResourceView):
+    def get(self, request):
+        buscador = BuscarObras(idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+                               iddependencias=get_array_or_none(request.GET.get('tipoDeObra')),
+                               estados=get_array_or_none(request.GET.get('tipoDeObra')),
+                               clasificaciones=get_array_or_none(request.GET.get('tipoDeObra')),
+                               inversiones=get_array_or_none(request.GET.get('tipoDeObra')),
+                               inauguradores=get_array_or_none(request.GET.get('tipoDeObra')),
+                               impactos=get_array_or_none(request.GET.get('tipoDeObra')),
+                               inaugurada=None,
+                               inversion_minima=None,
+                               inversion_maxima=None,
+                               fecha_inicio_primera=None,
+                               fecha_inicio_segunda=None,
+                               fecha_fin_primera=None,
+                               fecha_fin_segunda=None,
+                               denominacion=None,
+                               )
+        resultados = buscador.buscar()
+
+        json_map = {}
+        json_map['reporte_dependencia'] = []
+        for reporte in resultados['reporte_dependencia']:
             map = {}
+            map['dependencia'] = Dependencia.objects.get(
+                nombreDependencia=reporte['dependencia__nombreDependencia']).to_serializable_dict()
+            map['numero_obras'] = reporte['numero_obras']
+            if reporte['sumatotal'] is None:
+                map['sumatotal'] = 0
+            else:
+                map['sumatotal'] = int(reporte['sumatotal'])
+            json_map['reporte_dependencia'].append(map)
 
-            map['identificador'] = obra.identificador_unico
-            map['tipoObra'] = obra.tipoObra.to_serializable_dict()
-            map['dependencia'] = obra.dependencia.to_serializable_dict()
-            map['estado'] = obra.estado.to_serializable_dict()
-            map['impacto'] = obra.impacto.to_serializable_dict()
+        json_map['obras'] = []
+        for obra in resultados['obras']:
+            json_map['obras'].append(obra.to_serializable_dict())
 
-            map['tipoInversion'] = []
-            for tipoInversion in obra.tipoInversion.all():
-                tipo = tipoInversion.to_serializable_dict()
-                map['tipoInversion'].append(tipo)
+        json_map['reporte_estado'] = []
+        for reporte_estado in resultados['reporte_estado']:
+            map = {}
+            if reporte_estado['sumatotal'] is None:
+                map['sumatotal'] = 0.0
+            else:
+                map['sumatotal'] = float(reporte_estado['sumatotal'])
+            map['estado'] = Estado.objects.get(
+                nombreEstado=reporte_estado['estado__nombreEstado']).to_serializable_dict()
+            map['numeroObras'] = reporte_estado['numero_obras']
 
-            map['tipoClasificacion'] = []
-            for tipoClasificacion in obra.tipoClasificacion.all():
-                tipo = tipoClasificacion.to_serializable_dict()
-                map['tipoClasificacion'].append(tipo)
+            json_map['reporte_estado'].append(map)
 
-            map['inaugurador'] = obra.inaugurador.to_serializable_dict()
-            map['registroHacendario'] = obra.registroHacendario
-            map['registroAuditoria'] = obra.registroAuditoria
-            map['denominacion'] = obra.denominacion
-            map['descripcion'] = obra.descripcion
-            map['observaciones'] = obra.observaciones
-            if obra.fechaInicio is None:
-                map['fechaInicio'] = None
-            else:
-                map['fechaInicio'] = obra.fechaInicio.__str__()
-            if obra.fechaTermino is None:
-                map['fechaTermino'] = None
-            else:
-                map['fechaTermino'] = obra.fechaTermino.__str__()
-            if obra.inversionTotal is None:
-                map['inversionTotal'] = 0.0
-            else:
-                map['inversionTotal'] = float(obra.inversionTotal)
-            if obra.totalBeneficiarios is None:
-                map['totalBeneficiarios'] = 0
-            else:
-                map['totalBeneficiarios'] = int(obra.totalBeneficiarios)
-            map['senalizacion'] = obra.senalizacion
-            map['susceptibleInauguracion'] = obra.susceptibleInauguracion
-            if obra.porcentajeAvance is None:
-                map['porcentajeAvance'] = 0.0
-            else:
-                map['porcentajeAvance'] = float(obra.porcentajeAvance)
-            if obra.fotoAntes is None:
-                map['fotoAntes'] = None
-            else:
-                map['fotoAntes'] = obra.fotoAntes.name
-            if obra.fotoDurante is None:
-                map['fotoAntes'] = None
-            else:
-                map['fotoAntes'] = obra.fotoDurante.name
-            if obra.fotoDespues is None:
-                map['fotoAntes'] = None
-            else:
-                map['fotoAntes'] = obra.fotoDespues.name
-            map['inaugurada'] = obra.inaugurada
-            map['poblacionObjetivo'] = obra.poblacionObjetivo
-            map['municipio'] = obra.municipio
-            if obra.tipoMoneda is None:
-                map['tipoMoneda'] = None
-            else:
-                map['tipoMoneda'] = obra.tipoMoneda.to_serializable_dict()
+        json_map['reporte_general'] = []
+        map = {}
+        total = resultados['reporte_general']['total_invertido']['inversionTotal__sum']
+        if total is None:
+            total = 0.0
+        else:
+            total = float(total)
+        map['total_invertido'] = total
 
-            json_response.append(map)
+        map['obras_totales'] = resultados['reporte_general']['obras_totales']
+        json_map['reporte_general'].append(map)
 
-        return HttpResponse(json.dumps(json_response), 'application/json')
+        return HttpResponse(json.dumps(json_map), 'application/json')
+
+
+class InauguradorEndpoint(ProtectedResourceView):
+    def get(self, request):
+        return HttpResponse(
+            json.dumps(map(lambda inaugurador: inaugurador.to_serializable_dict(), Inaugurador.objects.all())),
+            'application/json')

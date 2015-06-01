@@ -6,14 +6,14 @@ from obras import api
 
 urlpatterns = patterns('',
                        # Mappings for the new (protected) implementation of the mobile API
-                       url(r'^api/estados', views.EstadosEndpoint.as_view()),
-                       url(r'^api/dependencias', views.DependenciasEndpoint.as_view()),
-                       url(r'^api/impactos', views.ImpactosEndpoint.as_view()),
-                       url(r'^api/inauguradores', views.InauguradorEndpoint.as_view()),
-                       url(r'^api/clasificaciones', views.ClasificacionEndpoint.as_view()),
-                       url(r'^api/inversiones', views.InversionEndpoint.as_view()),
-                       url(r'^api/tiposDeObra', views.TipoDeObraEndpoint.as_view()),
-                       url(r'^api/busqueda', views.BuscadorEndpoint.as_view()),
+                       url(r'^api/estados', api.EstadosEndpoint.as_view()),
+                       url(r'^api/dependencias', api.DependenciasEndpoint.as_view()),
+                       url(r'^api/impactos', api.ImpactosEndpoint.as_view()),
+                       url(r'^api/inauguradores', api.InauguradorEndpoint.as_view()),
+                       url(r'^api/clasificaciones', api.ClasificacionEndpoint.as_view()),
+                       url(r'^api/inversiones', api.InversionEndpoint.as_view()),
+                       url(r'^api/tiposDeObra', api.TipoDeObraEndpoint.as_view()),
+                       url(r'^api/busqueda', api.BuscadorEndpoint.as_view()),
                        # Mappings for the new (protected) implementation of the mobile API
 
 

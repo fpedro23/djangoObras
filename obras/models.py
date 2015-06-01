@@ -49,6 +49,17 @@ class Dependencia(models.Model):
 
         return ans
 
+    def get_tree(self):
+        ans = {'dependencia': self.to_serializable_dict(), 'subdependencias': None}
+        subdeps = Dependencia.objects.filter(dependienteDe__id=self.id)
+
+        if subdeps and subdeps.count() > 0:
+            ans['subdepedencias'] = []
+            for subdep in subdeps:
+                ans['subdependencias'].append(subdep.get_tree())
+
+        return ans
+
 
 class Estado(models.Model):
     nombreEstado = models.CharField(max_length=200)
@@ -119,7 +130,6 @@ class Inaugurador(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
-
 
 
 class TipoMoneda(models.Model):
