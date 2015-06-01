@@ -14,6 +14,8 @@ urlpatterns = patterns('',
                        url(r'^api/inversiones', api.InversionEndpoint.as_view()),
                        url(r'^api/tiposDeObra', api.TipoDeObraEndpoint.as_view()),
                        url(r'^api/busqueda', api.BuscadorEndpoint.as_view()),
+                       url(r'^api/inicio', api.inicio),
+                       #url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
                        # Mappings for the new (protected) implementation of the mobile API
 
 
@@ -40,7 +42,4 @@ urlpatterns = patterns('',
                        # url(r'^hiper-inauguradas-ppt', views.hiper_inauguradas_ppt),
                        # url(r'^hiper-por-sector-ppt', views.hiper_por_sector_ppt),
                        # url(r'^hiper-por-entidad-ppt', views.hiper_por_entidad_ppt),
-                       url(r'^consultar-obras', views.buscar_obras_web),
-                       url(r'^prueba', views.ajax_prueba),
-
 )

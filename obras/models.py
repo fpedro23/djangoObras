@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+from django.db.models import Q
 from django.forms import model_to_dict
 
 
@@ -59,6 +60,23 @@ class Dependencia(models.Model):
                 ans['subdependencias'].append(subdep.get_tree())
 
         return ans
+
+    def get_subdeps_flat(self):
+        ans = None
+        subdeps = Dependencia.objects.filter(dependienteDe__id=self.id)
+
+        if subdeps and subdeps.count() > 0:
+            ans = []
+            for subdep in subdeps:
+                subsubdeps = subdep.get_subdeps_flat()
+                if subsubdeps:
+                    ans.append(subsubdeps)
+
+        return ans
+
+
+    def get_obras(self):
+        return Obra.objects.filter(Q(dependencia=self) | Q(dependencia__in=self.get_subdeps_flat()))
 
 
 class Estado(models.Model):
