@@ -55,7 +55,7 @@ class Dependencia(models.Model):
         subdeps = Dependencia.objects.filter(dependienteDe__id=self.id)
 
         if subdeps and subdeps.count() > 0:
-            ans['subdepedencias'] = []
+            ans['subdependencias'] = []
             for subdep in subdeps:
                 ans['subdependencias'].append(subdep.get_tree())
 

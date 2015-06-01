@@ -56,12 +56,11 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id) |
                 Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
-                        )
-
+        )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
-                        )
+            )
 
         return HttpResponse(json.dumps(dicts), 'application/json')
 
@@ -84,12 +83,17 @@ class DependenciasTreeEndpoint(ProtectedResourceView):
         token_model = AccessToken.objects.get(token=token)
 
         if request.GET.get('id', None):
-            dependencia_id = request.GET.get('id')
+            dependencia = Dependencia.objects.get(id=request.GET.get('id', None))
         else:
-            dependencia_id = token_model.user.usuario.dependencia_id
+            dependencia = token_model.user.usuario.dependencia
 
-        dependencia = Dependencia.objects.get(id=dependencia_id)
-        ans = dependencia.get_tree()
+        if dependencia:
+            ans = dependencia.get_tree()
+        else:
+            ans = []
+            dependencias = Dependencia.objects.filter(dependienteDe=None)
+            for dep in dependencias:
+                ans.append(dep.get_tree())
 
         return HttpResponse(json.dumps(ans), 'application/json')
 
@@ -100,15 +104,25 @@ class SubependenciasFlatEndpoint(ProtectedResourceView):
         token_model = AccessToken.objects.get(token=token)
 
         if request.GET.get('id', None):
-            dependencia_id = request.GET.get('id')
+            dependencia = Dependencia.objects.get(id=request.GET.get('id', None))
         else:
-            dependencia_id = token_model.user.usuario.dependencia_id
-        dependencia = Dependencia.objects.get(id=dependencia_id)
+            dependencia = token_model.user.usuario.dependencia
 
-        ans = [dependencia]
-        subdeps = dependencia.get_subdeps_flat()
-        if subdeps:
-            ans.append(subdeps)
+        ans = []
+        if dependencia:
+            ans.append(dependencia)
+        else:
+            dependencias = Dependencia.objects.filter(dependienteDe=None)
+            for dep in dependencias:
+                ans.append(dep)
+
+        subdependencias = []
+        for dep in ans:
+            subdeps = dep.get_subdeps_flat()
+            if subdeps:
+                subdependencias.append(subdeps)
+        ans.extend(subdependencias)
+
         ans = map(lambda dep: dep.to_serializable_dict(), ans)
 
         return HttpResponse(json.dumps(ans), 'application/json')
@@ -213,8 +227,11 @@ class InauguradorEndpoint(ProtectedResourceView):
 class ReporteInicioEndpoint(ProtectedResourceView):
     def get(self, request):
         dependencia = AccessToken.objects.get(
-            token=request.GET.get('access_token')).token_model.user.usuario.dependencia
-        obras = dependencia.get_obras()
+            token=request.GET.get('access_token')).user.usuario.dependencia
+        if dependencia:
+            obras = dependencia.get_obras()
+        else:
+            obras = Obra.objects.all()
         start2015 = datetime.date(2015, 1, 1)
         reporte = {
             'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
