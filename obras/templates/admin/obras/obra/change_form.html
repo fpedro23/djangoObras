@@ -1,0 +1,149 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_static admin_modify%}
+
+{% block extrahead %}{{ block.super }}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+     <link href="{% static "css/formas.css" %}" rel="stylesheet">
+    {{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+
+{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% if not is_popup %}
+    {% block breadcrumbs %}
+    {% endblock %}
+{% endif %}
+
+{% block content %}
+    <div id="regresarBTN" onclick="location.href='/obras/movimientos'">
+   </div>
+
+  <div id="welcome">
+        {% if not change %}
+           Alta
+        {% else %}
+            Modificar
+        {% endif %}
+        Obra
+  </div>
+
+        {% block object-tools %}
+            {% if change %}{% if not is_popup %}
+                <ul class="object-tools">
+                    {% block object-tools-items %}
+                        {% if has_absolute_url %}
+                            <li><a href="{{ absolute_url }}" class="viewsitelink">{% trans "View on site" %}</a></li>
+                        {% endif %}
+                    {% endblock %}
+                </ul>
+            {% endif %}{% endif %}
+        {% endblock %}
+        <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post"
+              id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
+            {% if errors %}
+{{ errors }}
+                    {% if adminform.form.non_field_errors|length == 1 %} * Favor de verificar los datos {% else %}
+                        * Favor de verificar los datos {% endif %} {{ adminform.form.non_field_errors }}
+                {% endif %}
+            <div>
+                {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1"/>{% endif %}
+                {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}"/>{% endif %}
+                {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+
+                {% block field_sets %}
+                    {% for fieldset in adminform %}
+                        {% include "admin/obras/obra/fieldset.html" %}
+                    {% endfor %}
+                {% endblock %}
+
+
+                {% block after_field_sets %}{% endblock %}
+
+                {% block inline_field_sets %}
+
+                {% endblock %}
+
+                {% block after_related_objects %}{% endblock %}
+
+                {% block submit_buttons_bottom %}{% endblock %}
+                {% block admin_change_form_document_ready %}
+                    <script type="text/javascript">
+                        (function ($) {
+                            $(document).ready(function () {
+                                $('.add-another').click(function (e) {
+
+                                    e.preventDefault();
+                                    var event = $.Event('django:add-another-related');
+                                    $(this).trigger(event);
+                                    if (!event.isDefaultPrevented()) {
+                                        showAddAnotherPopup(this);
+                                    }
+                                });
+                                $('.related-lookup').click(function (e) {
+                                    e.preventDefault();
+                                    var event = $.Event('django:lookup-related');
+                                    $(this).trigger(event);
+                                    if (!event.isDefaultPrevented()) {
+                                        showRelatedObjectLookupPopup(this);
+                                    }
+                                });
+                                $('body').on('click', '.related-widget-wrapper-link', function (e) {
+                                    e.preventDefault();
+                                    if (this.href) {
+                                        var event = $.Event('django:show-related', {href: this.href});
+                                        $(this).trigger(event);
+                                        if (!event.isDefaultPrevented()) {
+                                            showRelatedObjectPopup(this);
+                                        }
+                                    }
+                                });
+                                $('body').on('change', '.related-widget-wrapper select', function (e) {
+                                    var event = $.Event('django:update-related');
+                                    $(this).trigger(event);
+                                    if (!event.isDefaultPrevented()) {
+                                        updateRelatedObjectLinks(this);
+                                    }
+                                });
+                                $('.related-widget-wrapper select').trigger('change');
+
+                                {% if adminform and add %}
+                                    $('form#{{ opts.model_name }}_form :input:visible:enabled:first').focus()
+                                {% endif %}
+                            });
+
+                        })(django.jQuery);
+
+
+
+                    </script>
+
+               <!--       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+                     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+                    <script src="{% static "assets/bootstrap/js/bootstrap-datepicker.js"%}"></script>
+                   <script type="text/javascript">
+                    var $dp = jQuery.noConflict();
+                    $dp('#id_fechaInicio').datepicker({
+                        autoclose:true
+                    });
+                       $dp('#fechaInicial2').datepicker({
+                        autoclose:true
+                    });
+                    </script>
+
+                 <script src="{% static "assets/js/jquery.numeric.js"%}"></script>
+                 <script src="{% static "assets/js/utilerias.js"%}"></script>  -->
+                    {% endblock %}
+
+                    {# JavaScript for prepopulated fields #}
+                 {% prepopulated_fields_js %}
+
+            </div>
+        </form>
+
+{% endblock %}
