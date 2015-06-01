@@ -14,8 +14,10 @@ urlpatterns = patterns('',
                        url(r'^api/inversiones', api.InversionEndpoint.as_view()),
                        url(r'^api/tiposDeObra', api.TipoDeObraEndpoint.as_view()),
                        url(r'^api/busqueda', api.BuscadorEndpoint.as_view()),
-                       url(r'^api/inicio', api.inicio),
-                       #url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
+                       #url(r'^api/inicio', api.inicio),
+                       url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
+                       url(r'^api/subdependencias_arbol', api.DependenciasTreeEndpoint.as_view()),
+                       url(r'^api/subdependencias_flat', api.SubependenciasFlatEndpoint.as_view()),
                        # Mappings for the new (protected) implementation of the mobile API
 
 
