@@ -39,6 +39,13 @@ class UsuarioInline(admin.StackedInline):
 class UserAdmin(UserAdmin):
     inlines = (UsuarioInline, )
     list_display = ('username', 'first_name','last_name','email','get_dependencia',)
+    add_fieldsets = (
+        (None, {'fields': ('username', 'password1','password2')}),
+        (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                       'groups', 'user_permissions')}),
+        (('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
 
     def get_dependencia(self,obj):
         return obj.usuario.dependencia
@@ -214,6 +221,7 @@ class ObrasAdmin(admin.ModelAdmin):
             fields = ('identificador_unico',
                       'denominacion',
                       'dependencia',
+                      'subdependencia',
                       'instanciaEjecutora',
                       'estado',
                       'municipio',
@@ -229,6 +237,7 @@ class ObrasAdmin(admin.ModelAdmin):
                       'impacto',
                       'senalizacion',
                       'tipoClasificacion',
+                      'subclasificacion',
                       'tipoInversion',
                       'registroHacendario',
                       'montoRegistroHacendario',
@@ -248,6 +257,7 @@ class ObrasAdmin(admin.ModelAdmin):
             fields = ('identificador_unico',
                       'denominacion',
                       'dependencia',
+                      'subdependencia',
                       'instanciaEjecutora',
                       'estado',
                       'municipio',
@@ -263,6 +273,7 @@ class ObrasAdmin(admin.ModelAdmin):
                       'impacto',
                       'senalizacion',
                       'tipoClasificacion',
+                      'subclasificacion',
                       'tipoInversion',
                       'registroHacendario',
                       'montoRegistroHacendario',

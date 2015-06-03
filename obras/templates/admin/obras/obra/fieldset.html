@@ -216,9 +216,18 @@
         {% endif %}
         {% if field.field.name == "tipoMoneda" %}
                 <tr>
-                    <td><label for="id_tipoMoneda">MDP:</label> <input id="id_tipoMoneda" name="tipoMoneda" type="radio"" value="MDP" {{ field.field.value|default_if_none:"" }}/></td>
+                    <td>
+                        Tipo de moneda:
+                    </td>
+                    <td >
 
-                    <td><label for="id_tipoMoneda">MDD:</label> <input id="id_tipoMoneda" name="tipoMoneda" type="radio" value="MDD" {{ field.field.value|default_if_none:"" }}/></td>
+
+                    {% for radio in field.field %}
+                                     {{ radio   }}
+                       {% endfor %}
+                    </td>
+
+
                 </tr>
              </table>
              </div>
@@ -232,9 +241,7 @@
                 </div>
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="0px">
                     <tr>
-                        <td> <label class="required" for="id_inaugurada">SI</label> <input id="id_inaugurada" name="inaugurada" type="radio" value="SI" {{ field.field.value|default_if_none:"" }} /></td>
-                         <td><label class="required" for="id_susceptibleInauguracion">Sin Inauguración</label>
-                             <input id="id_susceptibleInauguracion" name="susceptibleInauguracion" type="checkbox" checked="{{ field.field.value|default_if_none:"" }}"/></td>
+                       {{ field.field }}
 
                     </tr>
         {% endif %}

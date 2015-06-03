@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.encoding import python_2_unicode_compatible
+from smart_selects.db_fields import ChainedForeignKey
 
 #TODO agregar nombres verbose a los modelos
 
@@ -8,7 +10,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.forms import model_to_dict
 
-
+@python_2_unicode_compatible
 class TipoObra(models.Model):
     nombreTipoObra = models.CharField(max_length=200)
 
@@ -20,7 +22,7 @@ class TipoObra(models.Model):
         ans['id'] = str(self.id)
         return ans
 
-
+@python_2_unicode_compatible
 class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
     imagenDependencia = models.FileField(upload_to="./", blank=True, null=True)
@@ -81,7 +83,7 @@ class Dependencia(models.Model):
         else:
             return Obra.objects.filter(dependencia=self)
 
-
+@python_2_unicode_compatible
 class Estado(models.Model):
     nombreEstado = models.CharField(max_length=200)
     latitud = models.FloatField()
@@ -98,7 +100,7 @@ class Estado(models.Model):
         ans['id'] = str(self.id)
         return ans
 
-
+@python_2_unicode_compatible
 class Impacto(models.Model):
     nombreImpacto = models.CharField(max_length=200)
 
@@ -110,7 +112,7 @@ class Impacto(models.Model):
         ans['id'] = str(self.id)
         return ans
 
-
+@python_2_unicode_compatible
 class TipoInversion(models.Model):
     nombreTipoInversion = models.CharField(max_length=200)
     nombreTipoInversionCorta = models.CharField(max_length=200)
@@ -123,7 +125,7 @@ class TipoInversion(models.Model):
         ans['id'] = str(self.id)
         return ans
 
-
+@python_2_unicode_compatible
 class TipoClasificacion(models.Model):
     subclasificacionDe = models.ForeignKey('self', null=True, blank=True)
     nombreTipoClasificacion = models.CharField(max_length=200)
@@ -165,7 +167,8 @@ class TipoClasificacion(models.Model):
                     ans.extend(subsubclasificaciones)
 
         return ans
-
+    
+@python_2_unicode_compatible
 class Inaugurador(models.Model):
     nombreCargoInaugura = models.CharField(max_length=200)
 
@@ -177,7 +180,7 @@ class Inaugurador(models.Model):
         ans['id'] = str(self.id)
         return ans
 
-
+@python_2_unicode_compatible
 class TipoMoneda(models.Model):
     nombreTipoDeMoneda = models.CharField(max_length=200)
 
@@ -188,7 +191,6 @@ class TipoMoneda(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
-
 
 class Usuario(models.Model):
     SUPERADMIN = 'SA'
@@ -204,6 +206,7 @@ class Usuario(models.Model):
     dependencia = models.ManyToManyField(Dependencia, blank=True, null=True)
 
 
+@python_2_unicode_compatible
 class InstanciaEjecutora(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -218,19 +221,37 @@ class InstanciaEjecutora(models.Model):
         return map
 
 
+BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None , 'Sin inauguracion'))
+
+@python_2_unicode_compatible
 class Obra(models.Model):
     #TODO agrupar semanticamente todos los campos de obras
     identificador_unico = models.SlugField(unique=True, null=True, )
     tipoObra = models.ForeignKey(TipoObra)
-    dependencia = models.ForeignKey(Dependencia)
+    dependencia = models.ForeignKey(Dependencia, related_name='%(class)s_dependencia',
+                                    limit_choices_to={
+                                        'dependienteDe': None,
+                                    })
+
+    subdependencia = ChainedForeignKey(Dependencia,
+                                    chained_field="dependencia",
+                                    chained_model_field="dependienteDe",
+    )
+
     estado = models.ForeignKey(Estado)
     impacto = models.ForeignKey(Impacto)
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion)
+
+
     tipoClasificacion = models.ManyToManyField(TipoClasificacion, related_name='%(class)s_clasificaciones')
     subclasificacion = models.ManyToManyField(TipoClasificacion, related_name='%(class)s_subclasificaciones')
+
+
+
+
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
@@ -247,10 +268,10 @@ class Obra(models.Model):
     fotoDurante = models.FileField(blank=True, null=True)
     fotoDespues = models.FileField(blank=True, null=True)
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True)
-    inaugurada = models.BooleanField(default=False)
+    inaugurada = models.NullBooleanField(choices=BOOL_CHOICES)
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
-    tipoMoneda = models.ForeignKey(TipoMoneda, blank=True, null=True)
+    tipoMoneda = models.ForeignKey(TipoMoneda)
     autorizada = models.BooleanField(default=False)
     latitud = models.FloatField()
     longitud = models.FloatField()
@@ -331,9 +352,9 @@ class Obra(models.Model):
         return map
 
 
-
+@python_2_unicode_compatible
 class DocumentoFuente(models.Model):
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = models.CharField(max_length=50, blank=True, null=True)
     documento = models.FileField(upload_to="/", blank=True, null=True)
     obra = models.ForeignKey('Obra', blank=True, null=True)
 

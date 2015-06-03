@@ -1,13 +1,17 @@
 from django import forms
 from django.utils.text import slugify
-from obras.models import Obra
+from obras.models import Obra, Dependencia
 import itertools
 
 
 class AddObraForm(forms.ModelForm):
+
     class Meta:
         model = Obra
         fields = '__all__'
+        widgets = {'tipoMoneda': forms.RadioSelect,
+                   'inaugurada': forms.RadioSelect,
+        }
 
     def save(self, commit=True):
         instance = super(AddObraForm, self).save(commit=False)

@@ -13,7 +13,7 @@ urlpatterns = patterns(
     url(r'^admin/password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
-
+    url(r'^chaining/', include('smart_selects.urls')),
     
     url(r'^obras/catalogo$', 'obras.views.catalogo', name='catalogo'),
     url(r'^obras/c_clasificacion$', 'obras.views.c_clasificacion', name='c_clasificacion'),
