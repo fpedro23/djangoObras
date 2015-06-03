@@ -51,7 +51,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'sU4b8Y11WWQC3DcoyOEMTNYaUbP18a'
+      "access_token"  : 'vhX0hn6W9OJ83ZEJVf3sbRls46JeQV'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}

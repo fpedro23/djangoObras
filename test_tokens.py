@@ -11,5 +11,5 @@ payload = {
     'client_secret': SECRET,
     'scope': 'write read'
 }
-# print requests.post('http://edicomex.com.mx:7500/o/token/', payload).text
-print requests.post('http://localhost:8000/o/token/', payload).text
+print requests.post('http://edicomex.com.mx:7500/o/token/', payload).text
+# print requests.post('http://localhost:8000/o/token/', payload).text
