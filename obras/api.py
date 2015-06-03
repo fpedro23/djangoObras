@@ -72,12 +72,22 @@ class ObrasVencidasEndpoint(ProtectedResourceView):
         return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
 
 
+class ObrasForDependenciaEndpoint(ProtectedResourceView):
+    def get(self, request):
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
+
+        if usuario.rol == 'SA':
+            obras = Obra.objects.all()
+        else:
+            obras = usuario.dependencia.get_obras()
+
+        return HttpResponse(map(lambda obra: obra.to_serializable_dict(), obras), 'application/json')
+
+
 class DependenciasEndpoint(ProtectedResourceView):
     def get(self, request):
         token = request.GET.get('access_token')
-        print '*************' + token
         token_model = AccessToken.objects.get(token=token)
-        print token_model.user
 
         if token_model.user.usuario.rol == 'SA':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.all())
