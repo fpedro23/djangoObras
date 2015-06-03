@@ -16,6 +16,16 @@ def get_usuario_for_token(token):
         return None
 
 
+def get_subdependencias_as_list_flat(deps):
+    ans = []
+    for dependencia in deps:
+        ans.append(dependencia)
+        subdeps = dependencia.get_subdeps_flat()
+        if subdeps and subdeps.count() > 0:
+            ans.extend(subdeps)
+    return ans
+
+
 class HoraEndpoint(ProtectedResourceView):
     def get(self, request):
         json_response = {}
@@ -35,16 +45,29 @@ class HoraEndpoint(ProtectedResourceView):
 
 class ObrasIniciadasEndpoint(ProtectedResourceView):
     def get(self, request):
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
+
         today = datetime.datetime.now().date()
-        obras = Obra.objects.filter(Q(fechaInicio__lte=today)).all()
+        if usuario.rol == 'SA':
+            obras = Obra.objects.filter(fechaInicio__lte=today).all()
+        else:
+            obras = Obra.objects.filter(
+                Q(dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())) & Q(
+                    fechaInicio__lte=today))
 
         return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
 
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
     def get(self, request):
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
+
         today = datetime.datetime.now().date()
-        obras = Obra.objects.filter(Q(fechaTermino__lte=today))
+        if usuario.rol == 'SA':
+            obras = Obra.objects.filter(fechaTermino__lte=today)
+        else:
+            obras = Obra.objects.filter(Q(fechaTermino__lte=today) & Q(
+                dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())))
 
         return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
 
@@ -63,11 +86,11 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id) |
                 Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
-                        )
+            )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
-                        )
+            )
 
         return HttpResponse(json.dumps(dicts), 'application/json')
 
@@ -219,17 +242,10 @@ class InauguradorEndpoint(ProtectedResourceView):
 
 class ReporteInicioEndpoint(ProtectedResourceView):
     def get(self, request):
-        dependencias = AccessToken.objects.get(
-            token=request.GET.get('access_token')).user.usuario.dependencia.all()
+        dependencias = get_usuario_for_token(request.GET.get('access_token')).dependencia.all()
 
         if dependencias and dependencias.count() > 0:
-            deps = []
-            for dep in dependencias:
-                deps.append(dep)
-                subdeps = dep.get_subdeps_flat()
-                if subdeps and subdeps.count() > 0:
-                    deps.extend(subdeps)
-                obras = Obra.objects.filter(dependencia__in=deps)
+            obras = Obra.objects.filter(dependencia__in=get_subdependencias_as_list_flat(dependencias))
         else:
             obras = Obra.objects.all()
 

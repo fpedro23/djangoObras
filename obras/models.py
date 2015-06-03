@@ -141,6 +141,31 @@ class TipoClasificacion(models.Model):
             ans['subclasificacionDe'] = None
         return ans
 
+    def get_tree(self):
+        ans = {'tipoClasificacion': self, 'subclasificaciones': None}
+        subclasificaciones = TipoClasificacion.objects.filter(subclasificacionDe__id=self.id)
+
+        if subclasificaciones and subclasificaciones.count() > 0:
+            ans['subclasificaciones'] = []
+            for subclasificacion in subclasificaciones:
+                ans.append(subclasificacion.get_tree())
+
+        return ans
+
+    def get_subclasificaciones_flat(self):
+        ans = None
+        subclasificaciones = TipoClasificacion.objects.filter(subclasificacionDe__id=self.id)
+
+        if subclasificaciones and subclasificaciones.count() > 0:
+            ans = []
+            for subclasificacion in subclasificaciones:
+                ans.append(subclasificacion)
+                subsubclasificaciones = subclasificacion.get_subclasificaciones_flat()
+                if subsubclasificaciones:
+                    ans.extend(subsubclasificaciones)
+
+        return ans
+
 class Inaugurador(models.Model):
     nombreCargoInaugura = models.CharField(max_length=200)
 
