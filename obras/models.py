@@ -3,12 +3,13 @@ from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 from smart_selects.db_fields import ChainedForeignKey
 
-#TODO agregar nombres verbose a los modelos
+# TODO agregar nombres verbose a los modelos
 
 
 # Create your models here.
 from django.db.models import Q
 from django.forms import model_to_dict
+
 
 @python_2_unicode_compatible
 class TipoObra(models.Model):
@@ -21,6 +22,7 @@ class TipoObra(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
+
 
 @python_2_unicode_compatible
 class Dependencia(models.Model):
@@ -79,9 +81,13 @@ class Dependencia(models.Model):
     def get_obras(self):
         subdeps = self.get_subdeps_flat()
         if subdeps:
-            return Obra.objects.filter(Q(dependencia=self) | Q(dependencia__in=self.get_subdeps_flat()))
+            return Obra.objects.filter(
+                Q(dependencia=self) | Q(dependencia__in=subdeps) |
+                Q(subdependencia__in=subdeps) | Q(subdependencia=self)
+            )
         else:
             return Obra.objects.filter(dependencia=self)
+
 
 @python_2_unicode_compatible
 class Estado(models.Model):
@@ -100,6 +106,7 @@ class Estado(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 @python_2_unicode_compatible
 class Impacto(models.Model):
     nombreImpacto = models.CharField(max_length=200)
@@ -111,6 +118,7 @@ class Impacto(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
+
 
 @python_2_unicode_compatible
 class TipoInversion(models.Model):
@@ -124,6 +132,7 @@ class TipoInversion(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
+
 
 @python_2_unicode_compatible
 class TipoClasificacion(models.Model):
@@ -167,7 +176,8 @@ class TipoClasificacion(models.Model):
                     ans.extend(subsubclasificaciones)
 
         return ans
-    
+
+
 @python_2_unicode_compatible
 class Inaugurador(models.Model):
     nombreCargoInaugura = models.CharField(max_length=200)
@@ -180,6 +190,7 @@ class Inaugurador(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 @python_2_unicode_compatible
 class TipoMoneda(models.Model):
     nombreTipoDeMoneda = models.CharField(max_length=200)
@@ -191,6 +202,7 @@ class TipoMoneda(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
+
 
 class Usuario(models.Model):
     SUPERADMIN = 'SA'
@@ -221,7 +233,8 @@ class InstanciaEjecutora(models.Model):
         return map
 
 
-BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None , 'Sin inauguracion'))
+BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguracion'))
+
 
 @python_2_unicode_compatible
 class Obra(models.Model):
@@ -234,9 +247,9 @@ class Obra(models.Model):
                                     })
 
     subdependencia = ChainedForeignKey(Dependencia,
-                                    chained_field="dependencia",
-                                    chained_model_field="dependienteDe",
-    )
+                                       chained_field="dependencia",
+                                       chained_model_field="dependienteDe",
+                                       )
 
     estado = models.ForeignKey(Estado)
     impacto = models.ForeignKey(Impacto)
@@ -245,12 +258,8 @@ class Obra(models.Model):
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion)
 
-
     tipoClasificacion = models.ManyToManyField(TipoClasificacion, related_name='%(class)s_clasificaciones')
     subclasificacion = models.ManyToManyField(TipoClasificacion, related_name='%(class)s_subclasificaciones')
-
-
-
 
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
@@ -285,6 +294,7 @@ class Obra(models.Model):
         map['identificador'] = self.identificador_unico
         map['tipoObra'] = self.tipoObra.to_serializable_dict()
         map['dependencia'] = self.dependencia.to_serializable_dict()
+        map['subdependenencia'] = self.subdependencia.to_serializable_dict()
         map['estado'] = self.estado.to_serializable_dict()
         map['impacto'] = self.impacto.to_serializable_dict()
         map['instanciaEjecutora'] = self.instanciaEjecutora.to_serializable_dict()

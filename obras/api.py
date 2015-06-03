@@ -52,8 +52,9 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
             obras = Obra.objects.filter(fechaInicio__lte=today).all()
         else:
             obras = Obra.objects.filter(
-                Q(dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())) & Q(
-                    fechaInicio__lte=today))
+                Q(dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())) &
+                Q(fechaInicio__lte=today)
+            )
 
         return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
 
@@ -96,11 +97,11 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id) |
                 Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
-            )
+                        )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
-            )
+                        )
 
         return HttpResponse(json.dumps(dicts), 'application/json')
 
@@ -255,7 +256,10 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         dependencias = get_usuario_for_token(request.GET.get('access_token')).dependencia.all()
 
         if dependencias and dependencias.count() > 0:
-            obras = Obra.objects.filter(dependencia__in=get_subdependencias_as_list_flat(dependencias))
+            obras = Obra.objects.filter(
+                Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
+                Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
+            )
         else:
             obras = Obra.objects.all()
 
