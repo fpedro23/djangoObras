@@ -56,7 +56,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     #'sslify.middleware.SSLifyMiddleware',
-    #'djangosecure.middleware.SecurityMiddleware',
+    'djangosecure.middleware.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',

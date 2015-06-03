@@ -22,6 +22,7 @@ class BuscarObras:
             fecha_fin_primera,
             fecha_fin_segunda,
             denominacion,
+            instancia_ejecutora,
     ):
         self.clasificaciones = clasificaciones
         self.estados = estados
@@ -40,6 +41,7 @@ class BuscarObras:
         self.fecha_fin_segunda = fecha_fin_segunda
 
         self.denominacion = denominacion
+        self.instancia_ejecutora = instancia_ejecutora
 
     def buscar(self):
 
@@ -80,6 +82,9 @@ class BuscarObras:
 
         if self.denominacion is not None:
             query = query & Q(denominacion__contains=self.denominacion)
+
+        if self.instancia_ejecutora is not None:
+            query = Q(instanciaEjecutora__id__in=self.instancia_ejecutora)
 
         if query is not None:
             print query

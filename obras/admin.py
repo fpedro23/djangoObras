@@ -7,8 +7,6 @@ from obras.models import *
 from obras.forms import AddObraForm
 
 
-
-
 # Register your models here.+
 
 # Define an inline admin descriptor for Usuario model
@@ -19,13 +17,18 @@ class UsuarioInline(admin.StackedInline):
     verbose_name_plural = 'Usuario'
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        arreglo_dependencias = []
+
+        for dependencia in request.user.usuario.dependencia.all():
+            arreglo_dependencias.append(dependencia.id)
+
         if db_field.name == "dependencia":
             if request.user.usuario.rol == 'SA':
                 kwargs["queryset"] = Dependencia.objects.all()
             if request.user.usuario.rol == 'AD':
                 kwargs["queryset"] = Dependencia.objects.filter(
-                    Q(id=request.user.usuario.dependencia.id) |
-                    Q(dependienteDe__id=request.user.usuario.dependencia.id))
+                    Q(id__in=arreglo_dependencias) |
+                    Q(dependienteDe__id__in=arreglo_dependencias))
 
         return super(
             UsuarioInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
@@ -34,22 +37,29 @@ class UsuarioInline(admin.StackedInline):
 # Define a new User admin
 class UserAdmin(UserAdmin):
     inlines = (UsuarioInline, )
-    list_display = ('username','first_name','last_name','email','get_dependencia',)
+    list_display = ('username', 'first_name','last_name','email','get_dependencia',)
 
     def get_dependencia(self,obj):
         return obj.usuario.dependencia
     get_dependencia.short_description = 'Dependencia'
 
     def get_queryset(self, request):
+        arreglo_dependencias = []
+
+        for dependencia in request.user.usuario.dependencia.all():
+            arreglo_dependencias.append(dependencia.id)
+
         qs = super(UserAdmin, self).get_queryset(request)
         if request.user.usuario.rol == 'SA':
-            print 'Query Set Superadmin'
+            print 'Query Set Superadminhhh'
             return qs
         elif request.user.usuario.rol == 'AD':
-            print 'Query Set Administrador dependencia'
+            print 'Query Set Administrador dependenciabub'
+            print arreglo_dependencias
             return qs.filter(
-                Q(usuario__dependencia=request.user.usuario.dependencia) |
-                Q(usuario__dependencia__dependienteDe=request.user.usuario.dependencia)
+
+                Q(usuario__dependencia__id__in=arreglo_dependencias) |
+                Q(usuario__dependencia__dependienteDe__id__in=arreglo_dependencias)
             )
         elif request.user.usuario.rol == 'US':
                 print 'Query Set Usuario'
@@ -88,6 +98,7 @@ class DependenciaAdmin(admin.ModelAdmin):
                 )
                 return super(DependenciaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+
 class ClasificacionInLine(admin.StackedInline):
     model = TipoClasificacion
     extra = 3
@@ -118,16 +129,23 @@ class DependenciaListFilter(SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
+        arreglo_dependencias = []
+        for dependencia in request.user.usuario.dependencia.all():
+            print(dependencia.id)
+            arreglo_dependencias.append(dependencia.id)
+
         if request.user.usuario.rol == 'SA':  # Secretaria tecnica
             dependencias = Dependencia.objects.all()
-        if request.user.usuario.rol == 'AD':  # Dependencia
-            dependencias =  Dependencia.objects.filter(
-                Q(id=request.user.usuario.dependencia.id) |
-                Q(dependienteDe__id=request.user.usuario.dependencia.id)
-            )
-        if request.user.usuario.rol == 'US':
+
+        elif request.user.usuario.rol == 'AD':  # Dependencia
             dependencias = Dependencia.objects.filter(
-                Q(id=request.user.usuario.dependencia.id)
+                Q(id__in=arreglo_dependencias) |
+                Q(dependienteDe__id__in=arreglo_dependencias)
+
+            )
+        elif request.user.usuario.rol == 'US':
+            dependencias = Dependencia.objects.filter(
+                Q(id__in=arreglo_dependencias)
             )
 
         list_tuple = []
@@ -205,7 +223,6 @@ class ObrasAdmin(admin.ModelAdmin):
                       'inaugurador',
                       'registroHacendario',
                       'montoRegistroHacendario',
-                      'registroAuditoria',
                       'denominacion',
                       'descripcion',
                       'observaciones',
@@ -240,7 +257,6 @@ class ObrasAdmin(admin.ModelAdmin):
                       'inaugurador',
                       ('registroHacendario',
                        'montoRegistroHacendario',),
-                      'registroAuditoria',
                       'denominacion',
                       'descripcion',
                       'observaciones',
@@ -274,12 +290,25 @@ class ObrasAdmin(admin.ModelAdmin):
             if request.user.usuario.rol == 'SA':
                 kwargs["queryset"] = Dependencia.objects.all()
             elif request.user.usuario.rol == 'AD':
+                arreglo_dependencias = []
+
+                for dependencia in request.user.usuario.dependencia.all():
+                    print(dependencia.id)
+                    arreglo_dependencias.append(dependencia.id)
+
                 kwargs["queryset"] = Dependencia.objects.filter(
-                    Q(id=request.user.usuario.dependencia.id) |
-                    Q(dependienteDe__id=request.user.usuario.dependencia.id))
+                    Q(id__in=arreglo_dependencias) |
+                    Q(dependienteDe__id__in=arreglo_dependencias)
+                    )
             elif request.user.usuario.rol == 'US':
+                    arreglo_dependencias = []
+
+                    for dependencia in request.user.usuario.dependencia.all():
+                        print(dependencia.id)
+                        arreglo_dependencias.append(dependencia.id)
+
                     kwargs["queryset"] = Dependencia.objects.filter(
-                    Q(id=request.user.usuario.dependencia.id)
+                    Q(id__in=arreglo_dependencias)
                     )
 
         return super(
@@ -287,19 +316,29 @@ class ObrasAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(ObrasAdmin, self).get_queryset(request)
+        arreglo_dependencias = []
+
+        for dependencia in request.user.usuario.dependencia.all():
+            print(dependencia.id)
+            arreglo_dependencias.append(dependencia.id)
+
         if request.user.usuario.rol == 'SA':
             print 'Query Set Superadmin'
             return qs
         elif request.user.usuario.rol == 'AD':
             print 'Query Set Administrador dependencia'
+            a = request.user.usuario.dependencia.all()
+
+            print(a)
+
             return qs.filter(
-                Q(dependencia=request.user.usuario.dependencia) |
-                Q(dependencia__dependienteDe=request.user.usuario.dependencia)
+                Q(dependencia__id__in=arreglo_dependencias) |
+                Q(dependencia__dependienteDe__id__in=arreglo_dependencias)
             )
         elif request.user.usuario.rol == 'US':
                 print 'Query Set Usuario'
                 return qs.filter(
-                Q(dependencia=request.user.usuario.dependencia)
+                Q(dependencia__id__in=arreglo_dependencias)
                 )
 
 

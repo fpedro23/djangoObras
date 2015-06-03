@@ -325,6 +325,14 @@ class ImpactosEndpoint(ProtectedResourceView):
         return HttpResponse(json_response, 'application/json')
 
 
+class InstanciaEjecutoraEndPoint(ProtectedResourceView):
+
+    def get(self, request):
+        json_response = json.dumps(map(lambda instanciaEjecutora: model_to_dict(instanciaEjecutora),
+                                       InstanciaEjecutora.objects.all()))
+        return HttpResponse(json_response, 'application/json')
+
+
 class InauguradorEndpoint(ProtectedResourceView):
 
     def get(self, request):
@@ -377,6 +385,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             fecha_fin_primera=request.GET.get('fechaFin', None),
             fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
             denominacion=request.GET.get('denominacion', None),
+            instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
         )
         resultados = buscador.buscar()
 
@@ -892,22 +901,26 @@ def get_array_or_none(the_string):
 
 def buscar_obras_web(request):
     #TODO cambiar los parametros 'None' por get del request
-    buscador = BuscarObras(idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
-                           iddependencias=get_array_or_none(request.GET.get('tipoDeObra')),
-                           estados=get_array_or_none(request.GET.get('tipoDeObra')),
-                           clasificaciones=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inversiones=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inauguradores=get_array_or_none(request.GET.get('tipoDeObra')),
-                           impactos=get_array_or_none(request.GET.get('tipoDeObra')),
-                           inaugurada=None,
-                           inversion_minima=None,
-                           inversion_maxima=None,
-                           fecha_inicio_primera=None,
-                           fecha_inicio_segunda=None,
-                           fecha_fin_primera=None,
-                           fecha_fin_segunda=None,
-                           denominacion=None,
+    buscador = BuscarObras(
+            idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+            iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            estados=get_array_or_none(request.GET.get('estado')),
+            clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
+            inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
+            inauguradores=get_array_or_none(request.GET.get('inaugurador')),
+            impactos=get_array_or_none(request.GET.get('impacto')),
+            inaugurada=request.GET.get('inaugurada', None),
+            inversion_minima=request.GET.get('inversionMinima', None),
+            inversion_maxima=request.GET.get('inversionMaxima', None),
+            fecha_inicio_primera=request.GET.get('fechaInicio', None),
+            fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+            fecha_fin_primera=request.GET.get('fechaFin', None),
+            fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+            denominacion=request.GET.get('denominacion', None),
+            instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
+
     )
+
     resultados = buscador.buscar()
 
     template = loader.get_template('admin/obras/consulta_filtros/consulta-filtros.html')
