@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'obras',
     'oauth2_provider',
+    'smart_selects',
     #'djangosecure',
     #'sslify',
 )

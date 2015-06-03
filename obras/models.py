@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
+from smart_selects.db_fields import ChainedForeignKey
 
 #TODO agregar nombres verbose a los modelos
 
@@ -202,15 +203,30 @@ class Obra(models.Model):
     #TODO agrupar semanticamente todos los campos de obras
     identificador_unico = models.SlugField(unique=True, null=True, )
     tipoObra = models.ForeignKey(TipoObra)
-    dependencia = models.ForeignKey(Dependencia)
+    dependencia = models.ForeignKey(Dependencia, related_name='%(class)s_dependencia',
+                                    limit_choices_to={
+                                        'dependienteDe': None,
+                                    })
+
+    subdependencia = ChainedForeignKey(Dependencia,
+                                    chained_field="dependencia",
+                                    chained_model_field="dependienteDe",
+    )
+
     estado = models.ForeignKey(Estado)
     impacto = models.ForeignKey(Impacto)
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion)
+
+
     tipoClasificacion = models.ManyToManyField(TipoClasificacion, related_name='%(class)s_clasificaciones')
     subclasificacion = models.ManyToManyField(TipoClasificacion, related_name='%(class)s_subclasificaciones')
+
+
+
+
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)

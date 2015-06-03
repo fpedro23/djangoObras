@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.text import slugify
-from obras.models import Obra
+from obras.models import Obra, Dependencia
 import itertools
 
 
