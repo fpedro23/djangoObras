@@ -270,13 +270,15 @@ class Obra(models.Model):
 
         map['tipoInversion'] = []
         for tipoInversion in self.tipoInversion.all():
-            tipo = tipoInversion.to_serializable_dict()
-            map['tipoInversion'].append(tipo)
+            map['tipoInversion'].append(tipoInversion.to_serializable_dict())
 
         map['tipoClasificacion'] = []
         for tipoClasificacion in self.tipoClasificacion.all():
-            tipo = tipoClasificacion.to_serializable_dict()
-            map['tipoClasificacion'].append(tipo)
+            map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
+
+        map['subclasificaciones'] = []
+        for subclasificacion in self.subclasificacion.all():
+            map['subclasificaciones'].append(subclasificacion.to_serializable_dict())
 
         map['inaugurador'] = self.inaugurador.to_serializable_dict()
         map['registroHacendario'] = self.registroHacendario
