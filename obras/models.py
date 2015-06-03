@@ -189,6 +189,8 @@ class InstanciaEjecutora(models.Model):
         return map
 
 
+BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None , 'Sin inauguracion'))
+
 class Obra(models.Model):
     #TODO agrupar semanticamente todos los campos de obras
     identificador_unico = models.SlugField(unique=True, null=True, )
@@ -218,10 +220,10 @@ class Obra(models.Model):
     fotoDurante = models.FileField(blank=True, null=True)
     fotoDespues = models.FileField(blank=True, null=True)
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True)
-    inaugurada = models.BooleanField(default=False)
+    inaugurada = models.NullBooleanField(choices=BOOL_CHOICES)
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
-    tipoMoneda = models.ForeignKey(TipoMoneda, blank=True, null=True)
+    tipoMoneda = models.ForeignKey(TipoMoneda)
     autorizada = models.BooleanField(default=False)
     latitud = models.FloatField()
     longitud = models.FloatField()
@@ -302,7 +304,7 @@ class Obra(models.Model):
 
 
 class DocumentoFuente(models.Model):
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = models.CharField(max_length=50, blank=True, null=True)
     documento = models.FileField(upload_to="/", blank=True, null=True)
     obra = models.ForeignKey('Obra', blank=True, null=True)
 
