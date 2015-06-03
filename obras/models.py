@@ -24,7 +24,7 @@ class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
     imagenDependencia = models.FileField(upload_to="/", blank=True, null=True)
     dependienteDe = models.ForeignKey('self', null=True, blank=True)
-    obraoprograma = models.CharField(max_length=1)
+    obraoprograma = models.CharField(max_length=1, null=True, blank=True)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreDependencia
@@ -144,7 +144,7 @@ class Usuario(models.Model):
     )
     rol = models.CharField(max_length=2, choices=ROLES_CHOICES, default=USER)
     user = models.OneToOneField(User)
-    dependencia = models.ForeignKey(Dependencia, blank=True, null=True)
+    dependencia = models.ManyToManyField(Dependencia, blank=True, null=True)
 
 
 class InstanciaEjecutora(models.Model):
