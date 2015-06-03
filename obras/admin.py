@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.db.models import Q
 from django.contrib.admin import SimpleListFilter
 
 from obras.models import *
