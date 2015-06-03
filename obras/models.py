@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
-from smart_selects.db_fields import ChainedForeignKey
+from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
 
 #TODO agregar nombres verbose a los modelos
 
@@ -127,7 +127,11 @@ class TipoInversion(models.Model):
 
 @python_2_unicode_compatible
 class TipoClasificacion(models.Model):
-    subclasificacionDe = models.ForeignKey('self', null=True, blank=True)
+    subclasificacionDe = models.ForeignKey('self', null=True, blank=True,
+                                           limit_choices_to={
+                                                   'subclasificacionDe': None,
+                                            }
+                                           )
     nombreTipoClasificacion = models.CharField(max_length=200)
     nombreTipoClasificacionCorta = models.CharField(max_length=200)
 
@@ -221,9 +225,18 @@ class Obra(models.Model):
     tipoInversion = models.ManyToManyField(TipoInversion)
 
 
-    tipoClasificacion = models.ManyToManyField(TipoClasificacion, related_name='%(class)s_clasificaciones')
-    subclasificacion = models.ManyToManyField(TipoClasificacion, related_name='%(class)s_subclasificaciones')
+    tipoClasificacion = models.ManyToManyField(TipoClasificacion,
+                                               related_name='%(class)s_clasificaciones',
+                                               limit_choices_to={
+                                                   'subclasificacionDe': None,
+                                               }
+                                               )
 
+    subclasificacion = ChainedManyToManyField(TipoClasificacion,
+                                              related_name='%(class)s_subclasificaciones',
+                                              chained_field="tipoClasificacion",
+                                              chained_model_field="subclasificacionDe"
+                                              )
 
 
 
