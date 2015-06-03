@@ -9,6 +9,13 @@ from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, 
 from obras.views import get_array_or_none
 
 
+def get_usuario_for_token(token):
+    if token:
+        return AccessToken.objects.get(token=token).user.usuario
+    else:
+        return None
+
+
 class HoraEndpoint(ProtectedResourceView):
     def get(self, request):
         json_response = {}
@@ -56,11 +63,11 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id) |
                 Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
-        )
+                        )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
-            )
+                        )
 
         return HttpResponse(json.dumps(dicts), 'application/json')
 
@@ -79,53 +86,37 @@ class EstadosEndpoint(ProtectedResourceView):
 
 class DependenciasTreeEndpoint(ProtectedResourceView):
     def get(self, request):
-        token = request.GET.get('access_token')
-        token_model = AccessToken.objects.get(token=token)
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        if request.GET.get('id', None):
-            dependencia = Dependencia.objects.get(id=request.GET.get('id', None))
+        if usuario.rol == 'SA':
+            dependencias = Dependencia.objects.all()
         else:
-            dependencia = token_model.user.usuario.dependencia
+            dependencias = usuario.dependencia.all()
 
-        if dependencia:
-            ans = dependencia.get_tree()
-        else:
-            ans = []
-            dependencias = Dependencia.objects.filter(dependienteDe=None)
-            for dep in dependencias:
-                ans.append(dep.get_tree())
+        ans = []
+        for dep in dependencias:
+            ans.append(dep.get_tree())
 
         return HttpResponse(json.dumps(ans), 'application/json')
 
 
 class SubependenciasFlatEndpoint(ProtectedResourceView):
     def get(self, request):
-        token = request.GET.get('access_token')
-        token_model = AccessToken.objects.get(token=token)
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        if request.GET.get('id', None):
-            dependencia = Dependencia.objects.get(id=request.GET.get('id', None))
+        if usuario.rol == 'SA':
+            dependencias = Dependencia.objects.all()
         else:
-            dependencia = token_model.user.usuario.dependencia
+            dependencias = usuario.dependencia.all()
 
-        ans = []
-        if dependencia:
-            ans.append(dependencia)
-        else:
-            dependencias = Dependencia.objects.filter(dependienteDe=None)
-            for dep in dependencias:
-                ans.append(dep)
-
-        subdependencias = []
-        for dep in ans:
-            subdeps = dep.get_subdeps_flat()
+        ans = map(lambda dependencia: dependencia.to_serializable_dict(), dependencias)
+        for dependencia in dependencias:
+            subdeps = dependencia.get_subdeps_flat()
             if subdeps:
-                subdependencias.append(subdeps)
-        ans.extend(subdependencias)
-
-        ans = map(lambda dep: dep.to_serializable_dict(), ans)
+                ans.extend(map(lambda dep: dep.to_serializable_dict(), subdeps))
 
         return HttpResponse(json.dumps(ans), 'application/json')
+
 
 class ClasificacionEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -154,22 +145,24 @@ class TipoDeObraEndpoint(ProtectedResourceView):
 
 class BuscadorEndpoint(ProtectedResourceView):
     def get(self, request):
-        buscador = BuscarObras(idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
-                               iddependencias=get_array_or_none(request.GET.get('tipoDeObra')),
-                               estados=get_array_or_none(request.GET.get('tipoDeObra')),
-                               clasificaciones=get_array_or_none(request.GET.get('tipoDeObra')),
-                               inversiones=get_array_or_none(request.GET.get('tipoDeObra')),
-                               inauguradores=get_array_or_none(request.GET.get('tipoDeObra')),
-                               impactos=get_array_or_none(request.GET.get('tipoDeObra')),
-                               inaugurada=None,
-                               inversion_minima=None,
-                               inversion_maxima=None,
-                               fecha_inicio_primera=None,
-                               fecha_inicio_segunda=None,
-                               fecha_fin_primera=None,
-                               fecha_fin_segunda=None,
-                               denominacion=None,
-                               )
+        buscador = BuscarObras(
+            idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+            iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            estados=get_array_or_none(request.GET.get('estado')),
+            clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
+            inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
+            inauguradores=get_array_or_none(request.GET.get('inaugurador')),
+            impactos=get_array_or_none(request.GET.get('impacto')),
+            inaugurada=request.GET.get('inaugurada', None),
+            inversion_minima=request.GET.get('inversionMinima', None),
+            inversion_maxima=request.GET.get('inversionMaxima', None),
+            fecha_inicio_primera=request.GET.get('fechaInicio', None),
+            fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+            fecha_fin_primera=request.GET.get('fechaFin', None),
+            fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+            denominacion=request.GET.get('denominacion', None),
+            instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
+        )
         resultados = buscador.buscar()
 
         json_map = {}
@@ -226,12 +219,20 @@ class InauguradorEndpoint(ProtectedResourceView):
 
 class ReporteInicioEndpoint(ProtectedResourceView):
     def get(self, request):
-        dependencia = AccessToken.objects.get(
-            token=request.GET.get('access_token')).user.usuario.dependencia
-        if dependencia:
-            obras = dependencia.get_obras()
+        dependencias = AccessToken.objects.get(
+            token=request.GET.get('access_token')).user.usuario.dependencia.all()
+
+        if dependencias and dependencias.count() > 0:
+            deps = []
+            for dep in dependencias:
+                deps.append(dep)
+                subdeps = dep.get_subdeps_flat()
+                if subdeps and subdeps.count() > 0:
+                    deps.extend(subdeps)
+                obras = Obra.objects.filter(dependencia__in=deps)
         else:
             obras = Obra.objects.all()
+
         start2015 = datetime.date(2015, 1, 1)
         reporte = {
             'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
@@ -240,54 +241,28 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             'reporte2012': {'obras_concluidas': {}},
         }
 
-        reporte['reporte2015']['obras_proceso']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(Q(fechaInicio__lte=start2015) & Q(fechaTermino__gte=start2015)))
+        reporte['reporte2015']['obras_proceso']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(
+            Q(fechaInicio__lte=start2015) & Q(fechaTermino__gte=start2015)))
         reporte['reporte2015']['obras_proceso']['total'] = len(reporte['reporte2015']['obras_proceso']['obras'])
 
-        reporte['reporte2015']['obras_proyectadas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaInicio__year=2015))
+        reporte['reporte2015']['obras_proyectadas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+                                                                   obras.filter(fechaInicio__year=2015))
         reporte['reporte2015']['obras_proyectadas']['total'] = len(reporte['reporte2015']['obras_proyectadas']['obras'])
 
-        reporte['reporte2015']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaTermino__year=2015))
+        reporte['reporte2015']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+                                                                  obras.filter(fechaTermino__year=2015))
         reporte['reporte2015']['obras_concluidas']['total'] = len(reporte['reporte2015']['obras_concluidas']['obras'])
 
-        reporte['reporte2014']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaTermino__year=2014))
+        reporte['reporte2014']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+                                                                  obras.filter(fechaTermino__year=2014))
         reporte['reporte2014']['obras_concluidas']['total'] = len(reporte['reporte2014']['obras_concluidas']['obras'])
 
-        reporte['reporte2013']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaTermino__year=2013))
+        reporte['reporte2013']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+                                                                  obras.filter(fechaTermino__year=2013))
         reporte['reporte2013']['obras_concluidas']['total'] = len(reporte['reporte2013']['obras_concluidas']['obras'])
 
-        reporte['reporte2012']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaTermino__year=2012))
+        reporte['reporte2012']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+                                                                  obras.filter(fechaTermino__year=2012))
         reporte['reporte2012']['obras_concluidas']['total'] = len(reporte['reporte2012']['obras_concluidas']['obras'])
 
         return HttpResponse(json.dumps(reporte), 'application/json')
-
-
-def inicio(request):
-    dependencia = Dependencia.objects.first()
-    obras = dependencia.get_obras()
-    start2015 = datetime.date(2015, 1, 1)
-    reporte = {
-        'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
-        'reporte2014': {'obras_concluidas': {}},
-        'reporte2013': {'obras_concluidas': {}},
-        'reporte2012': {'obras_concluidas': {}},
-    }
-
-    reporte['reporte2015']['obras_proceso']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(Q(fechaInicio__lte=start2015) & Q(fechaTermino__gte=start2015)))
-    reporte['reporte2015']['obras_proceso']['total'] = len(reporte['reporte2015']['obras_proceso']['obras'])
-
-    reporte['reporte2015']['obras_proyectadas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaInicio__year=2015))
-    reporte['reporte2015']['obras_proyectadas']['total'] = len(reporte['reporte2015']['obras_proyectadas']['obras'])
-
-    reporte['reporte2015']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaTermino__year=2015))
-    reporte['reporte2015']['obras_concluidas']['total'] = len(reporte['reporte2015']['obras_concluidas']['obras'])
-
-    reporte['reporte2014']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaTermino__year=2014))
-    reporte['reporte2014']['obras_concluidas']['total'] = len(reporte['reporte2014']['obras_concluidas']['obras'])
-
-    reporte['reporte2013']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaTermino__year=2013))
-    reporte['reporte2013']['obras_concluidas']['total'] = len(reporte['reporte2013']['obras_concluidas']['obras'])
-
-    reporte['reporte2012']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(fechaTermino__year=2012))
-    reporte['reporte2012']['obras_concluidas']['total'] = len(reporte['reporte2012']['obras_concluidas']['obras'])
-
-    return HttpResponse(json.dumps(reporte), 'application/json')
