@@ -169,6 +169,7 @@ class Obra(models.Model):
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion)
     tipoClasificacion = models.ManyToManyField(TipoClasificacion)
+    subclasificacion = models.ManyToManyField(TipoClasificacion)
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
