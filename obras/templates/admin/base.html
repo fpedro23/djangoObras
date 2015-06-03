@@ -75,9 +75,11 @@
                         <span class="engrane"></span> </a>
                         <ul class="dropdown-menu" role="menu" >
                            {% if user.has_usable_password %}
-                              <li><a href="{% url 'admin:password_change' %}">Cambiar Contraseña <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                               <!-- <span class="glyphicon glyphicon-cog pull-right"></span> -->
+                              <li><a href="{% url 'admin:password_change' %}">Cambiar Contraseña </a></li>
                               <li class="divider"></li>
-                              <li><a href="{% url 'admin:logout' %}">Terminar Sesion <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                               <!-- <span class="glyphicon glyphicon-log-out pull-right"></span> -->
+                              <li><a href="{% url 'admin:logout' %}">Terminar Sesion </a></li>
                             {% endif %}
                         </ul>
                 </li>

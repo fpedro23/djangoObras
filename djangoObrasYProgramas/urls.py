@@ -23,6 +23,7 @@ urlpatterns = patterns(
     url(r'^obras/c_impacto$', 'obras.views.c_impacto', name='c_impacto'),
     url(r'^obras/c_inversion$', 'obras.views.c_inversion', name='c_inversion'),
     url(r'^obras/movimientos$', 'obras.views.movimientos', name='movimientos'),
+    url(r'^obras/obra/modifica$', 'obras.views.modifica', name='modifica'),
     url(r'^obras/consultas$', 'obras.views.consultas', name='consultas'),
     url(r'^obras/c_filtro$', 'obras.views.c_filtro', name='c_filtro'),
     url(r'^obras/c_guardada$', 'obras.views.c_guardada', name='c_guardada'),

@@ -7,6 +7,8 @@ from obras.models import *
 from obras.forms import AddObraForm
 
 
+
+
 # Register your models here.+
 
 # Define an inline admin descriptor for Usuario model
@@ -51,13 +53,12 @@ class UserAdmin(UserAdmin):
 
         qs = super(UserAdmin, self).get_queryset(request)
         if request.user.usuario.rol == 'SA':
-            print 'Query Set Superadminhhh'
+            print 'Query Set Superadmin'
             return qs
         elif request.user.usuario.rol == 'AD':
-            print 'Query Set Administrador dependenciabub'
+            print 'Query Set Administrador dependenciasub'
             print arreglo_dependencias
             return qs.filter(
-
                 Q(usuario__dependencia__id__in=arreglo_dependencias) |
                 Q(usuario__dependencia__dependienteDe__id__in=arreglo_dependencias)
             )
@@ -136,7 +137,6 @@ class DependenciaListFilter(SimpleListFilter):
 
         if request.user.usuario.rol == 'SA':  # Secretaria tecnica
             dependencias = Dependencia.objects.all()
-
         elif request.user.usuario.rol == 'AD':  # Dependencia
             dependencias = Dependencia.objects.filter(
                 Q(id__in=arreglo_dependencias) |
@@ -213,68 +213,71 @@ class ObrasAdmin(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
         if request.user.usuario.rol == 'US':
             fields = ('identificador_unico',
-                      'tipoObra',
+                      'denominacion',
                       'dependencia',
                       'instanciaEjecutora',
                       'estado',
+                      'municipio',
+                      'latitud',
+                      'longitud',
+                      'descripcion',
+                      'porcentajeAvance',
+                      'tipoObra',
+                      'fechaInicio',
+                      'fechaTermino',
+                      'poblacionObjetivo',
+                      'totalBeneficiarios',
                       'impacto',
-                      'tipoInversion',
+                      'senalizacion',
                       'tipoClasificacion',
-                      'inaugurador',
+                      'tipoInversion',
                       'registroHacendario',
                       'montoRegistroHacendario',
-                      'denominacion',
-                      'descripcion',
-                      'observaciones',
-                      'fechaInicio',
-                      'fechaTermino',
                       'inversionTotal',
-                      'totalBeneficiarios',
-                      'senalizacion',
+                      'tipoMoneda',
                       'susceptibleInauguracion',
-                      'porcentajeAvance',
+                      'inaugurada',
+                      'inaugurador',
                       'observaciones',
                       'fotoAntes',
                       'fotoDurante',
                       'fotoDespues',
-                      'inaugurada',
-                      'poblacionObjetivo',
-                      'municipio',
-                      'tipoMoneda',
+                      #'autorizada',
+                      #'registroAuditoria',
                       )
-
-
         else:
             fields = ('identificador_unico',
-                      'autorizada',
-                      'tipoObra',
-                      'instanciaEjecutora',
-                      'dependencia',
-                      'estado',
-                      'impacto',
-                      'tipoInversion',
-                      'tipoClasificacion',
-                      'inaugurador',
-                      ('registroHacendario',
-                       'montoRegistroHacendario',),
                       'denominacion',
+                      'dependencia',
+                      'instanciaEjecutora',
+                      'estado',
+                      'municipio',
+                      'latitud',
+                      'longitud',
                       'descripcion',
-                      'observaciones',
+                      'porcentajeAvance',
+                      'tipoObra',
                       'fechaInicio',
                       'fechaTermino',
-                      'inversionTotal',
+                      'poblacionObjetivo',
                       'totalBeneficiarios',
+                      'impacto',
                       'senalizacion',
+                      'tipoClasificacion',
+                      'tipoInversion',
+                      'registroHacendario',
+                      'montoRegistroHacendario',
+                      'inversionTotal',
+                      'tipoMoneda',
                       'susceptibleInauguracion',
-                      'porcentajeAvance',
+                      'inaugurada',
+                      'inaugurador',
                       'observaciones',
                       'fotoAntes',
                       'fotoDurante',
                       'fotoDespues',
-                      'inaugurada',
-                      'poblacionObjetivo',
-                      'municipio',
-                      'tipoMoneda',
+                      'autorizada',
+                      #'registroAuditoria',
                       )
         return fields
 

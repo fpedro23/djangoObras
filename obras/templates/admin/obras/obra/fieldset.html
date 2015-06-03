@@ -1,0 +1,358 @@
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+
+   <div class="historialBTN"></div>
+   <div class="imprimirBTN"></div>
+
+      {% for line in fieldset %}
+  {% for field in line %}
+
+         {% if field.field.name == "identificador_unico" %}
+              <div class="general">
+        <div id="logoDEP">
+        </div>
+
+  	    <div id="tituloCUADROS">
+    	    GENERAL
+        </div>
+        <p>&nbsp;</p>
+             <p>&nbsp;</p>
+             <table width="100%" border="0px" cellpadding="0px" cellspacing="3px">
+          <tr>
+              <td>ID Único:</td>
+              <td><label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label></td>
+          </tr>
+          {% endif %}
+          {% if field.field.name == "denominacion" %}
+          <tr>
+              <td> <label class="required" for="id_denominacion">Denominacion:</label></td>
+              <td> <input class="vTextField" id="id_denominacion" maxlength="200" name="denominacion" type="text" value="{{ field.field.value|default_if_none:"" }}"/></td>
+          </tr>
+          {% endif %}
+         {% if field.field.name == "dependencia" %}
+          <tr>
+              <td>  <label class="required" for="id_dependencia">Dependencia:</label></td>
+              <td> {{ field.field }}</td>
+          </tr>
+          {% endif %}
+         {% if field.field.name == "subdependencia" %}
+          <tr>
+              <td>  <label class="required" for="id_subdependencia">SubDependencia:</label></td>
+              <td> {{ field.field }}</td>
+          </tr>
+          {% endif %}
+        {% if field.field.name == "instanciaEjecutora" %}
+          <tr>
+              <td>  <label for="id_instanciaEjecutora">Instancia Ejecutora:</label></td>
+              <td> {{ field.field }}</td>
+          </tr>
+          {% endif %}
+       {% if field.field.name == "estado" %}
+          <tr>
+              <td> <label class="required" for="id_estado">Estado:</label></td>
+              <td> {{ field.field }}</td>
+          </tr>
+          {% endif %}
+      {% if field.field.name == "municipio" %}
+          <tr>
+              <td> <label class="required" for="id_municipio">Municipio:</label></td>
+              <td> {{ field.field }}</td>
+          </tr>
+          {% endif %}
+      {% if field.field.name == "latitud" %}
+          <tr>
+              <td> <label class="required" for="id_latitud">Latitud:</label></td>
+              <td> {{ field.field }}</td>
+          </tr>
+          {% endif %}
+
+          {% if field.field.name == "longitud" %}
+              <tr>
+                  <td> <label class="required" for="id_longitud">Latitud:</label></td>
+                  <td> {{ field.field }}</td>
+              </tr>
+              </table>
+              </div>
+          {% endif %}
+
+
+
+         {% if field.field.name == "descripcion" %}
+              <div class="descripcion">
+                 <div id="tituloCUADROS">
+                    DESCRIPCIÓN
+                </div>
+                    <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
+                        <tr>
+                            <td colspan="2">
+                             <textarea class="descripINPUT" id="id_descripcion" name="descripcion" >
+                                 {{ field.field.value|default_if_none:"" }}
+                             </textarea></td>
+                         </tr>
+        {% endif %}
+
+       {% if field.field.name == "porcentajeAvance" %}
+              <tr>
+                 <td><label class="required" for="id_porcentajeAvance">Avance:</label></td>
+                  <td> <input id="id_porcentajeAvance" name="porcentajeAvance" step="0.01" type="number" value="{{ field.field.value|default_if_none:"" }}"/></td>
+              </tr>
+       {% endif %}
+
+      {% if field.field.name == "tipoObra" %}
+              <tr>
+                 <td><label class="required" for="id_tipoObra">Status:</label></td>
+                  <td> {{ field.field }}</td>
+              </tr>
+
+       {% endif %}
+
+      {% if field.field.name == "fechaInicio" %}
+              <tr>
+                 <td> <label class="required" for="id_fechaInicio">Fecha de Inicio:</label></td>
+                  <td><input class="vDateField" id="id_fechaInicio" name="fechaInicio" size="10" type="text" value="{{ field.field.value|default_if_none:"" }}"/></td>
+              </tr>
+
+       {% endif %}
+
+       {% if field.field.name == "fechaTermino" %}
+              <tr>
+                 <td>  <label class="required" for="id_fechaTermino">Fecha de Término:</label></td>
+                  <td> <input class="vDateField" id="id_fechaTermino" name="fechaTermino" size="10" type="text" value="{{ field.field.value|default_if_none:"" }}"/></td>
+              </tr>
+                 </table>
+            </div>
+       {% endif %}
+
+
+       {% if field.field.name == "poblacionObjetivo" %}
+           <!-- B E N E F I C I A R I O S-->
+             <div class="beneficiarios">
+               <div id="tituloCUADROS">
+                    BENEFICIARIOS
+                </div>
+                    <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
+                        <tr>
+                          <td> <label class="required" for="id_poblacionObjetivo">Población Objetivo</label></td>
+                          <td><input id="id_poblacionObjetivo" maxlength="200" name="poblacionObjetivo" type="text" value="{{ field.field.value|default_if_none:"" }}"/></td>
+                        </tr>
+        {% endif %}
+
+       {% if field.field.name == "totalBeneficiarios" %}
+              <tr>
+                 <td> <label class="required" for="id_totalBeneficiarios">Número de Beneficiarios:</label></td>
+                  <td> <input id="id_totalBeneficiarios" name="totalBeneficiarios" step="1e-10" type="number"  value="{{ field.field.value|default_if_none:"" }}"/></td>
+              </tr>
+
+       {% endif %}
+
+          {% if field.field.name == "impacto" %}
+              <tr>
+                 <td> <label class="required" for="id_impacto">Impacto</label></td>
+                  <td> {{ field.field }}</td>
+              </tr>
+
+       {% endif %}
+
+         {% if field.field.name == "senalizacion" %}
+              <tr>
+                 <td> <label class="required" for="id_senalizacion">Señalización:</label></td>
+                  <td> <input id="id_senalizacion" name="senalizacion" type="checkbox" value="{{ field.field.value|default_if_none:"" }}"/></td>
+              </tr>
+             </table>
+            </div>
+
+       {% endif %}
+
+
+
+       {% if field.field.name == "tipoClasificacion" %}
+              <!-- C L A S I F I C A C I O N-->
+             <div class="clasificacion">
+               <div id="tituloCUADROS">
+                    CLASIFICACIÓN
+                </div>
+                    <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
+                        <tr>
+                          <td colspan="2">
+                              {{ field.field }}
+                          </td>
+                        </tr>
+                    </table>
+             </div>
+        {% endif %}
+
+
+
+       {% if field.field.name == "tipoInversion" %}
+             <!-- I N V E R S I O N-->
+            <div class="inversion">
+                <div id="tituloCUADROS">
+    	            INVERSIÓN
+                </div>
+                <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
+                    <tr>
+                        <td colspan="2"><label class="required" for="id_tipoInversion"></label>{{ field.field }}</td>
+
+                    </tr>
+        {% endif %}
+
+        {% if field.field.name == "registroHacendario" %}
+                <tr>
+                    <td>  <label for="id_registroHacendario" style="font-size: 11px;"> Registro de Cartera de Inversión:</label></td>
+                    <td>  <input class="vTextField" id="id_registroHacendario" maxlength="200" name="registroHacendario" type="text" value="{{ field.field.value|default_if_none:"" }}"/></td>
+                </tr>
+             <tr>
+                    <td>  <label class="inline" for="id_montoRegistroHacendario"> Recursos Federales Autorizados:</label></td>
+                    <td>  <input id="id_montoRegistroHacendario" name="montoRegistroHacendario"  type="number" value="{{ field.field.value|default_if_none:"" }}"/></td>
+                </tr>
+        {% endif %}
+
+
+
+        {% if field.field.name == "inversionTotal" %}
+                <tr>
+                    <td><label class="required" for="id_inversionTotal">Inversión Total:</label></td>
+                    <td><input id="id_inversionTotal" name="inversionTotal" type="number" value="{{ field.field.value|default_if_none:"" }}"/></td>
+                </tr>
+        {% endif %}
+        {% if field.field.name == "tipoMoneda" %}
+                <tr>
+                    <td><label for="id_tipoMoneda">MDP:</label> <input id="id_tipoMoneda" name="tipoMoneda" type="radio"" value="MDP" {{ field.field.value|default_if_none:"" }}/></td>
+
+                    <td><label for="id_tipoMoneda">MDD:</label> <input id="id_tipoMoneda" name="tipoMoneda" type="radio" value="MDD" {{ field.field.value|default_if_none:"" }}/></td>
+                </tr>
+             </table>
+             </div>
+        {% endif %}
+
+        {% if field.field.name == "susceptibleInauguracion" %}
+             <!-- I N A U G U R A C I O N-->
+            <div class="inauguracion">
+               <div id="tituloCUADROS">
+                    INAUGURACIÓN
+                </div>
+                <table width="100%" border="0px" cellpadding="0px" cellspacing="0px">
+                    <tr>
+                        <td> <label class="required" for="id_inaugurada">SI</label> <input id="id_inaugurada" name="inaugurada" type="radio" value="SI" {{ field.field.value|default_if_none:"" }} /></td>
+                         <td><label class="required" for="id_susceptibleInauguracion">Sin Inauguración</label>
+                             <input id="id_susceptibleInauguracion" name="susceptibleInauguracion" type="checkbox" checked="{{ field.field.value|default_if_none:"" }}"/></td>
+
+                    </tr>
+        {% endif %}
+
+        {% if field.field.name == "inaugurada" %}
+            <tr>
+               <td> <label class="required" for="id_inaugurada">NO</label> <input id="id_inaugurada" name="inaugurada" type="radio" value="NO" {{ field.field.value|default_if_none:"" }}/></td>
+               <td>&nbsp;</td>
+            </tr>
+        {% endif %}
+
+          {% if field.field.name == "inaugurador" %}
+            <tr>
+               <td>  <label class="required" for="id_inaugurador">Inaugurador:</label></td>
+               <td>{{ field.field }}</td>
+            </tr>
+              </table>
+              </div>
+        {% endif %}
+
+         {% if field.field.name == "observaciones" %}
+             <!-- O B S E R V A C I O N E S -->
+            <div class="observaciones">
+                   <div id="tituloCUADROS">
+                        OBSERVACIONES
+                 </div>
+                 <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
+                        <tr>
+                            <td colspan="2">
+                                <div id="observaciones">
+                             <textarea  id="id_observaciones" name="observaciones" >
+                                 {{ field.field.value|default_if_none:"" }}
+                             </textarea>
+                                    </div>
+                            </td>
+
+                         </tr>
+                </table>
+             </div>
+        {% endif %}
+
+       {% if field.field.name == "fotoAntes" %}
+            <div class="fotografias">
+               <div id="tituloCUADROS">
+                    FOTOGRAFÍAS
+                </div>
+                <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
+                        <tr>
+                            <td><label for="id_fotoAntes">Antes:</label></td>
+                            <td><input id="id_fotoAntes" name="fotoAntes" type="file" /></td>
+                         </tr>
+        {% endif %}
+
+        {% if field.field.name == "fotoDurante" %}
+                        <tr>
+                            <td><label for="id_fotoDurante">Durante:</label></td>
+                            <td> <input id="id_fotoDurante" name="fotoDurante" type="file" /></td>
+                         </tr>
+        {% endif %}
+
+         {% if field.field.name == "fotoDespues" %}
+                        <tr>
+                            <td><label for="id_fotoDespues">Después:</label></td>
+                            <td>  <input id="id_fotoDespues" name="fotoDespues" type="file" /></td>
+                         </tr>
+                </table>
+             </div>
+        {% endif %}
+
+        {% if field.field.name == "autorizada" %}
+              <div class="pie">
+                  Autorizar cambios <input id="id_autorizada" name="autorizada" type="radio" value="Si" {{ field.field.value|default_if_none:"" }}/>
+                  <br/>
+                  Denegar cambios   <input id="id_autorizada" name="autorizada" type="radio" value="No" {{ field.field.value|default_if_none:"" }}/>
+              </div>
+
+        {% endif %}
+
+     {% endfor %}
+   {% endfor %}
+        <div class="submitlineObra">
+                <div class="eliminarOBTN" onclick="location.href='/admin/obras/obra/{{ original.pk }}/delete';"></div>
+                <div class="salirOBTN" onclick="location.href='/obras/movimientos'"></div>
+                <div class="guardarOBTN" onclick="document.getElementById('{{ opts.model_name }}_form').submit('_save');"></div>
+        </div>
+
+ {% for inline_admin_formset in inline_admin_formsets %}
+
+      <div class="documentos">
+        <div id="tituloCUADROS">
+                DOCUMENTOS FUENTE
+        </div>
+
+        <input id="id_documentofuente_set-TOTAL_FORMS" name="documentofuente_set-TOTAL_FORMS" type="hidden" value="1" /><input id="id_documentofuente_set-INITIAL_FORMS" name="documentofuente_set-INITIAL_FORMS" type="hidden" value="0" /><input id="id_documentofuente_set-MIN_NUM_FORMS" name="documentofuente_set-MIN_NUM_FORMS" type="hidden" value="0" /><input id="id_documentofuente_set-MAX_NUM_FORMS" name="documentofuente_set-MAX_NUM_FORMS" type="hidden" value="1000" />
+
+           <input id="id_documentofuente_set-0-id" name="documentofuente_set-0-id" type="hidden" />
+          <input id="id_documentofuente_set-0-obra" name="documentofuente_set-0-obra" type="hidden" />
+           <table>
+                <tr class="form-row row1 " id="documentofuente_set-0">
+                      <td class="field-descripcion">
+                          <input type="text" class="vLargeTextField" cols="40" id="id_documentofuente_set-0-descripcion" name="documentofuente_set-0-descripcion" />
+                      </td>
+                      <td class="field-documento">
+                          <input id="id_documentofuente_set-0-documento" name="documentofuente_set-0-documento" type="file" />
+                      </td>
+                </tr>
+            </table>
+   </div>
+
+
+        {% endfor %}
+</fieldset>
+
+
+
+
+
+
+
+
+

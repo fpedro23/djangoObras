@@ -110,11 +110,6 @@
 	left: 439px;
  }
 
-.error__msg {
-  font-size: 12px;
-  font-weight: bold;
-  color: #B92025;
-}
 
 .eliminarBTN{
 	width: 80px;
@@ -155,4 +150,300 @@ tr.alt {
 }
 
 a#add_id_dependienteDe.add-another {display: none;}
+a#add_id_tipoClasificacion.add-another {display:none;}
 
+.add-another {display:none;}
+
+input {
+  line-height: initial;
+}
+
+#tituloCUADROS{
+	font: "Soberana Titular";
+	font-size:20px;
+	color: #0C0C1E;
+
+}
+
+
+
+/*Cierre de elementos del DIV BODY correspondientes a la página de OBRA ALTA*/
+
+
+
+.historialBTN{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	left: 951px;
+	top: 1px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -160px 0px;
+}
+
+.historialBTN:hover{
+	background-position:-160px -30px;
+}
+
+.imprimirBTN{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	left: 987px;
+	top: 1px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -190px 0px;
+}
+
+.imprimirBTN:hover{
+	background-position:-190px -30px;
+}
+
+.general{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 293px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: -1px;
+	top:33px:
+; 																																																																																														top: 34px;
+}
+
+.descripcion{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 194px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: -1px;
+	top: 337px;
+}
+
+.beneficiarios{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 101px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 342px;
+	top: 34px;
+}
+
+.clasificacion{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 143px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 342px;
+	top: 146px;
+}
+
+.inversion{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 231px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 342px;
+	top: 301px;
+}
+
+.inauguracion{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 98px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	top: 34px;
+	left: 686px;
+}
+
+.observaciones{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 89px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	top: 142px;
+	left: 686px;
+}
+
+.documentos{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 94px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	top: 340px;
+	left: 686px;
+}
+
+.fotografias{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 90px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	top: 240px;
+	left: 686px;
+}
+
+.pie{
+	border-radius: 2px;
+	width: 334px;
+	height: 40px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	top: 443px;
+	left: 686px;
+}
+
+.submitlineObra{
+	border-radius: 2px;
+	width: 334px;
+	height: 40px;
+	font-family: "Myriad Pro";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	top: 492px;
+	left: 686px;
+}
+
+#logoDEP{
+	width:120px;
+	height:60px;
+
+	border: 2px solid #CFCFDB;
+
+	position:absolute;
+	top:30px;
+	margin:10px;
+	left:85px;
+
+}
+
+#descripINPUT{
+	width:320px;
+	height:90px;
+
+	border: 2px solid #CFCFDB;
+
+	position:absolute;
+	top:20px;
+	margin:2px;
+	left:3px;
+
+}
+
+#observacionesINPUT{
+	width:320px;
+	height:55px;
+
+	border: 2px solid #CFCFDB;
+
+	position:absolute;
+	top:20px;
+	margin:2px;
+	left:3px;
+
+}
+
+.eliminarOBTN{
+	width: 80px;
+	height: 30px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -724px -1789px;
+	position: absolute;
+	top: 10px;
+	left: 102px;
+}
+
+.eliminarOBTN:hover{
+	background-position: -724px -1819px;
+}
+
+.salirOBTN{
+	width: 58px;
+	height: 30px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -808px -1789px;
+	position: absolute;
+	top: 10px;
+	left: 189px;
+}
+
+.salirOBTN:hover{
+	background-position: -808px -1819px;
+}
+
+.guardarOBTN{
+	width: 82px;
+	height: 30px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -869px -1789px;
+	position: absolute;
+	top: 10px;
+	left: 254px;
+}
+
+.guardarOBTN:hover{
+	background-position: -869px -1819px;
+}
+
+label {
+    margin-bottom: 2px;
+}
+
+
+#buscar{
+	width: 180px;
+	height: 18px;
+	text-align: center;
+	position: absolute;
+	top: 4px;
+	left: 730px;
+	font-style: italic;
+	border: 2px solid #CFCFDB;
+}
+
+#buscarICO{
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: 5px;
+	left: 915px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -230px -160px;
+}
