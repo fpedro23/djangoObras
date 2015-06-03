@@ -75,7 +75,11 @@ class Dependencia(models.Model):
         return ans
 
     def get_obras(self):
-        return Obra.objects.filter(Q(dependencia=self) | Q(dependencia__in=self.get_subdeps_flat()))
+        subdeps = self.get_subdeps_flat()
+        if subdeps:
+            return Obra.objects.filter(Q(dependencia=self) | Q(dependencia__in=self.get_subdeps_flat()))
+        else:
+            return Obra.objects.filter(dependencia=self)
 
 
 class Estado(models.Model):
