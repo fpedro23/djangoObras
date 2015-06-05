@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from obras.models import Obra, Dependencia
 import itertools
+from datetime import datetime
 
 
 class AddObraForm(forms.ModelForm):
@@ -16,6 +17,9 @@ class AddObraForm(forms.ModelForm):
 
     def save(self, commit=True):
         instance = super(AddObraForm, self).save(commit=False)
+        instance.dependencia.fecha_ultima_modificacion = datetime.now()
+        print instance.dependencia.fecha_ultima_modificacion
+        instance.dependencia.save()
 
         if instance.id and not instance.autorizada:
             obra = Obra.objects.get(id=instance.id)
