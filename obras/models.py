@@ -292,26 +292,50 @@ class Obra(models.Model):
         map = {}
 
         map['identificador'] = self.identificador_unico
-        map['tipoObra'] = self.tipoObra.to_serializable_dict()
-        map['dependencia'] = self.dependencia.to_serializable_dict()
-        map['subdependenencia'] = self.subdependencia.to_serializable_dict()
-        map['estado'] = self.estado.to_serializable_dict()
-        map['impacto'] = self.impacto.to_serializable_dict()
-        map['instanciaEjecutora'] = self.instanciaEjecutora.to_serializable_dict()
+        if self.tipoObra:
+            map['tipoObra'] = self.tipoObra.to_serializable_dict()
+        else:
+            map['tipoObra'] = None
+        if self.dependencia:
+            map['dependencia'] = self.dependencia.to_serializable_dict()
+        else:
+            map['dependencia'] = None
+        if self.subdependencia:
+            map['subdependenencia'] = self.subdependencia.to_serializable_dict()
+        else:
+            map['subdependenencia'] = None
+        if self.estado:
+            map['estado'] = self.estado.to_serializable_dict()
+        else:
+            map['estado'] = None
+        if self.impacto:
+            map['impacto'] = self.impacto.to_serializable_dict()
+        else:
+            map['impacto'] = None
+        if self.instanciaEjecutora:
+            map['instanciaEjecutora'] = self.instanciaEjecutora.to_serializable_dict()
+        else:
+            map['instanciaEjecutora'] = None
 
         map['tipoInversion'] = []
-        for tipoInversion in self.tipoInversion.all():
-            map['tipoInversion'].append(tipoInversion.to_serializable_dict())
+        if self.tipoInversion:
+            for tipoInversion in self.tipoInversion.all():
+                map['tipoInversion'].append(tipoInversion.to_serializable_dict())
 
         map['tipoClasificacion'] = []
-        for tipoClasificacion in self.tipoClasificacion.all():
-            map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
+        if self.tipoClasificacion:
+            for tipoClasificacion in self.tipoClasificacion.all():
+                map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
 
         map['subclasificaciones'] = []
-        for subclasificacion in self.subclasificacion.all():
-            map['subclasificaciones'].append(subclasificacion.to_serializable_dict())
+        if self.subclasificacion:
+            for subclasificacion in self.subclasificacion.all():
+                map['subclasificaciones'].append(subclasificacion.to_serializable_dict())
 
-        map['inaugurador'] = self.inaugurador.to_serializable_dict()
+        if self.inaugurador:
+            map['inaugurador'] = self.inaugurador.to_serializable_dict()
+        else:
+            map['inaugurador'] = None
         map['registroHacendario'] = self.registroHacendario
         map['denominacion'] = self.denominacion
         map['descripcion'] = self.descripcion
