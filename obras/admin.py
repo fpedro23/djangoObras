@@ -81,6 +81,8 @@ class InversionInLine(admin.StackedInline):
 
 
 class DependenciaAdmin(admin.ModelAdmin):
+    exclude = ('fecha_ultima_modificacion', 'obraoprograma',)
+
     def get_queryset(self, request):
         """Limit Pages to those that belong to the request's user."""
         qs = super(DependenciaAdmin, self).queryset(request)
