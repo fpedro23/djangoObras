@@ -1,2 +1,2 @@
 #
-0 0 * * 1 brewpython manage.py mail_reports
+0 0 * * 1 brewpython ~/PycharmProjects/djangoObras/manage.py mail_reports

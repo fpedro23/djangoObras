@@ -14,12 +14,12 @@ urlpatterns = patterns('',
                        url(r'^api/clasificaciones', api.ClasificacionEndpoint.as_view()),
                        url(r'^api/inversiones', api.InversionEndpoint.as_view()),
                        url(r'^api/tiposDeObra', api.TipoDeObraEndpoint.as_view()),
-
-                        url(r'^api/subdependencias_arbol', api.DependenciasTreeEndpoint.as_view()),
+                       url(r'^api/subdependencias_arbol', api.DependenciasTreeEndpoint.as_view()),
                        url(r'^api/subdependencias_flat', api.SubependenciasFlatEndpoint.as_view()),
 
                        # Mappings Busqueda
                        url(r'^api/busqueda', api.BuscadorEndpoint.as_view()),
+                       url(r'^api/id_unico', api.IdUnicoEndpoint.as_view()),
 
                        # Mappings Reportes
                        url(r'^api/obras_iniciadas', api.ObrasIniciadasEndpoint.as_view()),
@@ -27,7 +27,7 @@ urlpatterns = patterns('',
                        url(r'^api/obras_dependencia', api.ObrasForDependenciaEndpoint.as_view()),
                        url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
 
-                       # Otors endpoints
+                       # Otros endpoints
                        url(r'^api/hora', api.HoraEndpoint.as_view()),
                        # Fin mappings del API
 

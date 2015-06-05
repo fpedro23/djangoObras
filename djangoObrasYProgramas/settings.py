@@ -40,12 +40,12 @@ INSTALLED_APPS = (
     'obras',
     'oauth2_provider',
     'smart_selects',
-    #'djangosecure',
+    # 'djangosecure',
     #'sslify',
 )
 
 # MIDDLEWARE_CLASSES = (
-#     'django.contrib.sessions.middleware.SessionMiddleware',
+# 'django.contrib.sessions.middleware.SessionMiddleware',
 #     'django.middleware.common.CommonMiddleware',
 #     'django.middleware.csrf.CsrfViewMiddleware',
 #     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -70,7 +70,6 @@ MIDDLEWARE_CLASSES = (
     'corsheaders.middleware.CorsMiddleware',
 )
 
-
 AUTHENTICATION_BACKENDS = (
     'oauth2_provider.backends.OAuth2Backend',
     # Uncomment following if you want to access the admin
@@ -87,16 +86,16 @@ WSGI_APPLICATION = 'djangoObrasYProgramas.wsgi.application'
 
 # DATABASES = {
 #     'default': {
-#          'ENGINE': 'django.db.backends.mysql',
-#          'NAME': 'obrasnueva',
-#          'USER': 'root',
-#          'PASSWORD': 'root',
-#          'HOST': '',
-#          'PORT': '',
-#      }
-#  }
-
-
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'djangoobras',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': '10.25.194.106',
+#         'PORT': '3306',
+#     }
+# }
+#
+#
 DATABASES = {
   'default': {
       'ENGINE': 'django.db.backends.sqlite3',
@@ -125,7 +124,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'obras/templates/'),
