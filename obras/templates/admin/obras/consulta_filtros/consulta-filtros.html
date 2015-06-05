@@ -255,7 +255,14 @@
 
 <script>
 var $pp = jQuery.noConflict();
+
+$pp( document ).ready(function() {
+  $pp('#div-grafica').addClass("mfp-hide");
+});
+
 $pp('#tabla-exporta').hide();
+
+
 $pp(function () {
 	  $pp('.popup-modal').magnificPopup({
 	    type: 'inline',
@@ -354,10 +361,7 @@ $pp(function () {
 {% block content %}
 
 <body style="font: 100% sans-serif;background: #ffffff;height: 600px;">
-    <div id="regresarBTN" onclick="location.href='/obras/consultas'">
-    </div>   <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
 
-    <div id="welcome">Consulta Mediante Filtros</div>
 
   <!-- inicio contenido de la consulta por filtros-->
     <div id="tabla-exporta" style="height: 0px;"></div>
@@ -396,24 +400,29 @@ $pp(function () {
         </div>
     </div>
 
-    <div class= " white-popup-block mfp-hide centerDiv" id="test-modal" style="width: 70%;height: 40%;">
-        <div class="row" style="padding-top: 15px;margin-left: auto;margin-right: auto">
-                <article id="salir_exporta">
-                    {% csrf_token %}
-                    <div class="popup-modal-dismiss" id="regresarBTN" style="height: 25px">
-                    </div>
-                </article>
-        </div>
-       <div class="row" style="padding-bottom: 4px;padding-left: 20px;padding-right: 20px;">
-           <div class="rowP" style="padding-right: 5px;padding-left: 3px; padding-bottom: 0px; padding-top: 0px;height: auto; ">
-               <div   id="containerGrafica" ></div>
+
+
+
+   <div class= "container2 mfp-hide" id="div-grafica">
+       <article id="regresaGraficas">
+           {% csrf_token %}
+            <div id="regresarBTN" ></div>
+        </article>
+       <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
+
+    <div id="welcome">GRAFICA</div>
+
+       <div class= "centerDiv"  style="width: 100%;height: 40%;">
+           <div class="row" style="padding-bottom: 4px;padding-left: 20px;padding-right: 20px;">
+               <div class="rowP" style="padding-right: 5px;padding-left: 3px; padding-bottom: 0px; padding-top: 0px;height: auto; ">
+                   <div   id="containerGrafica" style="height: 280px"></div>
+               </div>
            </div>
-       </div>
 
 
-       <div class="row" style="padding-left: 20px;padding-right: 20px;">
+           <div class="row" style="padding-left: 20px;padding-right: 20px;">
            <div class="col-md-4" style="padding-left: 0px; padding-right: 0px; ">
-                <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 230px; ">
+                <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 200px; ">
                       <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                             <div class="panel-heading" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
                                 <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 2px; padding-top: 2px ">
@@ -493,18 +502,21 @@ $pp(function () {
                </div >
            </div>
            <div class="col-md-8" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px; ">
-               <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px;height: 230px; ">
+               <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px;height: 200px; ">
                    <div id="divTablaGrafica"  > </div>
                </div>
            </div>
        </div>
 
+       </div>
    </div>
 
+   <div class= "container2" id="pagina">
+   <div id="regresarBTN" onclick="location.href='/obras/consultas'">
+    </div>   <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
 
+    <div id="welcome">Consulta Mediante Filtros</div>
 
-
-   <div class= "container2" >
                 <div class="row" style="padding-bottom: 4px;">
                     <div class="rowP" style="padding-right: 5px;padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                     <div class="col-md-12 titulo">
@@ -917,6 +929,10 @@ $pp(function () {
                    <div class="col-xs-5">
                    </div>
                    <div class="col-xs-2">
+                       <article id="go_Graficas">
+                           {% csrf_token %}
+                            <input type="radio" name="goGraficas" id="goGraficas" value="graficas"/>
+                        </article>
                    </div>
                    <div class="col-xs-2">
                        <article id="ver_exporta">
@@ -927,7 +943,7 @@ $pp(function () {
                    <div class="col-xs-2">
                        <article id="ver_grafica">
                            {% csrf_token %}
-                           <div class="col-xs-2 graficoBTN popup-modal" href="#test-modal" id="grafica" style="height: 30px"></div>
+                           <div class="col-xs-2 graficoBTN"  id="grafica" style="height: 30px"></div>
                        </article>
                    </div>
                </div>

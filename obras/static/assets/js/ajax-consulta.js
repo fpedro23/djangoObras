@@ -29,9 +29,64 @@ function main_consulta() {
     $j('#ver_grafica_dependencia #dependencia').on('click', graficas);
     $j('#ver_grafica_tipos #tipoGrafica').on('change', graficas);
     $j('#ver_grafica_datos #datosGrafica').on('change', graficas);
+    $j('#go_Graficas #goGraficas').on('click', enviaFiltrosGrafica);
+
+    $j('#regresaGraficas #regresarBTN').on('click', regresa);
+
 }
 
 
+
+function enviaFiltrosGrafica() {
+    var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
+    var fechaInicio1 = $l("#fechaInicial1").val();
+    var fechaInicio2 = $l("#fechaInicial2").val();
+    var fechaFin1 = $l("#fechaFinal1").val();
+    var fechaFin2 = $l("#fechaFinal2").val();
+    var inversionInicial = $l("#inversionInicial").val();
+    var inversionFinal = $l("#inversionFinal").val();
+
+
+    var ajax_data = {
+      "access_token"  : 'VhMrdzu9WFLeOUYn3ED6CIH1krpvo4'
+    };
+
+    if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
+    if(arrayEstatusObra.toString()!=""){ajax_data.tipoDeObra=arrayEstatusObra.toString();}
+    if(arrayEstados.toString()!=""){ajax_data.estado=arrayEstados.toString();}
+    if(arrayClasificacion.toString()!=""){ajax_data.clasificacion=arrayClasificacion.toString();}
+    if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
+    if(arrayInaugurador.toString()!=""){ajax_data.inaugurador=arrayInaugurador.toString();}
+    if(arrayImpacto.toString()!=""){ajax_data.impacto=arrayImpacto.toString();}
+    if(fechaInicio1!=""){ajax_data.fechaInicio=$j.date(fechaInicio1);}
+    if(fechaInicio2!=""){ajax_data.fechaInicioSegunda=$j.date(fechaInicio2);}
+    if(fechaFin1!=""){ajax_data.fechaFin=$j.date(fechaFin1);}
+    if(fechaFin2!=""){ajax_data.fechaFinSegunda=$j.date(fechaFin2);}
+    if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
+    if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
+    if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
+
+
+    $j.ajax({
+        url: '/obras/graficas',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+            alert(data);
+            $j('#pagina').html(data);
+
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
+}
 
 
 function verDatos() {
@@ -51,7 +106,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'vhX0hn6W9OJ83ZEJVf3sbRls46JeQV'
+      "access_token"  : 'hU6sfnvCxmS5j4PhPL39qoSSJfH9XI'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -104,6 +159,11 @@ function verDatos() {
     });
 }
 
+function regresa(){
+    $pp('#pagina').show();
+    $pp('#div-grafica').removeClass("mfp-show");
+    $pp('#div-grafica').addClass("mfp-hide");
+}
 
 
 function mostrarTablas() {
@@ -120,6 +180,8 @@ function graficas(){
     var datas = new Array();
     var montos = new Array();
 
+    $pp('#pagina').hide();
+    $pp('#div-grafica').addClass("mfp-show");
 
     if (tipoReporte=="Dependencia") {
         for (var i = 0; i < datosJson.reporte_dependencia.length; i++) {
