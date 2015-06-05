@@ -1,12 +1,15 @@
 import json
 import datetime
+from django.contrib.admin.models import LogEntry
 from django.db.models import Q
 from django.http import HttpResponse
 from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
 from obras.BuscarObras import BuscarObras
-from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador
+from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador,\
+    InstanciaEjecutora
 from obras.views import get_array_or_none
+from datetime import *
 
 
 def get_usuario_for_token(token):
@@ -52,7 +55,6 @@ class ObrasVencidasEndpoint(ProtectedResourceView):
 class DependenciasEndpoint(ProtectedResourceView):
     def get(self, request):
         token = request.GET.get('access_token')
-        print '*************' + token
         token_model = AccessToken.objects.get(token=token)
         print token_model.user
 
@@ -137,6 +139,13 @@ class InversionEndpoint(ProtectedResourceView):
             'application/json')
 
 
+class InstanciaEjecutoraEndpoint(ProtectedResourceView):
+    def get(self, request):
+        return HttpResponse(
+            json.dumps(map(lambda instancia: instancia.to_serializable_dict(), InstanciaEjecutora.objects.all())),
+            'application/json')
+
+
 class TipoDeObraEndpoint(ProtectedResourceView):
     def get(self, request):
         return HttpResponse(json.dumps(map(lambda tipo: tipo.to_serializable_dict(), TipoObra.objects.all())),
@@ -217,6 +226,32 @@ class InauguradorEndpoint(ProtectedResourceView):
             'application/json')
 
 
+class NumeroObrasPendientes(ProtectedResourceView):
+    def get(self, request):
+        token = request.GET.get('access_token')
+        token_model = AccessToken.objects.get(token=token)
+        arreglo_dependencias = []
+        total_obras = 0
+
+        for dependencia in token_model.user.usuario.dependencia.all():
+            arreglo_dependencias.append(dependencia.id)
+
+        if token_model.user.usuario.rol == 'AD':
+            dependencias = Dependencia.objects.filter(
+                    Q(id__in=arreglo_dependencias) |
+                    Q(dependienteDe__id__in=arreglo_dependencias)
+                    )
+
+            for dependencia in dependencias:
+                total_obras = total_obras + dependencia.obra_set.filter(autorizada=False).count()
+
+        ans = {}
+
+        ans['obrasTotalesPendientes'] = total_obras
+
+        return HttpResponse(json.dumps(ans), 'application/json')
+
+
 class ReporteInicioEndpoint(ProtectedResourceView):
     def get(self, request):
         dependencias = AccessToken.objects.get(
@@ -266,3 +301,15 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2012']['obras_concluidas']['total'] = len(reporte['reporte2012']['obras_concluidas']['obras'])
 
         return HttpResponse(json.dumps(reporte), 'application/json')
+
+
+class ReporteNoTrabajoEndpoint(ProtectedResourceView):
+
+    def get(self, request):
+            comp_date = datetime.now() - timedelta(15)
+            print comp_date
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+                fecha_ultima_modificacion__lt=comp_date))
+
+            return HttpResponse(json.dumps(dicts), 'application/json')
+

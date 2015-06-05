@@ -28,27 +28,32 @@ class Dependencia(models.Model):
     imagenDependencia = models.FileField(upload_to="./", blank=True, null=True)
     dependienteDe = models.ForeignKey('self', null=True, blank=True)
     obraoprograma = models.CharField(max_length=1, null=True, blank=True)
+    fecha_ultima_modificacion = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreDependencia
 
     def to_serializable_dict(self):
-        ans = model_to_dict(self)
+        ans = {}
+
         ans['id'] = str(self.id)
-        if ans['dependienteDe'] is None:
+        ans['nombreDependencia'] = str(self.nombreDependencia)
+        if self.imagenDependencia is None or self.imagenDependencia.name == '' or self.imagenDependencia.name == '':
+            ans['imagenDependencia'] = None
+        else:
+            ans['imagenDependencia'] = self.imagenDependencia.url
+
+        if self.dependienteDe is None:
             ans['dependienteDe'] = None
         else:
-            ans['dependienteDe'] = str(self.dependienteDe_id)
+            ans['dependienteDe'] = str(self.depenienteDe_id)
 
         # We KNOW that this entry must be a FileField value
         # (therefore, calling its name attribute is safe),
         # so we need to mame it JSON serializable (Django objects
         # are not by default and its built-in serializer sucks),
         # namely, we only need the path
-        if self.imagenDependencia is None or self.imagenDependencia.name == '' or self.imagenDependencia.name == '':
-            ans['imagenDependencia'] = None
-        else:
-            ans['imagenDependencia'] = self.imagenDependencia.url
+
 
         return ans
 
@@ -196,8 +201,9 @@ class InstanciaEjecutora(models.Model):
         return self.nombre
 
     def to_serializable_dict(self):
-        map = {'nombre': self.nombre}
-        return map
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
 
 
 BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None , 'Sin inauguracion'))
@@ -224,7 +230,6 @@ class Obra(models.Model):
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion)
 
-
     tipoClasificacion = models.ManyToManyField(TipoClasificacion,
                                                related_name='%(class)s_clasificaciones',
                                                limit_choices_to={
@@ -237,8 +242,6 @@ class Obra(models.Model):
                                               chained_field="tipoClasificacion",
                                               chained_model_field="subclasificacionDe"
                                               )
-
-
 
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)

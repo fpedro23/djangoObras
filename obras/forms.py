@@ -1,7 +1,7 @@
 from django import forms
-from django.utils.text import slugify
 from obras.models import Obra, Dependencia
 import itertools
+from datetime import datetime
 
 
 class AddObraForm(forms.ModelForm):
@@ -15,6 +15,9 @@ class AddObraForm(forms.ModelForm):
 
     def save(self, commit=True):
         instance = super(AddObraForm, self).save(commit=False)
+        instance.dependencia.fecha_ultima_modificacion = datetime.now()
+        print instance.dependencia.fecha_ultima_modificacion
+        instance.dependencia.save()
 
         if instance.identificador_unico is None:
 
