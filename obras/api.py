@@ -338,4 +338,4 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2012']['obras_concluidas']['obra'] = the_list
         # reporte['reporte2012']['obras_concluidas']['total'] = obras2012.count()
 
-        return HttpResponse(json.dumps(reporte), 'application/json')
+        return HttpResponse(reporte.__str__(), 'text')
