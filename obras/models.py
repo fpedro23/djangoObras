@@ -313,7 +313,6 @@ class Obra(models.Model):
 
         map['inaugurador'] = self.inaugurador.to_serializable_dict()
         map['registroHacendario'] = self.registroHacendario
-        map['registroAuditoria'] = self.registroAuditoria
         map['denominacion'] = self.denominacion
         map['descripcion'] = self.descripcion
         map['observaciones'] = self.observaciones

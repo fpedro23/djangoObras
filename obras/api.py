@@ -263,7 +263,6 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         else:
             obras = Obra.objects.all()
 
-        start2015 = datetime.date(2015, 1, 1)
         reporte = {
             'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2014': {'obras_concluidas': {}},
@@ -271,28 +270,32 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             'reporte2012': {'obras_concluidas': {}},
         }
 
-        reporte['reporte2015']['obras_proceso']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(
-            Q(fechaInicio__lte=start2015) & Q(fechaTermino__gte=start2015)))
+        obras2015 = obras.filter(fechaInicio__year=2015)
+        reporte['reporte2015']['obras_proceso']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+                                                               obras2015.filter(tipoObra_id=2))
         reporte['reporte2015']['obras_proceso']['total'] = len(reporte['reporte2015']['obras_proceso']['obras'])
 
         reporte['reporte2015']['obras_proyectadas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                   obras.filter(fechaInicio__year=2015))
+                                                                   obras2015.filter(tipoObra_id=1))
         reporte['reporte2015']['obras_proyectadas']['total'] = len(reporte['reporte2015']['obras_proyectadas']['obras'])
 
         reporte['reporte2015']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                  obras.filter(fechaTermino__year=2015))
+                                                                  obras2015.filter(tipoObra_id=3))
         reporte['reporte2015']['obras_concluidas']['total'] = len(reporte['reporte2015']['obras_concluidas']['obras'])
 
+        obras2014 = obras.filter(fechaInicio__year=2014)
         reporte['reporte2014']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                  obras.filter(fechaTermino__year=2014))
+                                                                  obras2014.filter(tipoObra_id=3))
         reporte['reporte2014']['obras_concluidas']['total'] = len(reporte['reporte2014']['obras_concluidas']['obras'])
 
+        obras2013 = obras.filter(fechaInicio__year=2013)
         reporte['reporte2013']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                  obras.filter(fechaTermino__year=2013))
+                                                                  obras2013.filter(tipoObra_id=3))
         reporte['reporte2013']['obras_concluidas']['total'] = len(reporte['reporte2013']['obras_concluidas']['obras'])
 
+        obras2012 = obras.filter(fechaInicio__year=2012)
         reporte['reporte2012']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                  obras.filter(fechaTermino__year=2012))
+                                                                  obras2012.filter(tipoObra_id=3))
         reporte['reporte2012']['obras_concluidas']['total'] = len(reporte['reporte2012']['obras_concluidas']['obras'])
 
         return HttpResponse(json.dumps(reporte), 'application/json')
