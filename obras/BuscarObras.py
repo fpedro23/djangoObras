@@ -45,7 +45,7 @@ class BuscarObras:
 
     def buscar(self):
 
-        query = Q()
+        query = None
 
         if self.idTipoObra is not None:
             query = Q(tipoObra__id__in=self.idTipoObra)
@@ -88,9 +88,7 @@ class BuscarObras:
 
         if query is not None:
             print query
-            obras = Obra.objects.filter(
-                query
-            )
+            obras = Obra.objects.filter(query)
 
         #Reporte general
         obras_totales = obras.count()

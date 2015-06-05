@@ -1,20 +1,32 @@
 from django import forms
-from django.utils.text import slugify
+from django.contrib.admin.models import LogEntry, ADDITION
+from django.contrib.contenttypes.models import ContentType
+from django.core.mail import send_mail
 from obras.models import Obra, Dependencia
 import itertools
 
 
 class AddObraForm(forms.ModelForm):
-
     class Meta:
         model = Obra
         fields = '__all__'
         widgets = {'tipoMoneda': forms.RadioSelect,
                    'inaugurada': forms.RadioSelect,
-        }
+                   }
 
     def save(self, commit=True):
         instance = super(AddObraForm, self).save(commit=False)
+
+        if instance.id and not instance.autorizada:
+            obra = Obra.objects.get(id=instance.id)
+            usuario = LogEntry.objects.filter(
+                object_id=obra.id,
+                action_flag=ADDITION,
+                content_type__id__exact=ContentType.objects.get_for_model(Obra).id
+            ).order_by('action_time').last().user
+            send_mail('Cambios obra %s no autorizados' % obra.identificador_unico,
+                      'Los cambios a a la obra %s no fueron autorizados' % obra.identificador_unico,
+                      'edicomexsa@gmail.com', [usuario.email])
 
         if instance.identificador_unico is None:
 
