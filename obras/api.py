@@ -291,7 +291,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         for obra in obras2015_proceso:
             the_list.append(obra)
         reporte['reporte2015']['obras_proceso']['obras'] = the_list
-        reporte['reporte2015']['obras_proceso']['total'] = obras2015_proceso.count()
+        # reporte['reporte2015']['obras_proceso']['total'] = obras2015_proceso.count()
 
         # reporte['reporte2015']['obras_proyectadas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
         #                                                            obras2015.filter(tipoObra_id=1))
