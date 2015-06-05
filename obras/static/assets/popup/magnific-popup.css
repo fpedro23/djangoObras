@@ -81,7 +81,8 @@
 
 .mfp-hide {
   display: none !important; }
-
+.mfp-show {
+  display: inline !important; }
 .mfp-preloader {
   color: #CCC;
   position: absolute;
