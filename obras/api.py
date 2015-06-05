@@ -219,21 +219,16 @@ class InauguradorEndpoint(ProtectedResourceView):
 
 class ReporteInicioEndpoint(ProtectedResourceView):
     def get(self, request):
-        dependencias = AccessToken.objects.get(
-            token=request.GET.get('access_token')).user.usuario.dependencia.all()
+        dependencias = get_usuario_for_token(request.GET.get('access_token')).dependencia.all()
 
         if dependencias and dependencias.count() > 0:
-            deps = []
-            for dep in dependencias:
-                deps.append(dep)
-                subdeps = dep.get_subdeps_flat()
-                if subdeps and subdeps.count() > 0:
-                    deps.extend(subdeps)
-                obras = Obra.objects.filter(dependencia__in=deps)
+            obras = Obra.objects.filter(
+                Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
+                Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
+            )
         else:
             obras = Obra.objects.all()
 
-        start2015 = datetime.date(2015, 1, 1)
         reporte = {
             'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2014': {'obras_concluidas': {}},
@@ -241,28 +236,59 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             'reporte2012': {'obras_concluidas': {}},
         }
 
-        reporte['reporte2015']['obras_proceso']['obras'] = map(lambda obra: obra.to_serializable_dict(), obras.filter(
-            Q(fechaInicio__lte=start2015) & Q(fechaTermino__gte=start2015)))
-        reporte['reporte2015']['obras_proceso']['total'] = len(reporte['reporte2015']['obras_proceso']['obras'])
+        obras2015 = obras.filter(fechaInicio__year=2015)
+        # reporte['reporte2015']['obras_proceso']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+        #                                                        obras2015.filter(tipoObra_id=2))
+        obras2015_proceso = obras2015.filter(tipoObra_id=2).values()
+        the_list = []
+        for obra in obras2015_proceso:
+            the_list.append(obra)
+        reporte['reporte2015']['obras_proceso']['obras'] = the_list
+        # reporte['reporte2015']['obras_proceso']['total'] = obras2015_proceso.count()
 
-        reporte['reporte2015']['obras_proyectadas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                   obras.filter(fechaInicio__year=2015))
-        reporte['reporte2015']['obras_proyectadas']['total'] = len(reporte['reporte2015']['obras_proyectadas']['obras'])
+        # reporte['reporte2015']['obras_proyectadas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+        #                                                            obras2015.filter(tipoObra_id=1))
+        obras2015_proyectadas = obras2015.filter(tipoObra_id=1).values()
+        the_list = []
+        for obra in obras2015_proyectadas:
+            the_list.append(obra)
+        reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
+        # reporte['reporte2015']['obras_proyectadas']['total'] = obras2015_proyectadas.count()
 
-        reporte['reporte2015']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                  obras.filter(fechaTermino__year=2015))
-        reporte['reporte2015']['obras_concluidas']['total'] = len(reporte['reporte2015']['obras_concluidas']['obras'])
+        # reporte['reporte2015']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+        #                                                           obras2015.filter(tipoObra_id=3))
+        obras2015_concluidas = obras2015.filter(tipoObra_id=3).values()
+        the_list = []
+        for obra in obras2015_concluidas:
+            the_list.append(obra)
+        reporte['reporte2015']['obras_concluidas']['obras'] = the_list
+        # reporte['reporte2015']['obras_concluidas']['total'] = obras2015_concluidas.count()
 
-        reporte['reporte2014']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                  obras.filter(fechaTermino__year=2014))
-        reporte['reporte2014']['obras_concluidas']['total'] = len(reporte['reporte2014']['obras_concluidas']['obras'])
+        obras2014 = obras.filter(Q(fechaInicio__year=2014) & Q(tipoObra_id=3)).values()
+        # reporte['reporte2014']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+        #                                                           obras2014)
+        the_list = []
+        for obra in obras2014:
+            the_list.append(obra)
+        reporte['reporte2014']['obras_concluidas']['obras'] = the_list
+        # reporte['reporte2014']['obras_concluidas']['total'] = obras2014.count()
 
-        reporte['reporte2013']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                  obras.filter(fechaTermino__year=2013))
-        reporte['reporte2013']['obras_concluidas']['total'] = len(reporte['reporte2013']['obras_concluidas']['obras'])
+        obras2013 = obras.filter(Q(fechaInicio__year=2013) & Q(tipoObra_id=3)).values()
+        # reporte['reporte2013']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+        #                                                           obras2013)
+        the_list = []
+        for obra in obras2013:
+            the_list.append(obra)
+        reporte['reporte2013']['obras_concluidas']['obras'] = the_list
+        # reporte['reporte2013']['obras_concluidas']['total'] = obras2013.count()
 
-        reporte['reporte2012']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-                                                                  obras.filter(fechaTermino__year=2012))
-        reporte['reporte2012']['obras_concluidas']['total'] = len(reporte['reporte2012']['obras_concluidas']['obras'])
+        obras2012 = obras.filter(Q(fechaInicio__year=2012) & Q(tipoObra_id=3)).values()
+        # reporte['reporte2012']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
+        #                                                           obras2012)
+        the_list = []
+        for obra in obras2012:
+            the_list.append(obra)
+        reporte['reporte2012']['obras_concluidas']['obra'] = the_list
+        # reporte['reporte2012']['obras_concluidas']['total'] = obras2012.count()
 
         return HttpResponse(json.dumps(reporte), 'application/json')

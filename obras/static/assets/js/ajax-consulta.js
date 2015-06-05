@@ -54,7 +54,7 @@ function enviaFiltrosGrafica() {
 
 
     var ajax_data = {
-      "access_token"  : 'VhMrdzu9WFLeOUYn3ED6CIH1krpvo4'
+      "access_token"  : $j('[name="csrfmiddlewaretoken"]').val()  //'3JrrYpjjShuhPp81AsvTPW1VVJS3RG'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -106,7 +106,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'hU6sfnvCxmS5j4PhPL39qoSSJfH9XI'
+      "access_token"  : '3JrrYpjjShuhPp81AsvTPW1VVJS3RG'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -872,7 +872,7 @@ $j.tablaGrafica = function(Datos){
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager","scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 110,'
+                +'        scroller_height : 90,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'

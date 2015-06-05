@@ -30,9 +30,9 @@ function main_consulta() {
 function verDatos() {
 
     var ajax_data = {
-      "access_token"  : 'VhMrdzu9WFLeOUYn3ED6CIH1krpvo4'
+      "access_token"  : '3JrrYpjjShuhPp81AsvTPW1VVJS3RG'
     };
-    alert(ajax_data);
+
     $j.ajax({
         url: '/obras/api/inicio',
         type: 'get',
