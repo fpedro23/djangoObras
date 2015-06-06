@@ -360,13 +360,13 @@ $pp(function () {
 
 {% block content %}
 
-<body style="font: 100% sans-serif;background: #ffffff;height: 600px;">
+<body style="font: 100% sans-serif;height: 600px;">
 
 
-  <!-- inicio contenido de la consulta por filtros-->
+    <!-- inicio contenido de la consulta por filtros-->
     <div id="tabla-exporta" style="height: 0px;"></div>
 
-    <div id="modal-exporta" class="green-popup-block mfp-hide centerDiv"  style="width: 30%;">
+    <div id="modal-exporta" class="green-popup-block mfp-hide centerDiv"  style="width: 40%;">
         <div class="row" style="background:linear-gradient(#206341,#206341,#1E613F,#276947,#206341)  ;border: 2px solid #ffffff;">
             <div class="row exportarALERTA" style="padding-top: 15px;padding-left: 20px;width:100%"> EXPORTAR RESULTADOS </div>
             <div class="row textoEXPORTAR" style="padding-left: 20px;width:100%;padding-top: 15px;">Elija el formato en el que desea exportar los resultados. </div>
@@ -403,14 +403,15 @@ $pp(function () {
 
 
 
-   <div class= "container2 mfp-hide" id="div-grafica" style="background: #ffffff">
+  <div class= "col-md-12 mfp-hide" id="div-grafica" style="background: #ffffff;padding-right: 0px;padding-left: 0px;">
        <article id="regresaGraficas">
            {% csrf_token %}
             <div id="regresarBTN" ></div>
         </article>
        <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
 
-    <div id="welcome">GRAFICA</div>
+       <div id="welcome" >GRAFICA</div>
+
 
        <div class= "centerDiv"  style="width: 100%;height: 40%;">
            <div class="row" style="padding-bottom: 4px;padding-left: 20px;padding-right: 20px;">
@@ -421,9 +422,9 @@ $pp(function () {
 
 
            <div class="row" style="padding-left: 20px;padding-right: 20px;">
-           <div class="col-md-4" style="padding-left: 0px; padding-right: 0px; ">
-                <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 200px; ">
-                      <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+               <div class="col-md-4" style="padding-left: 0px; padding-right: 0px; ">
+                    <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 200px; ">
+                          <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                             <div class="panel-heading" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
                                 <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 2px; padding-top: 2px ">
                                     <div class="td" ><h5>MOSTRAR GR&Aacute;FICA POR: </h5></div>
@@ -456,60 +457,60 @@ $pp(function () {
                             </div>
                        </div>
 
-                       <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                            <div class="panel-heading" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                                <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                                    <div class="td" ><h5>CONFIGURAR GR&Aacute;FICA </h5></div>
-                                </div>
-                            </div>
-                            <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                                <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <p>Datos a graficar</p>
-                                        </div>
-                                        <div class="col-xs-2">
-                                           <article id="ver_grafica_datos">
-                                                {% csrf_token %}
-                                                <select class="selectpicker" data-size="5" id="datosGrafica">
-                                                      <option value="Numero">N&uacute;mero de obras</option>
-                                                      <option value="Monto">Monto total</option>
-                                                </select>
-                                           </article>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <p>Tipo de gr&aacute;fica</p>
-                                        </div>
-                                        <div class="col-xs-2">
-                                           <article id="ver_grafica_tipos">
-                                                {% csrf_token %}
-                                                <select class="selectpicker" data-size="5" id="tipoGrafica">
-                                                      <option value="Columna3D">Columna 3D</option>
-                                                      <option value="Columna2D">Columna 2D</option>
-                                                      <option value="Pastel">Pastel</option>
-                                                      <option value="Dona">Dona</option>
-                                                      <option value="Barra">Barras</option>
-                                                      <option Value="Lineal">Lineal</option>
-                                                </select>
-                                           </article>
-                                        </div>
+                           <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                <div class="panel-heading" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                    <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                        <div class="td" ><h5>CONFIGURAR GR&Aacute;FICA </h5></div>
                                     </div>
                                 </div>
+                                <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                    <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <p>Datos a graficar</p>
+                                            </div>
+                                            <div class="col-xs-2">
+                                               <article id="ver_grafica_datos">
+                                                    {% csrf_token %}
+                                                    <select class="selectpicker" data-size="5" id="datosGrafica">
+                                                          <option value="Numero">N&uacute;mero de obras</option>
+                                                          <option value="Monto">Monto total</option>
+                                                    </select>
+                                               </article>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <p>Tipo de gr&aacute;fica</p>
+                                            </div>
+                                            <div class="col-xs-2">
+                                               <article id="ver_grafica_tipos">
+                                                    {% csrf_token %}
+                                                    <select class="selectpicker" data-size="5" id="tipoGrafica">
+                                                          <option value="Columna3D">Columna 3D</option>
+                                                          <option value="Columna2D">Columna 2D</option>
+                                                          <option value="Pastel">Pastel</option>
+                                                          <option value="Dona">Dona</option>
+                                                          <option value="Barra">Barras</option>
+                                                          <option Value="Lineal">Lineal</option>
+                                                    </select>
+                                               </article>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-               </div >
-           </div>
-           <div class="col-md-8" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px; ">
-               <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px;height: 200px; ">
-                   <div id="divTablaGrafica"  > </div>
+                   </div >
+               </div>
+               <div class="col-md-8" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px; ">
+                   <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px;height: 200px; ">
+                       <div id="divTablaGrafica"  > </div>
+                   </div>
                </div>
            </div>
-       </div>
 
        </div>
-   </div>
+  </div>
 
    <div class= "container2" id="pagina">
    <div id="regresarBTN" onclick="location.href='/obras/consultas'">
