@@ -30,12 +30,19 @@ function main_consulta() {
     $j('#ver_grafica_tipos #tipoGrafica').on('change', graficas);
     $j('#ver_grafica_datos #datosGrafica').on('change', graficas);
     $j('#go_Graficas #goGraficas').on('click', enviaFiltrosGrafica);
+    $j('#art_limpiar #limpiar').on('click', limpia);
 
     $j('#regresaGraficas #regresarBTN').on('click', regresa);
 
 }
 
+function limpia(){
+   $j("#forma").reset();
+}
 
+jQuery.fn.reset = function () {
+  $j(this).each (function() { this.reset(); });
+}
 
 function enviaFiltrosGrafica() {
     var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
@@ -92,6 +99,7 @@ function enviaFiltrosGrafica() {
 function verDatos() {
     var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
@@ -106,11 +114,12 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : '3JrrYpjjShuhPp81AsvTPW1VVJS3RG'
+      "access_token"  : 'jeDcDAPWpVDpEOjeQjQS8J5w6G1sqN'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
     if(arrayEstatusObra.toString()!=""){ajax_data.tipoDeObra=arrayEstatusObra.toString();}
+    if(arrayInstanciaEjecutora.toString()!=""){ajax_data.instanciaEjecutora=arrayInstanciaEjecutora.toString();}
     if(arrayEstados.toString()!=""){ajax_data.estado=arrayEstados.toString();}
     if(arrayClasificacion.toString()!=""){ajax_data.clasificacion=arrayClasificacion.toString();}
     if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
@@ -559,13 +568,19 @@ function setMarkers(mapa, lugares) {
 
 
 function tablaI(Datos){
-    var sHtml='<div class="row titulo">'
+    var sHtmlExporta="";
+    var sHtmlShorter="";
+    var sHtmlistado="";
+
+    sHtmlExporta= '<div class="row titulo">'
                     + '<div class="col-md-6">'
                     +     'Resultados'
                    + ' </div>'
                + '</div>'
-        +'<table cellspacing="1" class="tablesorter" id="tablaIzquierda">'
-                    +'<thead>'
+                +'<table cellspacing="1" id="tablaExporta2">';
+    sHtmlShorter ='<table cellspacing="1" class="tablesorter" id="tablaIzquierda">';
+    sHtmlistado ='<table cellspacing="1" id="tablaListado">';
+    var sHtml='<thead>'
                         +'<tr>'
                             +'<th>Id</th>'
                             +'<th>Denominaci&oacute;n</th>'
@@ -594,9 +609,15 @@ function tablaI(Datos){
 
                     +'</tfoot>'
                     +'<tbody>';
-
+      sHtmlistado = sHtml;
     for(var i= 0;i<Datos.obras.length;i++){
         sHtml +='<tr>'
+                +'<td>' + Datos.obras[i].identificador +'</td>'
+                +'<td>' + Datos.obras[i].denominacion +'</td>'
+                +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
+                +'</tr>'
+
+        sHtmlistado +='<tr>'
                 +'<td>' + Datos.obras[i].identificador +'</td>'
                 +'<td>' + Datos.obras[i].denominacion +'</td>'
                 +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
@@ -641,9 +662,10 @@ function tablaI(Datos){
                 +'</script>';
 
 
+     $j('#tabla-exporta2').hide();
+    $j('#datos').html(sHtmlShorter + sHtml);
+    $j('#tabla-exporta2').html(sHtmlExporta + sHtml);
 
-
-    $j('#datos').html(sHtml);
 }
 
 
@@ -661,12 +683,7 @@ function tablaD(Datos){
                    + ' </div>'
                + '</div>'
                 +'<table cellspacing="1" id="tablaExporta">';
-    sHtmlShorter ='<div class="row titulo">'
-                    + '<div class="col-md-6">'
-                    +     'Reporte'
-                   + ' </div>'
-               + '</div>'
-                +'<table cellspacing="1" class="tablesorter" id="tablaDerecha">';
+    sHtmlShorter ='<table cellspacing="1" class="tablesorter" id="tablaDerecha">';
     //alert($j('input:radio[name=tipoReporte]:checked').val());
 
     var sHtml='<thead>'
@@ -769,7 +786,7 @@ function tablaD(Datos){
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 90,'
+                +'        scroller_height : 140,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'

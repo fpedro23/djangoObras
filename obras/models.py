@@ -257,7 +257,7 @@ class Obra(models.Model):
 
     subdependencia = ChainedForeignKey(Dependencia,
                                        chained_field="dependencia",
-                                       chained_model_field="dependienteDe",
+                                       chained_model_field="dependienteDe", blank=True, null=True,
                                        )
 
     estado = models.ForeignKey(Estado)

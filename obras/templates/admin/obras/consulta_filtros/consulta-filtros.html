@@ -43,7 +43,7 @@
 
     <link rel="stylesheet" type="text/css" href="{% static "assets/jquery-mulsel/css/jquery.multiselect.css"%}" />
     <link rel="stylesheet" type="text/css" href="{% static "assets/jquery-mulsel/css/style.css"%}" />
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css" />
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 
@@ -112,6 +112,14 @@
             uncheckAllText: 'Desmarcar todos',
             noneSelectedText: 'Inaugurador',
             selectedText: '# Inauguradores'
+        });
+        // off
+        $l("#msInstanciaEjecutora").multiselect({
+            header: true,
+            checkAllText: 'Marcar todos',
+            uncheckAllText: 'Desmarcar todos',
+            noneSelectedText: 'Instancia Ejecutora',
+            selectedText: '# Instancias'
         });
     });
     </script>
@@ -261,6 +269,7 @@ $pp( document ).ready(function() {
 });
 
 $pp('#tabla-exporta').hide();
+$pp('#tabla-exporta2').hide();
 
 
 $pp(function () {
@@ -365,6 +374,7 @@ $pp(function () {
 
     <!-- inicio contenido de la consulta por filtros-->
     <div id="tabla-exporta" style="height: 0px;"></div>
+    <div id="tabla-exporta2" style="height: 0px;"></div>
 
     <div id="modal-exporta" class="green-popup-block mfp-hide centerDiv"  style="width: 40%;">
         <div class="row" style="background:linear-gradient(#206341,#206341,#1E613F,#276947,#206341)  ;border: 2px solid #ffffff;">
@@ -401,6 +411,39 @@ $pp(function () {
     </div>
 
 
+    <div id="modal-exporta2" class="green-popup-block mfp-hide centerDiv"  style="width: 40%;">
+        <div class="row" style="background:linear-gradient(#206341,#206341,#1E613F,#276947,#206341)  ;border: 2px solid #ffffff;">
+            <div class="row exportarALERTA" style="padding-top: 15px;padding-left: 20px;width:100%"> EXPORTAR RESULTADOS </div>
+            <div class="row textoEXPORTAR" style="padding-left: 20px;width:100%;padding-top: 15px;">Elija el formato en el que desea exportar los resultados. </div>
+                    <div class="row " style="width: 60%;padding-top: 15px;margin-left: auto;margin-right: auto">
+                        <div class="col-md-4" >
+                            <article id="ver_datos">
+                                {% csrf_token %}
+                                <div class="pdf"  id="enviaPDF2" onClick ="$pp('#tabla-exporta2').show();$pp('#tablaExporta2').tableExport({type:'pdf',escape:'false'}); $pp('#tabla-exporta2').hide();"></div>
+                            </article>
+                        </div>
+                        <div class="col-md-4" >
+                            <article id="ver_datos">
+                                {% csrf_token %}
+                                <div class="excel" id="enviaEXCEL2" onClick ="$pp('#tabla-exporta2').show();$pp('#tablaExporta2').tableExport({type:'excel',escape:'false'}); $pp('#tabla-exporta2').hide();"></div>
+                            </article>
+                        </div>
+                        <div class="col-md-4" >
+                            <article id="ver_datos">
+                                {% csrf_token %}
+                                <div class="ppt"  id="enviaPPT2" onClick ="$pp('#tabla-exporta2').show();$pp('#tablaExporta2').tableExport({type:'powerpoint',escape:'false'}); $pp('#tabla-exporta2').hide();"></div>
+                            </article>
+                        </div>
+            </div>
+            <div class="row" style="width: 60%;padding-top: 15px;margin-left: auto;margin-right: auto">
+                <article id="salir_exporta">
+                    {% csrf_token %}
+                    <div class="salirBTN popup-exporta-dismiss" id="salirExporta" style="height: 30px">
+                    </div>
+                </article>
+            </div><br>
+        </div>
+    </div>
 
 
   <div class= "col-md-12 mfp-hide" id="div-grafica" style="background: #ffffff;padding-right: 0px;padding-left: 0px;">
@@ -416,21 +459,19 @@ $pp(function () {
        <div class= "centerDiv"  style="width: 100%;height: 40%;">
            <div class="row" style="padding-bottom: 4px;padding-left: 20px;padding-right: 20px;">
                <div class="rowP" style="padding-right: 5px;padding-left: 3px; padding-bottom: 0px; padding-top: 0px;height: auto; ">
-                   <div   id="containerGrafica" style="height: 280px"></div>
+                   <div   id="containerGrafica" style="height: 300px"></div>
                </div>
            </div>
 
 
            <div class="row" style="padding-left: 20px;padding-right: 20px;">
                <div class="col-md-4" style="padding-left: 0px; padding-right: 0px; ">
-                    <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 200px; ">
-                          <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                            <div class="panel-heading" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
+                    <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 205px; padding-top: 3px;">
+                          <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px; ">
+                            <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                 <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 2px; padding-top: 2px ">
                                     <div class="td" ><h5>MOSTRAR GR&Aacute;FICA POR: </h5></div>
                                 </div>
-                            </div>
-                            <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                 <div class="tr"  style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="row">
                                         <div class="col-xs-10">
@@ -457,13 +498,12 @@ $pp(function () {
                             </div>
                        </div>
 
-                           <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                                <div class="panel-heading" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                           <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px; ">
+
+                                <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                         <div class="td" ><h5>CONFIGURAR GR&Aacute;FICA </h5></div>
                                     </div>
-                                </div>
-                                <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                         <div class="row">
                                             <div class="col-xs-6">
@@ -503,7 +543,7 @@ $pp(function () {
                    </div >
                </div>
                <div class="col-md-8" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px; ">
-                   <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px;height: 200px; ">
+                   <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 0px;height: 205px; ">
                        <div id="divTablaGrafica"  > </div>
                    </div>
                </div>
@@ -511,6 +551,8 @@ $pp(function () {
 
        </div>
   </div>
+
+   <form id="forma" >
 
    <div class= "container2" id="pagina">
    <div id="regresarBTN" onclick="location.href='/obras/consultas'">
@@ -640,6 +682,16 @@ $pp(function () {
                                     </div>
                                     <div class="row">
                                         <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+
+                                            <select id="msInstanciaEjecutora" multiple="multiple" style="width: 100%;height: auto;">
+                                                {% for obj in InstanciaEjecutora %}
+                                                     <option value={{obj.id}}>{{obj.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <select id="msDependencias" multiple="multiple" style="width: 100%;height: auto;">
                                                 {% for dep in dependencias %}
                                                      <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
@@ -697,13 +749,20 @@ $pp(function () {
                             </div>
                         </div>
                         <div class="row">
-                             <div class="col-md-12" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
-                                  <article id="ver_datos">
+                             <div class="col-md-6" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+                                  <article id="art_guardar">
                                      {% csrf_token %}
-                                     <div class="consultarBTN" id="button" style="height: 30px"></div>
+                                     <div class="guardarBTN" id="guardar" style="height: 30px"></div>
+                                  </article>
+                             </div>
+                             <div class="col-md-6" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+                                  <article id="art_limpiar">
+                                     {% csrf_token %}
+                                     <div class="limpiarBTN" id="limpiar" style="height: 30px"></div>
                                   </article>
                              </div>
                         </div>
+
                     </div>
                     <div class="col-md-2" style="padding-right: 4px; padding-left: 4px; padding-bottom: 0px; padding-top: 0px ">
                         <div class="panel panel-default panel-table">
@@ -733,227 +792,247 @@ $pp(function () {
                                             <input type="checkbox" id="noInauguradas" value="option3">
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
+                        </div>
+                        <div class="row" style="height: 6px"></div>
+                        <div class="row">
+                             <div class="col-md-12" style="padding-right: 4px; padding-left: 30px; padding-bottom: 0px; padding-top: 0px ">
+                                  <article id="ver_datos">
+                                      {% csrf_token %}
+                                      <div class="consultarBTN" id="button" style="height: 30px"></div>
+                                  </article>
+                             </div>
                         </div>
                     </div>
                 </div>
                 </div>
 
 
-        <div class="row">
-       <div class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
-            <div class="col-md-12-box" id="datos" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
-                <div class="row titulo">
-                     <div class="col-md-6">
-                         Resultados
-                     </div>
+    <div class="row">
+          <div class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
+            <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
+                <div class="row">
+                       <div class="col-md-12">
+                            <div class="row titulo">
+                                 <div class="col-md-6">
+                                     Resultados
+                                 </div>
+                                 <div class="col-md-2">
+                                   <article id="ver_exporta">
+                                       {% csrf_token %}
+                                       <div class="col-xs-2 exportarBTN popup-exporta" href="#modal-exporta2" id="exportar" style="height: 30px"></div>
+                                   </article>
+                                 </div>
+                            </div>
+                       </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12" id="datos">
+                       <table cellspacing="1" class="tablesorter" id="tablaIzquierda">
+                            <thead>
 
-               <table cellspacing="1" class="tablesorter" id="tablaIzquierda">
-                    <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Denominaci&oacute;n</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Denominaci&oacute;n</th>
+                                    <th>Estado</th>
+                                </tr>
+                                <tr><td class="pager" id="pagerI" colspan="3">
 
-                        <tr>
-                            <th>Id</th>
-                            <th>Denominaci&oacute;n</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Id</th>
-                            <th>Denominaci&oacute;n</th>
-                            <th>Estado</th>
-                        </tr>
-                        <tr><td class="pager" id="pagerI" colspan="3">
+                                <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>
+                                <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>
+                                <span class="pagedisplay" id="pagedisplayI"></span>
+                                <img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextI"/>
+                                <img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastI"/>
+                                <select class="pagesize" id="pagesizeI">
+                                <option selected="selected"  value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option  value="40">40</option>
+                                </select></td></tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
 
-                        <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>
-                        <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>
-                        <span class="pagedisplay" id="pagedisplayI"></span>
-                        <img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextI"/>
-                        <img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastI"/>
-                        <select class="pagesize" id="pagesizeI">
-                        <option selected="selected"  value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option  value="40">40</option>
-                        </select></td></tr>
-                    </tfoot>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-               </table>
-       </div >
+                       </table>
+                    </div >
+                </div >
+            </div >
+
        </div>
-       <div class="col-md-6" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
-           <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
-               <div class="row" style="padding-bottom: 4px;">
-                     <div class="col-md-3 titulo">
-                         Mapa
-                     </div>
-
-                   <div class="col-md-9" id="ajaxProgress">
-                        cargando...<img src="../../static/gifs/loading-barra2.gif">
-                   </div>
-               </div>
-               <div id="map-canvas" style="height: 270px;margin: 0px;padding: 0px;">
-               </div>
-               <br>
-           </div>
-       </div>
-       <div class="col-md-3" style="margin-right: 0px;margin-left: 0px; padding-left: 0px; padding-right: 0px; ">
-            <div class="col-md-12-box"  style="margin-left: 0px; padding-right: 4px;padding-left: 4px">
-           <div class="row">
-               <div class="col-md-12" id="datostablaDerecha">
-                    <div class="row titulo">
-                         <div class="col-md-6">
-                             Reporte
+           <div class="col-md-6" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
+               <div class="col-md-12-box"  style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px; ">
+                   <div class="row" style="padding-bottom: 4px;">
+                         <div class="col-md-3 titulo">
+                             Mapa
                          </div>
-                    </div>
-                    <table cellspacing="1" class="tablesorter" id="tablaDer">
-                    <thead>
 
-                        <tr>
-                            <th>Tipo Inversi&oacute;n</th>
-                            <th>No. de Obras</th>
-                            <th>Monto</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Tipo Inversi&oacute;n</th>
-                            <th>No. de Obras</th>
-                            <th>Monto</th>
-                        </tr>
-                        <tr><td class="pager" id="pager2" colspan="3">
-                        <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first"/>
-                        <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev"/>
-                        <span class="pagedisplay"></span>
-                        <img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next"/>
-                        <img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last"/>
-                        <select class="pagesize">
-                        <option selected="selected"  value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option  value="40">40</option>
-                        </select></td></tr>
-                    </tfoot>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-
-                    </tbody>
-                    </table>
+                       <div class="col-md-9" id="ajaxProgress">
+                            cargando...<img src="../../static/gifs/loading-barra2.gif">
+                       </div>
+                   </div>
+                   <div id="map-canvas" style="height: 285px;margin: 0px;padding: 0px;">
+                   </div>
+                   <br>
                </div>
            </div>
-           <div class="row">
-               <div class="col-md-12">
-                    <fieldset>
-               <div class="row"><div class="col-xs-5">
-                   Dependencia
-                   </div>
-                   <div class="col-xs-2">
-                       <article id="ver_tabla_dependencia">
-                           {% csrf_token %}
-                            <input type="radio" name="tipoReporte" id="dependencia" value="Dependencia" checked/>
-                        </article>
-                   </div>
-               </div>
-               <div class="row"><div class="col-xs-5">
-                   Estado
-                   </div>
-                   <div class="col-xs-2">
-                       <article id="ver_tabla_estado">
-                           {% csrf_token %}
-                            <input type="radio" name="tipoReporte" id="estado" value="Estado"/>
-                        </article>
+           <div class="col-md-3" style="margin-right: 0px;margin-left: 0px; padding-left: 0px; padding-right: 0px; ">
+                <div class="col-md-12-box"  style="margin-left: 0px; padding-right: 4px;padding-left: 4px">
+               <div class="row">
+                   <div class="col-md-12">
+                        <div class="row titulo">
+                             <div class="col-md-6">
+                                 Reporte
+                             </div>
+                             <div class="col-md-2">
+                               <article id="ver_exporta">
+                                   {% csrf_token %}
+                                   <div class="col-xs-2 exportarBTN popup-exporta" href="#modal-exporta" id="exportar" style="height: 30px"></div>
+                               </article>
+                             </div>
+                             <div class="col-md-2">
+                                   <article id="ver_grafica">
+                                       {% csrf_token %}
+                                       <div class="col-xs-2 graficoBTN"  id="grafica" style="height: 30px"></div>
+                                   </article>
+                             </div>
+                        </div>
                    </div>
                </div>
                <div class="row">
-                   <div class="col-xs-5">
-                   </div>
-                   <div class="col-xs-2">
-                       <article id="go_Graficas">
-                           {% csrf_token %}
-                            <input type="radio" name="goGraficas" id="goGraficas" value="graficas"/>
-                        </article>
-                   </div>
-                   <div class="col-xs-2">
-                       <article id="ver_exporta">
-                           {% csrf_token %}
-                           <div class="col-xs-2 exportarBTN popup-exporta" href="#modal-exporta" id="exportar" style="height: 30px"></div>
-                       </article>
-                   </div>
-                   <div class="col-xs-2">
-                       <article id="ver_grafica">
-                           {% csrf_token %}
-                           <div class="col-xs-2 graficoBTN"  id="grafica" style="height: 30px"></div>
-                       </article>
+                   <div class="col-md-12" id="datostablaDerecha">
+                        <table cellspacing="1" class="tablesorter" id="tablaDer">
+                        <thead>
+
+                            <tr>
+                                <th>Tipo Inversi&oacute;n</th>
+                                <th>No. de Obras</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Tipo Inversi&oacute;n</th>
+                                <th>No. de Obras</th>
+                                <th>Monto</th>
+                            </tr>
+                            <tr><td class="pager" id="pager2" colspan="3">
+                            <img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first"/>
+                            <img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev"/>
+                            <span class="pagedisplay"></span>
+                            <img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next"/>
+                            <img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last"/>
+                            <select class="pagesize">
+                            <option selected="selected"  value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option  value="40">40</option>
+                            </select></td></tr>
+                        </tfoot>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+                        </table>
                    </div>
                </div>
-            </fieldset>
+               <div class="row">
+                   <div class="col-md-12">
+                        <fieldset>
+                   <div class="row"><div class="col-xs-5">
+                       Dependencia
+                       </div>
+                       <div class="col-xs-2">
+                           <article id="ver_tabla_dependencia">
+                               {% csrf_token %}
+                                <input type="radio" name="tipoReporte" id="dependencia" value="Dependencia" checked/>
+                            </article>
+                       </div>
+                   </div>
+                   <div class="row"><div class="col-xs-5">
+                       Estado
+                       </div>
+                       <div class="col-xs-2">
+                           <article id="ver_tabla_estado">
+                               {% csrf_token %}
+                                <input type="radio" name="tipoReporte" id="estado" value="Estado"/>
+                            </article>
+                       </div>
+                   </div>
+
+                </fieldset>
+                   </div>
                </div>
            </div>
-       </div>
-       </div>
-   </div>
+           </div>
+    </div>
   </div>
 
 
@@ -980,7 +1059,7 @@ $pp(function () {
 
         <script src="../../static/assets/js/jquery.numeric.js"></script>
            <script src="../../static/assets/js/utilerias.js"></script>
-
+  </form>
   </body>
   <!-- Final contenido de la consulta por filtros-->
 {% endblock %}

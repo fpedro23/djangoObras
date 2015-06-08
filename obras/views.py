@@ -470,6 +470,7 @@ def consulta_web(request):
         'impactos': Impacto.objects.all(),
         'clasificacion': TipoClasificacion.objects.all(),
         'inaugurador': Inaugurador.objects.all(),
+        'InstanciaEjecutora': InstanciaEjecutora.objects.all(),
     })
     return HttpResponse(template.render(context))
 

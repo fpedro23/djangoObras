@@ -30,7 +30,7 @@ function main_consulta() {
 function verDatos() {
 
     var ajax_data = {
-      "access_token"  : '3JrrYpjjShuhPp81AsvTPW1VVJS3RG'
+      "access_token"  : 'sPrMb7H05PQfi3p7mdFR7Do4bSaZdz'
     };
 
     $j.ajax({

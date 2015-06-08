@@ -244,6 +244,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             map = {}
             if reporte_estado['sumatotal'] is None:
                 map['sumatotal'] = 0.0
+
             else:
                 map['sumatotal'] = float(reporte_estado['sumatotal'])
             map['estado'] = Estado.objects.get(
@@ -374,7 +375,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2012']['obras_concluidas']['obra'] = the_list
         # reporte['reporte2012']['obras_concluidas']['total'] = obras2012.count()
 
-        return HttpResponse(reporte.__str__(), 'text')
+        return HttpResponse(json.dumps(reporte), 'application/json')
 
 
 class ReporteNoTrabajoEndpoint(ProtectedResourceView):
