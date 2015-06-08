@@ -35,13 +35,14 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- Magnific Popup core CSS file -->
-<link rel="stylesheet" href="{% static "assets/popup/magnific-popup.css"%}">
-<link rel="stylesheet" href="{% static "assets/popup/site.css"%}">
+<link rel="stylesheet" href="{% static "assets/Popup/magnific-popup.css"%}">
 <!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <!-- Magnific Popup core JS file -->
-<script src="{% static "assets/popup/jquery.magnific-popup.js"%}"></script>
+<script src="{% static "assets/Popup/jquery.magnific-popup.js"%}"></script>
+
+<link rel="stylesheet" href="{% static "assets/Popup/site.css"%}">
 
     {% block extrahead %}{% endblock %}
 
@@ -203,13 +204,6 @@
 
         {% block messages %}
             {% if messages %}
-               <div class="popup-modal"></div>
-               <div id="test-modal" class="mfp-hide white-popup-block">
-                    <ul class="messagelist">{% for message in messages %}
-                              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-                            {% endfor %}</ul>
-                    <p><a class="popup-modal-dismiss" href="#">Aceptar</a></p>
-                </div>
 
 
             <script>
@@ -219,11 +213,13 @@
 
                     $pp.magnificPopup.open({
                         items: {
-                            src: '<div id="test-modal" class="white-popup-block"> '
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="class="textoALERTA"">'
                                   + ' <ul class="messagelist">{% for message in messages %}'
-                                  + '  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>'
+                                  + '  <li{% if message.tags %} class="textoALERTA"{% endif %}>{{ message|capfirst }}</li>'
                                   + '          {% endfor %}</ul>'
-                                  + ' <p><a class="popup-modal-dismiss" href="#">Aceptar</a></p>'
+                                  + ' <a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                + '</div>'
                                 + '</div>'
                         },
                         type: 'inline',
@@ -255,7 +251,7 @@
 
     <!-- END Content -->
     <div class="FUA">
-        	Fecha de última actualización: 15 de marzo de 2015
+        	Fecha de última actualización: {% now "jD F Y H:i" %}
         </div>
 
 </div>
@@ -289,3 +285,5 @@ Política de privacidad y manejo de datos personales
 
 </body>
 </html>
+
+<!-- soberana_sanslight todo lo que no tiene asignar este -->

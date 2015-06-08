@@ -14,6 +14,7 @@
   	    <div id="tituloCUADROS">
     	    GENERAL
         </div>
+             <p>&nbsp;</p>
         <p>&nbsp;</p>
              <p>&nbsp;</p>
              <table width="100%" border="0px" cellpadding="0px" cellspacing="3px">
@@ -21,6 +22,11 @@
               <td>ID Único:</td>
               <td><label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label></td>
           </tr>
+             <tr>
+              <td>ID interno:</td>
+              <td><label id="id_identificador_interno" name="identificador_interno" >{{ field.field.value|default_if_none:"" }}</label></td>
+          </tr>
+
           {% endif %}
           {% if field.field.name == "denominacion" %}
           <tr>
@@ -170,9 +176,20 @@
                <div id="tituloCUADROS">
                     CLASIFICACIÓN
                 </div>
-                    <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
+                    <table width="100%" border="0px" cellpadding="0px" cellspacing="5px">
                         <tr>
                           <td colspan="2">
+                              {{ field.field }}
+                          </td>
+                        </tr>
+
+        {% endif %}
+
+        {% if field.field.name == "subclasificacion" %}
+              <!-- C L A S I F I C A C I O N-->
+
+                        <tr>
+                          <td colspan="2">Subclasificación
                               {{ field.field }}
                           </td>
                         </tr>
@@ -221,7 +238,6 @@
                     </td>
                     <td >
 
-
                     {% for radio in field.field %}
                                      {{ radio   }}
                        {% endfor %}
@@ -240,16 +256,17 @@
                     INAUGURACIÓN
                 </div>
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="0px">
-                    <tr>
-                       {{ field.field }}
-
-                    </tr>
+                   <!--  <tr>
+                        <td colspan="2">
+                       { field.field }}
+                        </td>
+                    </tr>-->
         {% endif %}
 
         {% if field.field.name == "inaugurada" %}
             <tr>
-               <td> <label class="required" for="id_inaugurada">NO</label> <input id="id_inaugurada" name="inaugurada" type="radio" value="NO" {{ field.field.value|default_if_none:"" }}/></td>
-               <td>&nbsp;</td>
+               <td colspan="2"> {{ field.field }}</td>
+
             </tr>
         {% endif %}
 
@@ -272,9 +289,7 @@
                         <tr>
                             <td colspan="2">
                                 <div id="observaciones">
-                             <textarea  id="id_observaciones" name="observaciones" >
-                                 {{ field.field.value|default_if_none:"" }}
-                             </textarea>
+                             {{ field.field }}
                                     </div>
                             </td>
 
@@ -330,23 +345,19 @@
 
  {% for inline_admin_formset in inline_admin_formsets %}
 
-      <div class="documentos">
+      <div class="documentos" style="overflow:scroll;">
         <div id="tituloCUADROS">
                 DOCUMENTOS FUENTE
         </div>
 
-        <input id="id_documentofuente_set-TOTAL_FORMS" name="documentofuente_set-TOTAL_FORMS" type="hidden" value="1" /><input id="id_documentofuente_set-INITIAL_FORMS" name="documentofuente_set-INITIAL_FORMS" type="hidden" value="0" /><input id="id_documentofuente_set-MIN_NUM_FORMS" name="documentofuente_set-MIN_NUM_FORMS" type="hidden" value="0" /><input id="id_documentofuente_set-MAX_NUM_FORMS" name="documentofuente_set-MAX_NUM_FORMS" type="hidden" value="1000" />
-
-           <input id="id_documentofuente_set-0-id" name="documentofuente_set-0-id" type="hidden" />
-          <input id="id_documentofuente_set-0-obra" name="documentofuente_set-0-obra" type="hidden" />
            <table>
-                <tr class="form-row row1 " id="documentofuente_set-0">
-                      <td class="field-descripcion">
-                          <input type="text" class="vLargeTextField" cols="40" id="id_documentofuente_set-0-descripcion" name="documentofuente_set-0-descripcion" />
+                <tr class="form-row row1">
+                      <td class="field-descripcion" colspan="2">
+                                 {# inline_admin_formset.opts.template = admin/edit_inline/tabular.html #}
+                                {#   include inline_admin_formset.opts.template #}
+                          {% include "admin/obras/obra/tabular.html"  %}
                       </td>
-                      <td class="field-documento">
-                          <input id="id_documentofuente_set-0-documento" name="documentofuente_set-0-documento" type="file" />
-                      </td>
+
                 </tr>
             </table>
    </div>

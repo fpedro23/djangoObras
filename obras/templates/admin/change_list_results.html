@@ -7,7 +7,7 @@
 {% if results %}
     <div class="campos01">
         <table id="result_list" >
-        <!--    <thead>
+           <thead>
                 <tr>
                 {% for header in result_headers %}
                     <th scope="col" {{ header.class_attrib }}>
@@ -20,13 +20,13 @@
                              </div>
                         {% endif %}
                     {% endif %}
-                    <div class="text">{% if header.sortable %}<a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
+                    <div class="text" style="font-family: 'soberana_textobold';">{% if header.sortable %}<a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
                      <div class="clear"></div>
                     </th>
                 {% endfor %}
                 </tr>
             </thead>
-        -->    <tbody>
+           <tbody>
                 {% for result in results %}
                   {% if result.form.non_field_errors %}
                       <tr><td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td></tr>

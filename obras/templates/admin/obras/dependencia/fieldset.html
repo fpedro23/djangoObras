@@ -43,12 +43,15 @@
            {% if field.field.name == "obraoprograma" %}
 
         <div class="row field-obraoprograma" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-            <div class="col-md-7" align="left"><label id="label-fld" for="id_obraoprograma">
-                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+           <!-- <div class="col-md-7" align="left"><label id="label-fld" for="id_obraoprograma">
+                <span class="">*</span>
                 Obra o Programa (O/P):</label></div>
 
             <div class="col-md-1"><input class="vTextField" id="id_obraoprograma" maxlength="200" name="obraoprograma" type="text"
-                                value="{{ field.field.value|default_if_none:"" }}"/></div>
+                                value=""/></div>
+
+                                -->
+                <input type="hidden" id="id_obraoprograma" name="obraoprograma" value="O">
             </div>
         {% endif %}
 

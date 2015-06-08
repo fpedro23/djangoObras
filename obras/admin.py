@@ -39,11 +39,16 @@ class UsuarioInline(admin.StackedInline):
 class UserAdmin(UserAdmin):
     inlines = (UsuarioInline, )
     list_display = ('username', 'first_name','last_name','email','get_dependencia',)
-    add_fieldsets = (
-        (None, {'fields': ('username', 'password1','password2')}),
+    fieldsets = (
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
-        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions')}),
+        (('AuthInfo'), {'fields': ('username', 'password')}),
+        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        (('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (('AuthInfo'), {'fields': ('username', 'password1', 'password2')}),
+        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         (('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 

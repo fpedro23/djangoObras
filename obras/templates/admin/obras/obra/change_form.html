@@ -3,6 +3,7 @@
 
 {% block extrahead %}{{ block.super }}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+     <script type="text/javascript" src="{% static 'assets/js/ajax-movimientos.js' %}"></script>
      <link href="{% static "css/formas.css" %}" rel="stylesheet">
     {{ media }}
     <script type="text/javascript">
@@ -95,10 +96,11 @@ x++;
   </div>
 
      <div id="buscar" hidden="true">
+     <input type="hidden" id="tok" value="{% csrf_token %}">
      <input class="buscar" type="text" name="idobra" value="" id="idobra">
   </div>
 
-  <div id="buscarICO" hidden="true" onclick="location.href='/admin/obras/obra/'+document.getElementById('idobra').value+'/?m=1'">
+  <div id="buscarICO" hidden="true">
   </div>
 
         {% block object-tools %}

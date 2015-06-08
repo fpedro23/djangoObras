@@ -1,82 +1,286 @@
 
+{% if fieldset.name == "Personal info" %}
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
-
- <div class="set-catalogo">
-
-
-
-{% for line in fieldset %}
-  {% for field in line %}
-
-      {% if field.field.name == "username" %}
-        <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-              <div class="col-md-5"  >
-                        <label class="required" for="id_username">Nombre de usuario:</label>
+     <div class="campos01">
+    {% for line in fieldset %}
+        {% for field in line %}
+             {% if field.field.name == "first_name" %}
+                <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-3"  >
+                        <label class="required" for="id_first_name">Nombre:</label>
                     </div>
-            <div class="col-md-1" >
-                            <input id="id_username" maxlength="30" name="username" type="text" value="{{ field.field.value|default_if_none:"" }}" />
-
-                        <p class="help"></p>
-            </div>
-
-        </div>
-        {% endif %}
-
-        {% if field.field.name == "password1" %}
-            <div class="row field-password1" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                 <div class="col-md-5">
-                        <label class="required" for="id_password1">Contraseña:</label>
+                    <div class="col-md-1" >
+                        <input id="id_first_name" maxlength="30" name="first_name" type="text" value="{{ field.field.value|default_if_none:"" }}" />
+                       {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
                 </div>
-                <div class="col-md-1" >
-                            <input id="id_password1" name="password1" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
-
+                 <div class="row field-first_name errornote" align="center">
+                     <div class="col-md-7"  >{{ field.errors }}</div></div>
+            {% endif %}
+            {% if field.field.name == "last_name" %}
+                <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-3"  >
+                        <label for="id_last_name">Apellidos:</label>
+                    </div>
+                    <div class="col-md-1" >
+                        {{ field.field }}
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
                 </div>
-             </div>
-        {% endif %}
+                <div class="row field-last_name errornote" align="center">
+                <div class="col-md-7"  >{{ field.errors }}</div></div>
+            {% endif %}
 
-          {% if field.field.name == "password2" %}
-                <div class="row field-password2" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-
-                        <div class="col-md-5">
-                                <label class="required" for="id_password2">Contraseña:</label>
-                        </div>
-                        <div class="col-md-1" >
-                                    <input id="id_password1" name="password2" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
-                                     <p class="help"></p>
-                        </div>
+             {% if field.field.name == "email" %}
+                <div class="row  field-email" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-3"  >
+                        <label for="id_email">E-mail:</label>
+                    </div>
+                    <div class="col-md-1" >
+                        {{ field.field }}
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
                 </div>
-        {% endif %}
-
-       {% if field.field.name == "rol" %}
-        <div class="row field-rol">
-            <div class="col-md-5" >
-                        <label class="required" for="id_rol">Rol:</label>
-            </div>
-             <div class="col-md-1" >
-                            <select id="id_rol" name="rol">
-                            <option value="SA">Administrador General</option>
-                            <option value="AD">Administrador de Dependencia</option>
-                            <option value="US" selected="selected">Usuario de Dependencia</option>
-                            </select>
-
-                </div>
-            </div>
-        {% endif %}
-
-        {% if field.field.name == "dependencia" %}
-         <div class="row field-dependencia">
-                <div class="col-md-5" >
-                    <label for="id_usuario-0-dependencia">Dependencia:</label>
-                </div>
-                <div class="col-md-1" >
-                    {{ field.field }}
-                </div>
-            </div>
-        {% endif %}
-
-
-  {% endfor %}
-   {% endfor %}
-
-</div>
+                 <div class="row field-email errornote" align="center">{{ field.errors }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+      </div>
 </fieldset>
+{% endif %}
+
+ {% if fieldset.name == "AuthInfo" %}
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+     <div class="campos02">
+    {% for line in fieldset %}
+        {% for field in line %}
+             {% if field.field.name == "username" %}
+                <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-3"  >
+                        <label class="required" for="id_username">Usuario:</label>
+                    </div>
+                    <div class="col-md-1" >
+                        <input id="id_username" maxlength="30" name="username" type="text" value="{{ field.field.value|default_if_none:"" }}" />
+                            {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                </div>
+                  <div class="row field-username" align="center">
+                 <div class="col-md-12">{{ field.errors }}</div></div>
+            {% endif %}
+
+            {% if field.field.name == "password1" %}
+                <div class="row field-password1" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-3">
+                        <label class="required" for="id_password1">*Contraseña:</label>
+                    </div>
+                    <div class="col-md-1" >
+                        <input id="id_password1" name="password1" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                 </div>
+                 <div class="row field-password1" align="center">
+                     <div class="col-md-12">{{ field.errors }}</div></div>
+            {% endif %}
+
+            {% if field.field.name == "password2" %}
+                <div class="row field-password2" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-3">
+                        <label class="required" for="id_password2">*Contraseña:</label>
+                    </div>
+                    <div class="col-md-1" >
+                        <input id="id_password1" name="password2" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="row field-password2" align="center">
+                    <div class="col-md-12"  >{{ field.errors }}</div></div>
+             {% endif %}
+        {% endfor %}
+    {% endfor %}
+     </div>
+</fieldset>
+{% endif %}
+
+{% if fieldset.name  == "Permissions" %}
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+     <div class="campos03">
+         {% for line in fieldset %}
+            {% for field in line %}
+               {% if field.field.name == "is_active" %}
+                 <div class="row field-is_active">
+                    <div class="col-md-5" >
+                        <label class="vCheckboxLabel" for="id_is_active">Activo</label>
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                    <div class="col-md-1" >
+                            {{ field.field }}
+                    </div>
+                 </div>
+                 <div class="row field-is_active errornote" align="center">{{ field.errors }}</div>
+               {% endif %}
+
+               {% if field.field.name == "is_staff" %}
+                  <div class="row field-is_staff">
+                    <div class="col-md-5" >
+                       <label class="vCheckboxLabel" for="id_is_staff">Es staff</label>
+                    </div>
+                    <div class="col-md-1" >
+                        {{ field.field }}
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                  </div>
+                  <div class="row field-is_staff errornote" align="center">{{ field.errors }}</div>
+                {% endif %}
+                 {% if field.field.name == "is_superuser" %}
+                  <div class="row field-is_superuser">
+                    <div class="col-md-5" >
+                      <label class="vCheckboxLabel" for="id_is_superuser">Es superusuario</label>
+                    </div>
+                    <div class="col-md-1" >
+                        {{ field.field }}
+                           {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                  </div>
+                  <div class="row field-is_superuser errornote" align="center">{{ field.errors }}</div>
+                {% endif %}
+
+        {% endfor %}
+    {% endfor %}
+     </div>
+</fieldset>
+{% endif %}
+
+
+{% if inline_admin_formset.opts.verbose_name_plural == "Usuario" %}
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+     <div class="campos04">
+         {% for line in fieldset %}
+            {% for field in line %}
+               {% if field.field.name == "rol" %}
+                 <div class="row field-rol">
+                    <div class="col-md-3" >
+                        <label class="required" for="id_rol">Rol:</label>
+                    </div>
+                    <div class="col-md-1" >
+                            {{ field.field }}
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                 </div>
+                 <div class="row field-rol errornote" align="center">{{ field.errors }}</div>
+               {% endif %}
+
+               {% if field.field.name == "dependencia" %}
+                  <div class="row field-dependencia">
+                    <div class="col-md-3" >
+                        <label for="id_usuario-0-dependencia">Dependencia:</label>
+                    </div>
+                    <div class="col-md-1" >
+                        {{ field.field }}
+                       {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                  </div>
+                   <div class="row field-dependencia errornote" align="center">{{ field.errors }}</div>
+                {% endif %}
+        {% endfor %}
+    {% endfor %}
+     </div>
+</fieldset>
+{% endif %}
+
+{% if fieldset.name  == "Important dates" %}
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+     <div class="campos05">
+         {% for line in fieldset %}
+            {% for field in line %}
+               {% if field.field.name == "last_login" %}
+                 <div class="row field-last_login" hidden="true">
+                    <div class="col-md-5" >
+                        <label class="required" for="last_login">Último acceso:</label>
+                    </div>
+                 </div>
+                 <div class="row field-last_login">
+                    <div class="col-md-7" hidden="true">
+                            {{ field.field }}
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                 </div>
+                 <div class="row field-last_login errornote" align="center">{{ field.errors }}</div>
+               {% endif %}
+
+               {% if field.field.name == "date_joined" %}
+                  <div class="row field-date_joined" hidden="true">
+                    <div class="col-md-7" hidden="true">
+                        <label for="date_joined" hidden="true">Fecha de Alta:</label>
+                    </div>
+                  </div>
+                  <div class="row field-last_login" hidden="true">
+                    <div class="col-md-7" hidden="true">
+                        {{ field.field }}
+                        {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                  </div>
+                  <div class="row field-date_joined errornote" align="center">{{ field.errors }}</div>
+                {% endif %}
+        {% endfor %}
+    {% endfor %}
+     </div>
+</fieldset>
+{% endif %}
+
+<!--
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    {% for line in fieldset %}
+        <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
+                <div{% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <p>{{ field.contents }}</p>
+                        {% else %}
+                            {{ field.field }}
+                        {% endif %}
+                    {% endif %}
+                    {% if field.field.help_text %}
+                        <p class="help">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</fieldset>
+-->
