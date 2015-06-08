@@ -114,7 +114,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'jeDcDAPWpVDpEOjeQjQS8J5w6G1sqN'
+      "access_token"  : 'GrJSaQWkcuObAQ0FzlYZzrHNJpBPea'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -531,11 +531,11 @@ function puntosMapa(Datos) {
   var arregloSimple=new Array();
   var arregloDoble=new Array();
     var arregloObjeto = new Object();
-    for(var i= 0;i<Datos.obras.length;i++){
+    for(var i= 0;i<Datos.reporte_estado.length;i++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.obras[i].estado.nombreEstado + ", " + Datos.obras[i].dependencia.nombreDependencia);
-        arregloSimple.push(Datos.obras[i].estado.latitud);
-        arregloSimple.push(Datos.obras[i].estado.longitud);
+        arregloSimple.push(Datos.reporte_estado[i].estado.nombreEstado + ", número de obras: " + Datos.reporte_estado[i].numeroObras);
+        arregloSimple.push(Datos.reporte_estado[i].estado.latitud);
+        arregloSimple.push(Datos.reporte_estado[i].estado.longitud);
         arregloSimple.push(i);
         arregloDoble.push(arregloSimple);
     }

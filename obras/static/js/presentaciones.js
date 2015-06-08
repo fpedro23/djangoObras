@@ -18,6 +18,8 @@ function main_presentaciones() {
     $('#hiperporsector button').on('click', hiper_por_sector);
     $('#hiperporentidad button').on('click', hiper_por_entidad);
 
+    $('#balancegeneralppt').on('click', balance_general);
+
 }
 
 function balance_general() {

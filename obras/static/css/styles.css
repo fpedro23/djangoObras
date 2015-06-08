@@ -542,3 +542,46 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	background-position:-1095px -2350px;
     cursor: pointer;
 }
+
+
+.guardadasExcelBTN{
+	width: 182px;
+	height: 30px;
+	position: relative;
+	/*left: 79px;
+	top: 88px;*/
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -684px -448px;
+}
+
+.guardadasExcelBTN:hover{
+	background-position: -684px -481px;
+    cursor: pointer;
+}
+
+.guardadasPptBTN{
+	width: 182px;
+	height: 30px;
+	position: relative;
+	/*left: 79px;
+	top: 125px;*/
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -869px -448px;
+}
+
+.guardadasPptBTN:hover{
+	background-position: -869px -481px;
+    cursor: pointer;
+}
+
+.caret-up {
+    width: 0;
+    height: 0;
+    border-left: 4px solid rgba(0, 0, 0, 0);
+    border-right: 4px solid rgba(0, 0, 0, 0);
+    border-bottom: 4px solid;
+
+    display: inline-block;
+    margin-left: 2px;
+    vertical-align: middle;
+}
