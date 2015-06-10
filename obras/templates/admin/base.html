@@ -78,9 +78,10 @@
                            {% if user.has_usable_password %}
                                <!-- <span class="glyphicon glyphicon-cog pull-right"></span> -->
                               <li><a href="{% url 'admin:password_change' %}">Cambiar Contraseña </a></li>
+                               <li><a href="/obras/ayuda/">Ayuda </a></li>
                               <li class="divider"></li>
                                <!-- <span class="glyphicon glyphicon-log-out pull-right"></span> -->
-                              <li><a href="{% url 'admin:logout' %}">Terminar Sesion </a></li>
+                              <li><a href="{% url 'admin:logout' %}">Cerrar Sesion </a></li>
                             {% endif %}
                         </ul>
                 </li>
@@ -251,7 +252,7 @@
 
     <!-- END Content -->
     <div class="FUA">
-        	Fecha de última actualización: {% now "jD F Y H:i" %}
+        	Fecha de última actualización: {% now "l d \d\e F \d\e\l Y, H:i." %}
         </div>
 
 </div>

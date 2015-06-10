@@ -12,6 +12,10 @@ from obras.BuscarObras import BuscarObras
 from django.shortcuts import render_to_response
 
 
+def ayuda(request):
+    return render_to_response('admin/obras/ayuda/c_ayuda.html', locals(),
+                              context_instance=RequestContext(request))
+
 def catalogo(request):
     return render_to_response('admin/obras/catalogo.html', locals(),
                               context_instance=RequestContext(request))

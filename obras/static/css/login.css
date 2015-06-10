@@ -308,9 +308,9 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	 margin-top:33px;
 	 margin-left:50px;
 
-	font: "Myriad Pro";
+	font-family: "soberana_sanslight";
     font-size:18px;
-    font-weight: regular;
+
     color: #6A6B6C;
 
 }
@@ -330,6 +330,19 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 }
 
 
+.botCAMBIAR2{
+	width:126px;
+	height:45px;
+	position:absolute;
+	top: 290px;
+	left: 335px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position: 0px -524px;
+}
+
+.botCAMBIAR2:hover{
+	background-position:0px -569px;
+}
 
 
 
