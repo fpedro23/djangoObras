@@ -1,5 +1,4 @@
 import json
-import datetime
 from django.contrib.admin.models import LogEntry
 from django.db.models import Q
 from django.http import HttpResponse
@@ -32,7 +31,7 @@ def get_subdependencias_as_list_flat(deps):
 class HoraEndpoint(ProtectedResourceView):
     def get(self, request):
         json_response = {}
-        date = datetime.datetime.now()
+        date = datetime.now()
         time = date.time()
 
         json_response['dia'] = date.day
@@ -50,7 +49,7 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        today = datetime.datetime.now().date()
+        today = datetime.now().date()
         if usuario.rol == 'SA':
             obras = Obra.objects.filter(fechaInicio__lte=today).all()
         else:
@@ -66,7 +65,7 @@ class ObrasVencidasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        today = datetime.datetime.now().date()
+        today = datetime.now().date()
         if usuario.rol == 'SA':
             obras = Obra.objects.filter(fechaTermino__lte=today)
         else:
@@ -320,61 +319,48 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         }
 
         obras2015 = obras.filter(fechaInicio__year=2015)
-        # reporte['reporte2015']['obras_proceso']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-        #                                                        obras2015.filter(tipoObra_id=2))
-        obras2015_proceso = obras2015.filter(tipoObra_id=2).values()
+        obras2015_proceso = obras2015.filter(tipoObra_id=2)
         the_list = []
-        for obra in obras2015_proceso:
+        for obra in obras2015_proceso.values('latitud', 'longitud'):
             the_list.append(obra)
         reporte['reporte2015']['obras_proceso']['obras'] = the_list
-        # reporte['reporte2015']['obras_proceso']['total'] = obras2015_proceso.count()
+        reporte['reporte2015']['obras_proceso']['total'] = obras2015_proceso.count()
 
-        # reporte['reporte2015']['obras_proyectadas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-        #                                                            obras2015.filter(tipoObra_id=1))
-        obras2015_proyectadas = obras2015.filter(tipoObra_id=1).values()
+        obras2015_proyectadas = obras2015.filter(tipoObra_id=1)
         the_list = []
-        for obra in obras2015_proyectadas:
+        for obra in obras2015_proyectadas.values('latitud', 'longitud', 'estado__nombreEstado'):
             the_list.append(obra)
         reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
-        # reporte['reporte2015']['obras_proyectadas']['total'] = obras2015_proyectadas.count()
+        reporte['reporte2015']['obras_proyectadas']['total'] = obras2015_proyectadas.count()
 
-        # reporte['reporte2015']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-        #                                                           obras2015.filter(tipoObra_id=3))
-        obras2015_concluidas = obras2015.filter(tipoObra_id=3).values()
+        obras2015_concluidas = obras2015.filter(tipoObra_id=3)
         the_list = []
-        for obra in obras2015_concluidas:
+        for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado'):
             the_list.append(obra)
         reporte['reporte2015']['obras_concluidas']['obras'] = the_list
-        # reporte['reporte2015']['obras_concluidas']['total'] = obras2015_concluidas.count()
+        reporte['reporte2015']['obras_concluidas']['total'] = obras2015_concluidas.count()
 
-        obras2014 = obras.filter(Q(fechaInicio__year=2014) & Q(tipoObra_id=3)).values()
-        # reporte['reporte2014']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-        #                                                           obras2014)
+        obras2014 = obras.filter(Q(fechaInicio__year=2014) & Q(tipoObra_id=3))
         the_list = []
-        for obra in obras2014:
+        for obra in obras2014.values('latitud', 'longitud', 'estado__nombreEstado'):
             the_list.append(obra)
-        reporte['reporte2014']['obras_concluidas']['obras'] = the_list
-        # reporte['reporte2014']['obras_concluidas']['total'] = obras2014.count()
+        reporte['reporte2014']['obras_concluidas']['total'] = obras2014.count()
 
-        obras2013 = obras.filter(Q(fechaInicio__year=2013) & Q(tipoObra_id=3)).values()
-        # reporte['reporte2013']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-        #                                                           obras2013)
+        obras2013 = obras.filter(Q(fechaInicio__year=2013) & Q(tipoObra_id=3))
         the_list = []
-        for obra in obras2013:
+        for obra in obras2013.values('latitud', 'longitud', 'estado__nombreEstado'):
             the_list.append(obra)
         reporte['reporte2013']['obras_concluidas']['obras'] = the_list
-        # reporte['reporte2013']['obras_concluidas']['total'] = obras2013.count()
+        reporte['reporte2013']['obras_concluidas']['total'] = obras2013.count()
 
-        obras2012 = obras.filter(Q(fechaInicio__year=2012) & Q(tipoObra_id=3)).values()
-        # reporte['reporte2012']['obras_concluidas']['obras'] = map(lambda obra: obra.to_serializable_dict(),
-        #                                                           obras2012)
+        obras2012 = obras.filter(Q(fechaInicio__year=2012) & Q(tipoObra_id=3))
         the_list = []
-        for obra in obras2012:
+        for obra in obras2012.values('latitud', 'longitud', 'estado__nombreEstado'):
             the_list.append(obra)
         reporte['reporte2012']['obras_concluidas']['obra'] = the_list
-        # reporte['reporte2012']['obras_concluidas']['total'] = obras2012.count()
+        reporte['reporte2012']['obras_concluidas']['total'] = obras2012.count()
 
-        return HttpResponse(reporte.__str__(), 'text')
+        return HttpResponse(json.dumps(reporte), 'application/json')
 
 
 class ReporteNoTrabajoEndpoint(ProtectedResourceView):
