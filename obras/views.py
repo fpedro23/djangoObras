@@ -506,7 +506,56 @@ def buscar_obras_web(request):
 
     template = loader.get_template('admin/obras/consulta_filtros/consulta-filtros.html')
     context = RequestContext(request, {
-        'resultados': resultados
+        'resultados': resultados,
+        'filtros': request.GET
+    })
+    return HttpResponse(template.render(context))
+
+
+def obras_iniciadas(request):
+    usuario = request.user.usuario
+
+    query = Q(fechaInicio__lte= datetime.datetime.now().date())
+    if not (usuario.rol == 'SA'):
+        subdependencias = get_subdependencias_as_list_flat(usuario.dependencia)
+        query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
+    obras = Obra.objects.filter(query)
+
+    template = loader.get_template('admin/obras/obras_iniciadas.html')
+    context = RequestContext(request, {
+        'obras_iniciadas': obras
+    })
+    return HttpResponse(template.render(context))
+
+
+def obras_vencidas(request):
+    usuario = request.user.usuario
+
+    today = datetime.datetime.now().date()
+    if usuario.rol == 'SA':
+        obras = Obra.objects.filter(fechaTermino__lte=today)
+    else:
+        obras = Obra.objects.filter(Q(fechaTermino__lte=today) & Q(
+            dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia)))
+
+    template = loader.get_template('admin/obras/obras_vencidas.html')
+    context = RequestContext(request, {
+        'obras_vencidas': obras
+    })
+    return HttpResponse(template.render(context))
+
+
+def obras_for_dependencia(request):
+    usuario = request.user.usuario
+
+    if usuario.rol == 'SA':
+        obras = Obra.objects.all()
+    else:
+        obras = usuario.dependencia.get_obras()
+
+    template = loader.get_template('admin/obras/obras_dependencia.html')
+    context = RequestContext(request, {
+        'obras': obras
     })
     return HttpResponse(template.render(context))
 

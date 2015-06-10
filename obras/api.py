@@ -1,12 +1,11 @@
 import json
-from django.contrib.admin.models import LogEntry
 from django.db.models import Q
 from django.http import HttpResponse
 from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
 from obras.BuscarObras import BuscarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador,\
-    InstanciaEjecutora
+    InstanciaEjecutora, get_subdependencias_as_list_flat
 from obras.views import get_array_or_none
 from datetime import *
 
@@ -16,16 +15,6 @@ def get_usuario_for_token(token):
         return AccessToken.objects.get(token=token).user.usuario
     else:
         return None
-
-
-def get_subdependencias_as_list_flat(deps):
-    ans = []
-    for dependencia in deps:
-        ans.append(dependencia)
-        subdeps = dependencia.get_subdeps_flat()
-        if subdeps and subdeps.count() > 0:
-            ans.extend(subdeps)
-    return ans
 
 
 class HoraEndpoint(ProtectedResourceView):
@@ -49,14 +38,11 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        today = datetime.now().date()
-        if usuario.rol == 'SA':
-            obras = Obra.objects.filter(fechaInicio__lte=today).all()
-        else:
-            obras = Obra.objects.filter(
-                Q(dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())) &
-                Q(fechaInicio__lte=today)
-            )
+        query = Q(fechaInicio__lte=datetime.now().date())
+        if not (usuario.rol == 'SA'):
+            subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
+            query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
+        obras = Obra.objects.filter(query)
 
         return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
 
@@ -300,6 +286,10 @@ class NumeroObrasPendientes(ProtectedResourceView):
 
 
 class ReporteInicioEndpoint(ProtectedResourceView):
+    def rename_estado(self, obra):
+        obra['estado'] = obra['estado__nombreEstado']
+        del obra['estado__nombreEstado']
+
     def get(self, request):
         dependencias = get_usuario_for_token(request.GET.get('access_token')).dependencia.all()
 
@@ -321,7 +311,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2015 = obras.filter(fechaInicio__year=2015)
         obras2015_proceso = obras2015.filter(tipoObra_id=2)
         the_list = []
-        for obra in obras2015_proceso.values('latitud', 'longitud'):
+        for obra in obras2015_proceso.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_proceso']['obras'] = the_list
         reporte['reporte2015']['obras_proceso']['total'] = obras2015_proceso.count()
@@ -329,6 +320,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2015_proyectadas = obras2015.filter(tipoObra_id=1)
         the_list = []
         for obra in obras2015_proyectadas.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
         reporte['reporte2015']['obras_proyectadas']['total'] = obras2015_proyectadas.count()
@@ -336,6 +328,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2015_concluidas = obras2015.filter(tipoObra_id=3)
         the_list = []
         for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_concluidas']['obras'] = the_list
         reporte['reporte2015']['obras_concluidas']['total'] = obras2015_concluidas.count()
@@ -343,12 +336,14 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2014 = obras.filter(Q(fechaInicio__year=2014) & Q(tipoObra_id=3))
         the_list = []
         for obra in obras2014.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2014']['obras_concluidas']['total'] = obras2014.count()
 
         obras2013 = obras.filter(Q(fechaInicio__year=2013) & Q(tipoObra_id=3))
         the_list = []
         for obra in obras2013.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2013']['obras_concluidas']['obras'] = the_list
         reporte['reporte2013']['obras_concluidas']['total'] = obras2013.count()
@@ -356,6 +351,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2012 = obras.filter(Q(fechaInicio__year=2012) & Q(tipoObra_id=3))
         the_list = []
         for obra in obras2012.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2012']['obras_concluidas']['obra'] = the_list
         reporte['reporte2012']['obras_concluidas']['total'] = obras2012.count()

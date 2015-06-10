@@ -27,9 +27,9 @@ urlpatterns = patterns('',
                        url(r'^api/id_unico', api.IdUnicoEndpoint.as_view()),
 
                        # Mappings Reportes
-                       url(r'^api/obras_iniciadas', api.ObrasIniciadasEndpoint.as_view()),
-                       url(r'^api/obras_vencidas', api.ObrasVencidasEndpoint.as_view()),
-                       url(r'^api/obras_dependencia', api.ObrasForDependenciaEndpoint.as_view()),
+                       url(r'^api/obras_iniciadas', views.obras_iniciadas),
+                       url(r'^api/obras_vencidas', views.obras_vencidas),
+                       url(r'^api/obras_dependencia', views.obras_for_dependencia),
                        url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
 
                        # Otros endpoints

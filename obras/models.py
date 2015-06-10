@@ -142,8 +142,8 @@ class TipoInversion(models.Model):
 class TipoClasificacion(models.Model):
     subclasificacionDe = models.ForeignKey('self', null=True, blank=True,
                                            limit_choices_to={
-                                                   'subclasificacionDe': None,
-                                            }
+                                               'subclasificacionDe': None,
+                                           }
                                            )
     nombreTipoClasificacion = models.CharField(max_length=200)
     nombreTipoClasificacionCorta = models.CharField(max_length=200)
@@ -247,7 +247,7 @@ BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguracion'))
 
 @python_2_unicode_compatible
 class Obra(models.Model):
-    #TODO agrupar semanticamente todos los campos de obras
+    # TODO agrupar semanticamente todos los campos de obras
     identificador_unico = models.SlugField(unique=True, null=True, )
     tipoObra = models.ForeignKey(TipoObra)
     dependencia = models.ForeignKey(Dependencia, related_name='%(class)s_dependencia',
@@ -429,3 +429,13 @@ class Ubicacion(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+def get_subdependencias_as_list_flat(deps):
+    ans = []
+    for dependencia in deps:
+        ans.append(dependencia)
+        subdeps = dependencia.get_subdeps_flat()
+        if subdeps and subdeps.count() > 0:
+            ans.extend(subdeps)
+    return ans
