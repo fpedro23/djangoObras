@@ -206,7 +206,8 @@ class InstanciaEjecutora(models.Model):
         return ans
 
 
-BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None , 'Sin inauguracion'))
+BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguracion'))
+
 
 @python_2_unicode_compatible
 class Obra(models.Model):
@@ -228,7 +229,7 @@ class Obra(models.Model):
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
-    tipoInversion = models.ManyToManyField(TipoInversion)
+    tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion')
 
     tipoClasificacion = models.ManyToManyField(TipoClasificacion,
                                                related_name='%(class)s_clasificaciones',
@@ -237,16 +238,14 @@ class Obra(models.Model):
                                                }
                                                )
 
-    subclasificacion = ChainedManyToManyField(TipoClasificacion,
+
+    subclasificacion = models.ManyToManyField(TipoClasificacion,
                                               related_name='%(class)s_subclasificaciones',
-                                              chained_field="tipoClasificacion",
-                                              chained_model_field="subclasificacionDe"
                                               )
 
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
-    observaciones = models.CharField(max_length=200)
     fechaInicio = models.DateField()
     fechaTermino = models.DateField(verbose_name="Fecha de Termino")
     inversionTotal = models.DecimalField(max_digits=19, decimal_places=10)
@@ -262,7 +261,7 @@ class Obra(models.Model):
     inaugurada = models.NullBooleanField(choices=BOOL_CHOICES)
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
-    tipoMoneda = models.ForeignKey(TipoMoneda)
+    tipoMoneda = models.ForeignKey(TipoMoneda, blank=False, default=1)
     autorizada = models.BooleanField(default=False)
     latitud = models.FloatField()
     longitud = models.FloatField()
@@ -366,3 +365,9 @@ class Ubicacion(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class DetalleInversion(models.Model):
+    obra =models.ForeignKey(Obra)
+    tipoInversion = models.ForeignKey(TipoInversion)
+    monto = models.FloatField()
