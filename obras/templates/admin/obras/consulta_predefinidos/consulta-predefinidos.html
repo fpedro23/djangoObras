@@ -4,6 +4,8 @@
 
     <link href="{% static "css/menu.css" %}" rel="stylesheet">  <!--AQUI VAN TODOS LOS ARCHIVOS DE ESTILO EXTRA QUE SE REQUIEREN PARA LA PAGINA O JS-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static "assets/bootstrap/css/bootstrap.css"%}" />
 	<script src="{% static "js/prefixfree.min.js" %} "></script>
 	<script src="{% static "js/presentaciones.js" %} "></script>
     <link href="{% static "css/styles.css"%}" rel="stylesheet">
@@ -35,13 +37,13 @@
     <div id="welcome">Consultas Predefinidas</div>
 
     <div class="row">
-       <div class="col-md-4">
+       <div class="col-md-3">
            <div class="row">
                <div class="col-md-12">
                    <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><div class="guardadasExcelBTN"></div></a>
                       <ul class="dropdown-menu">
-                            <li><a href="">Obras Iniciadas</a></li>
+                            <li><a href="#" id="obrasIniciadas">Obras Iniciadas</a></li>
                             <li><a href="">Obras Vencidas</a></li>
                             <li><a href="">Obras por Dependencia</a></li>
                       </ul>
@@ -66,6 +68,10 @@
                    </li>
                </div>
            </div>
+       </div>
+
+       <div class="col-md-8-box">
+
        </div>
     </div>
 
