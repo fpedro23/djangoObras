@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import SimpleListFilter
 
 from obras.models import *
-from obras.forms import AddObraForm
+from obras.forms import AddObraForm, DetalleInversionAddForm
 
 
 
@@ -16,6 +16,7 @@ class UsuarioInline(admin.StackedInline):
     model = Usuario
     can_delete = False
     verbose_name_plural = 'Usuario'
+    extra = 0
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         arreglo_dependencias = []
@@ -74,10 +75,6 @@ class UserAdmin(UserAdmin):
                     Q(usuario__dependencia=request.user.usuario.dependencia)
                 )
 
-
-class InversionInLine(admin.StackedInline):
-    model = TipoInversion
-    extra = 3
 
 
 class DependenciaAdmin(admin.ModelAdmin):
@@ -186,11 +183,17 @@ def make_unauthorized(obrasadmin, request, queryset):
 make_unauthorized.short_description = "No Autorizar las obras seleccionadas"
 
 
+class DetalleInversionInline(admin.TabularInline):
+    form = DetalleInversionAddForm
+    model = DetalleInversion
+    extra = 1
+
+
 class ObrasAdmin(admin.ModelAdmin):
     form = AddObraForm
-    inlinesInversion = [InversionInLine]
     inlinesClasificacion = [ClasificacionInLine]
-    inlines = [DocumentoFuenteInline]
+    inlines = (DetalleInversionInline, DocumentoFuenteInline)
+
     list_display = (
         'identificador_unico',
         'estado',
@@ -205,18 +208,6 @@ class ObrasAdmin(admin.ModelAdmin):
     list_filter = [DependenciaListFilter, 'autorizada']
     readonly_fields = ('identificador_unico',)
     actions = [make_authorized, make_unauthorized]
-
-    # def get_fieldsets(self, request, obj=None):
-    # fieldsets = [
-    # ('Hacienda',
-    #                         {'fields':
-    #                             ['registroHacendario',
-    #                              'montoRegistroHacendario'
-    #                             ]
-    #                          }
-    #                     ),
-    #                 ]
-    #     return fieldsets
 
     def get_fields(self, request, obj=None):
         if request.user.usuario.rol == 'US':
@@ -276,7 +267,6 @@ class ObrasAdmin(admin.ModelAdmin):
                       'senalizacion',
                       'tipoClasificacion',
                       'subclasificacion',
-                      'tipoInversion',
                       'registroHacendario',
                       'montoRegistroHacendario',
                       'inversionTotal',
@@ -289,7 +279,6 @@ class ObrasAdmin(admin.ModelAdmin):
                       'fotoDurante',
                       'fotoDespues',
                       'autorizada',
-                      #'registroAuditoria',
                       )
         return fields
 

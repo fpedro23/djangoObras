@@ -3,8 +3,14 @@ from django.contrib.admin.models import LogEntry, ADDITION
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from obras.models import Obra, Dependencia
+from obras.models import Obra, DetalleInversion
 import itertools
 from datetime import datetime
+
+
+class DetalleInversionAddForm(forms.ModelForm):
+    class Meta:
+        model = DetalleInversion
 
 
 class AddObraForm(forms.ModelForm):
@@ -13,7 +19,11 @@ class AddObraForm(forms.ModelForm):
         fields = '__all__'
         widgets = {'tipoMoneda': forms.RadioSelect,
                    'inaugurada': forms.RadioSelect,
-                   }
+                   'descripcion': forms.Textarea,
+                   'observaciones': forms.Textarea,
+                   'tipoClasificacion': forms.CheckboxSelectMultiple,
+                   'tipoInversion': forms.CheckboxSelectMultiple
+        }
 
     def save(self, commit=True):
         instance = super(AddObraForm, self).save(commit=False)
