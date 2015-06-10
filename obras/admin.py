@@ -16,6 +16,7 @@ class UsuarioInline(admin.StackedInline):
     model = Usuario
     can_delete = False
     verbose_name_plural = 'Usuario'
+    extra = 0
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         arreglo_dependencias = []
