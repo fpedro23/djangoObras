@@ -10,4 +10,4 @@ payload = {
     'scope': 'write read'
 }
 # print requests.post('http://edicomex.com.mx:7500/o/token/', payload).text
-print requests.post('http://localhost:7900/o/token/', payload).text
+print requests.post('http://localhost:7902/o/token/', payload).text

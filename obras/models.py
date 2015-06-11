@@ -40,7 +40,7 @@ class Dependencia(models.Model):
 
         ans['id'] = str(self.id)
         ans['nombreDependencia'] = str(self.nombreDependencia)
-        if self.imagenDependencia is None or self.imagenDependencia.name == '' or self.imagenDependencia.name == '':
+        if self.imagenDependencia is None or self.imagenDependencia.name == '' or self.imagenDependencia.name is None:
             ans['imagenDependencia'] = None
         else:
             ans['imagenDependencia'] = self.imagenDependencia.url
