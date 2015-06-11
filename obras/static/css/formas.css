@@ -199,29 +199,29 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 
 .campos03{
 	font-family: "soberana_sanslight";
-	font-size: 18px;
+	font-size: 15px;
 	color: #6A6B6C;
 	width: 400px;
 	height: 300px;
 	position: absolute;
-	left: 123px;
-	top: 246px;
+	left: 685px;
+	top: 186px;
 }
 
 .campos04{
 	font-family: "soberana_sanslight";
-	font-size: 18px;
+	font-size: 15px;
 	color: #6A6B6C;
 	width: 400px;
 	height: 300px;
 	position: absolute;
-	left: 573px;
-	top: 246px;
+	left: 685px;
+	top: 130px;
 }
 
 .campos05{
 	font-family: "soberana_sanslight";
-	font-size: 18px;
+	font-size: 15px;
 	color: #6A6B6C;
 	width: 400px;
 	height: 300px;
@@ -261,7 +261,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	background-image: url(../img/bigBackground.fw.png);
 	background-position: -780px -1925px;
 	position: absolute;
-	top: 419px;
+	top: 439px;
 	left: 630px;
 }
 
@@ -275,7 +275,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	background-image: url(../img/bigBackground.fw.png);
 	background-position: -907px -1861px;
 	position: absolute;
-	top: 419px;
+	top: 439px;
 	left: 839px;
 }
 
@@ -359,7 +359,7 @@ input {
 
 #tituloCUADROS{
 	font-family: 'soberana_titularregular';
-	font-size:20px;
+	font-size:19px;
 	color: #0C0C1E;
 }
 
@@ -649,3 +649,43 @@ label {
 
 
 
+.datosGENERALES{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 282px;
+	font-family: "soberana_sanslight";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 0px;
+	top: 143px;
+}
+
+.datosINICIO{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 282px;
+	font-family: "soberana_sanslight";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+    background-color: transparent;
+	left: 343px;
+	top: 145px;
+}
+
+.datosESPECIFICO{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 334px;
+	height: 282px;
+	font-family: "soberana_sanslight";
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 685px;
+	top: 144px;
+    background-color: transparent;
+}

@@ -1,7 +1,11 @@
 
 {% if fieldset.name == "Personal info" %}
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
-     <div class="campos01">
+     <div class="datosGENERALES">
+     <div id="tituloCUADROS">
+    	DATOS GENERALES
+         <p>&nbsp;</p>
+    </div>
     {% for line in fieldset %}
         {% for field in line %}
              {% if field.field.name == "first_name" %}
@@ -57,13 +61,15 @@
 
  {% if fieldset.name == "AuthInfo" %}
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
-     <div class="campos02">
+     <div class="datosINICIO">
+     <div id="tituloCUADROS">DATOS DE ACCESO
+      <p>&nbsp;</p></div>
     {% for line in fieldset %}
         {% for field in line %}
              {% if field.field.name == "username" %}
                 <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-3"  >
-                        <label class="required" for="id_username">Usuario:</label>
+                        <label class="required" for="id_username">*Usuario:</label>
                     </div>
                     <div class="col-md-1" >
                         <input id="id_username" maxlength="30" name="username" type="text" value="{{ field.field.value|default_if_none:"" }}" />
@@ -113,9 +119,15 @@
 </fieldset>
 {% endif %}
 
+
 {% if fieldset.name  == "Permissions" %}
+      <div class="datosESPECIFICO">
+    <div id="tituloCUADROS">DATOS DE PERFIL DE USUARIO<p>&nbsp;</p></div>
+    </div>
+    <div class="campos04">
+    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;<br><br></p>
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
-     <div class="campos03">
+
          {% for line in fieldset %}
             {% for field in line %}
                {% if field.field.name == "is_active" %}
@@ -164,19 +176,22 @@
 
         {% endfor %}
     {% endfor %}
-     </div>
+
 </fieldset>
+    </div>
 {% endif %}
 
-
 {% if inline_admin_formset.opts.verbose_name_plural == "Usuario" %}
-<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
-     <div class="campos04">
+
+  <div class="campos03">
+
+    <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+
          {% for line in fieldset %}
             {% for field in line %}
                {% if field.field.name == "rol" %}
                  <div class="row field-rol">
-                    <div class="col-md-3" >
+                    <div class="col-md-2" >
                         <label class="required" for="id_rol">Rol:</label>
                     </div>
                     <div class="col-md-1" >
@@ -205,9 +220,15 @@
                 {% endif %}
         {% endfor %}
     {% endfor %}
-     </div>
+
 </fieldset>
+    </div>
 {% endif %}
+
+
+
+
+
 
 {% if fieldset.name  == "Important dates" %}
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">

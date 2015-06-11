@@ -24,9 +24,22 @@
 {% block content %}
      <div id="regresarBTN" onclick="location.href='/obras/usuarios'">
    </div>
-
-  <div id="welcome"> Alta de Usuario
+<div id="welcome">
+        {% if not change %}
+            Registro de
+        {% else %}
+            Modificar
+        {% endif %}
+        Usuario
   </div>
+
+  <div class="bienvenida">
+      {% if not change %}
+            Bienvenido a Registro de Usuarios. Los campos marcados con asterisco (*) son obligatorios para la alta exitosa del mismo. Le pdimos los llene correctamente.
+        {% else %}
+            Bienvenido a Modificar Usuario. Realice los cambios a los dats del usuario seleccionado y presione el botón Guardar.
+        {% endif %}
+ </div>
     <div id="content-main">
         {% block object-tools %}
             {% if change %}{% if not is_popup %}
