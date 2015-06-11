@@ -1,7 +1,12 @@
 from django import forms
-from obras.models import Obra, DetalleInversion
+from obras.models import Obra, DetalleInversion, DetalleClasificacion
 import itertools
 from datetime import datetime
+
+
+class DetalleClasificacionAddForm(forms.ModelForm):
+    class Meta:
+        model = DetalleClasificacion
 
 
 class DetalleInversionAddForm(forms.ModelForm):
