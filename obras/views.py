@@ -462,7 +462,7 @@ def consulta_web(request):
         dependencias = Dependencia.objects.filter(
                     Q(id=request.user.usuario.dependencia.id)
                     )
-    #template = loader.get_template('consultas/busqueda_general.html')
+    #templates = loader.get_template('consultas/busqueda_general.html')
     template = loader.get_template('admin/obras/consulta_filtros/consulta-filtros.html')
     context = RequestContext(request, {
         'estatusObra': TipoObra.objects.all(),

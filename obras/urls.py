@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url
 
 from obras import views
 from obras import api
+from django.conf import settings
 
 
 urlpatterns = patterns('',
@@ -21,6 +22,8 @@ urlpatterns = patterns('',
                        url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
                        url(r'^api/subdependencias_arbol', api.DependenciasTreeEndpoint.as_view()),
                        url(r'^api/subdependencias_flat', api.SubependenciasFlatEndpoint.as_view()),
+
+                       url(r'^api/dependencia_imagen', api.DependenciasIdEndpoint.as_view()),
 
                        # Mappings Busqueda
                        url(r'^api/busqueda', api.BuscadorEndpoint.as_view()),
@@ -55,4 +58,5 @@ urlpatterns = patterns('',
                         url(r'^hiper-inauguradas-ppt', views.hiper_inauguradas_ppt),
                         url(r'^hiper-por-sector-ppt', views.hiper_por_sector_ppt),
                         url(r'^hiper-por-entidad-ppt', views.hiper_por_entidad_ppt),
+                       url(r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
 )

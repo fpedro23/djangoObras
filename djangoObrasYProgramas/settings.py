@@ -102,7 +102,7 @@ DATABASES = {
 #   }
 # }
 
-MEDIA_ROOT = '/djangoApps/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'obras/media')
 MEDIA_URL = '/media/'
 
 # Internationalization

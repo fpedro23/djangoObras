@@ -9,6 +9,7 @@
          {% if field.field.name == "identificador_unico" %}
               <div class="general">
         <div id="logoDEP">
+
         </div>
 
   	    <div id="tituloCUADROS">
@@ -31,6 +32,7 @@
          {% if field.field.name == "dependencia" %}
           <tr>
               <td>  <label class="required" for="id_dependencia">Dependencia:</label></td>
+              {% csrf_token %}
               <td> {{ field.field }}</td>
           </tr>
           {% endif %}
