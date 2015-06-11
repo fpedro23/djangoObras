@@ -39,16 +39,27 @@
                     <label for="id_username" id="tit_1">
                         <span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
                         Usuario :
-                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{ form.username }}</p>
+                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{ form.username }}
+
             <p><label for="id_password" id="tit_1"><span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
                         Contraseña</label>&nbsp;&nbsp;{{ form.password }}
-                        <input type="hidden" name="next" value="{{ next }}" />
+                        <input type="hidden" name="next" value="{{ next }}" /><br>
+
             </p>
             {% if form.errors and not form.non_field_errors %}
                 <p class="error__msg">
                 {% if form.errors.items|length == 1 %} {{"Campos marcados con (*) son obligatorios"}} {% else %}{{ "Campos marcados con (*) son obligatorios" }} {% endif %}
+               <br>
+
                 </p>
             {% endif %}
+        {% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<p class="error__msg">
+    {{ error }}
+</p>
+{% endfor %}
+{% endif %}
             <div id="botLI" onclick="document.getElementById('login-form').submit();">
             </div>
         </form>

@@ -5,10 +5,6 @@ from django.contrib.admin import SimpleListFilter
 from obras.models import *
 from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm
 
-
-
-
-
 # Register your models here.+
 
 # Define an inline admin descriptor for Usuario model
@@ -41,9 +37,16 @@ class UsuarioInline(admin.StackedInline):
 class UserAdmin(UserAdmin):
     inlines = (UsuarioInline, )
     list_display = ('username', 'first_name', 'last_name', 'email', 'get_dependencia',)
+    fieldsets = (
+        (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (('AuthInfo'), {'fields': ('username', 'password')}),
+        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        (('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
     add_fieldsets = (
         (None, {'fields': ('username', 'password1', 'password2')}),
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (('AuthInfo'), {'fields': ('username', 'password1', 'password2')}),
         (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                       'groups', 'user_permissions')}),
         (('Important dates'), {'fields': ('last_login', 'date_joined')}),

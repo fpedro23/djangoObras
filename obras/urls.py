@@ -51,7 +51,6 @@ urlpatterns = patterns('',
                        url(r'^consultar-obras', views.buscar_obras_web),
                        url(r'^prueba', views.ajax_prueba),
 
-                       # reportes predefinidos
                        url(r'^reportes-predefinidos', views.reportes_predefinidos),
                         url(r'^balance-general-ppt', views.balance_general_ppt),
                         url(r'^hiper-info-general-ppt', views.hiper_info_general_ppt),

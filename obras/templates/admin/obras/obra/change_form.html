@@ -3,6 +3,7 @@
 
 {% block extrahead %}{{ block.super }}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+     <script type="text/javascript" src="{% static 'assets/js/ajax-movimientos.js' %}"></script>
      <link href="{% static "css/formas.css" %}" rel="stylesheet">
     {{ media }}
     <script type="text/javascript">
@@ -66,8 +67,6 @@ x++;
 })(django.jQuery);
 </script>
 
-
-
     <script>
         var $j = jQuery.noConflict();
         $j(document).on('ready', main_consulta);
@@ -91,7 +90,7 @@ x++;
             var idDep = $j("#id_dependencia").val();
             var sHtml="";
 
-            var ajax_data = {"access_token"  : 'b9W4vLT0msrISVYLNOY8lMy9WmAtEs'};
+            var ajax_data = {"access_token"  : 'XwBWJLksjXHNbUoejwgc8Y0vR7FEDs'};
 
             if(idDep.toString()!=""){ajax_data.id=idDep.toString();}
 
@@ -112,7 +111,6 @@ x++;
 
 
     </script>
-
 {% endblock %}
 
 {% block extrastyle %}{{ block.super }}
@@ -134,7 +132,7 @@ x++;
 
   <div id="welcome">
         {% if not change %}
-           <span id="walta">Alta
+           <span id="walta">Alta</span>
         {% else %}
             <span id="wmod">Modificar
         {% endif %}
@@ -143,10 +141,11 @@ x++;
   </div>
 
      <div id="buscar" hidden="true">
+     <input type="hidden" id="tok" value="{% csrf_token %}">
      <input class="buscar" type="text" name="idobra" value="" id="idobra">
   </div>
 
-  <div id="buscarICO" hidden="true" onclick="location.href='/admin/obras/obra/'+document.getElementById('idobra').value+'/?m=1'">
+  <div id="buscarICO" hidden="true">
   </div>
 
         {% block object-tools %}

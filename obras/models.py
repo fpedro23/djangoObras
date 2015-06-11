@@ -277,7 +277,7 @@ class Obra(models.Model):
                                                }
                                                )
 
-    subclasificacion = ChainedManyToManyField(TipoClasificacion,
+    subclasificacion = ChainedForeignKey(TipoClasificacion,
                                               related_name='%(class)s_subclasificaciones',
                                               chained_field="tipoClasificacion",
                                               chained_model_field="subclasificacionDe"
