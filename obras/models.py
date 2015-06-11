@@ -184,7 +184,6 @@ class TipoMoneda(models.Model):
         ans['id'] = str(self.id)
         return ans
 
-
 class Usuario(models.Model):
     SUPERADMIN = 'SA'
     ADMIN = 'AD'
@@ -233,6 +232,9 @@ class Obra(models.Model):
                                        chained_model_field="dependienteDe",
                                        null=True,
                                        blank=True,
+                                       )
+                                       chained_field="dependencia",
+                                       chained_model_field="dependienteDe",
                                        )
 
     estado = models.ForeignKey(Estado)
