@@ -233,9 +233,6 @@ class Obra(models.Model):
                                        null=True,
                                        blank=True,
                                        )
-                                       chained_field="dependencia",
-                                       chained_model_field="dependienteDe",
-                                       )
 
     estado = models.ForeignKey(Estado)
     impacto = models.ForeignKey(Impacto)
