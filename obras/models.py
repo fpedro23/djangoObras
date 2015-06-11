@@ -1,14 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
-from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
+from smart_selects.db_fields import ChainedForeignKey
 
-#TODO agregar nombres verbose a los modelos
+# TODO agregar nombres verbose a los modelos
 
 
 # Create your models here.
 from django.db.models import Q
 from django.forms import model_to_dict
+
 
 @python_2_unicode_compatible
 class TipoObra(models.Model):
@@ -21,6 +22,7 @@ class TipoObra(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
+
 
 @python_2_unicode_compatible
 class Dependencia(models.Model):
@@ -88,6 +90,7 @@ class Dependencia(models.Model):
         else:
             return Obra.objects.filter(dependencia=self)
 
+
 @python_2_unicode_compatible
 class Estado(models.Model):
     nombreEstado = models.CharField(max_length=200)
@@ -105,6 +108,7 @@ class Estado(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 @python_2_unicode_compatible
 class Impacto(models.Model):
     nombreImpacto = models.CharField(max_length=200)
@@ -116,6 +120,7 @@ class Impacto(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
+
 
 @python_2_unicode_compatible
 class TipoInversion(models.Model):
@@ -130,12 +135,13 @@ class TipoInversion(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 @python_2_unicode_compatible
 class TipoClasificacion(models.Model):
     subclasificacionDe = models.ForeignKey('self', null=True, blank=True,
                                            limit_choices_to={
-                                                   'subclasificacionDe': None,
-                                            }
+                                               'subclasificacionDe': None,
+                                           }
                                            )
     nombreTipoClasificacion = models.CharField(max_length=200)
     nombreTipoClasificacionCorta = models.CharField(max_length=200)
@@ -152,6 +158,7 @@ class TipoClasificacion(models.Model):
             ans['subclasificacionDe'] = None
         return ans
 
+
 @python_2_unicode_compatible
 class Inaugurador(models.Model):
     nombreCargoInaugura = models.CharField(max_length=200)
@@ -164,6 +171,7 @@ class Inaugurador(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 @python_2_unicode_compatible
 class TipoMoneda(models.Model):
     nombreTipoDeMoneda = models.CharField(max_length=200)
@@ -175,6 +183,7 @@ class TipoMoneda(models.Model):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)
         return ans
+
 
 class Usuario(models.Model):
     SUPERADMIN = 'SA'
@@ -220,9 +229,11 @@ class Obra(models.Model):
                                     })
 
     subdependencia = ChainedForeignKey(Dependencia,
-                                    chained_field="dependencia",
-                                    chained_model_field="dependienteDe",
-    )
+                                       chained_field="dependencia",
+                                       chained_model_field="dependienteDe",
+                                       null=True,
+                                       blank=True,
+                                       )
 
     estado = models.ForeignKey(Estado)
     impacto = models.ForeignKey(Impacto)
@@ -231,17 +242,19 @@ class Obra(models.Model):
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
     tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion')
 
-    tipoClasificacion = models.ManyToManyField(TipoClasificacion,
-                                               related_name='%(class)s_clasificaciones',
+    tipoClasificacion = models.ManyToManyField("self", TipoClasificacion,
+                                               through='DetalleClasificacion',
+
+                                               symmetrical=False,
                                                limit_choices_to={
                                                    'subclasificacionDe': None,
                                                }
                                                )
 
-
-    subclasificacion = models.ManyToManyField(TipoClasificacion,
-                                              related_name='%(class)s_subclasificaciones',
-                                              )
+    #
+    # subclasificacion = models.ManyToManyField(TipoClasificacion,
+    #                                           related_name='%(class)s_subclasificaciones',
+    #                                           )
 
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
@@ -265,6 +278,7 @@ class Obra(models.Model):
     autorizada = models.BooleanField(default=False)
     latitud = models.FloatField()
     longitud = models.FloatField()
+    id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
@@ -368,6 +382,23 @@ class Ubicacion(models.Model):
 
 
 class DetalleInversion(models.Model):
-    obra =models.ForeignKey(Obra)
+    obra = models.ForeignKey(Obra)
     tipoInversion = models.ForeignKey(TipoInversion)
     monto = models.FloatField()
+
+
+class DetalleClasificacion(models.Model):
+    obra = models.ForeignKey(Obra)
+    tipoClasificacion = models.ForeignKey(TipoClasificacion,
+                                          limit_choices_to={
+                                              'subclasificacionDe': None,
+                                          }
+                                          )
+
+    subclasificacion = ChainedForeignKey(TipoClasificacion,
+                                         related_name='%(class)s_subclasificaciones',
+                                         chained_field='tipoClasificacion',
+                                         chained_model_field='subclasificacionDe',
+                                         null=True,
+                                         blank=True,
+                                         )
