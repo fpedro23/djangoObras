@@ -382,13 +382,14 @@ class Ubicacion(models.Model):
 
 class DetalleInversion(models.Model):
     obra = models.ForeignKey(Obra)
-    tipoInversion = models.ForeignKey(TipoInversion)
+    tipoInversion = models.ForeignKey(TipoInversion,  unique=True)
     monto = models.FloatField()
 
 
 class DetalleClasificacion(models.Model):
     obra = models.ForeignKey(Obra)
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
+                                          unique=True,
                                           limit_choices_to={
                                               'subclasificacionDe': None,
                                           }
