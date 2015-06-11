@@ -1,12 +1,12 @@
 import requests
 
-SECRET = '1jAcEjCEy2j2fk5V1SJx2lGZeE1LZkEiVRlRUhJrzgRLyDvzWjjCrTHgrB8hVfppObqFgJkPhr1XxvauY9zNRoQcfEnYwXsLj4s5cQlw5PNSZLEuFMQQQYjyrqypuAkv'
+SECRET = 'Byr8I8CTKVSVtw0lPLQz03ljL2d2fwPKW23dEUylv2ofEtPZ6oFbvEQh5SGnp76rjrY8dedmvDWaOjOp1mwZfbxy893ouARVIlqMP8eaXdem07A0AwswSzBFsu1zXuOC'
 
 payload = {
     'grant_type': 'password',
     'username': 'ags',
     'password': 'ags',
-    'client_id': '7qLt3wR97jN42xQyHXBeE8OJ3OojVrIXPkl2H6CV',
+    'client_id': 'U5YLz9L5QNnZ7llan3YW9I6za0mQp8YWozWAsRO6',
     'client_secret': SECRET,
     'scope': 'write read'
 }
