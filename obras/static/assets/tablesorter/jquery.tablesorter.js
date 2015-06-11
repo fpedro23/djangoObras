@@ -37,8 +37,8 @@
 				widthFixed       : false,      // adds colgroup to fix widths of columns
 				showProcessing   : false,      // show an indeterminate timer icon in the header when the table is sorted or filtered.
 
-				headerTemplate   : '{content}',// header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)
-				onRenderTemplate : null,       // function(index, template){ return template; }, (template is a string)
+				headerTemplate   : '{content}',// header layout templates (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)
+				onRenderTemplate : null,       // function(index, templates){ return templates; }, (templates is a string)
 				onRenderHeader   : null,       // function(index){}, (nothing to return)
 
 				// *** functionality
@@ -78,7 +78,7 @@
 					zebra : [ 'even', 'odd' ]    // zebra widget alternating row class names
 				},
 				initWidgets      : true,       // apply widgets on tablesorter initialization
-				widgetClass     : 'widget-{name}', // table class name template to match to include a widget
+				widgetClass     : 'widget-{name}', // table class name templates to match to include a widget
 
 				// *** callbacks
 				initialized      : null,       // function(table){},
@@ -462,7 +462,7 @@
 					c.headerContent[index] = $t.html();
 					// if headerTemplate is empty, don't reformat the header cell
 					if ( c.headerTemplate !== '' && !$t.find('.' + ts.css.headerIn).length ) {
-						// set up header template
+						// set up header templates
 						t = c.headerTemplate.replace(/\{content\}/g, $t.html()).replace(/\{icon\}/g, $t.find('.' + ts.css.icon).length ? '' : i);
 						if (c.onRenderTemplate) {
 							h = c.onRenderTemplate.apply($t, [index, t]);

@@ -45,7 +45,7 @@ class BuscarObras:
 
     def buscar(self):
 
-        query = None
+        query = Q()
 
         if self.idTipoObra is not None:
             query = Q(tipoObra__id__in=self.idTipoObra)
@@ -84,7 +84,7 @@ class BuscarObras:
             query = query & Q(denominacion__contains=self.denominacion)
 
         if self.instancia_ejecutora is not None:
-            query = Q(instanciaEjecutora__id__in=self.instancia_ejecutora)
+            query = query & Q(instanciaEjecutora__id__in=self.instancia_ejecutora)
 
         if query is not None:
             print query

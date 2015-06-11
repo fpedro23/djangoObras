@@ -89,12 +89,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dbobras',
         'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'PASSWORD': 'root',
+        'HOST': '',
+        'PORT': '',
     }
 }
-
 
 # DATABASES = {
 #   'default': {
@@ -103,7 +102,7 @@ DATABASES = {
 #   }
 # }
 
-MEDIA_ROOT = '/djangoApps/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'obras/media')
 MEDIA_URL = '/media/'
 
 # Internationalization

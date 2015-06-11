@@ -29,12 +29,22 @@ function main_consulta() {
     $j('#ver_grafica_dependencia #dependencia').on('click', graficas);
     $j('#ver_grafica_tipos #tipoGrafica').on('change', graficas);
     $j('#ver_grafica_datos #datosGrafica').on('change', graficas);
+    $j('#go_Graficas #goGraficas').on('click', enviaFiltrosGrafica);
+    $j('#art_limpiar #limpiar').on('click', limpia);
+
+    $j('#regresaGraficas #regresarBTN').on('click', regresa);
+
 }
 
+function limpia(){
+   $j("#forma").reset();
+}
 
+jQuery.fn.reset = function () {
+  $j(this).each (function() { this.reset(); });
+}
 
-
-function verDatos() {
+function enviaFiltrosGrafica() {
     var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
@@ -51,11 +61,65 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'vhX0hn6W9OJ83ZEJVf3sbRls46JeQV'
+      "access_token"  : $j('[name="csrfmiddlewaretoken"]').val()  //'3JrrYpjjShuhPp81AsvTPW1VVJS3RG'
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
     if(arrayEstatusObra.toString()!=""){ajax_data.tipoDeObra=arrayEstatusObra.toString();}
+    if(arrayEstados.toString()!=""){ajax_data.estado=arrayEstados.toString();}
+    if(arrayClasificacion.toString()!=""){ajax_data.clasificacion=arrayClasificacion.toString();}
+    if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
+    if(arrayInaugurador.toString()!=""){ajax_data.inaugurador=arrayInaugurador.toString();}
+    if(arrayImpacto.toString()!=""){ajax_data.impacto=arrayImpacto.toString();}
+    if(fechaInicio1!=""){ajax_data.fechaInicio=$j.date(fechaInicio1);}
+    if(fechaInicio2!=""){ajax_data.fechaInicioSegunda=$j.date(fechaInicio2);}
+    if(fechaFin1!=""){ajax_data.fechaFin=$j.date(fechaFin1);}
+    if(fechaFin2!=""){ajax_data.fechaFinSegunda=$j.date(fechaFin2);}
+    if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
+    if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
+    if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
+
+
+    $j.ajax({
+        url: '/obras/graficas',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+            alert(data);
+            $j('#pagina').html(data);
+
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
+}
+
+
+function verDatos() {
+    var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
+    var fechaInicio1 = $l("#fechaInicial1").val();
+    var fechaInicio2 = $l("#fechaInicial2").val();
+    var fechaFin1 = $l("#fechaFinal1").val();
+    var fechaFin2 = $l("#fechaFinal2").val();
+    var inversionInicial = $l("#inversionInicial").val();
+    var inversionFinal = $l("#inversionFinal").val();
+
+
+    var ajax_data = {
+      "access_token"  : 'NLhgd5wEBjprcwsfUUP5XmHju8DrV7'
+    };
+
+    if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
+    if(arrayEstatusObra.toString()!=""){ajax_data.tipoDeObra=arrayEstatusObra.toString();}
+    if(arrayInstanciaEjecutora.toString()!=""){ajax_data.instanciaEjecutora=arrayInstanciaEjecutora.toString();}
     if(arrayEstados.toString()!=""){ajax_data.estado=arrayEstados.toString();}
     if(arrayClasificacion.toString()!=""){ajax_data.clasificacion=arrayClasificacion.toString();}
     if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
@@ -104,6 +168,11 @@ function verDatos() {
     });
 }
 
+function regresa(){
+    $pp('#pagina').show();
+    $pp('#div-grafica').removeClass("mfp-show");
+    $pp('#div-grafica').addClass("mfp-hide");
+}
 
 
 function mostrarTablas() {
@@ -120,6 +189,8 @@ function graficas(){
     var datas = new Array();
     var montos = new Array();
 
+    $pp('#pagina').hide();
+    $pp('#div-grafica').addClass("mfp-show");
 
     if (tipoReporte=="Dependencia") {
         for (var i = 0; i < datosJson.reporte_dependencia.length; i++) {
@@ -460,11 +531,11 @@ function puntosMapa(Datos) {
   var arregloSimple=new Array();
   var arregloDoble=new Array();
     var arregloObjeto = new Object();
-    for(var i= 0;i<Datos.obras.length;i++){
+    for(var i= 0;i<Datos.reporte_estado.length;i++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.obras[i].estado.nombreEstado + ", " + Datos.obras[i].dependencia.nombreDependencia);
-        arregloSimple.push(Datos.obras[i].estado.latitud);
-        arregloSimple.push(Datos.obras[i].estado.longitud);
+        arregloSimple.push(Datos.reporte_estado[i].estado.nombreEstado + ", número de obras: " + Datos.reporte_estado[i].numeroObras);
+        arregloSimple.push(Datos.reporte_estado[i].estado.latitud);
+        arregloSimple.push(Datos.reporte_estado[i].estado.longitud);
         arregloSimple.push(i);
         arregloDoble.push(arregloSimple);
     }
@@ -497,13 +568,19 @@ function setMarkers(mapa, lugares) {
 
 
 function tablaI(Datos){
-    var sHtml='<div class="row titulo">'
+    var sHtmlExporta="";
+    var sHtmlShorter="";
+    var sHtmlistado="";
+
+    sHtmlExporta= '<div class="row titulo">'
                     + '<div class="col-md-6">'
                     +     'Resultados'
                    + ' </div>'
                + '</div>'
-        +'<table cellspacing="1" class="tablesorter" id="tablaIzquierda">'
-                    +'<thead>'
+                +'<table cellspacing="1" id="tablaExporta2">';
+    sHtmlShorter ='<table cellspacing="1" class="tablesorter" id="tablaIzquierda">';
+    sHtmlistado ='<table cellspacing="1" id="tablaListado">';
+    var sHtml='<thead>'
                         +'<tr>'
                             +'<th>Id</th>'
                             +'<th>Denominaci&oacute;n</th>'
@@ -532,9 +609,15 @@ function tablaI(Datos){
 
                     +'</tfoot>'
                     +'<tbody>';
-
+      sHtmlistado = sHtml;
     for(var i= 0;i<Datos.obras.length;i++){
         sHtml +='<tr>'
+                +'<td>' + Datos.obras[i].identificador +'</td>'
+                +'<td>' + Datos.obras[i].denominacion +'</td>'
+                +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
+                +'</tr>'
+
+        sHtmlistado +='<tr>'
                 +'<td>' + Datos.obras[i].identificador +'</td>'
                 +'<td>' + Datos.obras[i].denominacion +'</td>'
                 +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
@@ -579,9 +662,10 @@ function tablaI(Datos){
                 +'</script>';
 
 
+     $j('#tabla-exporta2').hide();
+    $j('#datos').html(sHtmlShorter + sHtml);
+    $j('#tabla-exporta2').html(sHtmlExporta + sHtml);
 
-
-    $j('#datos').html(sHtml);
 }
 
 
@@ -599,12 +683,7 @@ function tablaD(Datos){
                    + ' </div>'
                + '</div>'
                 +'<table cellspacing="1" id="tablaExporta">';
-    sHtmlShorter ='<div class="row titulo">'
-                    + '<div class="col-md-6">'
-                    +     'Reporte'
-                   + ' </div>'
-               + '</div>'
-                +'<table cellspacing="1" class="tablesorter" id="tablaDerecha">';
+    sHtmlShorter ='<table cellspacing="1" class="tablesorter" id="tablaDerecha">';
     //alert($j('input:radio[name=tipoReporte]:checked').val());
 
     var sHtml='<thead>'
@@ -707,7 +786,7 @@ function tablaD(Datos){
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 90,'
+                +'        scroller_height : 140,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
@@ -810,7 +889,7 @@ $j.tablaGrafica = function(Datos){
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager","scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 110,'
+                +'        scroller_height : 90,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'

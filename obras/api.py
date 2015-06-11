@@ -121,6 +121,19 @@ class DependenciasTreeEndpoint(ProtectedResourceView):
 
         return HttpResponse(json.dumps(ans), 'application/json')
 
+class DependenciasIdEndpoint(ProtectedResourceView):
+    def get(self, request):
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
+        idDep = request.GET.get('id')
+
+        dependencias = Dependencia.objects.filter(id=idDep).all()
+
+        ans = []
+        for dep in dependencias:
+            ans.append(dep.get_tree())
+
+        return HttpResponse(json.dumps(ans), 'application/json')
+
 
 class SubependenciasFlatEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -229,6 +242,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             map = {}
             if reporte_estado['sumatotal'] is None:
                 map['sumatotal'] = 0.0
+
             else:
                 map['sumatotal'] = float(reporte_estado['sumatotal'])
             map['estado'] = Estado.objects.get(

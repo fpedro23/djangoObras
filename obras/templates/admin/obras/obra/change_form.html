@@ -65,6 +65,54 @@ x++;
     });
 })(django.jQuery);
 </script>
+
+
+
+    <script>
+        var $j = jQuery.noConflict();
+        $j(document).on('ready', main_consulta);
+        function main_consulta() {
+            $j.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if(settings.type == "POST"){
+                        xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
+                    }
+                    if(settings.type == "GET"){
+                        xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
+                    }
+                }
+            });
+
+            $j('#id_dependencia').on('change', regresa);
+
+        }
+
+        function regresa(){
+            var idDep = $j("#id_dependencia").val();
+            var sHtml="";
+
+            var ajax_data = {"access_token"  : 'b9W4vLT0msrISVYLNOY8lMy9WmAtEs'};
+
+            if(idDep.toString()!=""){ajax_data.id=idDep.toString();}
+
+            $j.ajax({
+                url: '/obras/api/dependencia_imagen',
+                type: 'get',
+                data: ajax_data,
+                success: function(data) {
+                    sHtml= '<img src="' + data[0].dependencia.imagenDependencia.toString() +'" >'
+                    $j('#logoDEP').html(sHtml);
+
+                },
+                error: function(data) {
+                    alert('error!!! ' + data.status);
+                }
+            });
+        }
+
+
+    </script>
+
 {% endblock %}
 
 {% block extrastyle %}{{ block.super }}

@@ -18,6 +18,15 @@ function main_presentaciones() {
     $('#hiperporsector button').on('click', hiper_por_sector);
     $('#hiperporentidad button').on('click', hiper_por_entidad);
 
+    $('#balancegeneralppt').on('click', balance_general);
+    $('#hiperinfogeneralppt').on('click', hiper_info_general);
+    $('#hiperinauguradasppt').on('click', hiper_inauguradas);
+    $('#hiperporsectorppt').on('click', hiper_por_sector);
+    $('#hiperporentidadppt').on('click', hiper_por_entidad);
+
+    $('#obrasIniciadas').on('click', verObrasIniciadas);
+
+
 }
 
 function balance_general() {
@@ -34,4 +43,24 @@ function hiper_por_sector() {
 }
 function hiper_por_entidad() {
 		$.post('hiper-por-entidad-ppt');
+}
+
+
+function verObrasIniciadas() {
+
+    var ajax_data = {
+      "access_token"  : 'GrJSaQWkcuObAQ0FzlYZzrHNJpBPea'
+    };
+
+    $.ajax({
+        url: '/obras/api/obras_iniciadas',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+            alert('success!!! ');
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
 }
