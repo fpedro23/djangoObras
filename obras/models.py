@@ -211,6 +211,7 @@ class TipoMoneda(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 class Usuario(models.Model):
     SUPERADMIN = 'SA'
     ADMIN = 'AD'
@@ -305,7 +306,7 @@ class Obra(models.Model):
     autorizada = models.BooleanField(default=False)
     latitud = models.FloatField()
     longitud = models.FloatField()
-    id_Dependencia = models.CharField(verbose_name='Identificador Interno' , max_length=200)
+    id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
@@ -436,14 +437,21 @@ class Ubicacion(models.Model):
 
 class DetalleInversion(models.Model):
     obra = models.ForeignKey(Obra)
-    tipoInversion = models.ForeignKey(TipoInversion,  unique=True)
+    tipoInversion = models.ForeignKey(TipoInversion, )
     monto = models.FloatField()
+
+    class Meta:
+        unique_together = [("obra", "tipoInversion")]
 
 
 class DetalleClasificacion(models.Model):
+    class Meta:
+        unique_together = [("obra", "tipoClasificacion")]
+
+
     obra = models.ForeignKey(Obra)
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
-                                          unique=True,
+
                                           limit_choices_to={
                                               'subclasificacionDe': None,
                                           }
