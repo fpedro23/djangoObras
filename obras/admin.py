@@ -3,7 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import SimpleListFilter
 
 from obras.models import *
-from obras.forms import AddObraForm, DetalleInversionAddForm
+from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm
+
 
 
 
@@ -39,17 +40,18 @@ class UsuarioInline(admin.StackedInline):
 # Define a new User admin
 class UserAdmin(UserAdmin):
     inlines = (UsuarioInline, )
-    list_display = ('username', 'first_name','last_name','email','get_dependencia',)
+    list_display = ('username', 'first_name', 'last_name', 'email', 'get_dependencia',)
     add_fieldsets = (
-        (None, {'fields': ('username', 'password1','password2')}),
+        (None, {'fields': ('username', 'password1', 'password2')}),
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions')}),
+                                      'groups', 'user_permissions')}),
         (('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 
-    def get_dependencia(self,obj):
+    def get_dependencia(self, obj):
         return obj.usuario.dependencia
+
     get_dependencia.short_description = 'Dependencia'
 
     def get_queryset(self, request):
@@ -70,11 +72,10 @@ class UserAdmin(UserAdmin):
                 Q(usuario__dependencia__dependienteDe__id__in=arreglo_dependencias)
             )
         elif request.user.usuario.rol == 'US':
-                print 'Query Set Usuario'
-                return qs.filter(
-                    Q(usuario__dependencia=request.user.usuario.dependencia)
-                )
-
+            print 'Query Set Usuario'
+            return qs.filter(
+                Q(usuario__dependencia=request.user.usuario.dependencia)
+            )
 
 
 class DependenciaAdmin(admin.ModelAdmin):
@@ -116,7 +117,6 @@ class DocumentoFuenteInline(admin.TabularInline):
 
 
 class DependenciaListFilter(SimpleListFilter):
-
     # USAGE
     # In your admin class, pass three filter class as tuple for the list_filter attribute:
     #
@@ -189,10 +189,16 @@ class DetalleInversionInline(admin.TabularInline):
     extra = 1
 
 
+class DetalleClasificacionInline(admin.TabularInline):
+    form = DetalleClasificacionAddForm
+    model = DetalleClasificacion
+    extra = 1
+
+
 class ObrasAdmin(admin.ModelAdmin):
     form = AddObraForm
     inlinesClasificacion = [ClasificacionInLine]
-    inlines = (DetalleInversionInline, DocumentoFuenteInline)
+    inlines = (DetalleInversionInline, DocumentoFuenteInline, DetalleClasificacionInline)
 
     list_display = (
         'identificador_unico',
@@ -229,9 +235,6 @@ class ObrasAdmin(admin.ModelAdmin):
                       'totalBeneficiarios',
                       'impacto',
                       'senalizacion',
-                      'tipoClasificacion',
-                      'subclasificacion',
-                      'tipoInversion',
                       'registroHacendario',
                       'montoRegistroHacendario',
                       'inversionTotal',
@@ -243,7 +246,7 @@ class ObrasAdmin(admin.ModelAdmin):
                       'fotoAntes',
                       'fotoDurante',
                       'fotoDespues',
-                      #'autorizada',
+                      # 'autorizada',
                       #'registroAuditoria',
                       )
         else:
@@ -265,8 +268,6 @@ class ObrasAdmin(admin.ModelAdmin):
                       'totalBeneficiarios',
                       'impacto',
                       'senalizacion',
-                      'tipoClasificacion',
-                      'subclasificacion',
                       'registroHacendario',
                       'montoRegistroHacendario',
                       'inversionTotal',
@@ -303,17 +304,17 @@ class ObrasAdmin(admin.ModelAdmin):
                 kwargs["queryset"] = Dependencia.objects.filter(
                     Q(id__in=arreglo_dependencias) |
                     Q(dependienteDe__id__in=arreglo_dependencias)
-                    )
+                )
             elif request.user.usuario.rol == 'US':
-                    arreglo_dependencias = []
+                arreglo_dependencias = []
 
-                    for dependencia in request.user.usuario.dependencia.all():
-                        print(dependencia.id)
-                        arreglo_dependencias.append(dependencia.id)
+                for dependencia in request.user.usuario.dependencia.all():
+                    print(dependencia.id)
+                    arreglo_dependencias.append(dependencia.id)
 
-                    kwargs["queryset"] = Dependencia.objects.filter(
+                kwargs["queryset"] = Dependencia.objects.filter(
                     Q(id__in=arreglo_dependencias)
-                    )
+                )
 
         return super(
             ObrasAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
@@ -340,11 +341,10 @@ class ObrasAdmin(admin.ModelAdmin):
                 Q(dependencia__dependienteDe__id__in=arreglo_dependencias)
             )
         elif request.user.usuario.rol == 'US':
-                print 'Query Set Usuario'
-                return qs.filter(
+            print 'Query Set Usuario'
+            return qs.filter(
                 Q(dependencia__id__in=arreglo_dependencias)
-                )
-
+            )
 
 
 admin.site.unregister(User)

@@ -4,8 +4,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from obras.models import Obra, Dependencia
 from obras.models import Obra, DetalleInversion
+from obras.models import Obra, DetalleInversion, DetalleClasificacion
 import itertools
 from datetime import datetime
+
+
+class DetalleClasificacionAddForm(forms.ModelForm):
+    class Meta:
+        model = DetalleClasificacion
 
 
 class DetalleInversionAddForm(forms.ModelForm):
