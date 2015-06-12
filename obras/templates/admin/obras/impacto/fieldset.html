@@ -9,11 +9,11 @@
 
                 {% if field.field.name == "nombreImpacto" %}
                     <div class="row field-nombreImpacto" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                    <div class="col-md-4" align="left"><label id="label-fld" for="id_nombreImpacto">
+                    <div class="col-md-7" align="left"><label id="label-fld" for="id_nombreImpacto">
                         <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                        Impacto:</label></div>
 
-                    <div class="col-md-1"><input class="vTextField" id="id_nombreImpacto" maxlength="200" name="nombreImpacto" type="text"
+                    <div class="col-md-5"><input class="vTextField" id="id_nombreImpacto" maxlength="200" name="nombreImpacto" type="text"
                                         value="{{ field.field.value|default_if_none:"" }}"/></div>
                     </div>
                 {% endif %}

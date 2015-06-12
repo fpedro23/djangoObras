@@ -10,7 +10,7 @@
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Nombre de Clasificación:</label></div>
 
-            <div class="col-md-1"><input class="vTextField" id="id_nombreTipoClasificacion" maxlength="200" name="nombreTipoClasificacion" type="text"
+            <div class="col-md-5"><input class="vTextField" id="id_nombreTipoClasificacion" maxlength="200" name="nombreTipoClasificacion" type="text"
                                 value="{{ field.field.value|default_if_none:"" }}"/></div>
             </div>
         {% endif %}
@@ -22,7 +22,7 @@
                              <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                             Nombre Corto:</label>
               </div>
-                <div class="col-md-1">
+                <div class="col-md-5">
                     <input class="vTextField" id="id_nombreTipoClasificacionCorta" maxlength="200" name="nombreTipoClasificacionCorta" type="text" value="{{ field.field.value|default_if_none:"" }}"/>
 
                 </div>
