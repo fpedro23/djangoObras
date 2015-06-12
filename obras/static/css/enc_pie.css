@@ -560,3 +560,19 @@ a{
 .aceptarBTN:hover{
 	background-position:-724px -2287px;
 }
+
+.eliminarICO{
+    width:15px;
+	height:15px;
+    background-image:url(../img/bigBackground.fw.png);
+    background-position: -1130px -1526px;
+}
+
+.eliminarICO:hover{
+	background-position: -1150px -1526px ;
+}
+
+
+
+
+
