@@ -202,7 +202,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 15px;
 	color: #6A6B6C;
 	width: 400px;
-	height: 300px;
+	height: 120px;
 	position: absolute;
 	left: 685px;
 	top: 186px;
@@ -316,7 +316,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	background-image: url(../img/bigBackground.fw.png);
 	background-position: -724px -1789px;
 	position: absolute;
-	top: 419px;
+	top: 439px;
 	left: 546px;
 }
 
@@ -462,6 +462,30 @@ top: 34px;
 	top: 281px;
 }
 
+.inversionup{
+	border: 0px solid #327451;
+	border-radius: 0px;
+	width: 334px;
+	height: 101px;
+	font-family: 'soberana_sanslight';
+	font-size: 13px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 342px;
+	top: 311px;
+}
+.inversionin{
+	border: 0px solid #327451;
+	border-radius: 0px;
+	width: 334px;
+	height: 100px;
+	font-family: 'soberana_sanslight';
+	font-size: 13px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 2px;
+	top: 121px;
+}
 .inauguracion{
 	border: 2px solid #327451;
 	border-radius: 2px;

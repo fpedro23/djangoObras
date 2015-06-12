@@ -201,20 +201,19 @@
 
 
 
-       {% if field.field.name == "tipoInversion" %}
-             <!-- I N V E R S I O N-->
-            <div class="inversion">
-                <div id="tituloCUADROS">
-    	            INVERSIÓN
-                </div>
-                <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
-                    <tr>
-                        <td colspan="2"><label class="required" for="id_tipoInversion"></label>{{ field.field }}</td>
 
-                    </tr>
-        {% endif %}
+
+
 
         {% if field.field.name == "registroHacendario" %}
+            <!-- I N V E R S I O N-->
+
+       <div class="inversion" style="overflow:scroll;">
+        <div id="tituloCUADROS">
+                INVERSION
+        </div>
+           <div class="inversionin">
+                <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                 <tr>
                     <td>  <label for="id_registroHacendario" style="font-size: 11px;"> Registro de Cartera de Inversión:</label></td>
                     <td>  <input class="vTextField" id="id_registroHacendario" maxlength="200" name="registroHacendario" type="text" value="{{ field.field.value|default_if_none:"" }}"/></td>
@@ -223,6 +222,7 @@
                     <td>  <label class="inline" for="id_montoRegistroHacendario"> Recursos Federales Autorizados:</label></td>
                     <td>  <input id="id_montoRegistroHacendario" name="montoRegistroHacendario"  type="number" value="{{ field.field.value|default_if_none:"" }}"/></td>
                 </tr>
+
         {% endif %}
 
 
@@ -249,6 +249,7 @@
                 </tr>
              </table>
              </div>
+         </div>
         {% endif %}
 
         {% if field.field.name == "susceptibleInauguracion" %}
@@ -345,9 +346,38 @@
                 <div class="guardarOBTN" onclick="document.getElementById('{{ opts.model_name }}_form').submit('_save');"></div>
         </div>
 
- {% for inline_admin_formset in inline_admin_formsets %}
 
-      <div class="documentos" style="overflow:scroll;">
+</fieldset>
+
+
+
+
+
+ {% for inline_admin_formset in inline_admin_formsets %}
+    {% if inline_admin_formset.formset.prefix == "detalleclasificacion_set" %}
+      <!-- CLASIFICACION-->
+    <div class="clasificacion" style="overflow:scroll;">
+                <div id="tituloCUADROS">
+    	            CLASIFICACION
+                </div>
+
+
+           <table>
+                <tr class="form-row row1">
+                      <td class="field-descripcion" colspan="2">
+                                 {# inline_admin_formset.opts.template = admin/edit_inline/tabular.html #}
+                                {#   include inline_admin_formset.opts.template #}
+
+                          {% include "admin/obras/obra/tabularcl.html"  %}
+
+                      </td>
+
+                </tr>
+            </table>
+   </div>
+ {% endif %}
+     {% if inline_admin_formset.formset.prefix == "documentofuente_set" %}
+         <div class="documentos" style="overflow:scroll;">
         <div id="tituloCUADROS">
                 DOCUMENTOS FUENTE
         </div>
@@ -363,16 +393,21 @@
                 </tr>
             </table>
    </div>
+    {% endif %}
 
+      {% if inline_admin_formset.formset.prefix == "detalleinversion_set" %}
 
-        {% endfor %}
-</fieldset>
+        <div class="inversionup" style="overflow:scroll;">
 
+                                   {% for inline_admin_formset in inline_admin_formsets %}
 
+                                       {% if inline_admin_formset.formset.prefix == "detalleinversion_set" %}
+                                        {% include "admin/obras/obra/tabularin.html"  %}
+                                       {% endif %}
+                                   {% endfor %}
+               </div>
 
-
-
-
-
+{% endif %}
+ {% endfor %}
 
 

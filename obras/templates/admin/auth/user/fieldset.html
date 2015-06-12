@@ -1,6 +1,6 @@
 
 {% if fieldset.name == "Personal info" %}
-<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+<fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
      <div class="datosGENERALES">
      <div id="tituloCUADROS">
     	DATOS GENERALES
@@ -10,7 +10,7 @@
         {% for field in line %}
              {% if field.field.name == "first_name" %}
                 <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                    <div class="col-md-3"  >
+                    <div class="col-md-3">
                         <label class="required" for="id_first_name">Nombre:</label>
                     </div>
                     <div class="col-md-1" >
@@ -42,7 +42,7 @@
              {% if field.field.name == "email" %}
                 <div class="row  field-email" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-3"  >
-                        <label for="id_email">E-mail:</label>
+                        *<label for="id_email">&nbsp;E-mail:</label>
                     </div>
                     <div class="col-md-1" >
                         {{ field.field }}
@@ -60,7 +60,7 @@
 {% endif %}
 
  {% if fieldset.name == "AuthInfo" %}
-<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+<fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
      <div class="datosINICIO">
      <div id="tituloCUADROS">DATOS DE ACCESO
       <p>&nbsp;</p></div>
@@ -126,13 +126,13 @@
     </div>
     <div class="campos04">
     <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;<br><br></p>
-<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+<fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
 
          {% for line in fieldset %}
             {% for field in line %}
                {% if field.field.name == "is_active" %}
                  <div class="row field-is_active">
-                    <div class="col-md-5" >
+                    <div class="col-md-4" >
                         <label class="vCheckboxLabel" for="id_is_active">Activo</label>
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -147,10 +147,10 @@
 
                {% if field.field.name == "is_staff" %}
                   <div class="row field-is_staff">
-                    <div class="col-md-5" >
+                    <div class="col-md-4" >
                        <label class="vCheckboxLabel" for="id_is_staff">Es staff</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-1">
                         {{ field.field }}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -161,7 +161,7 @@
                 {% endif %}
                  {% if field.field.name == "is_superuser" %}
                   <div class="row field-is_superuser">
-                    <div class="col-md-5" >
+                    <div class="col-md-4" >
                       <label class="vCheckboxLabel" for="id_is_superuser">Es superusuario</label>
                     </div>
                     <div class="col-md-1" >
@@ -185,14 +185,14 @@
 
   <div class="campos03">
 
-    <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
+    <fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 2px;">
 
          {% for line in fieldset %}
             {% for field in line %}
                {% if field.field.name == "rol" %}
                  <div class="row field-rol">
-                    <div class="col-md-2" >
-                        <label class="required" for="id_rol">Rol:</label>
+                    <div class="col-md-3" >
+                        <label class="required" for="id_rol">*Rol:</label>
                     </div>
                     <div class="col-md-1" >
                             {{ field.field }}
@@ -207,7 +207,7 @@
                {% if field.field.name == "dependencia" %}
                   <div class="row field-dependencia">
                     <div class="col-md-3" >
-                        <label for="id_usuario-0-dependencia">Dependencia:</label>
+                        <label for="id_usuario-0-dependencia">*Dependencia:</label>
                     </div>
                     <div class="col-md-1" >
                         {{ field.field }}
@@ -273,35 +273,3 @@
      </div>
 </fieldset>
 {% endif %}
-
-<!--
-<fieldset class="module aligned {{ fieldset.classes }}">
-    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
-    {% if fieldset.description %}
-        <div class="description">{{ fieldset.description|safe }}</div>
-    {% endif %}
-    {% for line in fieldset %}
-        <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
-            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
-            {% for field in line %}
-                <div{% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
-                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
-                    {% if field.is_checkbox %}
-                        {{ field.field }}{{ field.label_tag }}
-                    {% else %}
-                        {{ field.label_tag }}
-                        {% if field.is_readonly %}
-                            <p>{{ field.contents }}</p>
-                        {% else %}
-                            {{ field.field }}
-                        {% endif %}
-                    {% endif %}
-                    {% if field.field.help_text %}
-                        <p class="help">{{ field.field.help_text|safe }}</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    {% endfor %}
-</fieldset>
--->
