@@ -353,9 +353,41 @@ a#add_id_tipoClasificacion.add-another {display:none;}
 
 .add-another {display:none;}
 
-input {
-  line-height: initial;
+input[type=text], input[type=number] {
+    font-family: "soberana_sanslight";
+    line-height: initial;
+    height: 17px;
+    width: 98%;
 }
+
+input[type=file] {
+    line-height: initial;
+    height: 17px;
+    width: 98%;
+    font-family: "soberana_sanslight";
+}
+select{
+    font-family: "soberana_sanslight";
+  line-height: initial;
+    height: 17px;
+    width: 98%;
+}
+
+textarea{
+    line-height: initial;
+    width: 98%;
+    height: 40px;
+}
+
+td, th {
+    font-size: 13px;
+    line-height: 13px;
+    border-bottom: 0px;
+    vertical-align: top;
+    padding: 3px;
+    font-family: 'soberana_sanslight';
+}
+
 
 #tituloCUADROS{
 	font-family: 'soberana_titularregular';
@@ -407,7 +439,7 @@ input {
 	color: #6A6B6C;
 	position: absolute;
 	left: -1px;
-top: 34px;
+    top: 34px;
 }
 
 .descripcion{
@@ -426,64 +458,64 @@ top: 34px;
 .beneficiarios{
 	border: 2px solid #327451;
 	border-radius: 2px;
-	width: 334px;
+	width: 344px;
 	height: 109px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
-	left: 342px;
+	left: 338px;
 	top: 34px;
 }
 
 .clasificacion{
 	border: 2px solid #327451;
 	border-radius: 2px;
-	width: 334px;
+	width: 344px;
 	height: 131px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
-	left: 342px;
+	left: 338px;
 	top: 148px;
 }
 
 .inversion{
 	border: 2px solid #327451;
 	border-radius: 2px;
-	width: 334px;
+	width: 344px;
 	height: 251px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
-	left: 342px;
+	left: 338px;
 	top: 281px;
 }
 
 .inversionup{
 	border: 0px solid #327451;
 	border-radius: 0px;
-	width: 334px;
+	width: 340px;
 	height: 101px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
-	left: 342px;
+	left: 340px;
 	top: 311px;
 }
 .inversionin{
 	border: 0px solid #327451;
 	border-radius: 0px;
-	width: 334px;
+	width: 340px;
 	height: 100px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
-	left: 2px;
+	left: 1px;
 	top: 121px;
 }
 .inauguracion{
