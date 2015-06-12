@@ -278,7 +278,6 @@ class Obra(models.Model):
                                                }
                                                )
 
-
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
@@ -459,7 +458,8 @@ class DetalleClasificacion(models.Model):
                                          null=True,
                                          blank=True,
                                          )
-    
+
+
 def get_subdependencias_as_list_flat(deps):
     ans = []
     for dependencia in deps:

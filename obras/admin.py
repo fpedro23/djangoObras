@@ -192,7 +192,7 @@ class DetalleInversionInline(admin.TabularInline):
 class DetalleClasificacionInline(admin.TabularInline):
     form = DetalleClasificacionAddForm
     model = DetalleClasificacion
-    extra = 1
+    extra = 4
 
 
 class ObrasAdmin(admin.ModelAdmin):
