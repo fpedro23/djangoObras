@@ -355,6 +355,7 @@ a#add_id_tipoClasificacion.add-another {display:none;}
 
 input[type=text], input[type=number] {
     font-family: "soberana_sanslight";
+    font-size: 12px;
     line-height: initial;
     height: 17px;
     width: 98%;
@@ -362,13 +363,15 @@ input[type=text], input[type=number] {
 
 input[type=file] {
     line-height: initial;
-    height: 17px;
+    height: 15px;
     width: 98%;
     font-family: "soberana_sanslight";
+    font-size: 12px;
 }
 select{
     font-family: "soberana_sanslight";
-  line-height: initial;
+    font-size: 12px;
+    line-height: initial;
     height: 17px;
     width: 98%;
 }
@@ -744,4 +747,28 @@ label {
 	left: 685px;
 	top: 144px;
     background-color: transparent;
+}
+
+
+.datosCATALOGOS{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 384px;
+	height: 282px;
+	font-family: "soberana_sanslight;
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 298px;
+	top: 143px;
+}
+
+.rowmod{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.colmod{
+  padding-right: 0px;
+  padding-left: 0px;
 }

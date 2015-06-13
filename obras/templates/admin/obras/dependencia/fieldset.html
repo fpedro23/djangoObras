@@ -1,48 +1,50 @@
 
- <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px">
- <div class="campos01">
+  <fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px">
+ <div class="datosCATALOGOS">
+  <div id="tituloCUADROS">DATOS GENERALES</div>
       <p>&nbsp;</p><p>&nbsp;</p>
+
   {% for line in fieldset %}
   {% for field in line %}
 
           {% if field.field.name == "nombreDependencia" %}
-              <div class="row field-nombreDependencia" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                <div class="col-md-7" align="left"><label id="label-fld" for="id_nombreDependencia">
+              <div class="row field-nombreDependencia rowmod" style="margin-bottom: 4px;">
+                <div class="col-md-6 colmod"><label id="label-fld" for="id_nombreDependencia">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
-                Nombre de Dependencia</label></div>
+                Nombre de Dependencia:</label></div>
 
-            <div class="col-md-5"><input class="vTextField" id="id_nombreDependencia" maxlength="200" name="nombreDependencia" type="text"
+            <div class="col-md-6 colmod"><input class="vTextField" id="id_nombreDependencia" maxlength="200" name="nombreDependencia" type="text"
                                 value="{{ field.field.value|default_if_none:"" }}"/></div>
             </div>
        {% endif %}
 
       {% if field.field.name == "dependienteDe" %}
 
-        <div class="row field-dependienteDe" align="center" style="border-bottom: 15px; padding-bottom: 10px;" id="depde" hidden="true">
-            <div class="col-md-7" align="left"><label id="label-fld" for="id_dependienteDe">
+        <div class="row field-dependienteDe rowmod" align="center" id="depde" hidden="true">
+            <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_dependienteDe">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Dependiente de:</label></div>
 
-            <div class="col-md-1">
+            <div class="col-md-6 colmod">
                                 {{ field.field }}</div>
             </div>
         {% endif %}
 
         {% if field.field.name == "imagenDependencia" %}
 
-        <div class="row field-imagenDependencia" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-            <div class="col-md-7" align="left"><label id="label-fld" for="id_imagenDependencia">
+        <div class="row field-imagenDependencia rowmod" align="center">
+            <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_imagenDependencia">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Imágen de Dependencia:</label></div>
 
-            <div class="col-md-5"><input  id="id_imagenDependencia" name="imagenDependencia" type="file"
+            <div class="col-md-6 colmod"><input id="id_imagenDependencia" name="imagenDependencia" type="file"
                                 value="{{ field.field.value|default_if_none:"" }}"/></div>
             </div>
         {% endif %}
 
            {% if field.field.name == "obraoprograma" %}
 
-        <div class="row field-obraoprograma" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+        <div class="row field-obraoprograma rowmod" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
            <!-- <div class="col-md-7" align="left"><label id="label-fld" for="id_obraoprograma">
                 <span class="">*</span>
                 Obra o Programa (O/P):</label></div>
@@ -59,7 +61,8 @@
 
      {% endfor %}
    {% endfor %}
-
-        </div>
+   </div>
 </fieldset>
+
+
 
