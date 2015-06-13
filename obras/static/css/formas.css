@@ -475,7 +475,7 @@ td, th {
 	border: 2px solid #327451;
 	border-radius: 2px;
 	width: 344px;
-	height: 131px;
+	height: 171px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
@@ -488,13 +488,13 @@ td, th {
 	border: 2px solid #327451;
 	border-radius: 2px;
 	width: 344px;
-	height: 251px;
+	height: 211px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
 	left: 338px;
-	top: 281px;
+	top: 321px;
 }
 
 .inversionup{
@@ -507,19 +507,19 @@ td, th {
 	color: #6A6B6C;
 	position: absolute;
 	left: 340px;
-	top: 311px;
+	top: 351px;
 }
 .inversionin{
 	border: 0px solid #327451;
 	border-radius: 0px;
 	width: 340px;
-	height: 100px;
+	height: 84px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
 	left: 1px;
-	top: 121px;
+	top: 125px;
 }
 .inauguracion{
 	border: 2px solid #327451;

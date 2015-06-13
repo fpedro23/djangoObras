@@ -7,11 +7,21 @@ from obras.models import Obra, DetalleInversion
 from obras.models import Obra, DetalleInversion, DetalleClasificacion
 import itertools
 from datetime import datetime
+from django.utils.safestring import mark_safe
+
+class HorizRadioRenderer(forms.RadioSelect.renderer):
+    """ this overrides widget method to put radio buttons horizontally
+        instead of vertically.
+    """
+    def render(self):
+            """Outputs radios"""
+            return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
 
 class DetalleClasificacionAddForm(forms.ModelForm):
     class Meta:
         model = DetalleClasificacion
+
 
 
 class DetalleInversionAddForm(forms.ModelForm):
@@ -23,12 +33,13 @@ class AddObraForm(forms.ModelForm):
     class Meta:
         model = Obra
         fields = '__all__'
-        widgets = {'tipoMoneda': forms.RadioSelect,
-                   'inaugurada': forms.RadioSelect,
+        widgets = {'tipoMoneda': forms.RadioSelect(renderer=HorizRadioRenderer),
+                   'inaugurada': forms.RadioSelect(renderer=HorizRadioRenderer),
                    'descripcion': forms.Textarea,
                    'observaciones': forms.Textarea,
                    'tipoClasificacion': forms.CheckboxSelectMultiple,
-                   'tipoInversion': forms.CheckboxSelectMultiple
+                   'tipoInversion': forms.CheckboxSelectMultiple,
+                   'autorizada': forms.RadioSelect(renderer=HorizRadioRenderer)
         }
 
     def save(self, commit=True):
@@ -59,3 +70,5 @@ class AddObraForm(forms.ModelForm):
 
         print(instance.identificador_unico)
         return super(AddObraForm, self).save(commit=commit)
+
+

@@ -23,12 +23,16 @@
               <td>ID Único:</td>
               <td><label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label></td>
           </tr>
+
+          {% endif %}
+       {% if field.field.name == "id_Dependencia" %}
              <tr>
               <td>ID interno:</td>
-              <td><label id="id_identificador_interno" name="identificador_interno" >{{ field.field.value|default_if_none:"" }}</label></td>
+              <td><label id="id_Dependencia" name="id_Dependencia" >{{ field.field.value|default_if_none:"" }}</label></td>
           </tr>
 
           {% endif %}
+
           {% if field.field.name == "denominacion" %}
           <tr>
               <td> <label class="required" for="id_denominacion">Denominacion:</label></td>
