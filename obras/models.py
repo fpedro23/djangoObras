@@ -464,7 +464,8 @@ class DetalleClasificacion(models.Model):
                                          null=True,
                                          blank=True,
                                          )
-    
+
+
 def get_subdependencias_as_list_flat(deps):
     ans = []
     for dependencia in deps:
