@@ -303,7 +303,7 @@ class Obra(models.Model):
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=False, default=1)
-    autorizada = models.NullBooleanField(default=False)
+    autorizada = models.BooleanField(default=False)
     latitud = models.FloatField()
     longitud = models.FloatField()
     id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200)

@@ -38,8 +38,7 @@ class AddObraForm(forms.ModelForm):
                    'descripcion': forms.Textarea,
                    'observaciones': forms.Textarea,
                    'tipoClasificacion': forms.CheckboxSelectMultiple,
-                   'tipoInversion': forms.CheckboxSelectMultiple,
-                   'autorizada': forms.RadioSelect(renderer=HorizRadioRenderer)
+                   'tipoInversion': forms.CheckboxSelectMultiple
         }
 
     def save(self, commit=True):
