@@ -31,6 +31,7 @@ function verDatos() {
 
     var ajax_data = {
       "access_token"  : 'sPrMb7H05PQfi3p7mdFR7Do4bSaZdz'
+
     };
 
     $j.ajax({

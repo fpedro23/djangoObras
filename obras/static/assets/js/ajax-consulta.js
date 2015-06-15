@@ -114,7 +114,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'NLhgd5wEBjprcwsfUUP5XmHju8DrV7'
+      "access_token"  : $.cookie('token')
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}

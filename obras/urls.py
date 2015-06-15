@@ -58,4 +58,5 @@ urlpatterns = patterns('',
                         url(r'^hiper-por-sector-ppt', views.hiper_por_sector_ppt),
                         url(r'^hiper-por-entidad-ppt', views.hiper_por_entidad_ppt),
                        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
+                       url(r'^register-by-token',views.register_by_access_token),
 )

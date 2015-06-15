@@ -28,7 +28,7 @@
     <!-- Custom styles for this template -->
     <link href="{% static "css/enc_pie.css"%}" rel="stylesheet">
     <script src="{% static "js/ie-emulation-modes-warning.js"%}"></script>
-
+    <script src="{% static "assets/js/jquery.cookie.js"%}"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -64,6 +64,9 @@
     </div>
 
     {% if user.is_active and user.is_staff %}
+
+        <script src="{% static "assets/js/inicio.js"%}"></script>
+
         <div id= "nombreUSER">
             {% block welcome-msg %}
                 Bienvenido: {% firstof user.get_short_name user.get_username %}.
