@@ -7,7 +7,29 @@
 var $j = jQuery.noConflict();
 $j(document).on('ready', main_consulta);
 
-var datosJson;
+var datosJson
+var newToken
+
+function valida_token(){
+var ajax_datatoken = {
+      "access_token"  : 'O9BfPpYQuu6a5ar4rGTd2dRdaYimVa'
+    };
+
+
+    $j.ajax({
+        url: '/obras/register-by-token',
+        type: 'get',
+        data: ajax_datatoken,
+        success: function(data) {
+            newToken = data.access_token;
+            //alert(data.access_token);
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
+}
+
 
 function main_consulta() {
     $j.ajaxSetup({
@@ -21,6 +43,8 @@ function main_consulta() {
 		}
 	});
 
+    valida_token();
+
 	$j('#ver_datos #button').on('click', verDatos);
     $j('#ver_tabla_estado #estado').on('click', mostrarTablas);
     $j('#ver_tabla_dependencia #dependencia').on('click', mostrarTablas)
@@ -33,6 +57,7 @@ function main_consulta() {
     $j('#art_limpiar #limpiar').on('click', limpia);
 
     $j('#regresaGraficas #regresarBTN').on('click', regresa);
+
 
 }
 
@@ -114,7 +139,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : $.cookie('token')
+      "access_token"  : newToken
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}

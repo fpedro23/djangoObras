@@ -223,7 +223,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 .consultarBTN{
 	width: 90px;
 	height: 30px;
-	background-image: url(../img-botones/bigBackground.fw.png);
+	background-image: url(../img/bigBackground.fw.png);
 	background-position: -811px -1861px;
 	position: relative;
     display: inline-block;

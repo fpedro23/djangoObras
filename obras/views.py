@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
 
-from obras.tools import get_access_token
+from obras.tools import *
 
 
 # from pptx import Presentation
@@ -25,21 +25,18 @@ def get_user_for_token(token):
 
 def register_by_access_token(request):
 
-    if request.session.get('access_token'):
-        token = request.session["access_token"]
-    else:
-        token = request.GET.get('access_token')
-    # here comes the magic
-    #user = request.backend.do_auth(token)
-    user = get_user_for_token(request.GET.get('access_token'))
-    #if user:
-        # that function will return our own
-        # OAuth2 token as JSON
-    #    return token
-    #else:
-        # If there was an error... you decide what you do here
+    #del request.session['access_token']
 
-    return get_access_token(user,request)
+    if request.session.get('access_token'):
+        token = {
+        'access_token': request.session.get('access_token'),
+        'token_type': 'Bearer'
+    }
+        return JsonResponse(token)
+    else:
+        #user = get_user_for_token('3DVteYz9OIH6gvQDyYX78GOpHKXgPy'
+        user = request.user
+        return get_access_token(user,request)
 
 def ayuda(request):
     return render_to_response('admin/obras/ayuda/c_ayuda.html', locals(),
@@ -555,7 +552,7 @@ def obras_iniciadas(request):
         query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
     obras = Obra.objects.filter(query)
 
-    template = loader.get_template('admin/obras/obras_iniciadas.html')
+    template = loader.get_template('admin/obras/consulta_predefinidos/consulta-predefinidos.html')
     context = RequestContext(request, {
         'obras_iniciadas': obras
     })

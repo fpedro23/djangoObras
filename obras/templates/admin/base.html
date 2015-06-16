@@ -65,8 +65,6 @@
 
     {% if user.is_active and user.is_staff %}
 
-        <script src="{% static "assets/js/inicio.js"%}"></script>
-
         <div id= "nombreUSER">
             {% block welcome-msg %}
                 Bienvenido: {% firstof user.get_short_name user.get_username %}.

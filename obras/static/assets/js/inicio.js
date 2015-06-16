@@ -2,6 +2,7 @@
  * Created by db2 on 14/06/15.
  */
 var $i = jQuery.noConflict();
+var newToken
 //$i(document).on('ready', valida_token);
 
 function valida_token(){
@@ -15,10 +16,7 @@ var ajax_datatoken = {
         type: 'get',
         data: ajax_datatoken,
         success: function(data) {
-            //newToken = data.access_token;
-            alert("entra");
-            $i.cookie('token', data.access_token, { expires: 1, domain: 'http://localhost:8000/obras' });
-            alert($.cookie('token'));
+            newToken = data.access_token;
         },
         error: function(data) {
             alert('error!!! ' + data.status);

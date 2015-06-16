@@ -36,7 +36,7 @@ def get_access_token(user,request):
     # We delete the old access_token and refresh_token
     try:
         old_access_token = AccessToken.objects.get(
-            user=user, application=app)
+            user_id=user.id, application_id=app.id)
         old_refresh_token = RefreshToken.objects.get(
             user=user, access_token=old_access_token
         )

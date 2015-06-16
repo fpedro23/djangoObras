@@ -30,9 +30,9 @@ urlpatterns = patterns('',
                        url(r'^api/id_unico', api.IdUnicoEndpoint.as_view()),
 
                        # Mappings Reportes
-                       url(r'^api/obras_iniciadas', views.obras_iniciadas),
-                       url(r'^api/obras_vencidas', views.obras_vencidas),
-                       url(r'^api/obras_dependencia', views.obras_for_dependencia),
+                       url(r'^obras_iniciadas', views.obras_iniciadas),
+                       url(r'^obras_vencidas', views.obras_vencidas),
+                       url(r'^obras_dependencia', views.obras_for_dependencia),
                        url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
 
                        # Otros endpoints

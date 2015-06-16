@@ -279,10 +279,12 @@ class Obra(models.Model):
                                                )
 
     subclasificacion = ChainedForeignKey(TipoClasificacion,
-                                              related_name='%(class)s_subclasificaciones',
-                                              chained_field="tipoClasificacion",
-                                              chained_model_field="subclasificacionDe"
-                                              )
+                                         related_name='%(class)s_subclasificaciones',
+                                         chained_field='tipoClasificacion',
+                                         chained_model_field='subclasificacionDe',
+                                         null=True,
+                                         blank=True,
+                                         )
 
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
@@ -445,9 +447,6 @@ class DetalleInversion(models.Model):
 
 
 class DetalleClasificacion(models.Model):
-    class Meta:
-        unique_together = [("obra", "tipoClasificacion")]
-
 
     obra = models.ForeignKey(Obra)
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
@@ -464,7 +463,8 @@ class DetalleClasificacion(models.Model):
                                          null=True,
                                          blank=True,
                                          )
-
+    class Meta:
+        unique_together = [("obra", "tipoClasificacion")]
 
 def get_subdependencias_as_list_flat(deps):
     ans = []
