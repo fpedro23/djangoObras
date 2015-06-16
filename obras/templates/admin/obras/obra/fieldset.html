@@ -1,3 +1,5 @@
+{% load app_filters %}
+
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
 
    <div class="historialBTN"></div>
@@ -18,10 +20,10 @@
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
-                <table width="100%" border="0px" cellpadding="0px" cellspacing="3px">
+                <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                    <tr>
-                      <td>ID Único:</td>
-                      <td><label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label></td>
+                      <td width="40%">ID Único:</td>
+                      <td width="60%">{% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}<label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label></td>
                   </tr>
 
          {% endif %}
@@ -103,31 +105,31 @@
 
        {% if field.field.name == "porcentajeAvance" %}
               <tr>
-                 <td><label class="required" for="id_porcentajeAvance">Avance:</label></td>
-                  <td> {{ field.field }}</td>
+                 <td width="40%"><label class="required" for="id_porcentajeAvance">Avance:</label></td>
+                  <td width="60%"> {{ field.field }}</td>
               </tr>
        {% endif %}
 
       {% if field.field.name == "tipoObra" %}
               <tr>
-                 <td><label class="required" for="id_tipoObra">Status:</label></td>
-                  <td> {{ field.field }}</td>
+                 <td width="40%"><label class="required" for="id_tipoObra">Status:</label></td>
+                  <td width="60%"> {{ field.field }}</td>
               </tr>
 
        {% endif %}
 
       {% if field.field.name == "fechaInicio" %}
               <tr>
-                 <td> <label class="required" for="id_fechaInicio">Fecha de Inicio:</label></td>
-                  <td><input class="form-control2" id="id_fechaInicio" name="fechaInicio" type="text" placeholder="Desde" value="{{ field.field.value|default_if_none:"" }}"/></td>
+                 <td width="40%"> <label class="required" for="id_fechaInicio">Fecha de Inicio:</label></td>
+                  <td width="60%"><input class="form-control2" id="id_fechaInicio" name="fechaInicio" type="text" placeholder="Desde" value="{{ field.field.value|default_if_none:"" }}"/></td>
               </tr>
 
        {% endif %}
 
        {% if field.field.name == "fechaTermino" %}
               <tr>
-                 <td>  <label class="required" for="id_fechaTermino">Fecha de Término:</label></td>
-                  <td> <input class="form-control2" id="id_fechaTermino" name="fechaTermino" type="text" placeholder="Hasta" value="{{ field.field.value|default_if_none:"" }}"/></td>
+                 <td width="40%">  <label class="required" for="id_fechaTermino">Fecha de Término:</label></td>
+                  <td width="60%"> <input class="form-control2" id="id_fechaTermino" name="fechaTermino" type="text" placeholder="Hasta" value="{{ field.field.value|default_if_none:"" }}"/></td>
               </tr>
                  </table>
             </div>
@@ -142,31 +144,31 @@
                 </div>
                     <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                         <tr>
-                          <td> <label class="required" for="id_poblacionObjetivo">Población Objetivo</label></td>
-                          <td>{{ field.field }}</td>
+                          <td width="50%"> <label class="required" for="id_poblacionObjetivo">Población Objetivo</label></td>
+                          <td width="50%">{{ field.field }}</td>
                         </tr>
         {% endif %}
 
        {% if field.field.name == "totalBeneficiarios" %}
               <tr>
-                 <td> <label class="required" for="id_totalBeneficiarios">Número de Beneficiarios:</label></td>
-                  <td> {{ field.field }}</td>
+                 <td width="50%"> <label class="required" for="id_totalBeneficiarios">Número de Beneficiarios:</label></td>
+                  <td width="50%"> {{ field.field }}</td>
               </tr>
 
        {% endif %}
 
           {% if field.field.name == "impacto" %}
               <tr>
-                 <td> <label class="required" for="id_impacto">Impacto</label></td>
-                  <td> {{ field.field }}</td>
+                 <td width="50%"> <label class="required" for="id_impacto">Impacto</label></td>
+                  <td width="50%"> {{ field.field }}</td>
               </tr>
 
        {% endif %}
 
          {% if field.field.name == "senalizacion" %}
               <tr>
-                 <td> <label class="required" for="id_senalizacion">Señalización:</label></td>
-                  <td> {{ field.field }}</td>
+                 <td width="50%"> <label class="required" for="id_senalizacion">Señalización:</label></td>
+                  <td width="50%"> {{ field.field }}</td>
               </tr>
              </table>
             </div>
@@ -181,6 +183,7 @@
                <div id="tituloCUADROS">
                     CLASIFICACIÓN
                 </div>
+
                     <table width="100%" border="0px" cellpadding="0px" cellspacing="5px">
                         <tr>
                           <td colspan="2">
@@ -215,6 +218,16 @@
         <div id="tituloCUADROS">
                 INVERSION
         </div>
+             <table width="100%">
+        <tr class="form-row row1">
+                   <td class="field-descripcion" width="60%" style="font-size: 11px">
+                       Seleccione Tipo de Inversión
+                   </td>
+                   <td class="field-descripcion" width="40%" style="font-size: 11px" align="center">
+                       Monto
+                   </td>
+               </tr>
+             </table>
            <div class="inversionin">
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                 <tr>
@@ -271,7 +284,7 @@
 
         {% if field.field.name == "inaugurada" %}
             <tr>
-               <td colspan="2"> {{ field.field }}</td>
+               <td colspan="2"> <table border="0" width="100%"><tr>{% for l in field.field %}<td width="20%"> {{ l }} </td> {% endfor %}</tr></table>
 
             </tr>
         {% endif %}
@@ -295,7 +308,7 @@
                         <tr>
                             <td colspan="2">
                                 <div id="observaciones">
-                             {{ field.field }}
+                             {{ field.field|add_attributes:"class:areaobs" }}
                                     </div>
                             </td>
 
@@ -311,22 +324,22 @@
                 </div>
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                         <tr>
-                            <td><label for="id_fotoAntes">Antes:</label></td>
-                            <td>{{ field.field }}</td>
+                            <td width="20%"><label for="id_fotoAntes">Antes:</label></td>
+                            <td width="80%">{{ field.field|add_desc:"inside"  }}</td>
                          </tr>
         {% endif %}
 
         {% if field.field.name == "fotoDurante" %}
                         <tr>
-                            <td><label for="id_fotoDurante">Durante:</label></td>
-                            <td> {{ field.field }}</td>
+                            <td width="20%"><label for="id_fotoDurante">Durante:</label></td>
+                            <td width="80%"> {{ field.field |add_desc:"inside" }}</td>
                          </tr>
         {% endif %}
 
          {% if field.field.name == "fotoDespues" %}
                         <tr>
-                            <td><label for="id_fotoDespues">Después:</label></td>
-                            <td>  {{ field.field }}</td>
+                            <td width="20%"><label for="id_fotoDespues">Después:</label></td>
+                            <td width="80%">  {{ field.field |add_desc:"inside" }}</td>
                          </tr>
                 </table>
              </div>
@@ -362,15 +375,26 @@
  {% for inline_admin_formset in inline_admin_formsets %}
     {% if inline_admin_formset.formset.prefix == "detalleclasificacion_set" %}
       <!-- CLASIFICACION-->
-    <div class="clasificacion" style="overflow:scroll;">
+    <div class="clasificacion">
                 <div id="tituloCUADROS">
     	            CLASIFICACION
                 </div>
+         <table width="100%">
+        <tr class="form-row row1">
+                   <td class="field-descripcion" width="60%" style="font-size: 11px">
+                       Seleccione Tipo de Clasificación
+                   </td>
+                   <td class="field-descripcion" width="40%" style="font-size: 11px" align="center">
+                       Subclasificación
+                   </td>
+               </tr>
+             </table>
+<div class="clasificacionin" style="overflow:scroll;">
+           <table width="100%">
 
-
-           <table>
                 <tr class="form-row row1">
-                      <td class="field-descripcion" colspan="2">
+
+                      <td class="field-descripcion" colspan="2" width="100%">
                                  {# inline_admin_formset.opts.template = admin/edit_inline/tabular.html #}
                                 {#   include inline_admin_formset.opts.template #}
 
@@ -380,6 +404,7 @@
 
                 </tr>
             </table>
+</div>
    </div>
  {% endif %}
      {% if inline_admin_formset.formset.prefix == "documentofuente_set" %}
@@ -388,9 +413,9 @@
                 DOCUMENTOS FUENTE
         </div>
 
-           <table>
+           <table width="100%">
                 <tr class="form-row row1">
-                      <td class="field-descripcion" colspan="2">
+                      <td  width="100%" class="field-descripcion" colspan="2">
                                  {# inline_admin_formset.opts.template = admin/edit_inline/tabular.html #}
                                 {#   include inline_admin_formset.opts.template #}
                           {% include "admin/obras/obra/tabular.html"  %}

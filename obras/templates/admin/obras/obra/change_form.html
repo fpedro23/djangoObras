@@ -6,6 +6,7 @@
      <script type="text/javascript" src="{% static 'assets/js/ajax-movimientos.js' %}"></script>
      <link href="{% static "css/formas.css" %}" rel="stylesheet">
         <link href="{% static "css/widgets.css" %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.file-input.js' %}"></script>
     {{ media }}
     <script type="text/javascript">
 (
@@ -103,9 +104,10 @@ x++;
                     sHtml= '<img src="' + data[0].dependencia.imagenDependencia.toString() +'" >'
                     $j('#logoDEP').html(sHtml);
 
+
                 },
                 error: function(data) {
-                    alert('error!!! ' + data.status);
+                   //  alert('error!!! ' + data.status);
                 }
             });
         }
@@ -137,12 +139,12 @@ input{
    </div>
 
   <div id="welcome">
-        {% if not change %}
-           <span id="walta">Alta</span>
-        {% else %}
-            <span id="wmod">Modificar
-        {% endif %}
-        Obra</span>
+
+           <span id="walta" hidden="true">Alta de Obra</span>
+
+            <span id="wmod" hidden="true">Modificar Obra</span>
+
+
 
   </div>
 
@@ -202,10 +204,13 @@ input{
                    <script type="text/javascript">
                     var $dp = jQuery.noConflict();
                     $dp('#id_fechaInicio').datepicker({
-                        autoclose:true
+                        autoclose:true,
+                        format:'dd/mm/yyyy',
+                        orientation:'bottom'
                     });
                        $dp('#id_fechaTermino').datepicker({
-                        autoclose:true
+                        autoclose:true,
+                        format:'dd/mm/yyyy'
                     });
                     </script>
 

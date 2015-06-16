@@ -128,6 +128,10 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'obras/templates/'),
 )
 
+TEMPLATETAGS_DIRS = (
+    os.path.join(BASE_DIR, 'obras/templatetags/'),
+)
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "obras/static/"),
 )

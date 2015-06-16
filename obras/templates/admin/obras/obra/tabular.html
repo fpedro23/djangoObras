@@ -1,4 +1,4 @@
-{% load i18n admin_static admin_modify %}{% load cycle from future %}
+{% load i18n admin_static admin_modify app_filters%}{% load cycle from future %}
 
 {% if inline_admin_formset.formset.prefix == "documentofuente_set" %}
 
@@ -6,9 +6,9 @@
   <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
 {{ inline_admin_formset.formset.management_form }}
 <fieldset class="module" style="background: #ffffff; border:0px;">
-   <!-- <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }} </h2>-->
+   <!-- <h2> {#  inline_admin_formset.opts.verbose_name_plural|capfirst }#} </h2>-->
    {{ inline_admin_formset.formset.non_form_errors }}
-   <table style="background: #ffffff; border:0px;">
+   <table style="background: #ffffff; border:0px; width:100%;">
      <thead style="background: #ffffff; border:0px;"><tr>
      {% for field in inline_admin_formset.fields %}
        {% if not field.widget.is_hidden %}
@@ -48,12 +48,12 @@
           {% for line in fieldset %}
             {% for field in line %}
               {% if not field.field.is_hidden %}
-              <td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %} style="background: #ffffff; border:0px;">
+              <td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %} style="background: #ffffff; border:0px; width: 50%">
               {% if field.is_readonly %}
                   <p>{{ field.contents }}</p>
               {% else %}
                   {{ field.field.errors.as_ul }}
-                  {{ field.field }}
+                      {{ field.field }}
               {% endif %}
               </td>
               {% endif %}
@@ -81,6 +81,10 @@
     addText: "{% blocktrans with inline_admin_formset.opts.verbose_name|capfirst as verbose_name %}Add another {{ verbose_name }}{% endblocktrans %}",
     deleteText: "{% trans 'Remove' %}"
   });
+
+        var $infl=jQuery.noConflict();
+    $infl('input[type=file]').bootstrapFileInput();
+    $infl('.file-inputs').bootstrapFileInput();
 })(django.jQuery);
 </script>
 {% endif %}

@@ -3,7 +3,7 @@
 
 {% block extrastyle %}
   {{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "css/changelists.css" %}" />
      <link href="{% static "css/formas.css" %}" rel="stylesheet">
   {% if cl.formset %}
     <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
@@ -72,6 +72,7 @@ x++;
             $("#modmsg").hide();
             $("#elmmsgins").show();
             $("#modmsgins").hide();
+            $("#action-toggle").hide();
 
         }
         else if($_GET("e")==2){
@@ -81,11 +82,13 @@ x++;
             $("#elmmsgins").hide();
             $('#modmsgins').show();
             $('.action-select').toggle();
+            $("#action-toggle").hide();
         }
         else{
             $('#cons').show();
             $('#consins').show();
             $('.action-select').toggle();
+            $("#action-toggle").hide();
         }
 
     });

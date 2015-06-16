@@ -306,7 +306,7 @@ class Obra(models.Model):
     autorizada = models.BooleanField(default=False)
     latitud = models.FloatField()
     longitud = models.FloatField()
-    id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200)
+    id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200 )
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion

@@ -1,39 +1,96 @@
 {% load i18n admin_static %}{% load cycle from future %}
+
+    <script type="text/javascript" src="{% static "assets/tablesorter/jquery-latest.min.js"%}"></script>
+
+
+   <link class="ui-theme" rel="stylesheet" href="{% static "assets/tablesorter/css/jquery-ui.min.css"%}">
+   <link class="theme blue" rel="stylesheet" href="{% static "assets/tablesorter/themes/blue/theme.blue.css"%}">
+
+   <script type="text/javascript" src="{% static "assets/tablesorter/jquery.tablesorter.js"%}"></script>
+   <script src="{% static "assets/tablesorter/jquery.tablesorter.widgets.js"%}"></script>
+   <script type="text/javascript" src="{% static "assets/tablesorter/widget-pager.js"%}"></script>
+   <script src="{% static "assets/tablesorter/widget-scroller.js"%}"></script>
+
+
+   <script id="js" type="text/javascript">
+       $("#action-toggle").hide();
+
+   var $ts = jQuery.noConflict();
+$ts(function() {
+       $ts('#result_list').tablesorter({
+	theme: 'blue',
+	// widthFixed: true, // <- now automatically set by the scroller widget
+	showProcessing: true,
+	headerTemplate : '{content} {icon}',
+	widgets: [ 'uitheme', 'zebra', 'pager', 'scroller' ],
+	widgetOptions : {
+		scroller_height : 300,
+		// scroll tbody to top after sorting
+		scroller_upAfterSort: true,
+		// pop table header into view while scrolling up the page
+		scroller_jumpToHeader: true,
+		// In tablesorter v2.19.0 the scroll bar width is auto-detected
+		// add a value here to override the auto-detected setting
+		scroller_barWidth : null
+		// scroll_idPrefix was removed in v2.18.0
+		// scroller_idPrefix : 's_'
+
+
+	}
+
+   });
+
+});
+</script>
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/bootstrap/css/bootstrap.css"%}" />
+
+
 {% if result_hidden_fields %}
 <div class="hiddenfields">{# DIV for HTML validation #}
 {% for item in result_hidden_fields %}{{ item }}{% endfor %}
 </div>
 {% endif %}
 {% if results %}
-    <div class="campos01">
-        <table id="result_list">
+    <div class="camposRL">
+        <table id="result_list" class="tablesorter">
            <thead>
                 <tr>
                 {% for header in result_headers %}
                     <th scope="col" {{ header.class_attrib }}>
-                    {% if header.sortable %}
-                        {% if header.sort_priority > 0 %}
-                            <div class="sortoptions">
-                                 <a class="sortremove" href="{{ header.url_remove }}" title="{% trans "Remove from sorting" %}"></a>
-                                {% if num_sorted_fields > 1 %}<span class="sortpriority" title="{% blocktrans with priority_number=header.sort_priority %}Sorting priority: {{ priority_number }}{% endblocktrans %}">{{ header.sort_priority }}</span>{% endif %}
-                                    <a href="{{ header.url_toggle }}" class="toggle {% if header.ascending %}ascending{% else %}descending{% endif %}" title="{% trans "Toggle sorting" %}"></a>
-                             </div>
-                        {% endif %}
-                    {% endif %}
+
                     <div class="text" style="font-family: 'soberana_textobold';">{% if header.sortable %}<a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
                      <div class="clear"></div>
                     </th>
                 {% endfor %}
                 </tr>
             </thead>
+
+
            <tbody>
                 {% for result in results %}
                   {% if result.form.non_field_errors %}
                       <tr><td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td></tr>
                     {% endif %}
-                    <tr class="{% cycle 'row1' 'row2' %}">{% for item in result %}{{ item }}{% endfor %}</tr>
+                    <tr class="{% cycle 'row1' 'row2' %}" >{% for item in result %}{{ item }}{% endfor %}</tr>
                 {% endfor %}
             </tbody>
+
+              <tfoot>
+                <tr><td class="pager" id="pagerI" colspan="{{ results|length }}">
+
+                <img src="{% static "assets/tablesorter/addons/pager/icons/first.png"%}" class="first" id="firstI"/>
+                <img src="{% static "assets/tablesorter/addons/pager/icons/prev.png"%}" class="prev" id="prevI"/>
+                <span class="pagedisplay" id="pagedisplayI"></span>
+                <img src="{% static "assets/tablesorter/addons/pager/icons/next.png"%}" class="next" id="nextI"/>
+                <img src="{% static "assets/tablesorter/addons/pager/icons/last.png"%}" class="last" id="lastI"/>
+                <select class="pagesize" id="pagesizeI">
+                <option selected="selected"  value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option  value="40">40</option>
+                </select></td></tr>
+            </tfoot>
          </table>
     </div>
 {% endif %}
