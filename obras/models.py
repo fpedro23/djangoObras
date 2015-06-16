@@ -267,24 +267,26 @@ class Obra(models.Model):
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
-    tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion')
+    tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion',null=True,blank=True,)
 
     tipoClasificacion = models.ManyToManyField("self", TipoClasificacion,
                                                through='DetalleClasificacion',
-
+                                                null=True,
+                                              blank=True,
                                                symmetrical=False,
                                                limit_choices_to={
                                                    'subclasificacionDe': None,
                                                }
+
                                                )
 
     subclasificacion = ChainedForeignKey(TipoClasificacion,
-                                         related_name='%(class)s_subclasificaciones',
-                                         chained_field='tipoClasificacion',
-                                         chained_model_field='subclasificacionDe',
-                                         null=True,
-                                         blank=True,
-                                         )
+                                              related_name='%(class)s_subclasificaciones',
+                                              chained_field="tipoClasificacion",
+                                              chained_model_field="subclasificacionDe",
+                                              null=True,
+                                              blank=True,
+                                              )
 
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
@@ -447,10 +449,14 @@ class DetalleInversion(models.Model):
 
 
 class DetalleClasificacion(models.Model):
+    class Meta:
+        unique_together = [("obra", "tipoClasificacion")]
+
 
     obra = models.ForeignKey(Obra)
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
-
+                                          null=True,
+                                          blank=True,
                                           limit_choices_to={
                                               'subclasificacionDe': None,
                                           }
@@ -463,8 +469,7 @@ class DetalleClasificacion(models.Model):
                                          null=True,
                                          blank=True,
                                          )
-    class Meta:
-        unique_together = [("obra", "tipoClasificacion")]
+
 
 def get_subdependencias_as_list_flat(deps):
     ans = []

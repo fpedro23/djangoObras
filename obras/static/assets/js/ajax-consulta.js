@@ -22,7 +22,7 @@ var ajax_datatoken = {
         data: ajax_datatoken,
         success: function(data) {
             newToken = data.access_token;
-            //alert(data.access_token);
+            alert(data.access_token);
         },
         error: function(data) {
             alert('error!!! ' + data.status);
