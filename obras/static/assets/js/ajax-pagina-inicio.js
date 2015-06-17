@@ -227,12 +227,19 @@ function puntosMapa(Datos) {
 
 function setMarkers(mapa, lugares) {
   var infowindow = new google.maps.InfoWindow();
+  var image = {
+    url: 'pines/pin.png',
+    size: new google.maps.Size(20, 32),
+    origin: new google.maps.Point(0,0),
+    anchor: new google.maps.Point(0, 32)};
+
   for (var i = 0; i < lugares.length; i++) {
     var puntos = lugares[i];
     var myLatLng = new google.maps.LatLng(puntos[1], puntos[2]);
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: mapa,
+        icon: image,
         title: puntos[0],
         zIndex: puntos[3]
     });
