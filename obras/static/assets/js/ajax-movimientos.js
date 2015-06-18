@@ -2,6 +2,27 @@ var $j = jQuery.noConflict();
 $j(document).on('ready', main_consulta);
 
 var datosJson;
+var newToken;
+
+function valida_token(){
+var ajax_datatoken = {
+      "access_token"  : 'O9BfPpYQuu6a5ar4rGTd2dRdaYimVa'
+    };
+
+
+    $j.ajax({
+        url: '/obras/register-by-token',
+        type: 'get',
+        data: ajax_datatoken,
+        success: function(data) {
+            newToken = data.access_token;
+            //alert(data.access_token);
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
+}
 
 function main_consulta() {
     $j.ajaxSetup({
@@ -16,7 +37,7 @@ function main_consulta() {
 			}
 		}
 	});
-
+    valida_token();
 	$j('#buscarICO').on('click', verDatos);
 
 }
@@ -30,7 +51,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'ibpbhu2gOyZXMpCWzUvOITDJZ9XSso'
+      "access_token"  : newToken
     };
 
     if(idUnico.toString()!=""){ajax_data.identificador_unico=idUnico.toString();}

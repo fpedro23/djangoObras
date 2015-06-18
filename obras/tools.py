@@ -70,6 +70,7 @@ def get_access_token(user,request):
                token=refresh_token,
                access_token=access_token)
     request.session["access_token"] = access_token.token
+
     # we call get_token_json and returns the access token as json
     return get_token_json(access_token)
 

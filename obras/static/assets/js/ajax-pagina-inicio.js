@@ -226,12 +226,13 @@ function puntosMapa(Datos) {
 
 
 function setMarkers(mapa, lugares) {
-  var infowindow = new google.maps.InfoWindow();
+
+
   var image = {
-    url: 'pines/pin.png',
+    url: '../../static/assets/js/pines/pin.png',
     size: new google.maps.Size(20, 32),
     origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(0, 32)};
+    anchor: new google.maps.Point(0,32)};
 
   for (var i = 0; i < lugares.length; i++) {
     var puntos = lugares[i];
@@ -239,7 +240,7 @@ function setMarkers(mapa, lugares) {
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: mapa,
-        icon: image,
+        icon: '../../static/assets/js/pines/pin4.png',
         title: puntos[0],
         zIndex: puntos[3]
     });

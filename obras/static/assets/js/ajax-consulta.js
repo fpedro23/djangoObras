@@ -5,6 +5,7 @@
  * Created by db2 on 7/04/15.
  */
 var $j = jQuery.noConflict();
+
 $j(document).on('ready', main_consulta);
 
 var datosJson
@@ -22,7 +23,7 @@ var ajax_datatoken = {
         data: ajax_datatoken,
         success: function(data) {
             newToken = data.access_token;
-            alert(data.access_token);
+            //alert(data.access_token);
         },
         error: function(data) {
             alert('error!!! ' + data.status);
@@ -59,7 +60,14 @@ function main_consulta() {
     $j('#regresaGraficas #regresarBTN').on('click', regresa);
 
 
+
+
 }
+
+
+
+
+
 
 function limpia(){
    $j("#forma").reset();
@@ -215,6 +223,7 @@ function graficas(){
     var montos = new Array();
 
     $pp('#pagina').hide();
+    $pp('#div-grafica').removeClass("mfp-hide");
     $pp('#div-grafica').addClass("mfp-show");
 
     if (tipoReporte=="Dependencia") {
@@ -577,6 +586,7 @@ function setMarkers(mapa, lugares) {
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: mapa,
+        icon: '../../static/assets/js/pines/pin4.png',
         title: puntos[0],
         zIndex: puntos[3]
     });
@@ -721,8 +731,8 @@ function tablaD(Datos){
                     +'<tfoot>'
                         +'<tr>'
                             +'<th>TOTALES</th>'
-                            +'<th>'+ Datos.reporte_general[0].obras_totales +'</th>'
-                            +'<th>'+ Datos.reporte_general[0].total_invertido +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].obras_totales, 2, '.', ',') +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].total_invertido, 2, '.', ',') +'</th>'
                         +'</tr>'
 
                         +'<tr><td class="pager" id="pagerD" colspan="3">'
@@ -747,8 +757,8 @@ function tablaD(Datos){
         for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].numero_obras + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].sumatotal + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }
@@ -758,8 +768,8 @@ function tablaD(Datos){
         for (var i = 0; i < Datos.reporte_estado.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
-            + '<td>' + Datos.reporte_estado[i].numeroObras + '</td>'
-            + '<td>' + Datos.reporte_estado[i].sumatotal + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].numeroObras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }
@@ -861,8 +871,8 @@ $j.tablaGrafica = function(Datos){
                     +'<tfoot>'
                         +'<tr>'
                             +'<th>TOTALES</th>'
-                            +'<th>'+ Datos.reporte_general[0].obras_totales +'</th>'
-                            +'<th>'+ Datos.reporte_general[0].total_invertido +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].obras_totales, 2, '.', ',') +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].total_invertido, 2, '.', ',') +'</th>'
                         +'</tr>'
 
                         +'<tr><td class="pager" id="pagerG" colspan="3">'
@@ -886,8 +896,8 @@ $j.tablaGrafica = function(Datos){
         for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].numero_obras + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].sumatotal + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }
@@ -897,8 +907,8 @@ $j.tablaGrafica = function(Datos){
         for (var i = 0; i < Datos.reporte_estado.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
-            + '<td>' + Datos.reporte_estado[i].numeroObras + '</td>'
-            + '<td>' + Datos.reporte_estado[i].sumatotal + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].numeroObras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }
@@ -936,3 +946,6 @@ $j.tablaGrafica = function(Datos){
         $j('#divTablaGrafica').html($j(sHtml));
 
 }
+
+
+

@@ -251,6 +251,8 @@ class Obra(models.Model):
     identificador_unico = models.SlugField(unique=True, null=True, )
     tipoObra = models.ForeignKey(TipoObra)
     dependencia = models.ForeignKey(Dependencia, related_name='%(class)s_dependencia',
+                                    null=True,
+                                       blank=True,
                                     limit_choices_to={
                                         'dependienteDe': None,
                                     })
@@ -271,8 +273,6 @@ class Obra(models.Model):
 
     tipoClasificacion = models.ManyToManyField("self", TipoClasificacion,
                                                through='DetalleClasificacion',
-                                                null=True,
-                                              blank=True,
                                                symmetrical=False,
                                                limit_choices_to={
                                                    'subclasificacionDe': None,
@@ -297,7 +297,7 @@ class Obra(models.Model):
     totalBeneficiarios = models.DecimalField(max_digits=19, decimal_places=10)
     senalizacion = models.BooleanField(default=False)
     susceptibleInauguracion = models.BooleanField(default=False)
-    porcentajeAvance = models.DecimalField(max_digits=3, decimal_places=2)
+    porcentajeAvance = models.DecimalField(max_digits=5, decimal_places=2)
     observaciones = models.CharField(max_length=200)
     fotoAntes = models.FileField(blank=True, null=True)
     fotoDurante = models.FileField(blank=True, null=True)
@@ -349,10 +349,10 @@ class Obra(models.Model):
             for tipoInversion in self.tipoInversion.all():
                 map['tipoInversion'].append(tipoInversion.to_serializable_dict())
 
-        map['tipoClasificacion'] = []
-        if self.tipoClasificacion:
-            for tipoClasificacion in self.tipoClasificacion.all():
-                map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
+        #map['tipoClasificacion'] = []
+        #if self.tipoClasificacion:
+        #    for tipoClasificacion in self.tipoClasificacion.all():
+        #        map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
 
         map['subclasificaciones'] = []
         if self.subclasificacion:
@@ -455,8 +455,6 @@ class DetalleClasificacion(models.Model):
 
     obra = models.ForeignKey(Obra)
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
-                                          null=True,
-                                          blank=True,
                                           limit_choices_to={
                                               'subclasificacionDe': None,
                                           }

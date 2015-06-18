@@ -250,6 +250,9 @@
 .my-mfp-slide-bottom.mfp-removing.mfp-bg {
 	opacity: 0;
 }
+
+
+
 		</style>
 
     <!-- Magnific Popup core CSS file -->
@@ -360,8 +363,33 @@ $pp(function () {
 
 
 
+<script type="text/javascript" src="{% static "assets/js/jspdf.js"%}"></script>
+    <script type="text/javascript" src="{% static "assets/js/jspdf.min.js"%}"></script>
+<script>
+
+$( document ).ready(function() {
+  $('#cmd').on('click', PDF);
+});
+
+function PDF () {
+    var doc = new jsPDF();
+    var specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+    doc.fromHTML($('#datos').html(), 15, 15, {
+        'width': 200,
+            'elementHandlers': specialElementHandlers
+    });
+    doc.save('sample-file.pdf');
+};
+
+</script>
 
 <script type="text/javascript" src="{% static "assets/js/ajax-consulta.js"%}"></script>
+
 
 {% endblock %}
 {% block breadcrumbs %}
@@ -371,6 +399,8 @@ $pp(function () {
 
 <body style="font: 110% soberana_textoregular;height: 600px;">
 
+<div id="editor"></div>
+<button id="cmd">generate PDF</button>
 
     <!-- inicio contenido de la consulta por filtros-->
     <div id="tabla-exporta" style="height: 0px;"></div>
