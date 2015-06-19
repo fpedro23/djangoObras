@@ -7,5 +7,371 @@
     </database-info>
     <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
     <schema name="" catalog="dbobras"/>
+    <table name="auth_group" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="80" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="auth_group_permissions_group_id_58c48ba9_fk_auth_group_id" table="auth_group_permissions" schema="" catalog="dbobras" columns="group_id"/>
+      <exported-key name="auth_user_groups_group_id_30a071c9_fk_auth_group_id" table="auth_user_groups" schema="" catalog="dbobras" columns="group_id"/>
+      <index name="name" unique="true" columns="name"/>
+    </table>
+    <table name="auth_group_permissions" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="group_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="permission_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="auth_group_permissi_permission_id_23962d04_fk_auth_permission_id" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="auth_group_permissions_group_id_58c48ba9_fk_auth_group_id" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="group_id" unique="true" columns="permission_id"/>
+      <index name="auth_group_permissions_0e939a4f" unique="false" columns="group_id"/>
+      <index name="auth_group_permissions_8373b171" unique="false" columns="permission_id"/>
+    </table>
+    <table name="auth_permission" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="content_type_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="codename" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="auth_permissi_content_type_id_51277a81_fk_django_content_type_id" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="auth_group_permissi_permission_id_23962d04_fk_auth_permission_id" table="auth_group_permissions" schema="" catalog="dbobras" columns="permission_id"/>
+      <exported-key name="auth_user_user_perm_permission_id_3d7071f0_fk_auth_permission_id" table="auth_user_user_permissions" schema="" catalog="dbobras" columns="permission_id"/>
+      <index name="content_type_id" unique="true" columns="codename"/>
+      <index name="auth_permission_417f1b1c" unique="false" columns="content_type_id"/>
+    </table>
+    <table name="auth_user" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="password" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_login" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="is_superuser" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="username" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="first_name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="75" scale="0" nullable="false" jdbcType="12"/>
+      <column name="is_staff" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="is_active" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="date_joined" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="auth_user_groups_user_id_24702650_fk_auth_user_id" table="auth_user_groups" schema="" catalog="dbobras" columns="user_id"/>
+      <exported-key name="auth_user_user_permissions_user_id_7cd7acb6_fk_auth_user_id" table="auth_user_user_permissions" schema="" catalog="dbobras" columns="user_id"/>
+      <exported-key name="django_admin_log_user_id_1c5f563_fk_auth_user_id" table="django_admin_log" schema="" catalog="dbobras" columns="user_id"/>
+      <index name="username" unique="true" columns="username"/>
+    </table>
+    <table name="auth_user_groups" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="group_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="auth_user_groups_group_id_30a071c9_fk_auth_group_id" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="auth_user_groups_user_id_24702650_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_id" unique="true" columns="group_id"/>
+      <index name="auth_user_groups_0e939a4f" unique="false" columns="group_id"/>
+      <index name="auth_user_groups_e8701ad4" unique="false" columns="user_id"/>
+    </table>
+    <table name="auth_user_user_permissions" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="permission_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="auth_user_user_perm_permission_id_3d7071f0_fk_auth_permission_id" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="auth_user_user_permissions_user_id_7cd7acb6_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_id" unique="true" columns="permission_id"/>
+      <index name="auth_user_user_permissions_8373b171" unique="false" columns="permission_id"/>
+      <index name="auth_user_user_permissions_e8701ad4" unique="false" columns="user_id"/>
+    </table>
+    <table name="django_admin_log" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="action_time" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="object_id" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="object_repr" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="action_flag" sqlType="SMALLINT UNSIGNED" precision="5" scale="0" nullable="false" jdbcType="5"/>
+      <column name="change_message" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="content_type_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="django_admin__content_type_id_5151027a_fk_django_content_type_id" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="django_admin_log_user_id_1c5f563_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="django_admin_log_417f1b1c" unique="false" columns="content_type_id"/>
+      <index name="django_admin_log_e8701ad4" unique="false" columns="user_id"/>
+    </table>
+    <table name="django_content_type" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="app_label" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="model" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="auth_permissi_content_type_id_51277a81_fk_django_content_type_id" table="auth_permission" schema="" catalog="dbobras" columns="content_type_id"/>
+      <exported-key name="django_admin__content_type_id_5151027a_fk_django_content_type_id" table="django_admin_log" schema="" catalog="dbobras" columns="content_type_id"/>
+      <index name="django_content_type_app_label_3ec8c61c_uniq" unique="true" columns="app_label,model"/>
+    </table>
+    <table name="django_migrations" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="app" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="applied" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="django_session" schema="" catalog="dbobras" type="TABLE">
+      <column name="session_key" sqlType="VARCHAR" precision="40" scale="0" nullable="false" jdbcType="12"/>
+      <column name="session_data" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="expire_date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="session_key"/>
+      <index name="django_session_de54fa62" unique="false" columns="expire_date"/>
+    </table>
+    <table name="oauth2_provider_accesstoken" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="token" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="application_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="expires" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="scope" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="application_id_refs_id_50af46ef" columns="application_id" ref-table="oauth2_provider_application" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="access_token_id_refs_id_4eca7025" table="oauth2_provider_refreshtoken" schema="" catalog="dbobras" columns="access_token_id"/>
+      <index name="oauth2_provider_accesstoken_6340c63c" unique="false" columns="user_id"/>
+      <index name="oauth2_provider_accesstoken_bf127e2f" unique="false" columns="application_id"/>
+      <index name="oauth2_provider_accesstoken_e0a0c5a7" unique="false" columns="token"/>
+    </table>
+    <table name="oauth2_provider_application" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="client_id" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="redirect_uris" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="client_type" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12"/>
+      <column name="authorization_grant_type" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12"/>
+      <column name="client_secret" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="skip_authorization" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="application_id_refs_id_50af46ef" table="oauth2_provider_accesstoken" schema="" catalog="dbobras" columns="application_id"/>
+      <exported-key name="application_id_refs_id_3a4939c0" table="oauth2_provider_grant" schema="" catalog="dbobras" columns="application_id"/>
+      <exported-key name="application_id_refs_id_96fa9bab" table="oauth2_provider_refreshtoken" schema="" catalog="dbobras" columns="application_id"/>
+      <index name="client_id" unique="true" columns="client_id"/>
+      <index name="oauth2_provider_application_1986ffac" unique="false" columns="client_secret"/>
+      <index name="oauth2_provider_application_6340c63c" unique="false" columns="user_id"/>
+    </table>
+    <table name="oauth2_provider_grant" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="application_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="expires" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="redirect_uri" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="scope" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="application_id_refs_id_3a4939c0" columns="application_id" ref-table="oauth2_provider_application" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="oauth2_provider_grant_09bb5fb3" unique="false" columns="code"/>
+      <index name="oauth2_provider_grant_6340c63c" unique="false" columns="user_id"/>
+      <index name="oauth2_provider_grant_bf127e2f" unique="false" columns="application_id"/>
+    </table>
+    <table name="oauth2_provider_refreshtoken" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="token" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="application_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="access_token_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="access_token_id_refs_id_4eca7025" columns="access_token_id" ref-table="oauth2_provider_accesstoken" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="application_id_refs_id_96fa9bab" columns="application_id" ref-table="oauth2_provider_application" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="oauth2_provider_refreshtoken_6340c63c" unique="false" columns="user_id"/>
+      <index name="oauth2_provider_refreshtoken_bf127e2f" unique="false" columns="application_id"/>
+      <index name="oauth2_provider_refreshtoken_e0a0c5a7" unique="false" columns="token"/>
+    </table>
+    <table name="obras_dependencia" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombreDependencia" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="imagenDependencia" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="dependienteDe_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="obraoprograma" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
+      <column name="fecha_ultima_modificacion" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="dependienteDe_id_refs_id_4471884c" columns="dependienteDe_id" ref-table="obras_dependencia" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="dependienteDe_id_refs_id_4471884c" table="obras_dependencia" schema="" catalog="dbobras" columns="dependienteDe_id"/>
+      <exported-key name="dependencia_id_refs_id_a5b973b1" table="obras_obra" schema="" catalog="dbobras" columns="dependencia_id"/>
+      <exported-key name="subdependencia_id_refs_id_a5b973b1" table="obras_obra" schema="" catalog="dbobras" columns="subdependencia_id"/>
+      <exported-key name="dependencia_id_refs_id_07795a66" table="obras_usuario_dependencia" schema="" catalog="dbobras" columns="dependencia_id"/>
+      <index name="obras_dependencia_268cc8e4" unique="false" columns="dependienteDe_id"/>
+    </table>
+    <table name="obras_detalleclasificacion" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="obra_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="tipoClasificacion_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="subclasificacion_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="obra_id_refs_id_1e297430" columns="obra_id" ref-table="obras_obra" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="subclasificacion_id_refs_id_f59ed90b" columns="subclasificacion_id" ref-table="obras_tipoclasificacion" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="tipoClasificacion_id_refs_id_f59ed90b" columns="tipoClasificacion_id" ref-table="obras_tipoclasificacion" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="obra_id" unique="true" columns="tipoClasificacion_id"/>
+      <index name="obras_detalleclasificacion_5cca5d44" unique="false" columns="tipoClasificacion_id"/>
+      <index name="obras_detalleclasificacion_6223dcd0" unique="false" columns="subclasificacion_id"/>
+      <index name="obras_detalleclasificacion_b47891ea" unique="false" columns="obra_id"/>
+    </table>
+    <table name="obras_detalleinversion" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="obra_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="tipoInversion_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="monto" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="obra_id_refs_id_d29db576" columns="obra_id" ref-table="obras_obra" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="tipoInversion_id_refs_id_a6cfe879" columns="tipoInversion_id" ref-table="obras_tipoinversion" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="obra_id" unique="true" columns="tipoInversion_id"/>
+      <index name="obras_detalleinversion_20ed1383" unique="false" columns="tipoInversion_id"/>
+      <index name="obras_detalleinversion_b47891ea" unique="false" columns="obra_id"/>
+    </table>
+    <table name="obras_documentofuente" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="descripcion" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="documento" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="obra_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="obra_id_refs_id_0899acfa" columns="obra_id" ref-table="obras_obra" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="obras_documentofuente_b47891ea" unique="false" columns="obra_id"/>
+    </table>
+    <table name="obras_estado" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombreEstado" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="latitud" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="longitud" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="estado_id_refs_id_70573d01" table="obras_obra" schema="" catalog="dbobras" columns="estado_id"/>
+    </table>
+    <table name="obras_impacto" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombreImpacto" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="impacto_id_refs_id_b1ec230b" table="obras_obra" schema="" catalog="dbobras" columns="impacto_id"/>
+    </table>
+    <table name="obras_inaugurador" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombreCargoInaugura" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="inaugurador_id_refs_id_1f3ee00e" table="obras_obra" schema="" catalog="dbobras" columns="inaugurador_id"/>
+    </table>
+    <table name="obras_instanciaejecutora" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombre" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="instanciaEjecutora_id_refs_id_dc9a6cb0" table="obras_obra" schema="" catalog="dbobras" columns="instanciaEjecutora_id"/>
+    </table>
+    <table name="obras_obra" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="identificador_unico" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="tipoObra_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dependencia_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="subdependencia_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="estado_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="impacto_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="instanciaEjecutora_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="registroHacendario" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="montoRegistroHacendario" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="subclasificacion_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="inaugurador_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="denominacion" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="descripcion" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="fechaInicio" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="fechaTermino" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="inversionTotal" sqlType="DECIMAL" precision="19" scale="10" nullable="false" jdbcType="3"/>
+      <column name="totalBeneficiarios" sqlType="DECIMAL" precision="19" scale="10" nullable="false" jdbcType="3"/>
+      <column name="senalizacion" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="susceptibleInauguracion" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="porcentajeAvance" sqlType="DECIMAL" precision="5" scale="2" nullable="false" jdbcType="3"/>
+      <column name="observaciones" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="fotoAntes" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="fotoDurante" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="fotoDespues" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="fechaModificacion" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="inaugurada" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="poblacionObjetivo" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="municipio" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="tipoMoneda_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="autorizada" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="latitud" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="longitud" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="id_Dependencia" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="dependencia_id_refs_id_a5b973b1" columns="dependencia_id" ref-table="obras_dependencia" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="estado_id_refs_id_70573d01" columns="estado_id" ref-table="obras_estado" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="impacto_id_refs_id_b1ec230b" columns="impacto_id" ref-table="obras_impacto" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="inaugurador_id_refs_id_1f3ee00e" columns="inaugurador_id" ref-table="obras_inaugurador" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="instanciaEjecutora_id_refs_id_dc9a6cb0" columns="instanciaEjecutora_id" ref-table="obras_instanciaejecutora" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="subclasificacion_id_refs_id_09173369" columns="subclasificacion_id" ref-table="obras_tipoclasificacion" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="subdependencia_id_refs_id_a5b973b1" columns="subdependencia_id" ref-table="obras_dependencia" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="tipoMoneda_id_refs_id_809e18ef" columns="tipoMoneda_id" ref-table="obras_tipomoneda" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="tipoObra_id_refs_id_7cef7af5" columns="tipoObra_id" ref-table="obras_tipoobra" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="obra_id_refs_id_1e297430" table="obras_detalleclasificacion" schema="" catalog="dbobras" columns="obra_id"/>
+      <exported-key name="obra_id_refs_id_d29db576" table="obras_detalleinversion" schema="" catalog="dbobras" columns="obra_id"/>
+      <exported-key name="obra_id_refs_id_0899acfa" table="obras_documentofuente" schema="" catalog="dbobras" columns="obra_id"/>
+      <index name="identificador_unico" unique="true" columns="identificador_unico"/>
+      <index name="obras_obra_003493e2" unique="false" columns="inaugurador_id"/>
+      <index name="obras_obra_403bad64" unique="false" columns="tipoMoneda_id"/>
+      <index name="obras_obra_604c55b2" unique="false" columns="instanciaEjecutora_id"/>
+      <index name="obras_obra_6223dcd0" unique="false" columns="subclasificacion_id"/>
+      <index name="obras_obra_6c9deeb9" unique="false" columns="impacto_id"/>
+      <index name="obras_obra_92f5718a" unique="false" columns="subdependencia_id"/>
+      <index name="obras_obra_987e3449" unique="false" columns="dependencia_id"/>
+      <index name="obras_obra_db135557" unique="false" columns="tipoObra_id"/>
+      <index name="obras_obra_eeec61f0" unique="false" columns="estado_id"/>
+    </table>
+    <table name="obras_tipoclasificacion" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="subclasificacionDe_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="nombreTipoClasificacion" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nombreTipoClasificacionCorta" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="subclasificacionDe_id_refs_id_b8d7254c" columns="subclasificacionDe_id" ref-table="obras_tipoclasificacion" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="subclasificacion_id_refs_id_f59ed90b" table="obras_detalleclasificacion" schema="" catalog="dbobras" columns="subclasificacion_id"/>
+      <exported-key name="tipoClasificacion_id_refs_id_f59ed90b" table="obras_detalleclasificacion" schema="" catalog="dbobras" columns="tipoClasificacion_id"/>
+      <exported-key name="subclasificacion_id_refs_id_09173369" table="obras_obra" schema="" catalog="dbobras" columns="subclasificacion_id"/>
+      <exported-key name="subclasificacionDe_id_refs_id_b8d7254c" table="obras_tipoclasificacion" schema="" catalog="dbobras" columns="subclasificacionDe_id"/>
+      <index name="obras_tipoclasificacion_1162b4c5" unique="false" columns="subclasificacionDe_id"/>
+    </table>
+    <table name="obras_tipoinversion" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombreTipoInversion" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nombreTipoInversionCorta" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="tipoInversion_id_refs_id_a6cfe879" table="obras_detalleinversion" schema="" catalog="dbobras" columns="tipoInversion_id"/>
+    </table>
+    <table name="obras_tipomoneda" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombreTipoDeMoneda" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="tipoMoneda_id_refs_id_809e18ef" table="obras_obra" schema="" catalog="dbobras" columns="tipoMoneda_id"/>
+    </table>
+    <table name="obras_tipoobra" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombreTipoObra" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="tipoObra_id_refs_id_7cef7af5" table="obras_obra" schema="" catalog="dbobras" columns="tipoObra_id"/>
+    </table>
+    <table name="obras_ubicacion" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombre" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="tipoObra" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lat" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lng" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="estado" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="dependencia" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="nombre" unique="true" columns="nombre"/>
+    </table>
+    <table name="obras_usuario" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="rol" sqlType="VARCHAR" precision="2" scale="0" nullable="false" jdbcType="12"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="usuario_id_refs_id_b92eb413" table="obras_usuario_dependencia" schema="" catalog="dbobras" columns="usuario_id"/>
+      <index name="user_id" unique="true" columns="user_id"/>
+    </table>
+    <table name="obras_usuario_dependencia" schema="" catalog="dbobras" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="usuario_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dependencia_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="dependencia_id_refs_id_07795a66" columns="dependencia_id" ref-table="obras_dependencia" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="usuario_id_refs_id_b92eb413" columns="usuario_id" ref-table="obras_usuario" ref-schema="" ref-catalog="dbobras" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="usuario_id" unique="true" columns="dependencia_id"/>
+      <index name="obras_usuario_dependencia_987e3449" unique="false" columns="dependencia_id"/>
+      <index name="obras_usuario_dependencia_c69e2c81" unique="false" columns="usuario_id"/>
+    </table>
   </data-source>
 </component>

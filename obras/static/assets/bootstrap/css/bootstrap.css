@@ -5860,6 +5860,8 @@ a.list-group-item.active:focus .list-group-item-text {
 
 .mfp-show {
   display: inline !important; }
+.mfp-hide {
+  display: none !important; }
 
 .panel > .table-responsive {
   margin-bottom: 0;

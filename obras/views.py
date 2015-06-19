@@ -554,7 +554,7 @@ def obras_iniciadas(request):
 
     template = loader.get_template('admin/obras/consulta_predefinidos/consulta-predefinidos.html')
     context = RequestContext(request, {
-        'obras_iniciadas': obras
+        'obras_resultado': obras
     })
     return HttpResponse(template.render(context))
 
@@ -571,7 +571,7 @@ def obras_vencidas(request):
 
     template = loader.get_template('admin/obras/consulta_predefinidos/consulta-predefinidos.html')
     context = RequestContext(request, {
-        'obras_vencidas': obras
+        'obras_resultado': obras
     })
     return HttpResponse(template.render(context))
 
@@ -586,7 +586,7 @@ def obras_for_dependencia(request):
 
     template = loader.get_template('admin/obras/consulta_predefinidos/consulta-predefinidos.html')
     context = RequestContext(request, {
-        'obras': obras
+        'obras_resultado': obras
     })
     return HttpResponse(template.render(context))
 
@@ -604,7 +604,7 @@ def reportes_predefinidos(request):
 
 def abrir_pptx(archivo):
     f = os.popen(archivo,'r')
-    #f.close()
+    f.close()
 
 def balance_general_ppt(request):
     prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
