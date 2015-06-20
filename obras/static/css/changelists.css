@@ -166,7 +166,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 
 #changelist {
     position: relative;
-    width: 40%;
+    width: 1%;
 }
 
 #changelist table {
@@ -176,7 +176,8 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 .change-list .hiddenfields { display:none; }
 
 .change-list .filtered table {
-    border-right: 1px solid #ffffff;
+    border: 1px solid #6A6B6C;
+
 }
 
 .change-list .filtered {
@@ -184,7 +185,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 }
 
 .change-list .filtered {
-    background: white url(../img/changelist-bg.gif) top right repeat-y !important;
+    background: transparent !important;
 }
 
 .change-list .filtered .results, .change-list .filtered .paginator, .filtered #toolbar, .filtered div.xfull {
@@ -193,7 +194,12 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 }
 
 .change-list .filtered table tbody th {
-    padding-right: 1em;
+    border-bottom: 1px;
+  border-top: 1px;
+    border-right: 1px;
+  border-left: 1px;
+  padding: 4px;
+  border-color: #6A6B6C;
 }
 
 #changelist-form .results {
@@ -201,7 +207,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 }
 
 #changelist .toplinks {
-    border-bottom: 1px solid #ccc !important;
+    border-bottom: 1px solid #6A6B6C !important;
 }
 
 #changelist .paginator {
@@ -219,9 +225,10 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 /* CHANGELIST TABLES */
 
 #changelist table thead th {
-    padding: 0;
+    padding: 4px;
     white-space: nowrap;
     vertical-align: middle;
+
 }
 
 #changelist table thead th.action-checkbox-column {
@@ -231,12 +238,17 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 }
 
 #changelist table tbody td, #changelist table tbody th {
-    border-left: 1px solid #ddd;
+    border-right:  1px solid #6A6B6C;
+    border-left: 1px solid #6A6B6C;
+    border-bottom: 1px solid #6A6B6C;
+  border-top: 1px solid #6A6B6C;
+  padding: 4px;
+
 }
 
 #changelist table tbody td:first-child, #changelist table tbody th:first-child {
-    border-left: 0;
-    border-right: 1px solid #ddd;
+    border-left: 1px solid #6A6B6C;
+    border-right: 1px solid #6A6B6C;
 }
 
 #changelist table tbody td.action-checkbox {
@@ -254,14 +266,14 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 #changelist #toolbar {
     padding: 3px;
     border-bottom: 1px solid #ddd;
-    background: #e1e1e1 url(../img/nav-bg.gif) top left repeat-x;
+    background: #e1e1e1 ;
     color: #666;
 }
 
 #changelist #toolbar form input {
     font-family: "soberana_sanslight";
-    font-size: 11px;
-    padding: 1px 2px;
+    font-size: 13px;
+    padding: 2px 4px;
 }
 
 #changelist #toolbar form #searchbar {

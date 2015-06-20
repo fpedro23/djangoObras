@@ -66,13 +66,13 @@ x++;
 }
     $(document).ready(function($) {
         $("tr input.action-select").actions();
+        $("#action-toggle").hide();
         if ($_GET("e")==1) {
             $("#target").show();
             $("#elmmsg").show();
             $("#modmsg").hide();
             $("#elmmsgins").show();
             $("#modmsgins").hide();
-            $("#action-toggle").hide();
 
         }
         else if($_GET("e")==2){
@@ -140,7 +140,6 @@ x++;
         </p>
         {{ cl.formset.non_form_errors }}
     {% endif %}
-    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
       {% block search %}{% search_form cl %}{% endblock %}
       {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
 
@@ -163,9 +162,7 @@ x++;
           {% if action_form and actions_on_bottom and cl.full_result_count %}{% admin_actions %}{% endif %}
        {% endblock %}
       {% block pagination %}
-          <div class="campopag">
-             {% pagination cl %}
-          </div>
+
       {% endblock %}
 
       <input type="hidden" name="action" value="delete_selected">

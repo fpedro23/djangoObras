@@ -73,7 +73,6 @@ x++;
             $("#modmsg").hide();
             $("#elmmsgins").show();
             $("#modmsgins").hide();
-
         }
         else if($_GET("e")==2){
             $("#target").hide();
@@ -138,13 +137,13 @@ x++;
         </p>
         {{ cl.formset.non_form_errors }}
     {% endif %}
-    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist" style="background-color: transparent">
       {% block search %}{% search_form cl %}{% endblock %}
       {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
 
       {% block filters %}
         {% if cl.has_filters %}
-          <div id="changelist-filter">
+          <div id="changelist-filter" hidden="true">
             <h2>{% trans 'Filter' %}</h2>
             {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
           </div>

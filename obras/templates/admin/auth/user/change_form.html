@@ -4,12 +4,7 @@
 {% block extrahead %}{{ block.super }}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
       <link href="{% static "css/formas.css" %}" rel="stylesheet">
-    <style >
-    input[type=text],input[type=password],input[type=email],input[type=select] { width: 230px;}
-    input[type=checkbox], input[type=radio] {
-        width: 20px;}
-    select { width: 220px;}
-    </style>
+
     {{ media }}
 {% endblock %}
 

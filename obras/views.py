@@ -25,7 +25,7 @@ def get_user_for_token(token):
 
 def register_by_access_token(request):
 
-    #del request.session['access_token']
+    del request.session['access_token']
 
     if request.session.get('access_token'):
         token = {

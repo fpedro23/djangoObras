@@ -41,7 +41,12 @@ function main_consulta() {
 	$j('#buscarICO').on('click', verDatos);
     $j('#id_dependencia').on('change', setImage);
 
-    valida_token();
+    //valida_token();
+    $.get("/obras/register-by-token", function(respu) {
+        newToken=respu.access_token;
+        setImage();
+    });
+
 }
 
 
