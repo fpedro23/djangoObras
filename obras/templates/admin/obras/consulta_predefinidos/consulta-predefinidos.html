@@ -6,6 +6,20 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static "assets/bootstrap/css/bootstrap.css"%}" />
+
+     <script>
+
+    $(document).on('ready', inicio);
+     function inicio(){
+
+        $('#tabla').removeClass("mfp-hide");
+        $('#tabla').addClass("mfp-show");
+        $('#load1').addClass("mfp-hide")
+         $('#load2').addClass("mfp-hide")
+         $('#load3').addClass("mfp-hide")
+     }
+     </script>
+
 	<script src="{% static "js/prefixfree.min.js" %} "></script>
 	<script src="{% static "js/presentaciones.js" %} "></script>
     <link href="{% static "css/styles.css"%}" rel="stylesheet">
@@ -86,9 +100,9 @@
                                     <h6 class="panel-title">Reportes</h6>
                                 </div>
                                 <ul class="nav nav-pills nav-stacked">
-                                    <li style="height: 25px"><a href="/obras/obras_iniciadas">Obras Iniciadas</a></li>
-                                    <li style="height: 25px"><a href="#">Obras Vencidas</a></li>
-                                    <li style="height: 35px"><a href="#">Obras por Dependencia</a></li>
+                                    <li style="height: 25px"><a href="/obras/obras_iniciadas" id="obrasIniciadas">Obras Iniciadas <span id="load1" class="glyphicon glyphicon-refresh glyphicon-refresh-animate mfp-hide"></span></a></li>
+                                    <li style="height: 25px"><a href="/obras/obras_vencidas" id="obrasVencidas">Obras Vencidas <span id="load2" class="glyphicon glyphicon-refresh glyphicon-refresh-animate mfp-hide"></span></a></li>
+                                    <li style="height: 35px"><a href="/obras/obras_dependencia" id="obrasDependencia">Obras por Dependencia <span id="load3" class="glyphicon glyphicon-refresh glyphicon-refresh-animate mfp-hide"></span></a></li>
                                 </ul>
                             </div>
                             <div class="panel panel-default">
@@ -113,8 +127,8 @@
        </div>
 
        <div class="col-md-8-box">
-
-           <table cellspacing="1" class="tablesorter" id="tablaIzquierda">
+            <div class="col-md-12 mfp-hide" id="tabla">
+                <table cellspacing="1" class="tablesorter" id="tablaIzquierda">
                <thead>
                     <tr>
                         <th>Id</th>
@@ -143,7 +157,7 @@
                      </td></tr>
                </tfoot>
                <tbody>
-                    {% for obra in obras_iniciadas %}
+                    {% for obra in obras_resultado %}
                        <div class="row">
                            <tr>
                                 <td>{{ obra.identificador_unico }}</td>
@@ -156,6 +170,7 @@
                 </tbody>
 
            </table>
+            </div>
        </div>
     </div>
 

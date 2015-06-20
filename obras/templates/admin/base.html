@@ -36,6 +36,9 @@
     <![endif]-->
     <!-- Magnific Popup core CSS file -->
 <link rel="stylesheet" href="{% static "assets/Popup/magnific-popup.css"%}">
+
+
+
 <!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
@@ -96,33 +99,31 @@
  {% if user.is_active and user.is_staff %}
 
         <div class="MOVIMIENTOS" onclick="location.href='/obras/movimientos'"></div>
-
+                 <li class="dropdown right-text" style="list-style-type: none;">
                  <div class="pto001">
-                    <li style="list-style-type: none;">
-                        <a href="/obras/movimientos" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto01"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="/admin/obras/obra/add/">Alta de Obra</a></li>
-                          <li><a href="#">Modificar Obra</a></li>
-                        </ul>
-                    </li>
+
+                            <a href="/obras/movimientos" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"></a>
+                            <ul class="dropdown-menu" role="menu">
+                              <li><a href="/admin/obras/obra/add/">Alta de Obra</a></li>
+                              <li><a href="#">Modificar Obra</a></li>
+                            </ul>
+
                  </div>
-
+                 </li>
         <div class="CONSULTAS" onclick="location.href='/obras/consultas'"></div>
+            <li class="dropdown right-text" style="list-style-type: none;">
                 <div class="pto002">
-                     <li style="list-style-type: none;"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto02"></span></a>
-                         <ul class="dropdown-menu">
-                            <li><a href="/admin/obras/obra/">Consultar por Filtro</a></li>
-                            <li><a href="#">Consultar Predefinida</a></li>
-                            <li><a href="#">Consultar Guardadas</a></li>
-                        </ul>
-                    </li>
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto02"></span></a>
+                             <ul class="dropdown-menu">
+                                <li><a href="/admin/obras/obra/">Consultar por Filtro</a></li>
+                                <li><a href="#">Consultar Predefinida</a></li>
+                            </ul>
                 </div>
-
+            </li>
      {%  if user.usuario.rol == 'SA' %}
         <div class="CATALOGOS" onclick="location.href='/obras/catalogo'"></div>
-
                 <div class="pto003">
-                    <li style="list-style-type: none;"><a href="/catalogo" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto03"></span></a>
+                    <a href="/catalogo" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto03"></span></a>
                         <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                           <li class="dropdown-submenu"><a tabindex="-1" href="#" class="dropdown-toggle" data-toggle="dropdown">De Clasificación</a>
                               <ul class="dropdown-menu">
@@ -165,22 +166,21 @@
                               </ul>
                           </li>
                    </ul>
-                 </li>
             </div>
-
      {% endif %}
       {%  if not user.usuario.rol == 'US' %}
         <div class="USUARIOS" onclick="location.href='/obras/usuarios'"></div>
+          <li class="dropdown right-text" style="list-style-type: none;">
             <div class="pto004">
-              <li style="list-style-type: none;"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto04"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto04"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="/admin/auth/user/add">Crear Nuevo</a></li>
                   <li><a href="/admin/auth/user/">Buscar Existente</a></li>
                   <li><a href="/admin/auth/user/add">Modificar Existente</a></li>
                   <li><a href="/admin/auth/user/add">Eliminar Usuario</a></li>
                 </ul>
-              </li>
             </div>
+          </li>
         {% endif %}
 
  {% endif %}

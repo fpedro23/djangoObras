@@ -364,7 +364,8 @@ function arregloDataMapa(Datos) {
 
 
 function graficoMapa(){
-     // Prepare demo data
+     // Prepare demo
+
     var data = [
         {
             "hc-key": "mx-3622",
@@ -501,7 +502,7 @@ function graficoMapa(){
     ];
 
     // Initiate the chart
-    $pp('#containerGrafica').highcharts('Map', {
+    $pp('#containerMapa').highcharts('Map', {
 
         title : {
             text : 'Highmaps basic demo'
@@ -524,7 +525,7 @@ function graficoMapa(){
 
         series : [{
             data : data,
-            mapData: Highcharts.maps['countries/mx/mx-all'],
+            mapData: Highcharts.maps['paises/mx/mx-all'],
             joinBy: 'hc-key',
             name: 'Random data',
             states: {
