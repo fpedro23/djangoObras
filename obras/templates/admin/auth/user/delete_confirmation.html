@@ -14,11 +14,11 @@
 {% endblock %}
 
 {% block content %}
-      <div id="regresarBTN" onclick="location.href='/obras/c_dependencia'">
+      <div id="regresarBTN" onclick="location.href='/obras/usuarios'">
    </div>
 
 <div id="welcome">
-        Confirmación Eliminar Dependencia
+        Confirmación Eliminar Usuario
   </div>
 
   <div class="bienvenida">
@@ -42,7 +42,7 @@
             {% endif %}
         {% else %}
 
-           {% blocktrans with escaped_object=object %}  Esta seguro de eliminar la Dependencia: {% endblocktrans %}
+           {% blocktrans with escaped_object=object %}  Esta seguro de eliminar el Usuario: {% endblocktrans %}
 
            </div>
             <div class="campos01">
@@ -56,7 +56,7 @@
                 <input type="hidden" name="post" value="yes" />
                 <input type="submit" class="eliminarBTN" value="" /> &nbsp;&nbsp;&nbsp;
 
-                <div class="salirBTN" onclick="location.href='/obras/c_dependencia'" style="left: 630px;"></div>
+                <div class="salirBTN" onclick="location.href='/obras/usuarios'" style="left: 630px;"></div>
                 </form>
 
         {% endif %}

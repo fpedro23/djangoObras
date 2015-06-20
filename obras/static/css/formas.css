@@ -184,6 +184,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	left: 123px;
 	top: 116px;
+    overflow: scroll;
 }
 
 

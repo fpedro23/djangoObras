@@ -5,9 +5,32 @@
  * Created by db2 on 7/04/15.
  */
 var $j = jQuery.noConflict();
+
 $j(document).on('ready', main_consulta);
 
-var datosJson;
+var datosJson
+var newToken
+
+function valida_token(){
+var ajax_datatoken = {
+      "access_token"  : 'O9BfPpYQuu6a5ar4rGTd2dRdaYimVa'
+    };
+
+
+    $j.ajax({
+        url: '/obras/register-by-token',
+        type: 'get',
+        data: ajax_datatoken,
+        success: function(data) {
+            newToken = data.access_token;
+            //alert(data.access_token);
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
+}
+
 
 function main_consulta() {
     $j.ajaxSetup({
@@ -20,6 +43,8 @@ function main_consulta() {
 			}
 		}
 	});
+
+    valida_token();
 
 	$j('#ver_datos #button').on('click', verDatos);
     $j('#ver_tabla_estado #estado').on('click', mostrarTablas);
@@ -34,7 +59,15 @@ function main_consulta() {
 
     $j('#regresaGraficas #regresarBTN').on('click', regresa);
 
+
+
+
 }
+
+
+
+
+
 
 function limpia(){
    $j("#forma").reset();
@@ -114,7 +147,7 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : 'JrqrgTujBnZz07LY3tUnBuEKl9iP6A'
+      "access_token"  : newToken
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -190,6 +223,7 @@ function graficas(){
     var montos = new Array();
 
     $pp('#pagina').hide();
+    $pp('#div-grafica').removeClass("mfp-hide");
     $pp('#div-grafica').addClass("mfp-show");
 
     if (tipoReporte=="Dependencia") {
@@ -260,6 +294,10 @@ function graficas(){
                 barraGrafica(categorias,montos,titulo,"Monto Total","Millones"," MDP");
             }
             break;
+        case "Mapa":
+                //alert(JSON.parse(arregloDataMapa(datosJson)));
+                graficoMapa();
+            break;
         case "Lineal":
 
             break;
@@ -301,6 +339,209 @@ function arregloDataGrafica(Datos,tipoReporte,datosGrafica) {
     arregloObjeto = arregloDoble;
     return arregloObjeto;
 }
+
+
+
+function arregloDataMapa(Datos) {
+    var arregloSimple=new Array();
+    var arregloDoble=new Array();
+    var arregloObjeto = new Object();
+
+        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
+            var arregloSimple=new Array();
+            arregloSimple.push("name:" +Datos.reporte_estado[i].estado.nombreEstado);
+            if(datosGrafica=="Numero") {
+                arregloSimple.push("value:" +Datos.reporte_estado[i].numeroObras);
+            }else{
+                arregloSimple.push("value:" +Datos.reporte_estado[i].sumatotal);
+            }
+            arregloDoble.push(arregloSimple);
+        }
+
+    arregloObjeto = arregloDoble;
+    return arregloObjeto;
+}
+
+
+function graficoMapa(){
+     // Prepare demo
+
+    var data = [
+        {
+            "hc-key": "mx-3622",
+            "value": 0
+        },
+        {
+            "hc-key": "mx-bc",
+            "value": 1
+        },
+        {
+            "hc-key": "mx-bs",
+            "value": 2
+        },
+        {
+            "hc-key": "mx-so",
+            "value": 3
+        },
+        {
+            "hc-key": "mx-cl",
+            "value": 4
+        },
+        {
+            "hc-key": "mx-na",
+            "value": 5
+        },
+        {
+            "hc-key": "mx-cm",
+            "value": 6
+        },
+        {
+            "hc-key": "mx-qr",
+            "value": 7
+        },
+        {
+            "hc-key": "mx-mx",
+            "value": 8
+        },
+        {
+            "hc-key": "mx-mo",
+            "value": 9
+        },
+        {
+            "hc-key": "mx-df",
+            "value": 10
+        },
+        {
+            "hc-key": "mx-qt",
+            "value": 11
+        },
+        {
+            "hc-key": "mx-tb",
+            "value": 12
+        },
+        {
+            "hc-key": "mx-cs",
+            "value": 13
+        },
+        {
+            "hc-key": "mx-nl",
+            "value": 14
+        },
+        {
+            "hc-key": "mx-si",
+            "value": 15
+        },
+        {
+            "hc-key": "mx-ch",
+            "value": 16
+        },
+        {
+            "hc-key": "mx-ve",
+            "value": 17
+        },
+        {
+            "hc-key": "mx-za",
+            "value": 18
+        },
+        {
+            "hc-key": "mx-ag",
+            "value": 19
+        },
+        {
+            "hc-key": "mx-ja",
+            "value": 20
+        },
+        {
+            "hc-key": "mx-mi",
+            "value": 21
+        },
+        {
+            "hc-key": "mx-oa",
+            "value": 22
+        },
+        {
+            "hc-key": "mx-pu",
+            "value": 23
+        },
+        {
+            "hc-key": "mx-gr",
+            "value": 24
+        },
+        {
+            "hc-key": "mx-tl",
+            "value": 25
+        },
+        {
+            "hc-key": "mx-gj",
+            "value": 26
+        },
+        {
+            "hc-key": "mx-tm",
+            "value": 27
+        },
+        {
+            "hc-key": "mx-co",
+            "value": 28
+        },
+        {
+            "hc-key": "mx-dg",
+            "value": 29
+        },
+        {
+            "hc-key": "mx-yu",
+            "value": 30
+        },
+        {
+            "hc-key": "mx-sl",
+            "value": 31
+        },
+        {
+            "hc-key": "mx-hg",
+            "value": 32
+        }
+    ];
+
+    // Initiate the chart
+    $pp('#containerMapa').highcharts('Map', {
+
+        title : {
+            text : 'Highmaps basic demo'
+        },
+
+        subtitle : {
+            text : 'Source map: <a href="http://code.highcharts.com/mapdata/countries/mx/mx-all.js">Mexico</a>'
+        },
+
+        mapNavigation: {
+            enabled: true,
+            buttonOptions: {
+                verticalAlign: 'bottom'
+            }
+        },
+
+        colorAxis: {
+            min: 0
+        },
+
+        series : [{
+            data : data,
+            mapData: Highcharts.maps['paises/mx/mx-all'],
+            joinBy: 'hc-key',
+            name: 'Random data',
+            states: {
+                hover: {
+                    color: '#BADA55'
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }]
+    });
+
+}
+
 
 function columnaGrafica(categorias,datas,titulo,nombreData){
 
@@ -552,6 +793,7 @@ function setMarkers(mapa, lugares) {
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: mapa,
+        icon: '../../static/assets/js/pines/pin4.png',
         title: puntos[0],
         zIndex: puntos[3]
     });
@@ -696,8 +938,8 @@ function tablaD(Datos){
                     +'<tfoot>'
                         +'<tr>'
                             +'<th>TOTALES</th>'
-                            +'<th>'+ Datos.reporte_general[0].obras_totales +'</th>'
-                            +'<th>'+ Datos.reporte_general[0].total_invertido +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].obras_totales, 2, '.', ',') +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].total_invertido, 2, '.', ',') +'</th>'
                         +'</tr>'
 
                         +'<tr><td class="pager" id="pagerD" colspan="3">'
@@ -722,8 +964,8 @@ function tablaD(Datos){
         for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].numero_obras + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].sumatotal + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }
@@ -733,8 +975,8 @@ function tablaD(Datos){
         for (var i = 0; i < Datos.reporte_estado.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
-            + '<td>' + Datos.reporte_estado[i].numeroObras + '</td>'
-            + '<td>' + Datos.reporte_estado[i].sumatotal + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].numeroObras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }
@@ -836,8 +1078,8 @@ $j.tablaGrafica = function(Datos){
                     +'<tfoot>'
                         +'<tr>'
                             +'<th>TOTALES</th>'
-                            +'<th>'+ Datos.reporte_general[0].obras_totales +'</th>'
-                            +'<th>'+ Datos.reporte_general[0].total_invertido +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].obras_totales, 2, '.', ',') +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].total_invertido, 2, '.', ',') +'</th>'
                         +'</tr>'
 
                         +'<tr><td class="pager" id="pagerG" colspan="3">'
@@ -861,8 +1103,8 @@ $j.tablaGrafica = function(Datos){
         for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].numero_obras + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].sumatotal + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }
@@ -872,8 +1114,8 @@ $j.tablaGrafica = function(Datos){
         for (var i = 0; i < Datos.reporte_estado.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
-            + '<td>' + Datos.reporte_estado[i].numeroObras + '</td>'
-            + '<td>' + Datos.reporte_estado[i].sumatotal + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].numeroObras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }
@@ -911,3 +1153,6 @@ $j.tablaGrafica = function(Datos){
         $j('#divTablaGrafica').html($j(sHtml));
 
 }
+
+
+

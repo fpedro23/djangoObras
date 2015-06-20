@@ -14,11 +14,11 @@
 {% endblock %}
 
 {% block content %}
-      <div id="regresarBTN" onclick="location.href='/obras/c_clasificacion'">
+      <div id="regresarBTN" onclick="location.href='/obras/c_inaugurador'">
    </div>
 
 <div id="welcome">
-        Confirmación Eliminar Tipo de Clasificación
+        Confirmación Eliminar Inaugurador
   </div>
 
   <div class="bienvenida">
@@ -42,7 +42,7 @@
             {% endif %}
         {% else %}
 
-           {% blocktrans with escaped_object=object %}  Esta seguro de eliminar el Tipo de Clasificación: {% endblocktrans %}
+           {% blocktrans with escaped_object=object %}  Esta seguro de eliminar el Inaugurador: {% endblocktrans %}
 
            </div>
             <div class="campos01">
@@ -56,7 +56,7 @@
                 <input type="hidden" name="post" value="yes" />
                 <input type="submit" class="eliminarBTN" value="" /> &nbsp;&nbsp;&nbsp;
 
-                <div class="salirBTN" onclick="location.href='/obras/c_clasificacion'" style="left: 630px;"></div>
+                <div class="salirBTN" onclick="location.href='/obras/c_inaugurador'" style="left: 630px;"></div>
                 </form>
 
         {% endif %}
