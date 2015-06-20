@@ -1,4 +1,4 @@
-{% load i18n admin_static admin_modify %}{% load cycle from future %}
+{% load i18n admin_static admin_modify app_filters%}{% load cycle from future %}
 
 {% if inline_admin_formset.formset.prefix == "documentofuente_set" %}
 
@@ -6,19 +6,16 @@
   <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
 {{ inline_admin_formset.formset.management_form }}
 <fieldset class="module" style="background: #ffffff; border:0px;">
-   <!-- <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }} </h2>-->
+   <!-- <h2> {#  inline_admin_formset.opts.verbose_name_plural|capfirst }#} </h2>-->
    {{ inline_admin_formset.formset.non_form_errors }}
-   <table style="background: #ffffff; border:0px;">
+   <table style="background: #ffffff; border:0px; width:100%;">
      <thead style="background: #ffffff; border:0px;"><tr>
      {% for field in inline_admin_formset.fields %}
        {% if not field.widget.is_hidden %}
-         <th{% if forloop.first %} colspan="2"{% endif %}{% if field.required %} class="required"{% endif %} style="background: #ffffff; border:0px;">{{ field.label|capfirst }}
-         {% if field.help_text %}&nbsp;<img src="{% static "admin/img/icon-unknown.gif" %}" class="help help-tooltip" width="10" height="10" alt="({{ field.help_text|striptags }})" title="{{ field.help_text|striptags }}"/>{% endif %}
-         </th>
+
        {% endif %}
      {% endfor %}
-     {% if inline_admin_formset.formset.can_delete %}<th style="background: #ffffff; border:0px;">{#% trans "Delete?" %#}</th>{% endif %}
-     </tr></thead>
+      </tr></thead>
 
      <tbody style="background: #ffffff; border:0px;">
      {% for inline_admin_form in inline_admin_formset %}
@@ -27,7 +24,7 @@
         {% endif %}
         <tr class="form-row {% cycle "row1" "row2" %} {% if inline_admin_form.original or inline_admin_form.show_url %}has_original{% endif %}{% if forloop.last %} empty-form{% endif %}"
              id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
-        <td class="original" style="background: #ffffff; border:0px;">
+        <td class="original" style="background: #ffffff; border:0px;" hidden="true">
           {% if inline_admin_form.original or inline_admin_form.show_url %}<p>
           {% if inline_admin_form.original %} {{ inline_admin_form.original }}{% endif %}
           {% if inline_admin_form.show_url %}<a href="{{ inline_admin_form.absolute_url }}">{% trans "View on site" %}</a>{% endif %}
@@ -53,7 +50,7 @@
                   <p>{{ field.contents }}</p>
               {% else %}
                   {{ field.field.errors.as_ul }}
-                  {{ field.field }}
+                      {{ field.field }}
               {% endif %}
               </td>
               {% endif %}
@@ -61,7 +58,7 @@
           {% endfor %}
         {% endfor %}
         {% if inline_admin_formset.formset.can_delete %}
-          <td class="delete" style="background: #ffffff; border:0px;">{% if inline_admin_form.original %}{{ inline_admin_form.deletion_field.field }}{% endif %}</td>
+          <td class="delete" style="background: #ffffff; border:0px;width: 10%">{% if inline_admin_form.original %}{{ inline_admin_form.deletion_field.field }}{% endif %}</td>
         {% endif %}
         </tr>
      {% endfor %}
@@ -81,6 +78,10 @@
     addText: "{% blocktrans with inline_admin_formset.opts.verbose_name|capfirst as verbose_name %}Add another {{ verbose_name }}{% endblocktrans %}",
     deleteText: "{% trans 'Remove' %}"
   });
+
+        var $infl=jQuery.noConflict();
+    $infl('input[type=file]').bootstrapFileInput();
+    $infl('.file-inputs').bootstrapFileInput();
 })(django.jQuery);
 </script>
 {% endif %}

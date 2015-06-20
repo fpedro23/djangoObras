@@ -383,3 +383,4 @@ class ReporteNoTrabajoEndpoint(ProtectedResourceView):
 
             return HttpResponse(json.dumps(dicts), 'application/json')
 
+

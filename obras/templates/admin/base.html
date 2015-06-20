@@ -195,7 +195,7 @@
          <div id="branding">
         {% block branding %}{% endblock %}
         </div>
-        {% block nav-global %}{% endblock %}
+        {% block nav-global %}{{ object_id }}{% endblock %}
 
         {% block breadcrumbs %}
         <div class="breadcrumbs">
@@ -218,7 +218,7 @@
                             src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
                                   + '<div class="class="textoALERTA"">'
                                   + ' <ul class="messagelist">{% for message in messages %}'
-                                  + '  <li{% if message.tags %} class="textoALERTA"{% endif %}>{{ message|capfirst }}</li>'
+                                  + '  <li{% if message.tags %} class="textoALERTA"{% endif %}>{{ message|capfirst }} - {{ object_id }}</li>'
                                   + '          {% endfor %}</ul>'
                                   + ' <a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
                                 + '</div>'

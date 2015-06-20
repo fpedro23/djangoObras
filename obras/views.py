@@ -604,7 +604,7 @@ def reportes_predefinidos(request):
 
 def abrir_pptx(archivo):
     f = os.popen(archivo,'r')
-    f.close()
+    # f.close()
 
 def balance_general_ppt(request):
     prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')

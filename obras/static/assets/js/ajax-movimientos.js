@@ -2,7 +2,7 @@ var $j = jQuery.noConflict();
 $j(document).on('ready', main_consulta);
 
 var datosJson;
-var newToken;
+var newToken
 
 function valida_token(){
 var ajax_datatoken = {
@@ -37,8 +37,15 @@ function main_consulta() {
 			}
 		}
 	});
-    valida_token();
+
 	$j('#buscarICO').on('click', verDatos);
+    $j('#id_dependencia').on('change', setImage);
+
+    //valida_token();
+    $.get("/obras/register-by-token", function(respu) {
+        newToken=respu.access_token;
+        setImage();
+    });
 
 }
 
@@ -70,9 +77,35 @@ function verDatos() {
 
         },
         error: function(data) {
-            alert('error!!! ' + data.status);
+            alert('error!! ' + data.status);
         }
     });
 }
+
+function setImage(){
+            var idDep = $j("#id_dependencia").val();
+            var sHtml="";
+
+            var ajax_data = {"access_token"  : newToken};
+
+            if(idDep.toString()!=""){ajax_data.id=idDep.toString();}
+
+            $j.ajax({
+                url: '/obras/api/dependencia_imagen',
+                type: 'get',
+                data: ajax_data,
+                success: function(data) {
+                    sHtml= '<img src="' + data[0].dependencia.imagenDependencia.toString() +'" >'
+                    $j('#logoDEP').html(sHtml);
+
+                },
+                error: function(data) {
+                    alert('error!!! ' + data.status);
+                }
+            });
+        }
+
+
+
 
 

@@ -4,15 +4,18 @@
 {% block extrahead %}{{ block.super }}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
      <script type="text/javascript" src="{% static 'assets/js/ajax-movimientos.js' %}"></script>
+
      <link href="{% static "css/formas.css" %}" rel="stylesheet">
         <link href="{% static "css/widgets.css" %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.file-input.js' %}"></script>
+     <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
     {{ media }}
     <script type="text/javascript">
 (
 
 
         function($) {
-
+var $tt = jQuery.noConflict();
 
 function $_GET(param)
 {
@@ -47,6 +50,7 @@ x++;
 
 }
     $(document).ready(function($) {
+
         $("tr input.action-select").actions();
         if ($_GET("m")==1) {
             $("#walta").hide();
@@ -64,54 +68,75 @@ x++;
         }
 
 
+            $tt('#imgerr1').tooltip({html:true});$tt('#imgerr2').tooltip({html:true});$tt('#imgerr3').tooltip({html:true});
+            $tt('#imgerr4').tooltip({html:true});$tt('#imgerr5').tooltip({html:true});$tt('#imgerr6').tooltip({html:true});
+            $tt('#imgerr7').tooltip({html:true});$tt('#imgerr8').tooltip({html:true});$tt('#imgerr9').tooltip({html:true});$tt('#imgerr10').tooltip({html:true});
+            $tt('#imgerr11').tooltip({html:true});$tt('#imgerr12').tooltip({html:true});$tt('#imgerr13').tooltip({html:true});$tt('#imgerr14').tooltip({html:true});
+            $tt('#imgerr15').tooltip({html:true});$tt('#imgerr16').tooltip({html:true});$tt('#imgerr17').tooltip({html:true});$tt('#imgerr18').tooltip({html:true});
+            $tt('#imgerr19').tooltip({html:true});$tt('#imgerr20').tooltip({html:true});$tt('#imgerr21').tooltip({html:true});$tt('#imgerr22').tooltip({html:true});
+
+            $tt('#imgerr23').tooltip({html:true});$tt('#imgerr24').tooltip({html:true});$tt('#imgerr25').tooltip({html:true});$tt('#imgerr26').tooltip({html:true});
+            $tt('#imgerr27').tooltip({html:true});$tt('#imgerr28').tooltip({html:true});$tt('#imgerr29').tooltip({html:true});$tt('#imgerr30').tooltip({html:true});
+
+            $tt('#id_detalleinversion_set-7-monto').on('focusout',calculaTotal);
+            $tt('#id_detalleinversion_set-6-monto').on('focusout',calculaTotal);
+            $tt('#id_detalleinversion_set-5-monto').on('focusout',calculaTotal);
+            $tt('#id_detalleinversion_set-4-monto').on('focusout',calculaTotal);
+            $tt('#id_detalleinversion_set-3-monto').on('focusout',calculaTotal);
+            $tt('#id_detalleinversion_set-2-monto').on('focusout',calculaTotal);
+            $tt('#id_detalleinversion_set-1-monto').on('focusout',calculaTotal);
+            $tt('#id_detalleinversion_set-0-monto').on('focusout',calculaTotal);
+            $tt('#id_detalleinversion_set-__prefix__-monto').on('focusout',calculaTotal);
+            $tt('#id_inversionTotal').on('click',calculaTotal);
+
+
     });
+
+    function calculaTotal(){
+        var TotInv=Number(0);
+        var sub0,sub1,sub2,sub3,sub4,sub5,sub6,sub7;
+
+        if (isNaN($tt('#id_detalleinversion_set-__prefix__-monto').val())) {
+            sub0=Number(0);
+        }else { sub0= Number($tt('#id_detalleinversion_set-__prefix__-monto').val());}
+
+        if (isNaN($tt('#id_detalleinversion_set-0-monto').val())) {
+            sub1=Number(0);
+        }else { sub1= Number($tt('#id_detalleinversion_set-0-monto').val());}
+
+         if (isNaN($tt('#id_detalleinversion_set-1-monto').val())) {
+            sub2=Number(0);
+        }else { sub2= Number($tt('#id_detalleinversion_set-1-monto').val());}
+
+         if (isNaN($tt('#id_detalleinversion_set-2-monto').val())) {
+            sub3=Number(0);
+        }else { sub3= Number($tt('#id_detalleinversion_set-2-monto').val());}
+
+         if (isNaN($tt('#id_detalleinversion_set-3-monto').val())) {
+            sub4=Number(0);
+        }else { sub4= Number($tt('#id_detalleinversion_set-3-monto').val());}
+
+         if (isNaN($tt('#id_detalleinversion_set-4-monto').val())) {
+            sub5=Number(0);
+        }else { sub5= Number($tt('#id_detalleinversion_set-4-monto').val());}
+
+         if (isNaN($tt('#id_detalleinversion_set-5-monto').val())) {
+            sub6=Number(0);
+        }else { sub6= Number($tt('#id_detalleinversion_set-5-monto').val());}
+
+         if (isNaN($tt('#id_detalleinversion_set-6-monto').val())) {
+            sub7=Number(0);
+        }else { sub7= Number($tt('#id_detalleinversion_set-6-monto').val());}
+
+        //alert(sub0+sub1+sub2+sub3+sub4+sub5+sub6+sub7);
+        TotInv=sub0+sub1+sub2+sub3+sub4+sub5+sub6+sub7;
+
+         $tt('#id_inversionTotal').val(TotInv);
+    }
 })(django.jQuery);
 </script>
 
-    <script>
-        var $j = jQuery.noConflict();
-        $j(document).on('ready', main_consulta);
-        function main_consulta() {
-            $j.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    if(settings.type == "POST"){
-                        xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
-                    }
-                    if(settings.type == "GET"){
-                        xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
-                    }
-                }
-            });
 
-            $j('#id_dependencia').on('change', regresa);
-
-        }
-
-        function regresa(){
-            var idDep = $j("#id_dependencia").val();
-            var sHtml="";
-
-            var ajax_data = {"access_token"  : 'XwBWJLksjXHNbUoejwgc8Y0vR7FEDs'};
-
-            if(idDep.toString()!=""){ajax_data.id=idDep.toString();}
-
-            $j.ajax({
-                url: '/obras/api/dependencia_imagen',
-                type: 'get',
-                data: ajax_data,
-                success: function(data) {
-                    sHtml= '<img src="' + data[0].dependencia.imagenDependencia.toString() +'" >'
-                    $j('#logoDEP').html(sHtml);
-
-                },
-                error: function(data) {
-                    alert('error!!! ' + data.status);
-                }
-            });
-        }
-
-
-    </script>
 
 
     <!-- Latest compiled and minified CSS -->
@@ -125,8 +150,6 @@ x++;
 {% block extrastyle %}{{ block.super }}
 <style>
 
-input{
-}
 </style>
 {% endblock %}
 
@@ -144,12 +167,12 @@ input{
    </div>
 
   <div id="welcome">
-        {% if not change %}
-           <span id="walta">Alta</span>
-        {% else %}
-            <span id="wmod">Modificar
-        {% endif %}
-        Obra</span>
+
+           <span id="walta" hidden="true">Alta de Obra</span>
+
+            <span id="wmod" hidden="true">Modificar Obra</span>
+
+
 
   </div>
 
@@ -175,10 +198,11 @@ input{
         <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post"
               id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
             {% if errors %}
-{{ errors }}
-                    {% if adminform.form.non_field_errors|length == 1 %} * Favor de verificar los datos {% else %}
-                        * Favor de verificar los datos {% endif %} {{ adminform.form.non_field_errors }}
-                {% endif %}
+                <div class="msggen">
+                {% if adminform.form.non_field_errors|length == 1 %} * Favor de verificar los siguientes datos {% else %}
+                        * Favor de verificar los siguientes datos {% endif %} {{ adminform.form.non_field_errors }}
+                </div>
+            {% endif %}
             <div>
                 {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1"/>{% endif %}
                 {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}"/>{% endif %}
@@ -209,10 +233,13 @@ input{
                    <script type="text/javascript">
                     var $dp = jQuery.noConflict();
                     $dp('#id_fechaInicio').datepicker({
-                        autoclose:true
+                        autoclose:true,
+                        format:'yyyy-mm-dd',
+                        orientation:'bottom'
                     });
                        $dp('#id_fechaTermino').datepicker({
-                        autoclose:true
+                        autoclose:true,
+                        format:'yyyy-mm-dd'
                     });
                     </script>
 

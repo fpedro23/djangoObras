@@ -194,6 +194,7 @@ body {
 	left: 50px;
 	background-image: url(../img/bigBackground.fw.png);
 	background-position: 0px -90px;
+    cursor: pointer;
 }
 
 /*DIV que contiene el nombre del Sistema*/
@@ -227,7 +228,7 @@ body {
 }
 
 .FUA {
-	width:290px;
+	width:390px;
 	height:18px;
 	position:absolute;
 	left:370px;
@@ -322,6 +323,7 @@ body {
 	position:absolute;
 	left:0px;
 	background-image:url(../img/mov_N.fw.png);
+    cursor: pointer;
 }
 
 .MOVIMIENTOS:hover{
@@ -349,6 +351,7 @@ body {
 	position:absolute;
 	left:257px;
 	background-image:url(../img/cons_N.fw.png);
+    cursor: pointer;
 }
 
 .CONSULTAS:hover{
@@ -376,6 +379,7 @@ body {
 	position:absolute;
 	left:513px;
 	background-image:url(../img/cat_N.fw.png);
+    cursor: pointer;
 }
 
 .CATALOGOS:hover{
@@ -403,6 +407,7 @@ body {
 	position:absolute;
 	left:769px;
 	background-image:url(../img/usu_N.fw.png);
+    cursor: pointer;
 }
 
 .USUARIOS:hover{
@@ -502,6 +507,7 @@ ul li {
 
 a{
     color:#6A6B6C;
+    text-decoration: underline;
 }
 
 .error__msg {
@@ -573,6 +579,19 @@ a{
 }
 
 
+.errorlist {
+  position: absolute;
+  font-size: 10px;
+    right: -100px;
+  padding: 2px;
+  background-color: red;
+  color: white;
+    z-index: 50;
 
+  /* left: 10%; */
 
-
+}
+ul {
+  margin-top: -17px;
+  margin-bottom: 10px;
+}

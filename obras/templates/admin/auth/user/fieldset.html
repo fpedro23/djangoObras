@@ -13,7 +13,7 @@
                     <div class="col-md-3">
                         <label class="required" for="id_first_name">Nombre:</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-9" >
                         <input id="id_first_name" maxlength="30" name="first_name" type="text" value="{{ field.field.value|default_if_none:"" }}" />
                        {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -28,7 +28,7 @@
                     <div class="col-md-3"  >
                         <label for="id_last_name">Apellidos:</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-9" >
                         {{ field.field }}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -42,9 +42,9 @@
              {% if field.field.name == "email" %}
                 <div class="row  field-email" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-3"  >
-                        *<label for="id_email">&nbsp;E-mail:</label>
+                        *<label for="id_email"> E-mail:</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-9" >
                         {{ field.field }}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -71,7 +71,7 @@
                     <div class="col-md-3"  >
                         <label class="required" for="id_username">*Usuario:</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-9" >
                         <input id="id_username" maxlength="30" name="username" type="text" value="{{ field.field.value|default_if_none:"" }}" />
                             {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -87,7 +87,7 @@
                     <div class="col-md-3">
                         <label class="required" for="id_password1">*Contraseña:</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-9" >
                         <input id="id_password1" name="password1" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -103,7 +103,7 @@
                     <div class="col-md-3">
                         <label class="required" for="id_password2">*Contraseña:</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-9" >
                         <input id="id_password1" name="password2" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -125,14 +125,13 @@
     <div id="tituloCUADROS">DATOS DE PERFIL DE USUARIO<p>&nbsp;</p></div>
     </div>
     <div class="campos04">
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;<br><br></p>
 <fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
 
          {% for line in fieldset %}
             {% for field in line %}
                {% if field.field.name == "is_active" %}
                  <div class="row field-is_active">
-                    <div class="col-md-4" >
+                    <div class="col-md-6" >
                         <label class="vCheckboxLabel" for="id_is_active">Activo</label>
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -145,35 +144,6 @@
                  <div class="row field-is_active errornote" align="center">{{ field.errors }}</div>
                {% endif %}
 
-               {% if field.field.name == "is_staff" %}
-                  <div class="row field-is_staff">
-                    <div class="col-md-4" >
-                       <label class="vCheckboxLabel" for="id_is_staff">Es staff</label>
-                    </div>
-                    <div class="col-md-1">
-                        {{ field.field }}
-                        {% if field.field.help_text %}
-                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
-                    {% endif %}
-                    </div>
-                  </div>
-                  <div class="row field-is_staff errornote" align="center">{{ field.errors }}</div>
-                {% endif %}
-                 {% if field.field.name == "is_superuser" %}
-                  <div class="row field-is_superuser">
-                    <div class="col-md-4" >
-                      <label class="vCheckboxLabel" for="id_is_superuser">Es superusuario</label>
-                    </div>
-                    <div class="col-md-1" >
-                        {{ field.field }}
-                           {% if field.field.help_text %}
-                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
-                    {% endif %}
-                    </div>
-                  </div>
-                  <div class="row field-is_superuser errornote" align="center">{{ field.errors }}</div>
-                {% endif %}
-
         {% endfor %}
     {% endfor %}
 
@@ -185,7 +155,7 @@
 
   <div class="campos03">
 
-    <fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 2px;">
+    <fieldset class="module aligned wide {{ fieldset.classes }}">
 
          {% for line in fieldset %}
             {% for field in line %}
@@ -194,7 +164,7 @@
                     <div class="col-md-3" >
                         <label class="required" for="id_rol">*Rol:</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-7" >
                             {{ field.field }}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -205,11 +175,11 @@
                {% endif %}
 
                {% if field.field.name == "dependencia" %}
-                  <div class="row field-dependencia">
+                  <div class="row field-dependencia" style="padding-top: 8px;">
                     <div class="col-md-3" >
                         <label for="id_usuario-0-dependencia">*Dependencia:</label>
                     </div>
-                    <div class="col-md-1" >
+                    <div class="col-md-7" >
                         {{ field.field }}
                        {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>

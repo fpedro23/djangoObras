@@ -1,39 +1,78 @@
 {% load i18n admin_static %}{% load cycle from future %}
+
+
+
+   <script id="js" type="text/javascript">
+    var $ts = jQuery.noConflict();
+         $(document).ready(function($) {
+         $ts("#RLT").show();
+
+  });
+
+$ts(function() {
+       $ts('#result_liist').tablesorter({
+	theme: 'blue',
+	// widthFixed: true, // <- now automatically set by the scroller widget
+	showProcessing: true,
+	headerTemplate : '{content} {icon}',
+	widgets: [ 'uitheme', 'zebra', 'pager', 'scroller' ],
+	widgetOptions : {
+		scroller_height : 300,
+		// scroll tbody to top after sorting
+		scroller_upAfterSort: true,
+		// pop table header into view while scrolling up the page
+		scroller_jumpToHeader: true,
+		// In tablesorter v2.19.0 the scroll bar width is auto-detected
+		// add a value here to override the auto-detected setting
+		scroller_barWidth : null
+		// scroll_idPrefix was removed in v2.18.0
+		// scroller_idPrefix : 's_'
+
+
+	}
+
+   });
+
+});
+</script>
+
+
+
 {% if result_hidden_fields %}
 <div class="hiddenfields">{# DIV for HTML validation #}
 {% for item in result_hidden_fields %}{{ item }}{% endfor %}
+
 </div>
 {% endif %}
 {% if results %}
-    <div class="campos01">
-        <table id="result_list">
+
+    <div class="camposRL" id="RLT" hidden="true" {% if cl.opts.verbose_name == "obra" %} {{ "style='width: 970px; left:30px'"}}{% endif %}>
+        <table id="result_list" class="changelist" style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">
            <thead>
-                <tr>
+                <tr style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">
                 {% for header in result_headers %}
-                    <th scope="col" {{ header.class_attrib }}>
-                    {% if header.sortable %}
-                        {% if header.sort_priority > 0 %}
-                            <div class="sortoptions">
-                                 <a class="sortremove" href="{{ header.url_remove }}" title="{% trans "Remove from sorting" %}"></a>
-                                {% if num_sorted_fields > 1 %}<span class="sortpriority" title="{% blocktrans with priority_number=header.sort_priority %}Sorting priority: {{ priority_number }}{% endblocktrans %}">{{ header.sort_priority }}</span>{% endif %}
-                                    <a href="{{ header.url_toggle }}" class="toggle {% if header.ascending %}ascending{% else %}descending{% endif %}" title="{% trans "Toggle sorting" %}"></a>
-                             </div>
-                        {% endif %}
-                    {% endif %}
-                    <div class="text" style="font-family: 'soberana_textobold';">{% if header.sortable %}<a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
+
+
+                    <th scope="col" {{ header.class_attrib }} style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">
+
+                    <div class="text" style="font-family: 'soberana_textobold';">{% if header.sortable %}<a href="{{ header.url_primary }}" style="text-decoration: underline;">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
                      <div class="clear"></div>
                     </th>
                 {% endfor %}
                 </tr>
             </thead>
-           <tbody>
+
+
+           <tbody style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">
                 {% for result in results %}
+
                   {% if result.form.non_field_errors %}
-                      <tr><td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td></tr>
+                      <tr style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; "><td  colspan="{{ result|length }}" style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">{{ result.form.non_field_errors }}</td></tr>
                     {% endif %}
-                    <tr class="{% cycle 'row1' 'row2' %}">{% for item in result %}{{ item }}{% endfor %}</tr>
+                    <tr class="{% cycle 'row1' 'row2' %}" >{% for item in result %}{{ item }}{% endfor %}</tr>
                 {% endfor %}
             </tbody>
+
          </table>
     </div>
 {% endif %}
