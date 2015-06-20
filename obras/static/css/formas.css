@@ -192,10 +192,10 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 18px;
 	color: #6A6B6C;
 	width: 700px;
-	height: 300px;
+	height: 310px;
 	position: absolute;
 	left: 123px;
-	top: 80px;
+	top: 90px;
     overflow: scroll;
 }
 
@@ -252,11 +252,11 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-family: "soberana_sanslight";
 	font-size: 18px;
 	color: #6A6B6C;
-	width: 400px;
-	height: 40px;
+	width: 450px;
+	height: 30px;
 	position: absolute;
 	left: 123px;
-	top: 430px;
+	top: 420px;
 }
 
 .salirBTN{
@@ -267,6 +267,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 439px;
 	left: 573px;
+    cursor: pointer;
 }
 
 .salirBTN:hover{
@@ -375,7 +376,7 @@ tr.alt {
 }
 
 .row2 {
-    background: #fff;
+    background: #e4e5e6;
 }
 
 a#add_id_dependienteDe.add-another {display: none;}

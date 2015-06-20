@@ -170,7 +170,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 }
 
 #changelist table {
-    width: 100%;
+    width: 99%;
 }
 
 .change-list .hiddenfields { display:none; }
@@ -234,7 +234,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 #changelist table thead th.action-checkbox-column {
     width: 1.5em;
     text-align: center;
-    display: none;
+
 }
 
 #changelist table tbody td, #changelist table tbody th {
@@ -254,7 +254,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 #changelist table tbody td.action-checkbox {
     text-align:center;
     width: 10px;
-    display: none;
+
 }
 
 #changelist table tfoot {
@@ -427,7 +427,9 @@ font-family: "soberana_sanslight";
 }
 
 #changelist table tbody tr.selected {
-    background-color: #FFFFCC;
+    color: #b94a48;
+  background-color: #f2dede;
+  border-color: #ebccd1;
 }
 
 #changelist .actions {

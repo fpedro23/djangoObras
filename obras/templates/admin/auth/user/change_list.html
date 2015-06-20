@@ -73,6 +73,10 @@ x++;
             $("#modmsg").hide();
             $("#elmmsgins").show();
             $("#modmsgins").hide();
+            $("#action-toggle").hide();
+            $('.action-checkbox').show();
+            $('.action-select').show();
+            $('.action-checkbox-column').show();;
         }
         else if($_GET("e")==2){
             $("#target").hide();
@@ -80,12 +84,16 @@ x++;
             $('#modmsg').show();
             $("#elmmsgins").hide();
             $('#modmsgins').show();
-            $(".action-select").toggle();
+            $(".action-select").hide();
+            $('.action-checkbox-column').hide();
+             $('.action-checkbox').hide();
         }
         else{
             $('#cons').show();
             $('#consins').show();
-            $('.action-select').toggle();
+            $('.action-select').hide();
+            $('.action-checkbox-column').hide();
+             $('.action-checkbox').hide();
         }
 
     });
@@ -117,8 +125,8 @@ x++;
   </div>
   <div class="bienvenida">
         <span id="elmmsgins" hidden="true">Bienvenido a Eliminar Usuario. Le pedimos seleccione el registro y presione el botón Eliminar.</span>
-        <span id="modmsgins" hidden="true">Bienvenido a Modificar Usuario. Le pedimos seleccione el registro para editarlo.</span>
-        <span id="consins" hidden="true">Bienvenido a Catálogo Usuarios. Seleccione el registro para consultar detalles.</span>
+        <span id="modmsgins" hidden="true">Bienvenido a Modificar Usuario. Le pedimos seleccione el el Nombre del usuario para editarlo.</span>
+        <span id="consins" hidden="true">Bienvenido a Catálogo Usuarios. Seleccione el Nombre del usuario para consultar detalles.</span>
   </div>
 
   <div id="content-main">
@@ -149,14 +157,13 @@ x++;
           </div>
         {% endif %}
       {% endblock %}
-<div>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
       <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %} novalidate>{% csrf_token %}
       {% if cl.formset %}
         <div>{{ cl.formset.management_form }}</div>
       {% endif %}
-<div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+        <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+
       {% block result_list %}
 
           {% result_list cl %}
@@ -165,6 +172,7 @@ x++;
       {% block pagination %}
               <div class="campopag">
              {% pagination cl %}
+            </div>
       {% endblock %}
 
       <input type="hidden" name="action" value="delete_selected">

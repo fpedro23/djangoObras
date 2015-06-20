@@ -4,11 +4,9 @@
 
    <script id="js" type="text/javascript">
     var $ts = jQuery.noConflict();
-        $('.action-select').toggle();
-        $("#action-toggle").hide();
          $(document).ready(function($) {
+         $ts("#RLT").show();
 
-     $ts("#RLT").show();
   });
 
 $ts(function() {
@@ -43,10 +41,12 @@ $ts(function() {
 {% if result_hidden_fields %}
 <div class="hiddenfields">{# DIV for HTML validation #}
 {% for item in result_hidden_fields %}{{ item }}{% endfor %}
+
 </div>
 {% endif %}
 {% if results %}
-    <div class="camposRL" id="RLT" hidden="true">
+
+    <div class="camposRL" id="RLT" hidden="true" {% if cl.opts.verbose_name == "obra" %} {{ "style='width: 970px; left:30px'"}}{% endif %}>
         <table id="result_list" class="changelist" style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">
            <thead>
                 <tr style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">
@@ -55,7 +55,7 @@ $ts(function() {
 
                     <th scope="col" {{ header.class_attrib }} style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">
 
-                    <div class="text" style="font-family: 'soberana_textobold';">{% if header.sortable %}<a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
+                    <div class="text" style="font-family: 'soberana_textobold';">{% if header.sortable %}<a href="{{ header.url_primary }}" style="text-decoration: underline;">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
                      <div class="clear"></div>
                     </th>
                 {% endfor %}
@@ -73,21 +73,6 @@ $ts(function() {
                 {% endfor %}
             </tbody>
 
-         <!--     <tfoot>
-                <tr><td class="pager" id="pagerI" colspan="6">
-
-                <img src="{% static "assets/tablesorter/addons/pager/icons/first.png"%}" class="first" id="first"/>
-                <img src="{% static "assets/tablesorter/addons/pager/icons/prev.png"%}" class="prev" id="prev"/>
-                <span class="pagedisplay" id="pagedisplay"></span>
-                <img src="{% static "assets/tablesorter/addons/pager/icons/next.png"%}" class="next" id="next"/>
-                <img src="{% static "assets/tablesorter/addons/pager/icons/last.png"%}" class="last" id="last"/>
-                <select class="pagesize" id="pagesizeI">
-                <option selected="selected"  value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option  value="40">40</option>
-                </select></td></tr>
-            </tfoot>-->
          </table>
     </div>
 {% endif %}
