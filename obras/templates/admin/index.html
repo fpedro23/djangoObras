@@ -3,6 +3,8 @@
 
 {% block extrastyle %}{{ block.super }}
    <link href="{% static "css/index.css"%}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static "assets/bootstrap/css/bootstrap.css"%}" />
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="{% static "assets/graficas/highcharts/js/highcharts.js"%}"></script>
     <script src="{% static "assets/graficas/highcharts/js/highcharts-3d.js"%}"></script>
@@ -10,7 +12,30 @@
     <script src="{% static "assets/graficas/highcharts/js/themes/grid-light.js"%}"></script>
     <script src="{% static "assets/graficas/highcharts/js/modules/exporting.js"%}"></script>
 
-  <!--  <script type="text/javascript" src="{% static "assets/js/ajax-pagina-inicio.js"%}"></script> -->
+
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script type="text/javascript">
+         google.maps.event.addDomListener(window, 'load', initialize);
+         function initialize() {
+          var mapOptions = {
+            zoom: 4,
+            center: new google.maps.LatLng(22.6526121, -100.1780452),
+              mapTypeId: google.maps.MapTypeId.SATELLITE
+          }
+          var map = new google.maps.Map(document.getElementById('mapa'),
+                                        mapOptions);
+
+          //setMarkers(map, beaches);
+        }
+    </script>
+
+
+
+
+    <script type="text/javascript" src="{% static "assets/js/ajax-pagina-inicio.js"%}"></script>
+
 {% endblock %}
 
 {% block coltype %}colMS{% endblock %}
@@ -25,52 +50,30 @@
     	B I E N V E N I D O
     </div>
 
-    	<div class="en2015">
-        	En 2015
+    	<div class="en2015"  id="containerGrafica">
+        	Cargando gráfica...
 
-            <div id="proceso">
-           	    <div class="logoPRCS">
-                </div>
-            </div>
+        </div>
 
-           <div id="proyectadas">
-            	<div class="logoPRYC">
-                </div>
-            </div>
-
-           <div id="concluidas">
-       		    <div class="logoCNCL">
-                </div>
-            </div>
-
-  </div>
-
-        <div class="mapa">
+        <div class="mapa" id="mapa">
 		</div>
 
   <div class="infografico">
+  <div id ="tituloConcluidas">OBRAS CONCLUIDAS</div>
    	<div id ="info2012">
-    	2012
+
     </div>
 
     <div id="info2013">
-    	hjlkjly
+
     </div>
 
     <div id="info2014">
-    	fsfasgsa
+
     </div>
 
     <div id="info2015">
-    	khlkhjk
-    </div>
 
-    <div id="info2016">
-    	juñljlkbgkui
-    </div>
-
-    <div id="info2017">
-    	klhkmb nbfkul
     </div>
 
     <div id="year2012">
@@ -89,13 +92,7 @@
       	2015
     </div>
 
-    <div id="year2016">
-      	2016
-    </div>
 
-    <div id="year2017">
-        2017
-    </div>
   </div>
 
 {% endblock %}

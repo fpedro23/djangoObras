@@ -251,6 +251,8 @@ class Obra(models.Model):
     identificador_unico = models.SlugField(unique=True, null=True, )
     tipoObra = models.ForeignKey(TipoObra)
     dependencia = models.ForeignKey(Dependencia, related_name='%(class)s_dependencia',
+                                    null=True,
+                                       blank=True,
                                     limit_choices_to={
                                         'dependienteDe': None,
                                     })
@@ -267,21 +269,23 @@ class Obra(models.Model):
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
-    tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion')
+    tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion',null=True,blank=True,)
 
     tipoClasificacion = models.ManyToManyField("self", TipoClasificacion,
                                                through='DetalleClasificacion',
-
                                                symmetrical=False,
                                                limit_choices_to={
                                                    'subclasificacionDe': None,
                                                }
+
                                                )
 
     subclasificacion = ChainedForeignKey(TipoClasificacion,
                                               related_name='%(class)s_subclasificaciones',
                                               chained_field="tipoClasificacion",
-                                              chained_model_field="subclasificacionDe"
+                                              chained_model_field="subclasificacionDe",
+                                              null=True,
+                                              blank=True,
                                               )
 
     inaugurador = models.ForeignKey(Inaugurador)
@@ -293,7 +297,7 @@ class Obra(models.Model):
     totalBeneficiarios = models.DecimalField(max_digits=19, decimal_places=10)
     senalizacion = models.BooleanField(default=False)
     susceptibleInauguracion = models.BooleanField(default=False)
-    porcentajeAvance = models.DecimalField(max_digits=3, decimal_places=2)
+    porcentajeAvance = models.DecimalField(max_digits=5, decimal_places=2)
     observaciones = models.CharField(max_length=200)
     fotoAntes = models.FileField(blank=True, null=True)
     fotoDurante = models.FileField(blank=True, null=True)
@@ -345,10 +349,10 @@ class Obra(models.Model):
             for tipoInversion in self.tipoInversion.all():
                 map['tipoInversion'].append(tipoInversion.to_serializable_dict())
 
-        map['tipoClasificacion'] = []
-        if self.tipoClasificacion:
-            for tipoClasificacion in self.tipoClasificacion.all():
-                map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
+        #map['tipoClasificacion'] = []
+        #if self.tipoClasificacion:
+        #    for tipoClasificacion in self.tipoClasificacion.all():
+        #        map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
 
         map['subclasificaciones'] = []
         if self.subclasificacion:
@@ -451,7 +455,6 @@ class DetalleClasificacion(models.Model):
 
     obra = models.ForeignKey(Obra)
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
-
                                           limit_choices_to={
                                               'subclasificacionDe': None,
                                           }

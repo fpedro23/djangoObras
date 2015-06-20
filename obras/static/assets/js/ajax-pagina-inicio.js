@@ -20,8 +20,8 @@ function main_consulta() {
 			}
 		}
 	});
+    verDatos();
 
-	verDatos();
 }
 
 
@@ -29,59 +29,58 @@ function main_consulta() {
 
 function verDatos() {
 
-    var ajax_data = {
-      "access_token"  : 'sPrMb7H05PQfi3p7mdFR7Do4bSaZdz'
-    };
 
-    $j.ajax({
-        url: '/obras/api/inicio',
-        type: 'get',
-        data: ajax_data,
-        success: function(data) {
-            alert('success');
-            datosJson=data;
-            // MAPA
+    $.get("/obras/register-by-token", function(respu) {
+        var ajax_data = {
+            "access_token": respu.access_token
+        };
 
-        },
-        error: function(data) {
-            alert('error!!! ' + data.status);
-            $j("#ajaxProgress").hide();
-        }
+        $j.ajax({
+            url: '/obras/api/inicio',
+            type: 'get',
+            data: ajax_data,
+            success: function (data) {
+                datosJson = data;
+
+                graficas();
+                datosConcluidas();
+                // MAPA
+                var mapOptions = {
+                zoom: 4,
+                center: new google.maps.LatLng(22.6526121, -100.1780452),
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+                }
+                var map = new google.maps.Map(document.getElementById('mapa'),
+                                            mapOptions)
+                var lugares =  new Array();
+                lugares=puntosMapa(data);
+                setMarkers(map,lugares);
+                google.maps.event.addDomListener(window, 'load', initialize);
+                // mapa
+
+            },
+            error: function (data) {
+                alert('error!!! ' + data.status);
+            }
+        });
     });
 }
 
 
 
-function mostrarTablas() {
+function datosConcluidas() {
 
-            tablaD(datosJson);
+    $j('#info2012').html(formato_numero(datosJson.reporte2012.obras_concluidas.total, 0, '.', ','));
+    $j('#info2013').html(formato_numero(datosJson.reporte2013.obras_concluidas.total, 0, '.', ','));
+    $j('#info2014').html(formato_numero(datosJson.reporte2014.obras_concluidas.total, 0, '.', ','));
+    $j('#info2015').html(formato_numero(datosJson.reporte2015.obras_concluidas.total, 0, '.', ','));
+
 }
 
 function graficas(){
-    var tipoReporte = $j('input:radio[name=graficaTipo]:checked').val();
-    var tipoGrafica = $j("#tipoGrafica").val();
-    var datosGrafica = $j("#datosGrafica").val();
-    var titulo="";
-    var categorias = new Array();
-    var datas = new Array();
-    var montos = new Array();
 
+    titulo="Número de obras año 2015";
 
-    if (tipoReporte=="Dependencia") {
-        for (var i = 0; i < datosJson.reporte_dependencia.length; i++) {
-            categorias.push(datosJson.reporte_dependencia[i].dependencia.nombreDependencia);
-            datas.push(datosJson.reporte_dependencia[i].numero_obras);
-            montos.push(datosJson.reporte_dependencia[i].sumatotal);
-            titulo="Número de obras por Dependencia";
-        }
-    }else{
-        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
-            categorias.push(datosJson.reporte_estado[i].estado.nombreEstado);
-            datas.push(datosJson.reporte_estado[i].numeroObras);
-            montos.push(datosJson.reporte_estado[i].sumatotal);
-            titulo="Número de obras por Estado";
-        }
-    }
 
     Highcharts.setOptions({
         lang: {
@@ -98,144 +97,42 @@ function graficas(){
     });
 
 
-    switch (tipoGrafica) {
-        case "Columna3D":
-            if(datosGrafica=="Numero"){
-                columnaGrafica(categorias,datas,titulo,"Número de obras");
-            }else{
-                columnaGrafica(categorias,montos,titulo,"Monto Total");
-            }
-            break;
-        case "Columna2D":
-            if(datosGrafica=="Numero"){
-                columna2DGrafica(categorias,datas,titulo,"Número de obras");
-            }else{
-                columna2DGrafica(categorias,montos,titulo,"Monto Total");
-            }
 
-            break;
-        case "Pastel":
-            if(datosGrafica=="Numero") {
-                pieGrafica(arregloDataGrafica(datosJson, tipoReporte,datosGrafica), titulo, 0,"Número de obras");
-            }else{
-                pieGrafica(arregloDataGrafica(datosJson, tipoReporte,datosGrafica), titulo, 0,"Monto Total");
-            }
-            break;
-        case "Dona":
-            if(datosGrafica=="Numero") {
-                pieGrafica(arregloDataGrafica(datosJson, tipoReporte,datosGrafica), titulo, 100,"Número de obras");
-            }else{
-                pieGrafica(arregloDataGrafica(datosJson, tipoReporte,datosGrafica), titulo, 100,"Monto Total");
-            }
-            break;
-        case "Barra":
-            if(datosGrafica=="Numero"){
-                barraGrafica(categorias,datas,titulo,"Número de obras","Mil"," Mil");
-            }else{
-                barraGrafica(categorias,montos,titulo,"Monto Total","Millones"," MDP");
-            }
-            break;
-        case "Lineal":
+    pieGrafica(arregloDataGrafica(datosJson), titulo, 0,"Número de obras");
 
-            break;
-    }
-
-
-    $j.tablaGrafica(datosJson);
 }
 
 
-function arregloDataGrafica(Datos,tipoReporte,datosGrafica) {
+function arregloDataGrafica(Datos) {
     var arregloSimple=new Array();
     var arregloDoble=new Array();
     var arregloObjeto = new Object();
 
-    if (tipoReporte=="Dependencia") {
-        for(var i= 0;i<Datos.reporte_dependencia.length;i++){
+
+
             var arregloSimple=new Array();
-            arregloSimple.push(Datos.reporte_dependencia[i].dependencia.nombreDependencia);
-            if(datosGrafica=="Numero") {
-                arregloSimple.push(Datos.reporte_dependencia[i].numero_obras);
-            }else{
-                arregloSimple.push(Datos.reporte_dependencia[i].sumatotal);
-            }
+            arregloSimple.push("Obras Concluidas");
+            arregloSimple.push(Datos.reporte2015.obras_concluidas.total);
             arregloDoble.push(arregloSimple);
-        }
-    }else{
-        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
-            var arregloSimple=new Array();
-            arregloSimple.push(Datos.reporte_estado[i].estado.nombreEstado);
-            if(datosGrafica=="Numero") {
-                arregloSimple.push(Datos.reporte_estado[i].numeroObras);
-            }else{
-                arregloSimple.push(Datos.reporte_estado[i].sumatotal);
-            }
-            arregloDoble.push(arregloSimple);
-        }
-    }
+            var arregloSimple2=new Array();
+            arregloSimple2.push("Obras en Proceso");
+            arregloSimple2.push(Datos.reporte2015.obras_proceso.total);
+            arregloDoble.push(arregloSimple2);
+            var arregloSimple3=new Array();
+            arregloSimple3.push("Obras Proyectadas");
+            arregloSimple3.push(Datos.reporte2015.obras_proyectadas.total);
+            arregloDoble.push(arregloSimple3);
+
+
     arregloObjeto = arregloDoble;
     return arregloObjeto;
-}
-
-function columnaGrafica(categorias,datas,titulo,nombreData){
-
-
-    $pp('#containerGrafica').highcharts({
-        chart: {
-            renderTo: 'container',
-            type: 'column',
-            margin: 120,
-            marginLeft: 50,
-            marginRight: 50,
-            marginTop: 50,
-            zoomType: 'x',
-            panning: true,
-            panKey: 'shift',
-            options3d: {
-                enabled: true,
-                alpha: 10,
-                beta: 10,
-                depth: 70
-            }
-        },
-        credits: {
-            enabled: false
-        },
-        title: {
-            text: titulo
-        },
-
-        subtitle: {
-            text: ''
-        },
-        plotOptions: {
-            column: {
-                depth: 25
-            },
-            series: {
-                pointWidth: 15
-            }
-
-        },
-        xAxis: {
-            categories: categorias
-        },
-        yAxis: {
-            title: {
-                text: null
-            }
-        },
-        series: [{
-            name: nombreData,
-            data: datas
-        }]
-    });
 }
 
 
 function pieGrafica(datas,titulo,dona,nombreData) {
 
-    $pp('#containerGrafica').highcharts({
+
+    $j('#containerGrafica').highcharts({
         chart: {
             type: 'pie',
             zoomType: 'x',
@@ -276,115 +173,6 @@ function pieGrafica(datas,titulo,dona,nombreData) {
     });
 }
 
-function barraGrafica(categorias,datas,titulo,nombreData,unidades,sufijo){
-    Highcharts.setOptions({
-        lang: {
-                numericSymbols: [unidades]
-            }
-    });
-    $pp('#containerGrafica').highcharts({
-        chart: {
-            type: 'bar',
-            zoomType: 'x',
-            panning: true,
-            panKey: 'shift'
-        },
-        title: {
-            text: titulo
-        },
-        subtitle: {
-            text: ''
-        },
-        xAxis: {
-            categories: categorias,
-            title: {
-                text: null
-            }
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: '',
-                align: 'high'
-            },
-            labels: {
-                overflow: 'justify'
-            }
-        },
-        tooltip: {
-            valueSuffix: sufijo
-        },
-        plotOptions: {
-            bar: {
-                dataLabels: {
-                    enabled: true
-                }
-            }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -40,
-            y: 100,
-            floating: true,
-            borderWidth: 1,
-            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-            shadow: true
-        },
-        credits: {
-            enabled: false
-        },
-        series: [{
-            name: nombreData,
-            data: datas
-        }]
-    });
-}
-
-function columna2DGrafica(categorias,datas,titulo,nombreData){
-    $pp('#containerGrafica').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: titulo
-        },
-        subtitle: {
-            text: ''
-        },
-        xAxis: {
-            categories: categorias,
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Rainfall (mm)'
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: nombreData,
-            data: datas
-
-        }]
-    });
-}
-
 
 $j.date = function(dateObject) {
     var d = new Date(dateObject);
@@ -406,27 +194,53 @@ function puntosMapa(Datos) {
   var arregloSimple=new Array();
   var arregloDoble=new Array();
     var arregloObjeto = new Object();
-    for(var i= 0;i<Datos.obras.length;i++){
+    for(var i= 0;i<Datos.reporte2015.obras_concluidas.obras.length;i++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.obras[i].estado.nombreEstado + ", " + Datos.obras[i].dependencia.nombreDependencia);
-        arregloSimple.push(Datos.obras[i].estado.latitud);
-        arregloSimple.push(Datos.obras[i].estado.longitud);
+        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].estado + ", obras Concluidas");
+        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].latitud);
+        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].longitud);
         arregloSimple.push(i);
         arregloDoble.push(arregloSimple);
     }
+
+    for(var j= 0;j<Datos.reporte2015.obras_proceso.obras.length;j++){
+        var arregloSimple=new Array();
+        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].estado + ", obras en Proceso");
+        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].latitud);
+        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].longitud);
+        arregloSimple.push(j+i);
+        arregloDoble.push(arregloSimple);
+    }
+    for(var k= 0;k<Datos.reporte2015.obras_proyectadas.obras.length;k++){
+        var arregloSimple=new Array();
+        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].estado + ", obras Proyectadas");
+        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].latitud);
+        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].longitud);
+        arregloSimple.push(k+j);
+        arregloDoble.push(arregloSimple);
+    }
+
     arregloObjeto = arregloDoble;
     return arregloObjeto;
 }
 
 
 function setMarkers(mapa, lugares) {
-  var infowindow = new google.maps.InfoWindow();
+
+
+  var image = {
+    url: '../../static/assets/js/pines/pin.png',
+    size: new google.maps.Size(20, 32),
+    origin: new google.maps.Point(0,0),
+    anchor: new google.maps.Point(0,32)};
+
   for (var i = 0; i < lugares.length; i++) {
     var puntos = lugares[i];
     var myLatLng = new google.maps.LatLng(puntos[1], puntos[2]);
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: mapa,
+        icon: '../../static/assets/js/pines/pin4.png',
         title: puntos[0],
         zIndex: puntos[3]
     });
@@ -441,340 +255,27 @@ function setMarkers(mapa, lugares) {
 }
 
 
-
-function tablaI(Datos){
-    var sHtml='<div class="row titulo">'
-                    + '<div class="col-md-6">'
-                    +     'Resultados'
-                   + ' </div>'
-               + '</div>'
-        +'<table cellspacing="1" class="tablesorter" id="tablaIzquierda">'
-                    +'<thead>'
-                        +'<tr>'
-                            +'<th>Id</th>'
-                            +'<th>Denominaci&oacute;n</th>'
-                            +'<th>Estado</th>'
-                        +'</tr>'
-                    +'</thead>'
-                    +'<tfoot>'
-                        +'<tr>'
-                            +'<th>Id</th>'
-                            +'<th>Denominaci&oacute;n</th>'
-                            +'<th>Estado</th>'
-                        +'</tr>'
-
-                        +'<tr><td class="pager" id="pagerI" colspan="3">'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>'
-                        +'<span class="pagedisplay" id="pagedisplayI"></span>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextI"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastI"/>'
-                        +'<select class="pagesize" id="pagesizeI">'
-                        +'<option selected="selected"  value="10">10</option>'
-                        +'    <option value="20">20</option>'
-                        +'    <option value="30">30</option>'
-                        +'    <option  value="40">40</option>'
-                        +'</select></td></tr>'
-
-                    +'</tfoot>'
-                    +'<tbody>';
-
-    for(var i= 0;i<Datos.obras.length;i++){
-        sHtml +='<tr>'
-                +'<td>' + Datos.obras[i].identificador +'</td>'
-                +'<td>' + Datos.obras[i].denominacion +'</td>'
-                +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
-                +'</tr>'
+function formato_numero(numero, decimales, separador_decimal, separador_miles){
+    numero=parseFloat(numero);
+    if(isNaN(numero)){
+        return "";
     }
 
-        sHtml +='</tbody>'
-                +'</table>'
+    if(decimales!==undefined){
+        // Redondeamos
+        numero=numero.toFixed(decimales);
+    }
 
-               /*+'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
-                +'<link class="theme blue" rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/theme.blue.css">'
-                +'<script type="text/javascript" src="../../static/assets/tablesorter/jquery.tablesorter.js"></script>'
-                +'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
-                +'<script type="text/javascript" src="../../static/assets/tablesorter/widget-pager.js"></script>'
-                +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>' */
+    // Convertimos el punto en separador_decimal
+    numero=numero.toString().replace(".", separador_decimal!==undefined ? separador_decimal : ",");
 
-                +'<script id="js" type="text/javascript">'
-                +'$ts(function() {'
-                +'    $ts("#tablaIzquierda").tablesorter({'
-                +'    theme: "blue",'
-                +'    showProcessing: true,'
-                +'    headerTemplate : "{content} {icon}",'
-                +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
-                +'    widgetOptions : {'
-                +'        scroller_height : 190,'
-                +'        scroller_upAfterSort: true,'
-                +'        scroller_jumpToHeader: true,'
-                +'        scroller_barWidth : null,'
-                +'          pager_selectors: {'
-                +'                container   : "#pagerI",'
-                +'                first       : "#firstI",'
-                +'                prev        : "#prevI",'
-                +'                next        : "#nextI",'
-                +'                last        : "#lastI",'
-                +'                gotoPage    : "#gotoPageI",'
-                +'                pageDisplay : "#pagedisplayI",'
-                +'                pageSize    : "#pagesizeI"'
-                +'        }'
-                +'    }'
-                +'});'
-                +'});'
-                +'</script>';
-
-
-
-
-    $j('#datos').html(sHtml);
-}
-
-
-// llena la tabla del lado derecho
-function tablaD(Datos){
-    var tipoReporte = $j('input:radio[name=tipoReporte]:checked').val();
-    var dependenciasChecked="";
-    var estadosChecked="";
-    var sHtmlExporta="";
-    var sHtmlShorter="";
-
-    sHtmlExporta= '<div class="row titulo">'
-                    + '<div class="col-md-6">'
-                    +     'Reporte'
-                   + ' </div>'
-               + '</div>'
-                +'<table cellspacing="1" id="tablaExporta">';
-    sHtmlShorter ='<div class="row titulo">'
-                    + '<div class="col-md-6">'
-                    +     'Reporte'
-                   + ' </div>'
-               + '</div>'
-                +'<table cellspacing="1" class="tablesorter" id="tablaDerecha">';
-    //alert($j('input:radio[name=tipoReporte]:checked').val());
-
-    var sHtml='<thead>'
-                        +'<tr>'
-                            +'<th>Tipo Inversi&oacute;n</th>'
-                            +'<th>No. de Obras</th>'
-                            +'<th>Monto</th>'
-                        +'</tr>'
-                    +'</thead>'
-                    +'<tfoot>'
-                        +'<tr>'
-                            +'<th>TOTALES</th>'
-                            +'<th>'+ Datos.reporte_general[0].obras_totales +'</th>'
-                            +'<th>'+ Datos.reporte_general[0].total_invertido +'</th>'
-                        +'</tr>'
-
-                        +'<tr><td class="pager" id="pagerD" colspan="3">'
-                        //+'<div class="first principioFLECHA" id="firstD" style="height:11px"></div>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstD"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevD"/>'
-                        +'<span class="pagedisplay" id="displayPage"></span>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextD"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastD"/>'
-                        +'<select class="pagesize" id="pagesizeD">'
-                        +'<option selected="selected"  value="10">10</option>'
-                        +'    <option value="20">20</option>'
-                        +'    <option value="30">30</option>'
-                        +'    <option  value="40">40</option>'
-                        +'</select></td></tr>'
-
-                    +'</tfoot>'
-                    +'<tbody>';
-
-    if (tipoReporte=="Dependencia") {
-        dependenciasChecked="checked";
-        for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
-            sHtml += '<tr>'
-            + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].numero_obras + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].sumatotal + '</td>'
-            + '</tr>'
+    if(separador_miles){
+        // Añadimos los separadores de miles
+        var miles=new RegExp("(-?[0-9]+)([0-9]{3})");
+        while(miles.test(numero)) {
+            numero=numero.replace(miles, "$1" + separador_miles + "$2");
         }
     }
 
-    if (tipoReporte=="Estado") {
-        estadosChecked="checked";
-        for (var i = 0; i < Datos.reporte_estado.length; i++) {
-            sHtml += '<tr>'
-            + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
-            + '<td>' + Datos.reporte_estado[i].numeroObras + '</td>'
-            + '<td>' + Datos.reporte_estado[i].sumatotal + '</td>'
-            + '</tr>'
-        }
-    }
-
-        sHtml +='</tbody>'
-                +'</table>'
-
-                //+'<fieldset>'
-                //+'   <div class="row"><div class="col-xs-8">'
-                //+'       Dependencia'
-                //+'       </div>'
-                //+'       <div class="col-xs-4">'
-                //+'            <input type="radio" name="tipoReporte" value="Dependencia" ' + dependenciasChecked +'/>'   //onclick="verDatos()"
-                //+'       </div>'
-                //+'   </div>'
-                //+'   <div class="row"><div class="col-xs-8">'
-                //+'       Estado'
-                //+'       </div>'
-                //+'       <div class="col-xs-4">'
-                //+'            <article id="ver_tablas">'
-                //+'            <input type="radio" name="tipoReporte" value="Estado" ' + estadosChecked +'/>'
-                //+'       </article>'
-                //+'            <input type="radio" name="tipoReporte" value="Estado" ' + estadosChecked +'/>'
-                //+'       </div>'
-                //+'   </div>'
-                //+'   <div class="row"><div class="col-xs-8">'
-                //+'       RCI'
-                //+'       </div>'
-                //+'       <div class="col-xs-4">'
-                //+'            <input type="radio" name="tipoReporte" value="RCI" "/>'
-               // +'       </div>'
-               // +'   </div>'
-               // +'</fieldset>'
-
-
-
-               /*+'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
-                +'<link class="theme blue" rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/theme.blue.css">'
-                +'<script type="text/javascript" src="../../static/assets/tablesorter/jquery.tablesorter.js"></script>'
-                +'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
-                +'<script type="text/javascript" src="../../static/assets/tablesorter/widget-pager.js"></script>'
-                +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>' */
-
-                +'<script id="js" type="text/javascript">'
-                +'$ts(function() {'
-                +'    $ts("#tablaDerecha").tablesorter({'
-                +'    theme: "blue",'
-                +'    showProcessing: true,'
-                +'    headerTemplate : "{content} {icon}",'
-                +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
-                +'    widgetOptions : {'
-                +'        scroller_height : 90,'
-                +'        scroller_upAfterSort: true,'
-                +'        scroller_jumpToHeader: true,'
-                +'        scroller_barWidth : null,'
-                +'          pager_selectors: {'
-                +'                container   : "#pagerD",'
-                +'                first       : "#firstD",'
-                +'                prev        : "#prevD",'
-                +'                next        : "#nextD",'
-                +'                last        : "#lastD",'
-                +'                gotoPage    : "#gotoPageD",'
-                +'                pageDisplay : "#displayPage",'
-                +'                pageSize    : "#pagesizeD"'
-                +'        }'
-                +'    }'
-                 +'});'
-                +'});'
-                +'</script>';
-
-    $j('#tabla-exporta').hide();
-    $j('#datostablaDerecha').html(sHtmlShorter + sHtml);
-    $j('#tabla-exporta').html(sHtmlExporta + sHtml);
-
-}
-
-// llena la tabla del lado derecho
-
-$j.tablaGrafica = function(Datos){
-    var tipoReporte = $j('input:radio[name=graficaTipo]:checked').val();
-    var dependenciasChecked="";
-    var estadosChecked="";
-
-
-    //alert($j('input:radio[name=tipoReporte]:checked').val());
-    var sHtml= '<div class="row titulo">'
-                    + '<div class="col-md-6">'
-                    +     'Reporte'
-                   + ' </div>'
-               + '</div>'
-                    +'<table cellspacing="1"  class="tablesorter" id="tablaGrafica">'
-                    +'<thead>'
-                        +'<tr>'
-                            +'<th>Tipo Inversi&oacute;n</th>'
-                            +'<th>No. de Obras</th>'
-                            +'<th>Monto</th>'
-                        +'</tr>'
-                    +'</thead>'
-                    +'<tfoot>'
-                        +'<tr>'
-                            +'<th>TOTALES</th>'
-                            +'<th>'+ Datos.reporte_general[0].obras_totales +'</th>'
-                            +'<th>'+ Datos.reporte_general[0].total_invertido +'</th>'
-                        +'</tr>'
-
-                        +'<tr><td class="pager" id="pagerG" colspan="3">'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstG"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevG"/>'
-                        +'<span class="pagedisplay" id="displayPageG"></span>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextG"/>'
-                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastG"/>'
-                        +'<select class="pagesize" id="pagesizeG">'
-                        +'<option selected="selected"  value="10">10</option>'
-                        +'    <option value="20">20</option>'
-                        +'    <option value="30">30</option>'
-                        +'    <option  value="40">40</option>'
-                        +'</select></td></tr>'
-
-                    +'</tfoot>'
-                    +'<tbody>';
-
-    if (tipoReporte=="Dependencia") {
-        dependenciasChecked="checked";
-        for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
-            sHtml += '<tr>'
-            + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].numero_obras + '</td>'
-            + '<td>' + Datos.reporte_dependencia[i].sumatotal + '</td>'
-            + '</tr>'
-        }
-    }
-
-    if (tipoReporte=="Estado") {
-        estadosChecked="checked";
-        for (var i = 0; i < Datos.reporte_estado.length; i++) {
-            sHtml += '<tr>'
-            + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
-            + '<td>' + Datos.reporte_estado[i].numeroObras + '</td>'
-            + '<td>' + Datos.reporte_estado[i].sumatotal + '</td>'
-            + '</tr>'
-        }
-    }
-
-        sHtml +='</tbody>'
-                +'</table>'
-
-                +'<script id="js" type="text/javascript">'
-                +'$ts(function() {'
-                +'    $ts("#tablaGrafica").tablesorter({'
-                +'    theme: "blue",'
-                +'    showProcessing: true,'
-                +'    headerTemplate : "{content} {icon}",'
-                +'    widgets: [ "uitheme", "zebra", "pager","scroller" ],'
-                +'    widgetOptions : {'
-                +'        scroller_height : 110,'
-                +'        scroller_upAfterSort: true,'
-                +'        scroller_jumpToHeader: true,'
-                +'        scroller_barWidth : null,'
-                +'          pager_selectors: {'
-                +'                container   : "#pagerG",'
-                +'                first       : "#firstG",'
-                +'                prev        : "#prevG",'
-                +'                next        : "#nextG",'
-                +'                last        : "#lastG",'
-                +'                gotoPage    : "#gotoPageG",'
-                +'                pageDisplay : "#displayPageG",'
-                +'                pageSize    : "#pagesizeG"'
-                +'        }'
-                +'    }'
-                +'});'
-                +'});'
-                +'</script>';
-
-        $j('#divTablaGrafica').html($j(sHtml));
-
+    return numero;
 }

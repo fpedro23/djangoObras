@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
 
+from obras.tools import *
+
+
 # from pptx import Presentation
 from obras.models import *
 from obras.models import Obra
@@ -12,7 +15,28 @@ import datetime
 from pptx import Presentation
 from obras.BuscarObras import BuscarObras
 from django.shortcuts import render_to_response
+from oauth2_provider.models import AccessToken
 
+def get_user_for_token(token):
+    if token:
+        return AccessToken.objects.get(token=token).user
+    else:
+        return None
+
+def register_by_access_token(request):
+
+    #del request.session['access_token']
+
+    if request.session.get('access_token'):
+        token = {
+        'access_token': request.session.get('access_token'),
+        'token_type': 'Bearer'
+    }
+        return JsonResponse(token)
+    else:
+        #user = get_user_for_token('3DVteYz9OIH6gvQDyYX78GOpHKXgPy'
+        user = request.user
+        return get_access_token(user,request)
 
 def ayuda(request):
     return render_to_response('admin/obras/ayuda/c_ayuda.html', locals(),
@@ -528,9 +552,9 @@ def obras_iniciadas(request):
         query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
     obras = Obra.objects.filter(query)
 
-    template = loader.get_template('admin/obras/obras_iniciadas.html')
+    template = loader.get_template('admin/obras/consulta_predefinidos/consulta-predefinidos.html')
     context = RequestContext(request, {
-        'obras_iniciadas': obras
+        'obras_resultado': obras
     })
     return HttpResponse(template.render(context))
 
@@ -545,9 +569,9 @@ def obras_vencidas(request):
         obras = Obra.objects.filter(Q(fechaTermino__lte=today) & Q(
             dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia)))
 
-    template = loader.get_template('admin/obras/obras_vencidas.html')
+    template = loader.get_template('admin/obras/consulta_predefinidos/consulta-predefinidos.html')
     context = RequestContext(request, {
-        'obras_vencidas': obras
+        'obras_resultado': obras
     })
     return HttpResponse(template.render(context))
 
@@ -560,9 +584,9 @@ def obras_for_dependencia(request):
     else:
         obras = usuario.dependencia.get_obras()
 
-    template = loader.get_template('admin/obras/obras_dependencia.html')
+    template = loader.get_template('admin/obras/consulta_predefinidos/consulta-predefinidos.html')
     context = RequestContext(request, {
-        'obras': obras
+        'obras_resultado': obras
     })
     return HttpResponse(template.render(context))
 
@@ -580,7 +604,7 @@ def reportes_predefinidos(request):
 
 def abrir_pptx(archivo):
     f = os.popen(archivo,'r')
-    #f.close()
+    f.close()
 
 def balance_general_ppt(request):
     prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
@@ -644,7 +668,7 @@ def balance_general_ppt(request):
 
     prs.save('test.pptx')
     abrir_pptx('test.pptx')
-    return render_to_response('presentaciones.html', {'clases': ''}, context_instance=RequestContext(request))
+    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
 def hiper_info_general_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_INFORMACION_GENERAL.pptx')
@@ -678,14 +702,14 @@ def hiper_info_general_ppt(request):
 
     prs.save('hiper_info_general.pptx')
     abrir_pptx('hiper_info_general.pptx')
-    return render_to_response('presentaciones.html', {'clases': ''}, context_instance=RequestContext(request))
+    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
 def hiper_inauguradas_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_INAUGURADAS_SENALIZADAS.pptx')
     # falta implementar
     prs.save('hiper_inauguradas.pptx')
     abrir_pptx('hiper_inauguradas.pptx')
-    return render_to_response('presentaciones.html', {'clases': ''}, context_instance=RequestContext(request))
+    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
 def hiper_por_sector_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
@@ -780,7 +804,7 @@ def hiper_por_sector_ppt(request):
 
     prs.save('hiper_por_sector.pptx')
     abrir_pptx('hiper_por_sector.pptx')
-    return render_to_response('presentaciones.html', {'clases': ''}, context_instance=RequestContext(request))
+    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
 def hiper_por_entidad_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULOS_POR_ENTIDAD.pptx')
@@ -930,4 +954,4 @@ def hiper_por_entidad_ppt(request):
 
     prs.save('hiper_por_entidad.pptx')
     abrir_pptx('hiper_por_entidad.pptx')
-    return render_to_response('presentaciones.html', {'clases': ''}, context_instance=RequestContext(request))
+    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))

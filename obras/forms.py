@@ -21,12 +21,14 @@ class HorizRadioRenderer(forms.RadioSelect.renderer):
 class DetalleClasificacionAddForm(forms.ModelForm):
     class Meta:
         model = DetalleClasificacion
+        fields = '__all__'
 
 
 
 class DetalleInversionAddForm(forms.ModelForm):
     class Meta:
         model = DetalleInversion
+        fields = '__all__'
 
 
 class AddObraForm(forms.ModelForm):
