@@ -10,7 +10,7 @@
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Nombre de SubDependencia</label></div>
 
-            <div class="col-md-1"><input class="vTextField" id="id_nombreDependencia" maxlength="200" name="nombreDependencia" type="text"
+            <div class="col-md-4"><input class="vTextField" id="id_nombreDependencia" maxlength="200" name="nombreDependencia" type="text"
                                 value="{{ field.field.value|default_if_none:"" }}"/></div>
             </div>
        {% endif %}
@@ -22,7 +22,7 @@
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Nombre de Dependencia:</label></div>
 
-            <div class="col-md-1">
+            <div class="col-md-4">
                                 {{ field.field.value|default_if_none:"" }}</div>
             </div>
         {% endif %}
@@ -34,7 +34,7 @@
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Imágen de Dependencia:</label></div>
 
-            <div class="col-md-1"><input  id="id_imagenDependencia" name="imagenDependencia" type="file"
+            <div class="col-md-4"><input  id="id_imagenDependencia" name="imagenDependencia" type="file"
                                 value="{{ field.field.value|default_if_none:"" }}"/></div>
             </div>
         {% endif %}
@@ -46,7 +46,7 @@
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Obra o Programa (O/P):</label></div>
 
-            <div class="col-md-1"><input class="vTextField" id="id_obraoprograma" maxlength="200" name="obraoprograma" type="text"
+            <div class="col-md-4"><input class="vTextField" id="id_obraoprograma" maxlength="200" name="obraoprograma" type="text"
                                 value="{{ field.field.value|default_if_none:"" }}"/></div>
             </div>
         {% endif %}

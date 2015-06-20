@@ -116,7 +116,7 @@ class ClasificacionInLine(admin.StackedInline):
 
 class DocumentoFuenteInline(admin.TabularInline):
     model = DocumentoFuente
-    extra = 1
+    extra = 0
 
 
 class DependenciaListFilter(SimpleListFilter):
@@ -189,13 +189,13 @@ make_unauthorized.short_description = "No Autorizar las obras seleccionadas"
 class DetalleInversionInline(admin.TabularInline):
     form = DetalleInversionAddForm
     model = DetalleInversion
-    extra = 1
+    extra = 0
 
 
 class DetalleClasificacionInline(admin.TabularInline):
     form = DetalleClasificacionAddForm
     model = DetalleClasificacion
-    extra = 4
+    extra = 5
 
 
 class ObrasAdmin(admin.ModelAdmin):
@@ -221,6 +221,7 @@ class ObrasAdmin(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
         if request.user.usuario.rol == 'US':
             fields = ('identificador_unico',
+                      'id_Dependencia',
                       'denominacion',
                       'dependencia',
                       'subdependencia',
@@ -254,6 +255,7 @@ class ObrasAdmin(admin.ModelAdmin):
                       )
         else:
             fields = ('identificador_unico',
+                      'id_Dependencia',
                       'denominacion',
                       'dependencia',
                       'subdependencia',

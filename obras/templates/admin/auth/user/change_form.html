@@ -4,6 +4,12 @@
 {% block extrahead %}{{ block.super }}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
       <link href="{% static "css/formas.css" %}" rel="stylesheet">
+    <style >
+    input[type=text],input[type=password],input[type=email],input[type=select] { width: 230px;}
+    input[type=checkbox], input[type=radio] {
+        width: 20px;}
+    select { width: 220px;}
+    </style>
     {{ media }}
 {% endblock %}
 
@@ -45,11 +51,11 @@
             {% if change %}{% if not is_popup %}
                 <ul class="object-tools">
                     {% block object-tools-items %}
-                        <li>
-                            {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
-                            <a href="{% add_preserved_filters history_url %}"
+                       <!--  <li>
+                            { url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+                            <a href="{ add_preserved_filters history_url %}"
                                class="historylink">{% trans "History" %}</a>
-                        </li>
+                        </li>-->
                         {% if has_absolute_url %}
                             <li><a href="{{ absolute_url }}" class="viewsitelink">{% trans "View on site" %}</a></li>
                         {% endif %}

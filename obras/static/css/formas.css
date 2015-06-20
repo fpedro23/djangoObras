@@ -202,7 +202,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 15px;
 	color: #6A6B6C;
 	width: 400px;
-	height: 300px;
+	height: 120px;
 	position: absolute;
 	left: 685px;
 	top: 186px;
@@ -316,7 +316,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	background-image: url(../img/bigBackground.fw.png);
 	background-position: -724px -1789px;
 	position: absolute;
-	top: 419px;
+	top: 439px;
 	left: 546px;
 }
 
@@ -353,9 +353,44 @@ a#add_id_tipoClasificacion.add-another {display:none;}
 
 .add-another {display:none;}
 
-input {
-  line-height: initial;
+input[type=text], input[type=number] {
+    font-family: "soberana_sanslight";
+    font-size: 12px;
+    line-height: initial;
+    height: 17px;
+    width: 98%;
 }
+
+input[type=file] {
+    line-height: initial;
+    height: 15px;
+    width: 98%;
+    font-family: "soberana_sanslight";
+    font-size: 12px;
+}
+select{
+    font-family: "soberana_sanslight";
+    font-size: 12px;
+    line-height: initial;
+    height: 17px;
+    width: 98%;
+}
+
+textarea{
+    line-height: initial;
+    width: 98%;
+    height: 40px;
+}
+
+td, th {
+    font-size: 13px;
+    line-height: 13px;
+    border-bottom: 0px;
+    vertical-align: top;
+    padding: 3px;
+    font-family: 'soberana_sanslight';
+}
+
 
 #tituloCUADROS{
 	font-family: 'soberana_titularregular';
@@ -407,7 +442,7 @@ input {
 	color: #6A6B6C;
 	position: absolute;
 	left: -1px;
-top: 34px;
+    top: 34px;
 }
 
 .descripcion{
@@ -426,42 +461,66 @@ top: 34px;
 .beneficiarios{
 	border: 2px solid #327451;
 	border-radius: 2px;
-	width: 334px;
+	width: 344px;
 	height: 109px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
-	left: 342px;
+	left: 338px;
 	top: 34px;
 }
 
 .clasificacion{
 	border: 2px solid #327451;
 	border-radius: 2px;
-	width: 334px;
-	height: 131px;
+	width: 344px;
+	height: 171px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
-	left: 342px;
+	left: 338px;
 	top: 148px;
 }
 
 .inversion{
 	border: 2px solid #327451;
 	border-radius: 2px;
-	width: 334px;
-	height: 251px;
+	width: 344px;
+	height: 211px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
-	left: 342px;
-	top: 281px;
+	left: 338px;
+	top: 321px;
 }
 
+.inversionup{
+	border: 0px solid #327451;
+	border-radius: 0px;
+	width: 340px;
+	height: 101px;
+	font-family: 'soberana_sanslight';
+	font-size: 13px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 340px;
+	top: 351px;
+}
+.inversionin{
+	border: 0px solid #327451;
+	border-radius: 0px;
+	width: 340px;
+	height: 84px;
+	font-family: 'soberana_sanslight';
+	font-size: 13px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 1px;
+	top: 125px;
+}
 .inauguracion{
 	border: 2px solid #327451;
 	border-radius: 2px;
@@ -688,4 +747,28 @@ label {
 	left: 685px;
 	top: 144px;
     background-color: transparent;
+}
+
+
+.datosCATALOGOS{
+	border: 2px solid #327451;
+	border-radius: 2px;
+	width: 384px;
+	height: 282px;
+	font-family: "soberana_sanslight;
+	font-size: 15px;
+	color: #6A6B6C;
+	position: absolute;
+	left: 298px;
+	top: 143px;
+}
+
+.rowmod{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.colmod{
+  padding-right: 0px;
+  padding-left: 0px;
 }

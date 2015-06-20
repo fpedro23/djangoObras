@@ -1,6 +1,8 @@
 {% load i18n admin_static admin_modify %}{% load cycle from future %}
 
-{% if inline_admin_formset.formset.prefix == "documentofuente_set" %}
+{% if inline_admin_formset.formset.prefix == "detalleinversion_set" %}
+   <!-- I N V E R S I O N-->
+
 
 <div class="inline-group" id="{{ inline_admin_formset.formset.prefix }}-group">
   <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
@@ -17,7 +19,7 @@
          </th>
        {% endif %}
      {% endfor %}
-     {% if inline_admin_formset.formset.can_delete %}<th style="background: #ffffff; border:0px;">{#% trans "Delete?" %#}</th>{% endif %}
+     {% if inline_admin_formset.formset.can_delete %}<th style="background: #ffffff; border:0px;"></th>{% endif %}
      </tr></thead>
 
      <tbody style="background: #ffffff; border:0px;">
@@ -70,7 +72,7 @@
 </fieldset>
   </div>
 </div>
-</div>
+
 
 <script type="text/javascript">
 

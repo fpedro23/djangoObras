@@ -162,6 +162,15 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-family: 'soberana_textoregular';
+    color: #6A6B6C;
+    background: #fff;
+}
+
 /*Elementos obligatorios del header*/
 .header {
   position:relative;
@@ -551,3 +560,19 @@ a{
 .aceptarBTN:hover{
 	background-position:-724px -2287px;
 }
+
+.eliminarICO{
+    width:15px;
+	height:15px;
+    background-image:url(../img/bigBackground.fw.png);
+    background-position: -1130px -1526px;
+}
+
+.eliminarICO:hover{
+	background-position: -1150px -1526px ;
+}
+
+
+
+
+
