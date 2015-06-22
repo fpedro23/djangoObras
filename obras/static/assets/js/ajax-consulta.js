@@ -57,7 +57,9 @@ function main_consulta() {
     $j('#go_Graficas #goGraficas').on('click', enviaFiltrosGrafica);
     $j('#art_limpiar #limpiar').on('click', limpia);
 
-    $j('#regresaGraficas #regresarBTN').on('click', regresa);
+    $j('#regresaGraficas #regresarBTN').on('click', regresa)
+    $j('#openWin').on('click', openWin)
+
 
 
 
@@ -65,7 +67,9 @@ function main_consulta() {
 }
 
 
-
+function openWin() {
+    myWindow = window.open("/admin/obras/obra/4/?m=1", "Ficha Técnica", "width=1200, height=700");   // Opens a new window
+}
 
 
 
@@ -938,7 +942,7 @@ function tablaD(Datos){
                     +'<tfoot>'
                         +'<tr>'
                             +'<th>TOTALES</th>'
-                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].obras_totales, 2, '.', ',') +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].obras_totales, 0, '.', ',') +'</th>'
                             +'<th align="right">'+ formato_numero(Datos.reporte_general[0].total_invertido, 2, '.', ',') +'</th>'
                         +'</tr>'
 
@@ -964,7 +968,7 @@ function tablaD(Datos){
         for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
-            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 0, '.', ',') + '</td>'
             + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
@@ -975,7 +979,7 @@ function tablaD(Datos){
         for (var i = 0; i < Datos.reporte_estado.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
-            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].numeroObras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].numeroObras, 0, '.', ',') + '</td>'
             + '<td align="right">' + formato_numero(Datos.reporte_estado[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
@@ -1078,7 +1082,7 @@ $j.tablaGrafica = function(Datos){
                     +'<tfoot>'
                         +'<tr>'
                             +'<th>TOTALES</th>'
-                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].obras_totales, 2, '.', ',') +'</th>'
+                            +'<th align="right">'+ formato_numero(Datos.reporte_general[0].obras_totales, 0, '.', ',') +'</th>'
                             +'<th align="right">'+ formato_numero(Datos.reporte_general[0].total_invertido, 2, '.', ',') +'</th>'
                         +'</tr>'
 
@@ -1103,7 +1107,7 @@ $j.tablaGrafica = function(Datos){
         for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
-            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 0, '.', ',') + '</td>'
             + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
@@ -1114,7 +1118,7 @@ $j.tablaGrafica = function(Datos){
         for (var i = 0; i < Datos.reporte_estado.length; i++) {
             sHtml += '<tr>'
             + '<td>' + Datos.reporte_estado[i].estado.nombreEstado + '</td>'
-            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].numeroObras, 2, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_estado[i].numeroObras, 0, '.', ',') + '</td>'
             + '<td align="right">' + formato_numero(Datos.reporte_estado[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }

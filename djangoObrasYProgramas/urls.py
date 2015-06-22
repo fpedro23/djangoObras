@@ -33,4 +33,5 @@ urlpatterns = patterns(
     url(r'^obras/consulta_filtros', 'obras.views.consulta_web', name='consulta_filtros'),
     url(r'^obras/consulta_predefinidos', 'obras.views.reportes_predefinidos', name='consulta_predefinidos'),
 
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
