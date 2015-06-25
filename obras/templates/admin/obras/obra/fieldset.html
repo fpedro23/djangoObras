@@ -167,7 +167,7 @@
       {% if field.field.name == "fechaInicio" %}
               <tr>
                  <td width="40%"> <label class="required" for="id_fechaInicio">Fecha de Inicio:</label></td>
-                  <td width="60%"><input class="form-control2" id="id_fechaInicio" name="fechaInicio" type="text" placeholder="Desde" value="{{ field.field.value|date:"Y-m-d"|default_if_none:"" }}"/>
+                  <td width="60%"><input class="form-control2" id="id_fechaInicio" name="fechaInicio" type="text" placeholder="Desde" value="{{ field.field.value|date:"Y-m-d"|default_if_none:""}}"/>
                     {% if field.errors %}
                              <img id="imgerr13" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
@@ -234,7 +234,7 @@
          {% if field.field.name == "senalizacion" %}
               <tr>
                  <td width="40%"> <label class="required" for="id_senalizacion">Señalización:</label></td>
-                  <td width="60%"> {{ field.field }}
+                  <td width="60%" valign="top"> {{ field.field }}
                     {% if field.errors %}
                              <img id="imgerr18" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
@@ -264,7 +264,7 @@
         </div>
              <table width="100%">
         <tr class="form-row row1">
-                   <td class="field-descripcion" width="60%" style="font-size: 11px">
+                   <td class="field-descripcion" width="60%" style="font-size: 11px;">
                        Seleccione Tipo de Inversión
                    </td>
                    <td class="field-descripcion" width="40%" style="font-size: 11px" align="center">
@@ -275,16 +275,16 @@
            <div class="inversionin">
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                 <tr>
-                    <td width="60%">  <label for="id_registroHacendario"> Registro de Cartera de Inversión:</label></td>
-                    <td widht="40%">  {{ field.field }}
+                    <td width="58%" style="padding-right:0px;">  <label for="id_registroHacendario"> Registro de Cartera de Inversión:</label></td>
+                    <td widht="42%">  {{ field.field }}
                       {% if field.errors %}
                              <img id="imgerr19" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                     </td>
                 </tr>
              <tr>
-                    <td width="60%">  <label class="required" for="id_montoRegistroHacendario"> Recursos Federales Autorizados:</label></td>
-                    <td width="40%">  {{ field.field }}
+                    <td width="58%" style="padding-right:0px;">  <label class="required" for="id_montoRegistroHacendario"> Recursos Federales Autorizados:</label></td>
+                    <td width="42%">  {{ field.field }}
                       {% if field.errors %}
                              <img id="imgerr20" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
@@ -297,7 +297,7 @@
 
         {% if field.field.name == "inversionTotal" %}
                 <tr>
-                    <td><label class="required" for="id_inversionTotal">Inversión Total:</label></td>
+                    <td style="padding-right:1px;"><label class="required" for="id_inversionTotal">Inversión Total:</label></td>
                     <td>{{ field.field }}</td>
                 </tr>
         {% endif %}
@@ -513,7 +513,7 @@
 
       {% if inline_admin_formset.formset.prefix == "detalleinversion_set" %}
 
-        <div class="inversionup" style="overflow:scroll; height:80px;">
+        <div class="inversionup">
 
                                    {% for inline_admin_formset in inline_admin_formsets %}
 

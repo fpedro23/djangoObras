@@ -130,7 +130,7 @@
          {% for line in fieldset %}
             {% for field in line %}
                {% if field.field.name == "is_active" %}
-                 <div class="row field-is_active">
+                 <div class="row field-is_active" id="usuarioactivo" hidden="true">
                     <div class="col-md-6" >
                         <label class="vCheckboxLabel" for="id_is_active">Activo</label>
                         {% if field.field.help_text %}

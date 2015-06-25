@@ -136,15 +136,6 @@ x++;
 })(django.jQuery);
 </script>
 
-
-
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-
 {% endblock %}
 
 {% block extrastyle %}{{ block.super }}
@@ -199,6 +190,7 @@ x++;
               id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
             {% if errors %}
                 <div class="msggen">
+
                 {% if adminform.form.non_field_errors|length == 1 %} * Favor de verificar los siguientes datos {% else %}
                         * Favor de verificar los siguientes datos {% endif %} {{ adminform.form.non_field_errors }}
                 </div>

@@ -118,7 +118,7 @@ class ClasificacionInLine(admin.StackedInline):
 
 class DocumentoFuenteInline(admin.TabularInline):
     model = DocumentoFuente
-    extra = 0
+    extra = 1
 
 
 class DependenciaListFilter(SimpleListFilter):
@@ -191,13 +191,13 @@ make_unauthorized.short_description = "No Autorizar las obras seleccionadas"
 class DetalleInversionInline(admin.TabularInline):
     form = DetalleInversionAddForm
     model = DetalleInversion
-    extra = 0
+    extra = 1
 
 
 class DetalleClasificacionInline(admin.TabularInline):
     form = DetalleClasificacionAddForm
     model = DetalleClasificacion
-    extra = 5
+    extra = 4
 
 
 class ObrasAdmin(admin.ModelAdmin):

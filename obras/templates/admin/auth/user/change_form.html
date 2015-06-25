@@ -36,9 +36,12 @@
 
   <div class="bienvenida">
       {% if not change %}
-            Bienvenido a Registro de Usuarios. Los campos marcados con asterisco (*) son obligatorios para la alta exitosa del mismo. Le pdimos los llene correctamente.
+            Bienvenido a la Sección de "Registro de Usuarios". Los campos marcados con asterisco (*) son obligatorios, le pedimos los llene correctamente.
         {% else %}
-            Bienvenido a Modificar Usuario. Realice los cambios a los dats del usuario seleccionado y presione el botón Guardar.
+            Bienvenido a la Sección de "Modificar Usuario". Realice los cambios a los datos del usuario seleccionado y presione el botón Guardar.
+            <script>$(document).ready(function() {
+                var $mu = jQuery.noConflict();
+                $mu("#usuarioactivo").show();})</script>
         {% endif %}
  </div>
     <div id="content-main">

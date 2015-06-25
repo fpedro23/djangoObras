@@ -9,13 +9,13 @@
    <!-- <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }} </h2>-->
    {{ inline_admin_formset.formset.non_form_errors }}
    <table style="background: #ffffff; border:0px;">
-     <thead style="background: #ffffff; border:0px;"><tr>
+     <thead style="background: #ffffff; border:0px; padding-top: 0px;"><tr>
      {% for field in inline_admin_formset.fields %}
        {% if not field.widget.is_hidden %}
 
        {% endif %}
      {% endfor %}
-     {% if inline_admin_formset.formset.can_delete %}<th style="background: #ffffff; border:0px;"></th>{% endif %}
+     {% if inline_admin_formset.formset.can_delete %}<th style="background: #ffffff; border:0px; padding-top: 0px;"></th>{% endif %}
      </tr></thead>
 
      <tbody style="background: #ffffff; border:0px;">
@@ -46,7 +46,7 @@
           {% for line in fieldset %}
             {% for field in line %}
               {% if not field.field.is_hidden %}
-              <td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %} style="background: #ffffff; border:0px;">
+              <td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %} style="background: #ffffff; border:0px; padding-top:0px;">
               {% if field.is_readonly %}
                   <p>{{ field.contents }}</p>
               {% else %}

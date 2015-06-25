@@ -73,7 +73,7 @@ function verDatos() {
             //$j('#datos').html
            //alert('success!!! ' + data.id);
             if (data.id!=null){location.href='/admin/obras/obra/'+data.id+'/?m=1';}
-            else { alert('No existen registros con elID Único ' + idUnico);}
+            else { alert('No existen registros con el ID Único ' + idUnico);}
 
         },
         error: function(data) {

@@ -35,49 +35,70 @@
         <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
         	<p class="titulo">INICIAR SESIÓN</p>
             <br />
-            <p>
-                    <label for="id_username" id="tit_1">
-                        <span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
-                        Usuario :
-                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{ form.username }}
+            <table  width="100%">
+                <tr>
+                    <td align="left" width="40%" valign="top">
+                        <label for="id_username" id="tit_1">
+                            <span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
+                            Usuario :
+                        </label>
+                    </td>
+                    <td align="right" width="60%">
+                        {{ form.username }}<br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" width="40%" valign="top">
+                    <label for="id_password" id="tit_1"><span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
+                            Contraseña :</label>&nbsp;
+                    </td>
+                    <td align="right" width="60%">    {{ form.password }}<br><br>
+                            <input type="hidden" name="next" value="{{ next }}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="justify">
+                        {% if form.errors and not form.non_field_errors %}
+                            <p class="error__msg">
+                            {% if form.errors.items|length == 1 %} {{"Campos marcados con (*) son obligatorios"}} {% else %}{{ "Campos marcados con (*) son obligatorios" }} {% endif %}
+                           <br>
 
-            <p><label for="id_password" id="tit_1"><span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
-                        Contraseña</label>&nbsp;&nbsp;{{ form.password }}
-                        <input type="hidden" name="next" value="{{ next }}" /><br>
+                            </p>
+                        {% endif %}
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <p class="error__msg">
+                                     {# error #}
+                                    El Nombre de Usuario y/o la Contraseña son incorrectos; ambos campos son sensibles a mayúsculas.
+                                </p>
+                            {% endfor %}
+                        {% endif %}
+                    </td>
 
-            </p>
-            {% if form.errors and not form.non_field_errors %}
-                <p class="error__msg">
-                {% if form.errors.items|length == 1 %} {{"Campos marcados con (*) son obligatorios"}} {% else %}{{ "Campos marcados con (*) son obligatorios" }} {% endif %}
-               <br>
-
-                </p>
-            {% endif %}
-        {% if form.non_field_errors %}
-{% for error in form.non_field_errors %}
-<p class="error__msg">
-    {{ error }}
-</p>
-{% endfor %}
-{% endif %}
-            <div id="botLI" onclick="document.getElementById('login-form').submit();">
-            </div>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <div id="botLI" onclick="document.getElementById('login-form').submit();">
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </form>
                 {% url 'admin_password_reset' as password_reset_url %}
-            <div id="olvidarPW" onclick="location.href='{{ password_reset_url }}'">
-            </div>
+                <div id="olvidarPW" onclick="location.href='{{ password_reset_url }}'">
+                </div>
 		</div>
 
-<script src="{% static "galeria/jquery.bxslider.min.js" %}"></script>
+                <script src="{% static "galeria/jquery.bxslider.min.js" %}"></script>
                 <script type="text/javascript">
-                document.getElementById('id_username').focus()
-                var $j = jQuery.noConflict()
-               $j(document).ready(function(){
-                $j('.bxslider').bxSlider({
-                    auto: true,
-                    mode: 'fade'
-                  });
-               });
+                    document.getElementById('id_username').focus()
+                    var $j = jQuery.noConflict()
+                   $j(document).ready(function(){
+                    $j('.bxslider').bxSlider({
+                        auto: true,
+                        mode: 'fade'
+                      });
+                   });
                 </script>
 
 {% endblock %}

@@ -19,13 +19,21 @@
 </div>
 <!--Add another { verbose_name }}-->
 <script type="text/javascript">
-(function($) {
-  $("#{{ inline_admin_formset.formset.prefix }}-group .inline-related").stackedFormset({
-    prefix: '{{ inline_admin_formset.formset.prefix }}',
-    adminStaticPrefix: '{% static "admin/" %}',
-    deleteText: "{% trans "Remove" %}",
-    addText: "{% blocktrans with verbose_name=inline_admin_formset.opts.verbose_name|capfirst %}{% endblocktrans %}"
-  });
-})(django.jQuery);
+     $(document).ready(function() {
+         var $sv = jQuery.noConflict();
+         $sv('select[id=id_usuario-__prefix__-rol').change(function () {
+
+             //rolval = $sv('select[id=id_usuario-__prefix__-rol').val();
+
+             if ($sv('select[id=id_usuario-__prefix__-rol').val() == "SA") {
+                 $sv("#id_usuario-__prefix__-dependencia").prop("disabled", true);
+             }
+             else {
+                 $sv("#id_usuario-__prefix__-dependencia").prop("disabled", false);
+             }
+
+         });
+     })
+
 </script>
 
