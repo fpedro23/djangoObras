@@ -113,6 +113,13 @@
             noneSelectedText: 'Inaugurador',
             selectedText: '# Inauguradores'
         });
+        $l("#msInauguracion").multiselect({
+            header: true,
+            checkAllText: 'Todos',
+            uncheckAllText: 'Ninguno',
+            noneSelectedText: 'Inauguración',
+            selectedText: '# Seleccionadas'
+        });
         // off
         $l("#msInstanciaEjecutora").multiselect({
             header: true,
@@ -366,6 +373,7 @@ $pp(function () {
 	<script type="text/javascript" src="{% static "assets/export/jspdf/libs/sprintf.js"%}"}></script>
 	<script type="text/javascript" src="{% static "assets/export/jspdf/jspdf.js"%}"></script>
 	<script type="text/javascript" src="{% static "assets/export/jspdf/libs/base64.js"%}"></script>
+    <script type="text/javascript" src="{% static "assets/export/FileSaver.min.js"%}"></script>
 
 
 
@@ -409,18 +417,22 @@ function PDF () {
 <!--<button id="cmd">generate PDF</button> -->
 
     <!-- inicio contenido de la consulta por filtros-->
-    <div id="tabla-exporta" style="height: 0px;"></div>
-    <div id="tabla-exporta2" style="height: 0px;"></div>
+    <div id="tabla-exporta" >
+
+    </div>
+    <div id="tabla-exporta2" >
+
+    </div>
 
     <div id="modal-exporta" class="green-popup-block mfp-hide centerDiv"  style="width: 40%;">
         <div class="row" style="background:linear-gradient(#206341,#206341,#1E613F,#276947,#206341)  ;border: 2px solid #ffffff;">
             <div class="row exportarALERTA" style="padding-top: 15px;padding-left: 20px;width:100%"> EXPORTAR RESULTADOS </div>
-            <div class="row textoEXPORTAR" style="padding-left: 20px;width:100%;padding-top: 15px;">Elija el formato en el que desea exportar los resultados. </div>
+            <div class="row textoEXPORTAR" style="padding-left: 20px;width:100%;padding-top: 15px;">Seleccionar el formato en el que se exportarán los resultados. </div>
                     <div class="row " style="width: 60%;padding-top: 15px;margin-left: auto;margin-right: auto">
                         <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="pdf"  id="enviaPDF" onClick ="$pp('#tabla-exporta').show();$pp('#tablaExporta').tableExport({type:'pdf',escape:'false'}); $pp('#tabla-exporta').hide();"></div>
+                                <div class="pdf"  id="enviaPDF" ></div>
                             </article>
                         </div>
                         <div class="col-md-4" >
@@ -446,16 +458,16 @@ function PDF () {
         </div>
     </div>
 
-
+<!--onClick ="$pp('#tabla-exporta2').show();$pp('#tablaExporta2').tableExport({type:'pdf',escape:'false',pdfFontSize: 8,pdfLeftMargin: 10}); $pp('#tabla-exporta2').hide();" -->
     <div id="modal-exporta2" class="green-popup-block mfp-hide centerDiv"  style="width: 40%;">
         <div class="row" style="background:linear-gradient(#206341,#206341,#1E613F,#276947,#206341)  ;border: 2px solid #ffffff;">
             <div class="row exportarALERTA" style="padding-top: 15px;padding-left: 20px;width:100%"> EXPORTAR RESULTADOS </div>
-            <div class="row textoEXPORTAR" style="padding-left: 20px;width:100%;padding-top: 15px;">Elija el formato en el que desea exportar los resultados. </div>
+            <div class="row textoEXPORTAR" style="padding-left: 20px;width:100%;padding-top: 15px;">Seleccionar el formato en el que se exportarán los resultados. </div>
                     <div class="row " style="width: 60%;padding-top: 15px;margin-left: auto;margin-right: auto">
                         <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="pdf"  id="enviaPDF2" onClick ="$pp('#tabla-exporta2').show();$pp('#tablaExporta2').tableExport({type:'pdf',escape:'false'}); $pp('#tabla-exporta2').hide();"></div>
+                                <div class="pdf"  id="enviaPDF2" ></div>
                             </article>
                         </div>
                         <div class="col-md-4" >
@@ -613,17 +625,12 @@ function PDF () {
                                 <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 3px; padding-top: 3px ">
                                     <div class="row" >
                                         <div class="col-md-12" style="padding-right: 4px; padding-left: 15px; padding-bottom: 1px; padding-top: 1px ">
-                                            Registro de Cartera de Inversi&oacute;n
+                                            Denominaci&oacute;n
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 1px "><center>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> SI
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> NO
-                                            </label></center>
+                                        <div class="col-md-12" style="padding-right: 15px; padding-left: 15px; padding-bottom: 4px; padding-top: 1px "><center>
+                                            <input type="text" class="form-control2" id="denominacion" placeholder="Texto denominación"></center>
                                         </div>
                                     </div>
 
@@ -780,6 +787,16 @@ function PDF () {
                                                 {% for obj in inaugurador %}
                                                      <option value={{obj.id}}>{{obj.nombreCargoInaugura}}</option>
                                                 {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+                                            <select id="msInauguracion" multiple="multiple" style="width: 100%;height: auto;">
+                                                <option value='1'>Inauguradas</option>
+                                                <option value='2'>Sin Inauguraci&oacute;n</option>
+                                                <option value='3'>No Inauguradas</option>
+
                                             </select>
                                         </div>
                                     </div>

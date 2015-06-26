@@ -37,3 +37,7 @@ def add_desc(field, css):
 @register.filter(name='is_file')
 def is_file(field):
     return isinstance(field.field.widget, forms.ClearableFileInput)
+
+@register.filter(name='addcss')
+def addcss(field, css):
+   return field.as_widget(attrs={"class":css})

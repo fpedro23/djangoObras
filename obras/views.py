@@ -17,6 +17,10 @@ from obras.BuscarObras import BuscarObras
 from django.shortcuts import render_to_response
 from oauth2_provider.models import AccessToken
 
+from django.core.servers.basehttp import FileWrapper
+import mimetypes
+from django.http import StreamingHttpResponse
+
 def get_user_for_token(token):
     if token:
         return AccessToken.objects.get(token=token).user
@@ -609,7 +613,7 @@ def abrir_pptx(archivo):
 
 def balance_general_ppt(request):
     prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
-
+    usuario = request.user.usuario
     # informacion para el 2013
     start_date = datetime.date(2012, 12, 01)
     end_date = datetime.date(2013, 12, 31)
@@ -667,12 +671,23 @@ def balance_general_ppt(request):
     prs.slides[0].shapes[20].text= '$ {0:,.2f}'.format(total_invertido)
 
 
-    prs.save('test.pptx')
-    abrir_pptx('test.pptx')
-    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
+    prs.save('obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
+
+    the_file = 'obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    return response
+
+
+
 
 def hiper_info_general_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_INFORMACION_GENERAL.pptx')
+    usuario = request.user.usuario
     obras_concluidas = Obra.objects.filter(
         Q(tipoObra=3)
     )
@@ -701,20 +716,41 @@ def hiper_info_general_ppt(request):
     prs.slides[2].shapes[4].text= '$ {0:,.2f}'.format(total_invertido_proyectadas.get('inversionTotal__sum',0))
 
 
-    prs.save('hiper_info_general.pptx')
-    abrir_pptx('hiper_info_general.pptx')
-    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
+
+    prs.save('obras/static/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx')
+
+    the_file = 'obras/static/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
+    #abrir_pptx('hiper_info_general.pptx')
+    #return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
 def hiper_inauguradas_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_INAUGURADAS_SENALIZADAS.pptx')
+    usuario = request.user.usuario
     # falta implementar
-    prs.save('hiper_inauguradas.pptx')
-    abrir_pptx('hiper_inauguradas.pptx')
-    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
+
+    prs.save('obras/static/ppt/ppt-generados/hiper_inauguradas_' + str(usuario.user.id) + '.pptx')
+
+    the_file = 'obras/static/ppt/ppt-generados/hiper_inauguradas_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
 
 def hiper_por_sector_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
-
+    usuario = request.user.usuario
     start_date_2013 = datetime.date(2012, 12, 01)
     end_date_2013 = datetime.date(2013, 12, 31)
 
@@ -803,13 +839,22 @@ def hiper_por_sector_ppt(request):
         prs.slides[indiceSlide].shapes[14].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
 
 
-    prs.save('hiper_por_sector.pptx')
-    abrir_pptx('hiper_por_sector.pptx')
-    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
+
+    prs.save('obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
+
+    the_file = 'obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
 
 def hiper_por_entidad_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULOS_POR_ENTIDAD.pptx')
-
+    usuario = request.user.usuario
     start_date_2013 = datetime.date(2012, 12, 01)
     end_date_2013 = datetime.date(2013, 12, 31)
 
@@ -953,6 +998,15 @@ def hiper_por_entidad_ppt(request):
 
         indiceSlide=indiceSlide+1
 
-    prs.save('hiper_por_entidad.pptx')
-    abrir_pptx('hiper_por_entidad.pptx')
-    return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
+
+    prs.save('obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
+
+    the_file = 'obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
