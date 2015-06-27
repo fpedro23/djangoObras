@@ -12,11 +12,12 @@ from obras.tools import *
 from obras.models import *
 from obras.models import Obra
 import datetime
-from pptx import Presentation
+
 from obras.BuscarObras import BuscarObras
 from django.shortcuts import render_to_response
 from oauth2_provider.models import AccessToken
 
+from pptx import Presentation
 from django.core.servers.basehttp import FileWrapper
 import mimetypes
 from django.http import StreamingHttpResponse
@@ -611,6 +612,8 @@ def abrir_pptx(archivo):
     prs = Presentation(f)
     f.close()
 
+@login_required()
+@user_passes_test(is_super_admin)
 def balance_general_ppt(request):
     prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
     usuario = request.user.usuario
@@ -684,7 +687,8 @@ def balance_general_ppt(request):
 
 
 
-
+@login_required()
+@user_passes_test(is_super_admin)
 def hiper_info_general_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_INFORMACION_GENERAL.pptx')
     usuario = request.user.usuario
@@ -731,6 +735,8 @@ def hiper_info_general_ppt(request):
     #abrir_pptx('hiper_info_general.pptx')
     #return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
+@login_required()
+@user_passes_test(is_super_admin)
 def hiper_inauguradas_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_INAUGURADAS_SENALIZADAS.pptx')
     usuario = request.user.usuario
@@ -748,6 +754,8 @@ def hiper_inauguradas_ppt(request):
 
     return response
 
+@login_required()
+@user_passes_test(is_super_admin)
 def hiper_por_sector_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
     usuario = request.user.usuario
@@ -851,7 +859,8 @@ def hiper_por_sector_ppt(request):
     response['Content-Disposition'] = "attachment; filename=%s" % filename
 
     return response
-
+@login_required()
+@user_passes_test(is_super_admin)
 def hiper_por_entidad_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULOS_POR_ENTIDAD.pptx')
     usuario = request.user.usuario

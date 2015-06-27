@@ -26,6 +26,8 @@ urlpatterns = patterns('',
 
                        # Mappings Busqueda
                        url(r'^api/busqueda', api.BuscadorEndpoint.as_view()),
+                       url(r'^api/buscaObra', api.BuscaObraEndpoint.as_view()),
+
                        url(r'^api/id_unico', api.IdUnicoEndpoint.as_view()),
 
                        # Mappings Reportes
