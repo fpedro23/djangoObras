@@ -2,48 +2,49 @@
 
 <style>
 .texto {
-    font: 90% soberana_textoregular;
+    font: 95% 'soberana_sanslight';
 }
 
 .test {
       position: relative;
-      top: 5px;
-      height: 115px;
+      top: 2px;
+      height: 99%;
       overflow: auto;
       width:99%;
 }
 .scrollInversion{
       position: relative;
-      top: 3px;
-      height: 70px;
+      top: 2px;
+      height: 98%;
       overflow: auto;
       width:99%;
 }
+
 .scrollFotos{
       position: relative;
       top: 0px;
-      height: 80px;
-      overflow: auto;
+      height: 70%;
+      overflow: scroll;
       width:99%;
 }
 .scrollDocumentos{
       position: relative;
       top: 0px;
-      height: 70px;
+      height: 99%;
       overflow: auto;
       width:99%;
 }
 .scrollDescripcion{
       position: relative;
       top: 0px;
-      height: 115px;
+      height: 99%;
       overflow: auto;
       width:99%;
 }
 .scrollObservaciones{
       position: relative;
       top: 0px;
-      height: 90px;
+      height: 99%;
       overflow: auto;
       width:99%;
 }
@@ -182,8 +183,8 @@
                 </div>
               <div data-spy="scroll" data-target=".navbar" data-offset="2" class="scrollDescripcion">
                     <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
-                        <tr >
-                            <td colspan="4" >
+                        <tr>
+                            <td colspan="5" >
                              {{ field.field }}
                               {% if field.errors %}
                                  <img id="imgerr10" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
@@ -195,7 +196,7 @@
        {% if field.field.name == "porcentajeAvance" %}
               <tr>
                  <td width="15%" class="texto"><label class="required" for="id_porcentajeAvance">Avance:</label></td>
-                  <td width="30%" class="texto"> {{ field.field }}
+                  <td width="30%" class="texto" style="padding-left: 0px;"> {{ field.field }}
                           {% if field.errors %}
                              <img id="imgerr11" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
@@ -205,36 +206,43 @@
 
       {% if field.field.name == "tipoObra" %}
 
-                 <td width="13%" class="texto"><label class="required" for="id_tipoObra">Status:</label></td>
-                  <td width="35%" class="texto"> {{ field.field }}
+                 <td width="15%" class="texto" style="padding-right: 0px;"><label class="required" for="id_tipoObra">Status:</label></td>
+                  <td width="38%" class="texto" style="padding-left: 0px;"> {{ field.field }}
                              {% if field.errors %}
                              <img id="imgerr12" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                   </td>
+                  <td width="2%" class="texto" </td>
               </tr>
 
        {% endif %}
 
       {% if field.field.name == "fechaInicio" %}
-              <tr>
-                 <td width="40%" class="texto" colspan="2"> <label class="required" for="id_fechaInicio">Fecha de Inicio:</label></td>
-                  <td width="60%" class="texto" colspan="2"><input class="form-control2" id="id_fechaInicio" name="fechaInicio" type="text" placeholder="Desde" value="{{ field.field.value|date:"Y-m-d"|default_if_none:""}}"/>
-                    {% if field.errors %}
+              <tr><td colspan="5">
+                    <table width="100%" class="texto"><tr>
+                        <td width="40%" class="texto"> <label class="required" for="id_fechaInicio" style="font-size: 11px;">Fecha de Inicio:</label></td>
+                        <td width="60%" class="texto"><input class="form-control2" id="id_fechaInicio" name="fechaInicio" type="text" placeholder="Desde" value="{{ field.field.value|date:"Y-m-d"|default_if_none:""}}"/>
+                            {% if field.errors %}
                              <img id="imgerr13" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
-                  </td>
+                        </td>
+                    </tr></table>
+              </td>
               </tr>
 
        {% endif %}
 
        {% if field.field.name == "fechaTermino" %}
-              <tr>
-                 <td width="40%" class="texto" colspan="2">  <label class="required" for="id_fechaTermino">Fecha de Término:</label></td>
-                  <td width="60%" class="texto" colspan="2"> <input class="form-control2" id="id_fechaTermino" name="fechaTermino" type="text" placeholder="Hasta" value="{{ field.field.value|date:"Y-m-d"|default_if_none:"" }}"/>
+              <tr><td colspan="5">
+              <table width="100%"><tr>
+                 <td width="40%" class="texto">  <label class="required" for="id_fechaTermino" style="font-size: 11px;">Fecha de Término:</label></td>
+                  <td width="60%" class="texto"> <input class="form-control2" id="id_fechaTermino" name="fechaTermino" type="text" placeholder="Hasta" value="{{ field.field.value|date:"Y-m-d" }}"/>
                      {% if field.errors %}
                          <img id="imgerr14" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                      {% endif %}
                   </td>
+               </tr></table>
+              </td>
               </tr>
                  </table>
            </div>
@@ -316,10 +324,10 @@
         </div>
              <table width="100%">
                 <tr class="form-row row1">
-                   <td class="field-descripcion texto" width="60%" style="font-size: 11px;">
+                   <td class="field-descripcion texto" width="60%" >
                        Seleccione Tipo de Inversión
                    </td>
-                   <td class="field-descripcion texto" width="40%" style="font-size: 11px" align="center">
+                   <td class="field-descripcion texto" width="40%" align="center">
                        Monto
                    </td>
                 </tr>
@@ -398,7 +406,7 @@
                    <table border="0" width="100%">
                        <tr>
                            {% for l in field.field %}
-                                <td width="20%" class="texto">
+                                <td width="20%" class="required" style="font-size: 11px;">
                                     {{ l }}
                                 </td>
                             {% endfor %}

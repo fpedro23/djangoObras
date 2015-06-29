@@ -387,7 +387,7 @@ a#add_id_tipoClasificacion.add-another {display:none;}
 
 input[type=text], input[type=number], input[type=email], input[type=password] {
     font-family: "soberana_sanslight";
-    font-size: 9px;
+    font-size: 10px;
     line-height: initial;
     height: 17px;
     width: 90%;
@@ -395,7 +395,7 @@ input[type=text], input[type=number], input[type=email], input[type=password] {
 
 input[type=file] {
     font-family: "soberana_sanslight";
-    font-size: 9px;
+    font-size: 10px;
     width: 90%;
      height: 100%;
      font-size: 9px;
@@ -405,14 +405,14 @@ input[type=file] {
 .rendFile{
       font-family: "soberana_sanslight";
     font-size: 9px;
-    width: 100%;
+    width: 90%;
      height: 16px;
      font-size: 9px;
     padding: 0px 0px;
 }
 select{
     font-family: "soberana_sanslight";
-    font-size: 9px;
+    font-size: 10px;
     line-height: initial;
     height: 17px;
     width: 90%;
@@ -562,7 +562,7 @@ td, th {
 	border: 0px solid #327451;
 	border-radius: 0px;
 	width: 340px;
-	height: 80px;
+	height: 74px;
 	font-family: 'soberana_sanslight';
 	font-size: 11px;
 	color: #6A6B6C;
@@ -581,7 +581,7 @@ td, th {
 	color: #6A6B6C;
 	position: absolute;
 	left: 1px;
-	top: 119px;
+	top: 115px;
 }
 .inauguracion{
 	border: 2px solid #327451;
