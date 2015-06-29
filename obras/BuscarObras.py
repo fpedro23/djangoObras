@@ -124,23 +124,29 @@ class BuscaObra:
 
 
     def busca(self):
-
+        obra_id = None
         query = Q()
         queryInversion = Q()
+        queryClasificacion = Q()
 
         if self.identificador_unico is not None:
             query = Q(identificador_unico=self.identificador_unico)
-            queryInversion= Q(obra__id=25875)
 
         if query is not None:
             #print query
             obras = Obra.objects.filter(query)
-            DInversion=DetalleInversion.objects.filter(queryInversion)
+            if obras and obras.count() > 0:
+                obra_id = obras.first().id
+                queryInversion= Q(obra__id=obra_id)
+                queryClasificacion= Q(obra__id=obra_id)
+                DInversion=DetalleInversion.objects.filter(queryInversion)
+                DClasificacion=DetalleClasificacion.objects.filter(queryClasificacion).values('tipoClasificacion__id','subclasificacion__nombreTipoClasificacion')
 
 
         reporte = {
             'obras': obras,
             'DInversion':DInversion,
+            'DClasificacion':DClasificacion,
         }
 
         return reporte

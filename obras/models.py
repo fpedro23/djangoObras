@@ -475,6 +475,10 @@ class DetalleClasificacion(models.Model):
                                          null=True,
                                          blank=True,
                                          )
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
 
 
 def get_subdependencias_as_list_flat(deps):
