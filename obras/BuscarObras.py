@@ -87,7 +87,7 @@ class BuscarObras:
             query = query & Q(instanciaEjecutora__id__in=self.instancia_ejecutora)
 
         if query is not None:
-            print query
+            #print query
             obras = Obra.objects.filter(query)
 
         #Reporte general
@@ -113,3 +113,34 @@ class BuscarObras:
         }
 
         return reportes
+
+class BuscaObra:
+    def __init__(
+            self,
+            identificador_unico,
+    ):
+
+        self.identificador_unico = identificador_unico
+
+
+    def busca(self):
+
+        query = Q()
+        queryInversion = Q()
+
+        if self.identificador_unico is not None:
+            query = Q(identificador_unico=self.identificador_unico)
+            queryInversion= Q(obra__id=25875)
+
+        if query is not None:
+            #print query
+            obras = Obra.objects.filter(query)
+            DInversion=DetalleInversion.objects.filter(queryInversion)
+
+
+        reporte = {
+            'obras': obras,
+            'DInversion':DInversion,
+        }
+
+        return reporte

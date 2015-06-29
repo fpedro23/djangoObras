@@ -9,6 +9,12 @@ from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, 
 from obras.views import get_array_or_none
 from datetime import *
 
+from pptx import Presentation
+from pptx.util import Pt
+
+from django.core.servers.basehttp import FileWrapper
+import mimetypes
+from django.http import StreamingHttpResponse
 
 def get_usuario_for_token(token):
     if token:
@@ -264,6 +270,8 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['reporte_general'].append(map)
 
         return HttpResponse(json.dumps(json_map), 'application/json')
+
+
 
 
 class InauguradorEndpoint(ProtectedResourceView):

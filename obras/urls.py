@@ -26,6 +26,8 @@ urlpatterns = patterns('',
 
                        # Mappings Busqueda
                        url(r'^api/busqueda', api.BuscadorEndpoint.as_view()),
+
+
                        url(r'^api/id_unico', api.IdUnicoEndpoint.as_view()),
 
                        # Mappings Reportes
@@ -50,6 +52,7 @@ urlpatterns = patterns('',
                        url(r'^consultar-obras', views.buscar_obras_web),
                        url(r'^prueba', views.ajax_prueba),
 
+                        url(r'^ficha', views.fichaTecnica),
                        url(r'^reportes-predefinidos', views.reportes_predefinidos),
                         url(r'^balance-general-ppt', views.balance_general_ppt),
                         url(r'^hiper-info-general-ppt', views.hiper_info_general_ppt),
