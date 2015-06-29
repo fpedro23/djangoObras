@@ -1157,7 +1157,7 @@ function tablaD(Datos){
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 140,'
+                +'        scroller_height : 130,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'

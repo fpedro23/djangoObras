@@ -367,6 +367,10 @@ class Obra(models.Model):
         map['denominacion'] = self.denominacion
         map['descripcion'] = self.descripcion
         map['observaciones'] = self.observaciones
+        if self.fechaModificacion is None:
+            map['fechaModificacion'] = None
+        else:
+            map['fechaModificacion'] = self.fechaModificacion.__str__()
         if self.fechaInicio is None:
             map['fechaInicio'] = None
         else:
@@ -447,6 +451,10 @@ class DetalleInversion(models.Model):
     class Meta:
         unique_together = [("obra", "tipoInversion")]
 
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        return ans
 
 class DetalleClasificacion(models.Model):
     class Meta:

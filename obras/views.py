@@ -6,8 +6,9 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 from obras.tools import *
-
-
+from obras.BuscarObras import BuscaObra
+from pptx.util import Pt
+import json
 # from pptx import Presentation
 from obras.models import *
 from obras.models import Obra
@@ -602,7 +603,61 @@ def ajax_prueba(request):
 
 
 
+
 # reportes de power point ************************************************************************************
+
+def fichaTecnica(request):
+        prs = Presentation('obras/static/ppt/FichaTecnicaObras.pptx')
+        usuario = request.user.usuario
+        buscador = BuscaObra(
+            identificador_unico=request.GET.get('identificador_unico', None)
+        )
+        resultados = buscador.busca()
+
+        json_map = {}
+        json_map['obras'] = []
+        for obra in resultados['obras']:
+            json_map['obras'].append(obra.to_serializable_dict())
+
+        json_map['DInversion'] = []
+        for DetalleInversion in resultados['DInversion']:
+            json_map['DInversion'].append(DetalleInversion.to_serializable_dict())
+
+        prs.slides[0].shapes[9].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[9].text = json_map['obras'][0]['identificador']
+        prs.slides[0].shapes[10].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[10].text = json_map['obras'][0]['denominacion']
+        prs.slides[0].shapes[11].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[11].text = json_map['obras'][0]['dependencia']['nombreDependencia']
+        prs.slides[0].shapes[12].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[12].text = json_map['obras'][0]['estado']['nombreEstado']
+        prs.slides[0].shapes[13].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[13].text = json_map['obras'][0]['municipio']
+        prs.slides[0].shapes[14].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[14].text = json_map['obras'][0]['fechaInicio']
+        prs.slides[0].shapes[15].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[15].text = json_map['obras'][0]['fechaTermino']
+        prs.slides[0].shapes[16].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[16].text = json_map['obras'][0]['tipoObra']['nombreTipoObra']
+
+        prs.slides[0].shapes[17].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[17].text = str(json_map['obras'][0]['porcentajeAvance'])
+        prs.slides[0].shapes[18].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[18].text = json_map['obras'][0]['fechaModificacion']
+
+        for DI in json_map['DInversion']:
+            if not (DI['tipoInversion'] is None):
+                if DI['tipoInversion'] == 1:
+                    prs.slides[0].shapes[19].text_frame.paragraphs[0].font.size = Pt(8)
+                    prs.slides[0].shapes[19].text = "Si"
+                if DI['tipoInversion'] == 2:
+                    prs.slides[0].shapes[20].text_frame.paragraphs[0].font.size = Pt(8)
+                    prs.slides[0].shapes[20].text = "Si"
+
+
+        prs.save('obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
+        print(json_map)
+        return HttpResponse(json.dumps(json_map), 'application/json')
 
 def reportes_predefinidos(request):
     return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))

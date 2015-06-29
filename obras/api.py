@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
-from obras.BuscarObras import BuscarObras, BuscaObra
+from obras.BuscarObras import BuscarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador,\
     InstanciaEjecutora, get_subdependencias_as_list_flat
 from obras.views import get_array_or_none
@@ -272,30 +272,7 @@ class BuscadorEndpoint(ProtectedResourceView):
         return HttpResponse(json.dumps(json_map), 'application/json')
 
 
-class BuscaObraEndpoint(ProtectedResourceView):
-    def get(self, request):
-        prs = Presentation('obras/static/ppt/FichaTecnicaObras.pptx')
-        usuario = request.user.usuario
-        buscador = BuscaObra(
-            identificador_unico=request.GET.get('identificador_unico', None)
-        )
-        resultados = buscador.busca()
 
-        json_map = {}
-        json_map['obras'] = []
-        for obra in resultados['obras']:
-            json_map['obras'].append(obra.to_serializable_dict())
-
-        #prs.slides[0].shapes[5].text_frame.paragraphs[0].font.size = Pt(8)
-        ident=json_map['obras'][0]['identificador']
-        prs.slides[0].shapes[12].text = json_map['obras'][0]['identificador']
-        prs.slides[0].shapes[16].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[16].text = json_map['obras'][0]['tipoObra']['nombreTipoObra']
-
-
-        prs.save('obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
-        print(json_map)
-        return HttpResponse(json.dumps(json_map), 'application/json')
 
 class InauguradorEndpoint(ProtectedResourceView):
     def get(self, request):
