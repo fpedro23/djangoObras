@@ -8,7 +8,7 @@
 <fieldset class="module" style="background: #ffffff; border:0px;">
    <!-- <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }} </h2>-->
    {{ inline_admin_formset.formset.non_form_errors }}
-   <table style="background: #ffffff; border:0px;">
+   <table style="background: #ffffff; border:0px;" width="99%">
      <thead style="background: #ffffff; border:0px;"><tr>
      {% for field in inline_admin_formset.fields %}
        {% if not field.widget.is_hidden %}
@@ -59,7 +59,7 @@
           {% endfor %}
         {% endfor %}
         {% if inline_admin_formset.formset.can_delete %}
-          <td class="delete" style="background: #ffffff; border:0px;">{% if inline_admin_form.original %}{{ inline_admin_form.deletion_field.field }}{% endif %}</td>
+          <td class="delete" style="background: #ffffff; border:0px; padding: 0px;">{% if inline_admin_form.original %}{{ inline_admin_form.deletion_field.field }}{% endif %}</td>
         {% endif %}
         </tr>
      {% endfor %}
