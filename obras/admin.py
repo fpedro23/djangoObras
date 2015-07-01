@@ -14,7 +14,7 @@ class UsuarioInline(admin.StackedInline):
     model = Usuario
     can_delete = False
     verbose_name_plural = 'Usuario'
-    extra = 0
+    extra = 1
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         arreglo_dependencias = []
@@ -48,10 +48,7 @@ class UserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {'fields': ('username', 'password1', 'password2')}),
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
-        (('AuthInfo'), {'fields': ('username', 'password1', 'password2')}),
-        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                      'groups', 'user_permissions')}),
-        (('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (('Permissions'), {'fields': ('is_active',)}),
     )
 
     def get_dependencia(self, obj):
