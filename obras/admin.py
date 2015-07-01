@@ -4,6 +4,7 @@ from django.contrib.admin import SimpleListFilter
 
 from obras.models import *
 from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm
+from django.contrib.auth.models import Group
 
 
 # Register your models here.+
@@ -51,18 +52,27 @@ class UserAdmin(UserAdmin):
         (('Permissions'), {'fields': ('is_active',)}),
     )
 
-    def save_form(self, request, form, change):
-        usuario = form.save()
-        usuario.is_staff = True
+    def save_model(self, request, obj, form, change):
+        obj.is_staff = True
+        print obj.usuario
+        usuario = obj
+
+        print usuario.usuario
         if usuario.usuario.rol == 'SA':
             usuario.is_superuser = True
         elif usuario.usuario.rol == 'AD':
+            g = Group.objects.get(name='administrador_dependencia')
+            g.user_set.add(usuario)
             print 'Definir permisos de administrador de dependencia'
 
         elif usuario.usuario.rol == 'US':
+            g = Group.objects.get(name='usuario_dependencia')
+            g.user_set.add(usuario)
             print 'Definir permisos para usuario'
 
-        return super(UserAdmin, self).save_form(request, form, change)
+        super(UserAdmin, self).save_model(request, obj, form, change)
+
+
 
     def get_dependencia(self, obj):
         return ",\n".join([dependencia.nombreDependencia for dependencia in obj.usuario.dependencia.all()])
