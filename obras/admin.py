@@ -46,7 +46,7 @@ class UserAdmin(UserAdmin):
         (('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
-        (None, {'fields': ('username', 'password1', 'password2')}),
+        (('AuthInfo'), {'fields': ('username', 'password1', 'password2')}),
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (('Permissions'), {'fields': ('is_active',)}),
     )
