@@ -56,6 +56,7 @@ class UserAdmin(UserAdmin):
         obj.is_staff = True
         print obj.usuario
         usuario = obj
+        usuario.save()
 
         print usuario.usuario
         if usuario.usuario.rol == 'SA':
@@ -72,6 +73,10 @@ class UserAdmin(UserAdmin):
 
         super(UserAdmin, self).save_model(request, obj, form, change)
 
+
+    def delete_model(self, request, obj):
+        self.message_user(request, "Usuario eliminado satisfactoriamente", )
+        super(UserAdmin, self).delete_model(request, obj)
 
 
     def get_dependencia(self, obj):
