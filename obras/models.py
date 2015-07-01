@@ -223,10 +223,14 @@ class Usuario(models.Model):
     )
     rol = models.CharField(max_length=2, choices=ROLES_CHOICES, default=USER)
     user = models.OneToOneField(User)
-    dependencia = models.ManyToManyField(Dependencia, blank=True, null=True)
+    dependencia = models.ManyToManyField(Dependencia, blank=True, null=True, limit_choices_to={'dependienteDe': None}, )
+    subdependencia = models.ManyToManyField(Dependencia, blank=True, null=True,
+                                            limit_choices_to={'dependienteDe__isnull': False},
+                                            related_name='Subdependencias')
 
 
 @python_2_unicode_compatible
+
 class InstanciaEjecutora(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -252,7 +256,7 @@ class Obra(models.Model):
     tipoObra = models.ForeignKey(TipoObra)
     dependencia = models.ForeignKey(Dependencia, related_name='%(class)s_dependencia',
                                     null=True,
-                                       blank=True,
+                                    blank=True,
                                     limit_choices_to={
                                         'dependienteDe': None,
                                     })
@@ -269,7 +273,7 @@ class Obra(models.Model):
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
-    tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion',null=True,blank=True,)
+    tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion', null=True, blank=True, )
 
     tipoClasificacion = models.ManyToManyField("self", TipoClasificacion,
                                                through='DetalleClasificacion',
@@ -281,12 +285,12 @@ class Obra(models.Model):
                                                )
 
     subclasificacion = ChainedForeignKey(TipoClasificacion,
-                                              related_name='%(class)s_subclasificaciones',
-                                              chained_field="tipoClasificacion",
-                                              chained_model_field="subclasificacionDe",
-                                              null=True,
-                                              blank=True,
-                                              )
+                                         related_name='%(class)s_subclasificaciones',
+                                         chained_field="tipoClasificacion",
+                                         chained_model_field="subclasificacionDe",
+                                         null=True,
+                                         blank=True,
+                                         )
 
     inaugurador = models.ForeignKey(Inaugurador)
     denominacion = models.CharField(max_length=200)
@@ -310,7 +314,7 @@ class Obra(models.Model):
     autorizada = models.BooleanField(default=False)
     latitud = models.FloatField()
     longitud = models.FloatField()
-    id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200 )
+    id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200, null=True, blank=True)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
@@ -349,8 +353,8 @@ class Obra(models.Model):
             for tipoInversion in self.tipoInversion.all():
                 map['tipoInversion'].append(tipoInversion.to_serializable_dict())
 
-        #map['tipoClasificacion'] = []
-        #if self.tipoClasificacion:
+        # map['tipoClasificacion'] = []
+        # if self.tipoClasificacion:
         #    for tipoClasificacion in self.tipoClasificacion.all():
         #        map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
 
@@ -456,6 +460,7 @@ class DetalleInversion(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 class DetalleClasificacion(models.Model):
     class Meta:
         unique_together = [("obra", "tipoClasificacion")]
@@ -475,6 +480,7 @@ class DetalleClasificacion(models.Model):
                                          null=True,
                                          blank=True,
                                          )
+
     def to_serializable_dict(self):
         ans = model_to_dict(self)
         ans['id'] = str(self.id)

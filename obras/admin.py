@@ -51,8 +51,21 @@ class UserAdmin(UserAdmin):
         (('Permissions'), {'fields': ('is_active',)}),
     )
 
+    def save_form(self, request, form, change):
+        usuario = form.save()
+        usuario.is_staff = True
+        if usuario.usuario.rol == 'SA':
+            usuario.is_superuser = True
+        elif usuario.usuario.rol == 'AD':
+            print 'Definir permisos de administrador de dependencia'
+
+        elif usuario.usuario.rol == 'US':
+            print 'Definir permisos para usuario'
+
+        return super(UserAdmin, self).save_form(request, form, change)
+
     def get_dependencia(self, obj):
-        return obj.usuario.dependencia
+        return ",\n".join([dependencia.nombreDependencia for dependencia in obj.usuario.dependencia.all()])
 
     get_dependencia.short_description = 'Dependencia'
 
