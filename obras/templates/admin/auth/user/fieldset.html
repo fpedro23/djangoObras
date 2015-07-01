@@ -1,6 +1,6 @@
 
 {% if fieldset.name == "Personal info" %}
-<fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
      <div class="datosGENERALES">
      <div id="tituloCUADROS">
     	DATOS GENERALES
@@ -9,11 +9,11 @@
     {% for line in fieldset %}
         {% for field in line %}
              {% if field.field.name == "first_name" %}
-                <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                    <div class="col-md-3">
+                <div class="row  field-username" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-4">
                         <label class="required" for="id_first_name">Nombre:</label>
                     </div>
-                    <div class="col-md-9" >
+                    <div class="col-md-8" >
                         <input id="id_first_name" maxlength="30" name="first_name" type="text" value="{{ field.field.value|default_if_none:"" }}" />
                        {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -24,11 +24,11 @@
                      <div class="col-md-7"  >{{ field.errors }}</div></div>
             {% endif %}
             {% if field.field.name == "last_name" %}
-                <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                    <div class="col-md-3"  >
+                <div class="row  field-username" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-4"  >
                         <label for="id_last_name">Apellidos:</label>
                     </div>
-                    <div class="col-md-9" >
+                    <div class="col-md-8" >
                         {{ field.field }}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -40,11 +40,11 @@
             {% endif %}
 
              {% if field.field.name == "email" %}
-                <div class="row  field-email" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                    <div class="col-md-3"  >
-                        *<label for="id_email"> E-mail:</label>
+                <div class="row  field-email" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-4"  >
+                       <label for="id_email">* E-mail:</label>
                     </div>
-                    <div class="col-md-9" >
+                    <div class="col-md-8" >
                         {{ field.field }}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -60,34 +60,34 @@
 {% endif %}
 
  {% if fieldset.name == "AuthInfo" %}
-<fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
+<fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
      <div class="datosINICIO">
      <div id="tituloCUADROS">DATOS DE ACCESO
       <p>&nbsp;</p></div>
     {% for line in fieldset %}
         {% for field in line %}
              {% if field.field.name == "username" %}
-                <div class="row  field-username" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                    <div class="col-md-3"  >
-                        <label class="required" for="id_username">*Usuario:</label>
+                <div class="row  field-username" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="col-md-4"  >
+                        <label class="required" for="id_username">* Usuario:</label>
                     </div>
-                    <div class="col-md-9" >
+                    <div class="col-md-8" >
                         <input id="id_username" maxlength="30" name="username" type="text" value="{{ field.field.value|default_if_none:"" }}" />
                             {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
                 </div>
-                  <div class="row field-username" align="center">
+                  <div class="row field-username" align="left">
                  <div class="col-md-12">{{ field.errors }}</div></div>
             {% endif %}
 
             {% if field.field.name == "password1" %}
                 <div class="row field-password1" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="required" for="id_password1">*Contraseña:</label>
                     </div>
-                    <div class="col-md-9" >
+                    <div class="col-md-8" >
                         <input id="id_password1" name="password1" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -100,10 +100,10 @@
 
             {% if field.field.name == "password2" %}
                 <div class="row field-password2" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="required" for="id_password2">*Contraseña:</label>
                     </div>
-                    <div class="col-md-9" >
+                    <div class="col-md-8" >
                         <input id="id_password1" name="password2" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -155,16 +155,16 @@
 
   <div class="campos03">
 
-    <fieldset class="module aligned wide {{ fieldset.classes }}">
+    <fieldset class="module aligned  {{ fieldset.classes }}">
 
          {% for line in fieldset %}
             {% for field in line %}
                {% if field.field.name == "rol" %}
                  <div class="row field-rol">
-                    <div class="col-md-3" >
-                        <label class="required" for="id_rol">*Rol:</label>
+                    <div class="col-md-4" >
+                        <label class="required" for="id_rol">* Rol:</label>
                     </div>
-                    <div class="col-md-7" >
+                    <div class="col-md-8" >
                             {{ field.field }}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
@@ -176,10 +176,10 @@
 
                {% if field.field.name == "dependencia" %}
                   <div class="row field-dependencia" style="padding-top: 8px;">
-                    <div class="col-md-3" >
-                        <label for="id_usuario-0-dependencia">*Dependencia:</label>
+                    <div class="col-md-4" >
+                        <label style="padding-right: 0px;" for="id_usuario-0-dependencia">* Dependencia:</label>
                     </div>
-                    <div class="col-md-7" >
+                    <div class="col-md-8" >
                         {{ field.field }}
                        {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
