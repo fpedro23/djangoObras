@@ -95,10 +95,10 @@ class BuscarObras:
         total_invertido = obras.aggregate(Sum('inversionTotal'))
 
         #Reporte Dependencia
-        reporte_dependencia = Obra.objects.values('dependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_dependencia = obras.values('dependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
 
         #Reporte Estado
-        reporte_estado = Obra.objects.values('estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_estado = obras.values('estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
 
         reporte_general = {
             'obras_totales':obras_totales,

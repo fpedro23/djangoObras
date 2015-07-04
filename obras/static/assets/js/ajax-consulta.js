@@ -315,7 +315,10 @@ function graficas(){
     var titulo="";
     var categorias = new Array();
     var datas = new Array();
-    var montos = new Array();
+    var montos = new Array()
+    var Series = new Object();
+    var SeriesCategorias = new Object();
+    var SeriesTipeadas = new Object();
 
     $pp('#pagina').hide();
     $pp('#div-grafica').removeClass("mfp-hide");
@@ -328,6 +331,9 @@ function graficas(){
             montos.push(datosJson.reporte_dependencia[i].sumatotal);
             titulo="Número de obras por Dependencia";
         }
+        Series=jsonSeries(datosJson,tipoReporte);
+        SeriesCategorias = jsonSeriesCategorias(datosJson,tipoReporte);
+        SeriesTipeadas = jsonSeriesTipeada(datosJson,tipoReporte,datosGrafica);
     }else{
         for (var i = 0; i < datosJson.reporte_estado.length; i++) {
             categorias.push(datosJson.reporte_estado[i].estado.nombreEstado);
@@ -335,6 +341,9 @@ function graficas(){
             montos.push(datosJson.reporte_estado[i].sumatotal);
             titulo="Número de obras por Estado";
         }
+        Series=jsonSeries(datosJson,tipoReporte);
+        SeriesCategorias = jsonSeriesCategorias(datosJson,tipoReporte);
+        SeriesTipeadas = jsonSeriesTipeada(datosJson,tipoReporte,datosGrafica);
     }
 
     Highcharts.setOptions({
@@ -389,6 +398,26 @@ function graficas(){
                 barraGrafica(categorias,montos,titulo,"Monto Total","Millones"," MDP");
             }
             break;
+        case "columnaTipeada":
+            if(datosGrafica=="Numero") {
+                columnaTipeada(SeriesTipeadas,"Número de Obras");
+            }else{
+                columnaTipeada(SeriesTipeadas,"Total Invertido");
+            }
+            break;
+        case "BarraApiladaBarra":
+            barrasApiladas(Series,"bar");
+            break;
+        case "BarraApiladaColumna":
+            barrasApiladas(Series,"column");
+            break;
+        case "Area":
+            Area(Series);
+            break;
+        case "Piramide":
+            Piramide(SeriesCategorias);
+            break;
+
         case "Mapa":
                 //alert(JSON.parse(arregloDataMapa(datosJson)));
                 graficoMapa();
@@ -402,6 +431,134 @@ function graficas(){
     $j.tablaGrafica(datosJson);
 }
 
+function jsonSeriesTipeada(Datos,tipoReporte,datosGrafica) {
+    var Series = {
+        'serie': []
+    };
+    var arregloSimple=new Array();
+    var arregloCategoria=new Array();
+    var arregloTotal=new Array();
+    var Data ="";
+
+    if (tipoReporte == "Dependencia") {
+        for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
+            if(datosGrafica=="Numero") {
+                arregloSimple.push([Datos.reporte_dependencia[i].dependencia.nombreDependencia, Datos.reporte_dependencia[i].numero_obras]);
+            }else{
+                arregloSimple.push([Datos.reporte_dependencia[i].dependencia.nombreDependencia, Datos.reporte_dependencia[i].sumatotal]);
+            }
+        }
+        Series.serie.push({
+           'name': 'No. de Obras',
+           'data': arregloSimple,
+           'dataLabels': {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}', // one decimal
+                y: -50, // 10 pixels down from the top
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        });
+
+    } else {
+        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
+            if(datosGrafica=="Numero") {
+                arregloSimple.push([Datos.reporte_estado[i].estado.nombreEstado, Datos.reporte_estado[i].numeroObras]);
+            }else{
+                arregloSimple.push([Datos.reporte_estado[i].estado.nombreEstado, Datos.reporte_estado[i].sumatotal]);
+            }
+        }
+        Series.serie.push({
+           'name': 'No. de Obras',
+           'data': arregloSimple,
+           'dataLabels': {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}', // one decimal
+                y: -50, // 10 pixels down from the top
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        });
+    }
+    console.log(Series.serie[0]);
+    return Series;
+}
+
+function jsonSeriesCategorias(Datos,tipoReporte) {
+    var Series = {
+        'serie': [],
+        'categories': []
+    };
+    var arregloSimple=new Array();
+    var arregloCategoria=new Array();
+    var arregloTotal=new Array();
+    var Data ="";
+
+    if (tipoReporte == "Dependencia") {
+        for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
+            arregloTotal.push(Datos.reporte_dependencia[i].sumatotal);
+            arregloSimple.push(-1*Datos.reporte_dependencia[i].numero_obras);
+            arregloCategoria.push(Datos.reporte_dependencia[i].dependencia.nombreDependencia);
+        }
+        Series.serie.push({
+           'name': 'No. de Obras',
+           'data': arregloSimple
+        });
+        Series.serie.push({
+           'name': 'Total Invertido',
+           'data': arregloTotal
+        });
+        Series.categories.push(arregloCategoria);
+
+    } else {
+        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
+            arregloSimple.push(-1*Datos.reporte_estado[i].numeroObras);
+            arregloTotal.push(Datos.reporte_estado[i].sumatotal);
+            arregloCategoria.push(Datos.reporte_estado[i].estado.nombreEstado);
+        }
+        Series.serie.push({
+           'name': 'No. de Obras',
+           'data': arregloSimple
+        });
+        Series.serie.push({
+           'name': 'Total Invertido',
+           'data': arregloTotal
+        });
+        Series.categories.push(arregloCategoria);
+
+    }
+    //console.log(Series.serie);
+    //console.log(Series.categories[0]);
+    return Series;
+}
+
+function jsonSeries(Datos,tipoReporte) {
+    var Series = {
+      'serie': []
+    };
+
+    if (tipoReporte=="Dependencia") {
+        for(var i= 0;i<Datos.reporte_dependencia.length;i++){
+            Series.serie.push({ 'name': Datos.reporte_dependencia[i].dependencia.nombreDependencia, 'data': [Datos.reporte_dependencia[i].numero_obras,Datos.reporte_dependencia[i].sumatotal] });
+        }
+    }else{
+        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
+            Series.serie.push({ 'name': Datos.reporte_estado[i].estado.nombreEstado, 'data': [Datos.reporte_estado[i].numeroObras,Datos.reporte_estado[i].sumatotal]});
+        }
+    }
+    //console.log(Series.serie);
+    return Series.serie;
+}
 
 function arregloDataGrafica(Datos,tipoReporte,datosGrafica) {
     var arregloSimple=new Array();
@@ -637,6 +794,171 @@ function graficoMapa(){
 
 }
 
+
+function columnaTipeada(Series,titulo) {
+    $pp('#containerGrafica').highcharts({
+        chart: {
+            type: 'column',
+            zoomType: 'y',
+            panning: true,
+            panKey: 'shift'
+        },
+        title: {
+            text: titulo
+        },
+        credits: {
+            enabled: false
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: titulo
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: titulo + ' : <b>{point.y:.1f}</b>'
+        },
+        series: Series.serie
+    });
+}
+
+function Area(Series) {
+    $pp('#containerGrafica').highcharts({
+        chart: {
+            type: 'area',
+            zoomType: 'y',
+            panning: true,
+            panKey: 'shift'
+        },
+        title: {
+            text: 'Area chart with negative values'
+        },
+        xAxis: {
+            categories: ['Apples', 'Oranges']
+        },
+        credits: {
+            enabled: false
+        },
+        series: Series
+    });
+}
+
+function Piramide(Series) {
+    // Age categories
+    var categories = Series.categories[0];
+    $(document).ready(function () {
+        $pp('#containerGrafica').highcharts({
+            chart: {
+                type: 'bar',
+                zoomType: 'y',
+                panning: true,
+                panKey: 'shift'
+            },
+            title: {
+                text: 'Pirámide para Número de Obras y Total Invertido'
+            },
+            credits: {
+                enabled: false
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: [{
+                categories: categories,
+                reversed: false,
+                labels: {
+                    step: 1
+                }
+            }, { // mirror axis on right side
+                opposite: true,
+                reversed: false,
+                categories: categories,
+                linkedTo: 0,
+                labels: {
+                    step: 1
+                }
+            }],
+            yAxis: {
+                title: {
+                    text: null
+                },
+                labels: {
+                    formatter: function () {
+                        return Math.abs(this.value) + '%';
+                    }
+                }
+            },
+
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + ',' + this.point.category + '</b><br/>' +
+                        Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                }
+            },
+
+            series: Series.serie
+        });
+    });
+
+}
+
+function barrasApiladas(series,tipo) {
+    $pp('#containerGrafica').highcharts({
+        chart: {
+            type: tipo,
+            zoomType: 'y',
+            panning: true,
+            panKey: 'shift'
+        },
+        title: {
+            text: 'Barras Apiladas'
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: ['No. Obras', 'Total Invertido']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Número de obras y Total Invertido'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+
+        series: series
+    });
+}
 
 function columnaGrafica(categorias,datas,titulo,nombreData){
 
@@ -957,20 +1279,20 @@ function tablaI(Datos){
     sHtmlistado = sHtml;
     for(var i= 0;i<Datos.obras.length;i++){
         sHtml +='<tr>'
-                +'<td>' + Datos.obras[i].identificador +'</td>'
+                +'<td>' + Datos.obras[i].identificador_unico +'</td>'
                 +'<td>' + Datos.obras[i].denominacion +'</td>'
-                +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
+                +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
                 +'</tr>'
 
         sHtmlistado +='<tr>'
-                +'<td>' + Datos.obras[i].identificador +'</td>'
+                +'<td>' + Datos.obras[i].identificador_unico +'</td>'
                 +'<td>' + Datos.obras[i].denominacion +'</td>'
-                +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
+                +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
                 +'</tr>'
         sHtmlExporta += '<tr>'
-                +'<td>' + Datos.obras[i].identificador +'</td>'
+                +'<td>' + Datos.obras[i].identificador_unico +'</td>'
                 +'<td>' + Datos.obras[i].denominacion +'</td>'
-                +'<td>' + Datos.obras[i].estado.nombreEstado +'</td>'
+                +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
                 +'</tr>'
     }
 
