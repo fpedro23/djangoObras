@@ -1279,7 +1279,7 @@ function tablaI(Datos){
     sHtmlistado = sHtml;
     for(var i= 0;i<Datos.obras.length;i++){
         sHtml +='<tr>'
-                +'<td>' + Datos.obras[i].identificador_unico +'</td>'
+                +'<td><a href="/obras/ficha?identificador_unico=' + Datos.obras[i].identificador_unico + '">' + Datos.obras[i].identificador_unico +'</a></td>'
                 +'<td>' + Datos.obras[i].denominacion +'</td>'
                 +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
                 +'</tr>'
@@ -1358,9 +1358,9 @@ function tablaD(Datos){
                 +' </colgroup> '
                 +'<thead>'
                         +'<tr>'
-                            +'<th>Id</th>'
-                            +'<th>Denominaci&oacute;n</th>'
-                            +'<th>Estado</th>'
+                            +'<th>Tipo Inversi&oacute;n</th>'
+                            +'<th>No. de Obras</th>'
+                            +'<th>Monto</th>'
                         +'</tr>'
                 +'</thead>'
                 +'<tbody>';

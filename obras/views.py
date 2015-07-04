@@ -774,8 +774,20 @@ def fichaTecnica(request):
 
 
         prs.save('obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
-        print(json_map)
-        return HttpResponse(json.dumps(json_map), 'application/json')
+
+
+        the_file = 'obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx'
+        filename = os.path.basename(the_file)
+        chunk_size = 8192
+        response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                               content_type=mimetypes.guess_type(the_file)[0])
+        response['Content-Length'] = os.path.getsize(the_file)
+        response['Content-Disposition'] = "attachment; filename=%s" % filename
+        return response
+
+
+        #print(json_map)
+        #return HttpResponse(json.dumps(json_map), 'application/json')
 
 def reportes_predefinidos(request):
     return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
