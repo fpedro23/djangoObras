@@ -82,7 +82,7 @@
                            {% if user.has_usable_password %}
                                <!-- <span class="glyphicon glyphicon-cog pull-right"></span> -->
                               <li><a href="{% url 'admin:password_change' %}">Cambiar Contraseña </a></li>
-                               <li><a href="/obras/ayuda/">Ayuda </a></li>
+                               <li><a href="/obras/ayuda">Ayuda </a></li>
                               <li class="divider"></li>
                                <!-- <span class="glyphicon glyphicon-log-out pull-right"></span> -->
                               <li><a href="{% url 'admin:logout' %}">Cerrar Sesion </a></li>
@@ -102,10 +102,10 @@
                  <li class="dropdown right-text" style="list-style-type: none;">
                  <div class="pto001">
 
-                            <a href="/obras/movimientos" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"></a>
-                            <ul class="dropdown-menu" role="menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto01"></span></a>
+                            <ul class="dropdown-menu">
                               <li><a href="/admin/obras/obra/add/">Alta de Obra</a></li>
-                              <li><a href="#">Modificar Obra</a></li>
+                              <li><a href="/admin/obras/obra/add/?m=1">Modificar Obra</a></li>
                             </ul>
 
                  </div>
@@ -115,8 +115,9 @@
                 <div class="pto002">
                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="pto02"></span></a>
                              <ul class="dropdown-menu">
-                                <li><a href="/admin/obras/obra/">Consultar por Filtro</a></li>
-                                <li><a href="#">Consultar Predefinida</a></li>
+                                <li><a href="/obras/consulta_filtros">Consultar por Filtro</a></li>
+                                <li><a href="/obras/consulta_predefinidos">Consultar Predefinida</a></li>
+                                 <li><a href="/admin/obras/obra/">Lista de Obras</a></li>
                             </ul>
                 </div>
             </li>
@@ -129,7 +130,7 @@
                               <ul class="dropdown-menu">
                                   <li><a href="/admin/obras/tipoclasificacion/add">Crear</a></li>
                                   <li><a href="/admin/obras/tipoclasificacion/">Buscar</a></li>
-                                  <li><a href="/admin/obras/tipoclasificacion/">Modificar</a></li>
+                                  <li><a href="/admin/obras/tipoclasificacion/?e=2">Modificar</a></li>
                                   <li><a href="/admin/obras/tipoclasificacion/?e=1">Eliminar</a></li>
                             </ul>
                           </li>
@@ -137,38 +138,38 @@
                             <ul class="dropdown-menu" >
                                   <li><a href="/admin/obras/dependencia/add">Crear</a></li>
                                   <li><a href="/admin/obras/dependencia/">Buscar</a></li>
-                                  <li><a href="/admin/obras/dependencia/">Modificar</a></li>
-                                  <li><a href="/admin/obras/dependencia/">Eliminar</a></li>
+                                  <li><a href="/admin/obras/dependencia/?e=2">Modificar</a></li>
+                                  <li><a href="/admin/obras/dependencia/?e=1">Eliminar</a></li>
                             </ul>
                           </li>
                           <li class="dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">De Inaugurador</a>
                             <ul class="dropdown-menu" >
                                   <li><a tabindex="-1" href="/admin/obras/inaugurador/add">Crear</a></li>
                                   <li><a href="/admin/obras/inaugurador/">Buscar</a></li>
-                                  <li><a href="/admin/obras/inaugurador/">Modificar</a></li>
-                                  <li><a href="/admin/obras/inaugurador/">Eliminar</a></li>
+                                  <li><a href="/admin/obras/inaugurador/?e=2">Modificar</a></li>
+                                  <li><a href="/admin/obras/inaugurador/?e=1">Eliminar</a></li>
                             </ul>
                           </li>
                           <li class="dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">De Tipo de Impacto</a>
                               <ul class="dropdown-menu" >
                                       <li><a tabindex="-1" href="/admin/obras/impacto/add">Crear</a></li>
                                       <li><a href="/admin/obras/impacto/">Buscar</a></li>
-                                      <li><a href="/admin/obras/impacto/">Modificar</a></li>
-                                      <li><a href="/admin/obras/impacto/">Eliminar</a></li>
+                                      <li><a href="/admin/obras/impacto/?e=2">Modificar</a></li>
+                                      <li><a href="/admin/obras/impacto/?e=1">Eliminar</a></li>
                               </ul>
                           </li>
                           <li class="dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">De Tipo de Inversión</a>
                               <ul class="dropdown-menu" >
                                   <li><a tabindex="-1" href="/admin/obras/tipoinversion/add">Crear</a></li>
                                   <li><a href="/admin/obras/tipoinversion/">Buscar</a></li>
-                                  <li><a href="/admin/obras/tipoinversion/">Modificar</a></li>
-                                  <li><a href="/admin/obras/tipoinversion/">Eliminar</a></li>
+                                  <li><a href="/admin/obras/tipoinversion/?e=2">Modificar</a></li>
+                                  <li><a href="/admin/obras/tipoinversion/?e=1">Eliminar</a></li>
                               </ul>
                           </li>
                    </ul>
             </div>
      {% endif %}
-      {%  if not user.usuario.rol == 'US' %}
+      {%  if user.usuario.rol == 'SA' %}
         <div class="USUARIOS" onclick="location.href='/obras/usuarios'"></div>
           <li class="dropdown right-text" style="list-style-type: none;">
             <div class="pto004">
@@ -206,10 +207,7 @@
 
         {% block messages %}
             {% if messages %}
-
-
             <script>
-
                 var $pp=jQuery.noConflict();
 
 

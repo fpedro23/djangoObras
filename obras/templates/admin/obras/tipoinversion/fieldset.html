@@ -23,7 +23,7 @@
                             {{ field.field }}
                         {% endif %}
                         </div>
-                        <div class="row rowmod field-{{ field.field.name }} error__msg" align="center">
+                        <div class="row rowmod field-{{ field.field.name }} error__msg">
                         <div class="col-md-10 colmod"><span class="error__msg" style="align:left;">{{ field.errors }}</span></div></div>
                     {% if field.field.help_text %}
                         <p class="help">{{ field.field.help_text|safe }}</p>

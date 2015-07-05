@@ -9,7 +9,7 @@
             {% for field in line %}
 
                 {% if field.field.name == "nombreImpacto" %}
-                    <div class="row field-nombreImpacto rowmod" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                    <div class="row field-nombreImpacto rowmod" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_nombreImpacto">
                         <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                        Tipo de Impacto:</label></div>

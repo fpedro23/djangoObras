@@ -718,6 +718,7 @@ ul.errorlist {
     padding: 0 !important;
     color: #fff;
     background: #c11;
+
 }
 
 ul.errorlist li {
@@ -725,6 +726,7 @@ ul.errorlist li {
     display: block;
     padding: 5px 5px 4px 7px;
     margin: 3px 0 0 0;
+
 }
 
 ul.errorlist li:first-child {

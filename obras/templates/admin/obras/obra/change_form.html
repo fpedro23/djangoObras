@@ -57,6 +57,7 @@ x++;
             $("#wmod").show();
             $("#buscar").show();
             $("#buscarICO").show();
+            $(".imprimirBTN").show();
 
         }
         else {
@@ -64,6 +65,7 @@ x++;
             $("#wmod").hide();
              $("#buscar").hide();
             $("#buscarICO").hide();
+            $(".imprimirBTN").hide();
 
         }
 
@@ -176,6 +178,9 @@ x++;
   <div id="buscarICO" hidden="true">
   </div>
 
+   <div class="historialBTN" onclick="location.href='/admin/obras/obra/'"></div>
+   <div class="imprimirBTN" hidden="true"></div>
+
         {% block object-tools %}
             {% if change %}{% if not is_popup %}
                 <ul class="object-tools">
@@ -226,12 +231,10 @@ x++;
                     var $dp = jQuery.noConflict();
                     $dp('#id_fechaInicio').datepicker({
                         autoclose:true,
-                        format:'yyyy-mm-dd',
                         orientation:'bottom'
                     });
                        $dp('#id_fechaTermino').datepicker({
-                        autoclose:true,
-                        format:'yyyy-mm-dd'
+                        autoclose:true
                     });
                     </script>
 

@@ -6,7 +6,7 @@
   {% for field in line %}
       {% if field.field.name == "nombreTipoClasificacion" %}
 
-        <div class="row field-nombreTipoClasificacion rowmod" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
+        <div class="row field-nombreTipoClasificacion rowmod" style="border-bottom: 15px; padding-bottom: 10px;">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_nombreTipoClasificacion">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Nombre de Clasificación:</label></div>
@@ -18,7 +18,7 @@
 
       {% if field.field.name == "subclasificacionDe" %}
 
-        <div class="row field-nombreTipoClasificacion rowmod" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
+        <div class="row field-nombreTipoClasificacion rowmod" style="border-bottom: 15px; padding-bottom: 10px;">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_subclasificacionDe">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Clasificación de:</label></div>
@@ -28,7 +28,7 @@
         {% endif %}
 
        {% if field.field.name == "nombreTipoClasificacionCorta" %}
-        <div class="row field-nombreTipoClasificacionCorta rowmod" align="left" >
+        <div class="row field-nombreTipoClasificacionCorta rowmod">
               <div class="col-md-6 colmod" align="left">
                         <label class="required" id="label-fld" for="id_nombreTipoClasificacionCorta">
                              <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>

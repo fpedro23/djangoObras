@@ -9,7 +9,7 @@
   {% for field in line %}
       {% if field.field.name == "nombreCargoInaugura" %}
 
-        <div class="row field-nombreCargoInaugura rowmod" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+        <div class="row field-nombreCargoInaugura rowmod" style="border-bottom: 15px; padding-bottom: 10px;">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_nombreCargoInaugura">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Nombre de Inaugurador:</label></div>

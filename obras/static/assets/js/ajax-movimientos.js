@@ -90,6 +90,7 @@ function setImage(){
 
             if(idDep.toString()!=""){ajax_data.id=idDep.toString();}
 
+
             $j.ajax({
                 url: '/obras/api/dependencia_imagen',
                 type: 'get',
@@ -100,7 +101,7 @@ function setImage(){
 
                 },
                 error: function(data) {
-                    alert('error!!! ' + data.status);
+                    alert('Error ' + data.status);
                 }
             });
         }

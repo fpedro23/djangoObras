@@ -1117,14 +1117,14 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
 
   Tooltip.DEFAULTS = {
     animation: true
-  , placement: 'top'
+  , placement: 'right'
   , selector: false
-  , template: '<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+  , template: '<div class="tooltip"><div class="tooltip-arrrow"></div><div class="tooltip-inner"></div></div>'
   , trigger: 'hover focus'
   , title: ''
   , delay: 0
-  , html: false
-  , container: false
+  , html: true
+  , container: 'body'
   }
 
   Tooltip.prototype.init = function (type, element, options) {

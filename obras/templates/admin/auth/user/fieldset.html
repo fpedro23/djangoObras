@@ -1,10 +1,11 @@
+{% load app_filters admin_static%}
 
 {% if fieldset.name == "Personal info" %}
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
      <div class="datosGENERALES">
      <div id="tituloCUADROS">
     	DATOS GENERALES
-         <p>&nbsp;</p>
+         <br><br>
     </div>
     {% for line in fieldset %}
         {% for field in line %}
@@ -15,13 +16,15 @@
                     </div>
                     <div class="col-md-8" >
                         <input id="id_first_name" maxlength="30" name="first_name" type="text" value="{{ field.field.value|default_if_none:"" }}" />
+                      {% if field.errors %}
+                             <img id="imgerr5" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                           {% endif %}
                        {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
                 </div>
-                 <div class="row field-first_name errornote" align="center">
-                     <div class="col-md-7"  >{{ field.errors }}</div></div>
+
             {% endif %}
             {% if field.field.name == "last_name" %}
                 <div class="row  field-username" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
@@ -30,13 +33,15 @@
                     </div>
                     <div class="col-md-8" >
                         {{ field.field }}
+                    {% if field.errors %}
+                             <img id="imgerr6" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                           {% endif %}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
                 </div>
-                <div class="row field-last_name errornote" align="center">
-                <div class="col-md-7"  >{{ field.errors }}</div></div>
+
             {% endif %}
 
              {% if field.field.name == "email" %}
@@ -46,12 +51,15 @@
                     </div>
                     <div class="col-md-8" >
                         {{ field.field }}
+                        {% if field.errors %}
+                             <img id="imgerr1" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                           {% endif %}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
                 </div>
-                 <div class="row field-email errornote" align="center">{{ field.errors }}</div>
+
             {% endif %}
         {% endfor %}
     {% endfor %}
@@ -63,55 +71,64 @@
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
      <div class="datosINICIO">
      <div id="tituloCUADROS">DATOS DE ACCESO
-      <p>&nbsp;</p></div>
+      <br><br></div>
     {% for line in fieldset %}
         {% for field in line %}
              {% if field.field.name == "username" %}
-                <div class="row  field-username" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
+                <div class="row  field-username" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-4"  >
                         <label class="required" for="id_username">* Usuario:</label>
                     </div>
                     <div class="col-md-8" >
                         <input id="id_username" maxlength="30" name="username" type="text" value="{{ field.field.value|default_if_none:"" }}" />
+                           {% if field.errors %}
+                             <img id="imgerr2" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px" style="padding: 0px;">
+                           {% endif %}
                             {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
                 </div>
-                  <div class="row field-username" align="left">
-                 <div class="col-md-12">{{ field.errors }}</div></div>
+
             {% endif %}
 
             {% if field.field.name == "password1" %}
-                <div class="row field-password1" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                <div class="row field-password1" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-4">
                         <label class="required" for="id_password1">*Contraseña:</label>
                     </div>
                     <div class="col-md-8" >
+
                         <input id="id_password1" name="password1" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
+                        {% if field.errors %}
+                             <img id="imgerr3" data-toggle="popover" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                           {% endif %}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+
                     {% endif %}
+
                     </div>
                  </div>
-                 <div class="row field-password1" align="center">
-                     <div class="col-md-12">{{ field.errors }}</div></div>
+
             {% endif %}
 
             {% if field.field.name == "password2" %}
-                <div class="row field-password2" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+                <div class="row field-password2" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-4">
                         <label class="required" for="id_password2">*Contraseña:</label>
                     </div>
                     <div class="col-md-8" >
                         <input id="id_password1" name="password2" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
+                        {% if field.errors %}
+                             <img id="imgerr4" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                           {% endif %}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
                 </div>
-                <div class="row field-password2" align="center">
-                    <div class="col-md-12"  >{{ field.errors }}</div></div>
+
              {% endif %}
         {% endfor %}
     {% endfor %}
@@ -122,7 +139,7 @@
 
 {% if fieldset.name  == "Permissions" %}
       <div class="datosESPECIFICO">
-    <div id="tituloCUADROS">DATOS DE PERFIL DE USUARIO<p>&nbsp;</p></div>
+    <div id="tituloCUADROS">DATOS DE PERFIL DE USUARIO<br><br></div>
     </div>
     <div class="campos04">
 <fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
@@ -137,8 +154,8 @@
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
-                    <div class="col-md-1" >
-                            {{ field.field }}
+                    <div class="col-md-3" >
+                          &nbsp;  {{ field.field }}
                     </div>
                  </div>
                  <div class="row field-is_active errornote" align="center">{{ field.errors }}</div>
@@ -165,13 +182,16 @@
                         <label class="required" for="id_rol">* Rol:</label>
                     </div>
                     <div class="col-md-8" >
-                            {{ field.field }}
+                            {{ field.field|add_attributes:"class:usurol" }}
+                    {% if field.errors %}
+                             <img id="imgerr7" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                           {% endif %}
                         {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
                  </div>
-                 <div class="row field-rol errornote" align="center">{{ field.errors }}</div>
+
                {% endif %}
 
                {% if field.field.name == "dependencia" %}
@@ -180,13 +200,34 @@
                         <label style="padding-right: 0px;" for="id_usuario-0-dependencia">* Dependencia:</label>
                     </div>
                     <div class="col-md-8" >
-                        {{ field.field }}
+                        {{ field.field|add_attributes:"class:usudependencia" }}
+                    {% if field.errors %}
+                             <img id="imgerr8" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                           {% endif %}
                        {% if field.field.help_text %}
                         <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
                     {% endif %}
                     </div>
                   </div>
-                   <div class="row field-dependencia errornote" align="center">{{ field.errors }}</div>
+
+                {% endif %}
+
+                {% if field.field.name == "subdependencia" %}
+                  <div class="row field-subdependencia" style="padding-top: 8px;">
+                    <div class="col-md-4" style="padding-right: 5px;">
+                        <label style="padding-right: 0px;" for="id_usuario-0-subdependencia"> SubDependencia:</label>
+                    </div>
+                    <div class="col-md-8" >
+                        {{ field.field|add_attributes:"class:usudependencia" }}
+                    {% if field.errors %}
+                             <img id="imgerr9" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                           {% endif %}
+                       {% if field.field.help_text %}
+                        <p class="help" hidden="true">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                    </div>
+                  </div>
+
                 {% endif %}
         {% endfor %}
     {% endfor %}

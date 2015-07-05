@@ -20,7 +20,7 @@
 
       {% if field.field.name == "dependienteDe" %}
 
-        <div class="row field-dependienteDe rowmod" align="center" id="depde" hidden="true">
+        <div class="row field-dependienteDe rowmod" id="depde" hidden="true">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_dependienteDe">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Dependiente de:</label></div>
@@ -32,19 +32,18 @@
 
         {% if field.field.name == "imagenDependencia" %}
 
-        <div class="row field-imagenDependencia rowmod" align="center">
+        <div class="row field-imagenDependencia rowmod">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_imagenDependencia">
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Imágen de Dependencia:</label></div>
 
-            <div class="col-md-6 colmod"><input id="id_imagenDependencia" name="imagenDependencia" type="file"
-                                value="{{ field.field.contents|default_if_none:"" }}"/></div>
+            <div class="col-md-6 colmod">{{ field.field }}</div>
             </div>
         {% endif %}
 
            {% if field.field.name == "obraoprograma" %}
 
-        <div class="row field-obraoprograma rowmod" align="center" style="border-bottom: 15px; padding-bottom: 10px;">
+        <div class="row field-obraoprograma rowmod" style="border-bottom: 15px; padding-bottom: 10px;">
            <!-- <div class="col-md-7" align="left"><label id="label-fld" for="id_obraoprograma">
                 <span class="">*</span>
                 Obra o Programa (O/P):</label></div>

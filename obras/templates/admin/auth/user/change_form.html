@@ -3,12 +3,80 @@
 
 {% block extrahead %}{{ block.super }}
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
-     <link href="{% static "css/formas.css" %}" rel="stylesheet">
 {{ media }}
 {% endblock %}
 
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
- <link href="{% static "css/formas.css" %}" rel="stylesheet">{% endblock %}
+ <link href="{% static "css/formas.css" %}" rel="stylesheet">
+
+ <link rel="stylesheet" type="text/css" href="{% static "assets/jquery-mulsel/css/jquery.multiselect.css"%}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/jquery-mulsel/css/style.css"%}" />
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css" />
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.js"></script>
+    <script type="text/javascript" src="{% static "assets/jquery-mulsel/js/jquery.multiselect.js"%}"></script>
+
+<script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
+
+
+    <script type="text/javascript">
+        var $l = jQuery.noConflict();
+    $l(function(){
+        // off
+        $l("#id_usuario-0-dependencia").multiselect({
+            header: true,
+            checkAllText: 'Marcar todos',
+            uncheckAllText: 'Desmarcar todos',
+            noneSelectedText: '',
+            selectedText: '# Dependencias'
+        });
+        // off
+        $l("#id_usuario-0-subdependencia").multiselect({
+            header: true,
+            checkAllText: 'Marcar todas',
+            uncheckAllText: 'Desmarcar todas',
+            noneSelectedText: '',
+            selectedText: '# SubDependencias'
+        });
+
+        $l('#imgerr1').tooltip({html:true});
+        $l('#imgerr2').tooltip({html:true});
+        $l('#imgerr3').tooltip({html:true});
+        $l('#imgerr4').tooltip({html:true});
+        $l('#imgerr5').tooltip({html:true});
+        $l('#imgerr6').tooltip({html:true});
+        $l('#imgerr7').tooltip({html:true});
+        $l('#imgerr8').tooltip({html:true});
+        $l('#imgerr9').tooltip({html:true});
+
+
+    });
+
+    $l(document).ready(function() {
+        $l('select#id_usuario-0-rol').on('change',function () {
+            var selrol = $l(this).val();
+
+            if (selrol == "SA") {
+                alert(selrol);
+               $l("#id_usuario-0-dependencia").multiselect('disable');
+            }
+            else
+            {
+                alert(selrol);
+                $l("#id_usuario-0-dependencia").multiselect('enable');
+
+            }
+
+        });
+
+
+    });
+    </script>
+
+
+{% endblock %}
 
 {% block coltype %}colM{% endblock %}
 

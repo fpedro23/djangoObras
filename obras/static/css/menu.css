@@ -167,10 +167,10 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	height:190px;
 	background-image:url(../img/bigBackground.fw.png);
 	background-position: -1215px 0px;
-
 	position:absolute;
 	top: 149px;
 	left: 322px;
+    cursor: pointer;
 }
 
 .altaOBRA:hover{
@@ -182,10 +182,10 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	height:190px;
 	background-image:url(../img/bigBackground.fw.png);
 	background-position: -1395px 0px;
-
 	position:absolute;
 	top: 149px;
 	left:512px;
+    cursor: pointer;
 }
 
 .modificarOBRA:hover{
@@ -197,6 +197,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	 height: 22px;
 	 background-image:url(../img/bigBackground.fw.png);
 	 background-position: -300px 0px;
+    cursor: pointer;
 }
 
 #regresarBTN:hover{
@@ -210,7 +211,8 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	background-position: -1575px 0px;
 	position: absolute;
 	top: 153px;
-	left: 330px;
+	left: 230px;
+    cursor: pointer;
 }
 
 .filtroCONSULTAS:hover{
@@ -224,7 +226,8 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	background-position: -1755px 0px;
 	position: absolute;
 	top: 153px;
-	left: 520px;
+	left: 420px;
+    cursor: pointer;
 }
 
 .predefinidaCONSULTAS:hover{
@@ -239,6 +242,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 153px;
 	left: 610px;
+    cursor: pointer;
 }
 
 .guardadaCONSULTAS:hover{
@@ -254,6 +258,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 229px;
+    cursor: pointer;
 }
 
 .clasificacionCATALOGO:hover{
@@ -268,6 +273,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 419px;
+    cursor: pointer;
 }
 
 .dependenciasCATALOGO:hover{
@@ -282,6 +288,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 610px;
+    cursor: pointer;
 }
 
 .inauguradorCATALOGO:hover{
@@ -296,6 +303,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 229px;
+    cursor: pointer;
 }
 
 .impactoCATALOGO:hover{
@@ -310,6 +318,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 419px;
+    cursor: pointer;
 }
 
 .inversionCATALOGO:hover{
@@ -324,6 +333,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 610px;
+    cursor: pointer;
 }
 
 .subdependenciasCATALOGO:hover{
@@ -340,6 +350,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .usuarioADD:hover{
@@ -354,6 +365,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .usuarioSEARCH:hover{
@@ -368,6 +380,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .usuarioEDIT:hover{
@@ -383,6 +396,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .usuarioDEL:hover{
@@ -398,6 +412,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .clasifADD:hover{
@@ -412,6 +427,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .clasifSEARCH:hover{
@@ -426,6 +442,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .clasifEDIT:hover{
@@ -441,6 +458,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .clasifDEL:hover{
@@ -455,6 +473,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .dependenciaADD:hover{
@@ -469,6 +488,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .dependenciaSEARCH:hover{
@@ -483,6 +503,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .dependenciaEDIT:hover{
@@ -498,6 +519,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .dependenciaDEL:hover{
@@ -513,6 +535,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .impactoADD:hover{
@@ -527,6 +550,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .impactoSEARCH:hover{
@@ -541,6 +565,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .impactoEDIT:hover{
@@ -556,6 +581,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .impactoDEL:hover{
@@ -572,6 +598,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .inauguradorADD:hover{
@@ -586,6 +613,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .inauguradorSEARCH:hover{
@@ -600,6 +628,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .inauguradorEDIT:hover{
@@ -615,6 +644,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .inauguradorDEL:hover{
@@ -630,6 +660,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .inversionADD:hover{
@@ -644,6 +675,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .inversionSEARCH:hover{
@@ -658,6 +690,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .inversionEDIT:hover{
@@ -673,6 +706,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .inversionDEL:hover{
@@ -689,6 +723,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .subdepADD:hover{
@@ -703,6 +738,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 53px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .subdepSEARCH:hover{
@@ -717,6 +753,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 330px;
+    cursor: pointer;
 }
 
 .subdepEDIT:hover{
@@ -732,8 +769,57 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 260px;
 	left: 520px;
+    cursor: pointer;
 }
 
 .subdepDEL:hover{
 	background-position:-1035px -1330px;
 }
+
+
+.listaOBRA{
+	width: 180px;
+	height: 190px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1215px -1140px;
+	position: absolute;
+    top: 153px;
+	left: 610px;
+    cursor: pointer;
+}
+
+.listaOBRA:hover{
+	background-position:-1215px -1330px;
+}
+
+
+.ayudaTXT{
+	width:180px;
+	height:190px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position: -855px 0px;
+    cursor: pointer;
+	position:absolute;
+	top: 149px;
+	left: 322px;
+}
+
+.ayudaTXT:hover{
+	background-position: -855px -190px;
+}
+
+.ayudaVIDEO{
+	width: 180px;
+	height:190px;
+	background-image:url(../img/bigBackground.fw.png);
+	background-position: -1035px 0px;
+    cursor: pointer;
+	position:absolute;
+	top: 149px;
+	left:512px;
+}
+
+.ayudaVIDEO:hover{
+	background-position:-1035px -190px;
+}
+

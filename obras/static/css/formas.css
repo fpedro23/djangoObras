@@ -185,6 +185,8 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	left: 123px;
 	top: 116px;
     overflow: scroll;
+    padding-top: 17px;
+
 }
 
 
@@ -220,7 +222,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	height: 100px;
 	position: absolute;
 	left: 685px;
-	top: 195px;
+	top: 158px;
     padding-left: 4px;
     padding-right: 2px;
 }
@@ -233,7 +235,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	height: 30px;
 	position: absolute;
 	left: 685px;
-	top: 315px;
+	top: 295px;
     padding-left: 4px;
     padding-right: 2px;
 }
@@ -283,6 +285,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 439px;
 	left: 630px;
+    cursor: pointer;
 }
 
 .guardarotroBTN:hover{
@@ -297,6 +300,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 439px;
 	left: 839px;
+    cursor: pointer;
 }
 
 .guardarsalirBTN:hover{
@@ -308,6 +312,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	 height: 22px;
 	 background-image:url(../img/bigBackground.fw.png);
 	 background-position: -300px 0px;
+    cursor: pointer;
 }
 
 #regresarBTN:hover{
@@ -350,6 +355,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	position: absolute;
 	top: 439px;
 	left: 546px;
+    cursor: pointer;
 }
 
 .eliminarBTN:hover{
@@ -380,6 +386,10 @@ tr.alt {
     background: #e4e5e6;
 }
 
+.statusfield{
+    width: 83%;
+}
+
 a#add_id_dependienteDe.add-another {display: none;}
 a#add_id_tipoClasificacion.add-another {display:none;}
 
@@ -387,7 +397,7 @@ a#add_id_tipoClasificacion.add-another {display:none;}
 
 input[type=text], input[type=number], input[type=email], input[type=password] {
     font-family: "soberana_sanslight";
-    font-size: 10px;
+    font-size: 11px;
     line-height: initial;
     height: 17px;
     width: 90%;
@@ -395,24 +405,22 @@ input[type=text], input[type=number], input[type=email], input[type=password] {
 
 input[type=file] {
     font-family: "soberana_sanslight";
-    font-size: 10px;
-    width: 90%;
+     font-size: 11px;
+     width: 90%;
      height: 100%;
-     font-size: 9px;
-    padding: 0px 0px;
+
 }
 
 .rendFile{
       font-family: "soberana_sanslight";
-    font-size: 9px;
+    font-size: 11px;
     width: 90%;
      height: 16px;
-     font-size: 9px;
     padding: 0px 0px;
 }
 select{
     font-family: "soberana_sanslight";
-    font-size: 10px;
+    font-size: 11px;
     line-height: initial;
     height: 17px;
     width: 90%;
@@ -425,7 +433,7 @@ textarea{
 }
 
 td, th {
-    font-size: 9px;
+    font-size: 10px;
     line-height: 13px;
     border-bottom: 0px;
     vertical-align: top;
@@ -454,6 +462,7 @@ td, th {
 	top: 1px;
 	background-image: url(../img/bigBackground.fw.png);
 	background-position: -160px 0px;
+    cursor: pointer;
 }
 
 .historialBTN:hover{
@@ -468,6 +477,7 @@ td, th {
 	top: 1px;
 	background-image: url(../img/bigBackground.fw.png);
 	background-position: -190px 0px;
+    cursor: pointer;
 }
 
 .imprimirBTN:hover{
@@ -786,7 +796,7 @@ label {
 	color: #6A6B6C;
 	position: absolute;
 	left: 0px;
-	top: 143px;
+	top: 133px;
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -802,7 +812,7 @@ label {
 	position: absolute;
     background-color: transparent;
 	left: 343px;
-	top: 145px;
+	top: 133px;
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -817,7 +827,7 @@ label {
 	color: #6A6B6C;
 	position: absolute;
 	left: 685px;
-	top: 144px;
+	top: 133px;
     background-color: transparent;
     padding-left: 4px;
     padding-right: 4px;
@@ -863,4 +873,25 @@ label {
 
 .areaobs{
     height: 80px;
+    resize: none;
+}
+
+.areadesc{
+    resize: none;
+}
+
+.datetimeshortcuts{
+    display:none;
+}
+
+.usudependencia{
+    font-family: "soberana_sanslight";
+    font-size: 9px;
+    width: 90%;
+}
+
+.usurol{
+    font-family: "soberana_sanslight";
+    font-size: 11px;
+    width: 100%;
 }
