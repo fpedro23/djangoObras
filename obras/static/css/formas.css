@@ -424,6 +424,7 @@ select{
     line-height: initial;
     height: 17px;
     width: 90%;
+     background: #fff url("arrowdown.gif") no-repeat 90% center;
 }
 
 textarea{
@@ -437,14 +438,14 @@ td, th {
     line-height: 13px;
     border-bottom: 0px;
     vertical-align: top;
-    padding: 3px;
+    padding: 2px;
     font-family: 'soberana_sanslight';
 }
 
 
 #tituloCUADROS{
 	font-family: 'soberana_titularregular';
-	font-size:19px;
+	font-size:15px;
 	color: #0C0C1E;
 }
 
@@ -502,7 +503,7 @@ td, th {
 	border: 2px solid #327451;
 	border-radius: 2px;
 	width: 334px;
-	height: 160px;
+	height: 170px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
@@ -558,7 +559,7 @@ td, th {
 	border: 2px solid #327451;
 	border-radius: 2px;
 	width: 344px;
-	height: 205px;
+	height: 215px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
@@ -591,7 +592,7 @@ td, th {
 	color: #6A6B6C;
 	position: absolute;
 	left: 1px;
-	top: 115px;
+	top: 110px;
 }
 .inauguracion{
 	border: 2px solid #327451;
