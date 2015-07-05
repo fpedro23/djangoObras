@@ -847,10 +847,10 @@ function Area(Series) {
             panKey: 'shift'
         },
         title: {
-            text: 'Area chart with negative values'
+            text: 'Area'
         },
         xAxis: {
-            categories: ['Apples', 'Oranges']
+            categories: ['No.Obras', 'Total invertido']
         },
         credits: {
             enabled: false
