@@ -72,7 +72,7 @@
 
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="2px" >
                    <tr>
-                      <td width="40%" class="texto">ID Único:</td>
+                      <td width="40%" class="texto">ID Único:<input type="hidden" id="idobraUNICO" value="{% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}"></td>
                       <td width="60%" class="texto">{% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}<label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label></td>
                   </tr>
 

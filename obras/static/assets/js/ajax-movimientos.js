@@ -40,7 +40,7 @@ function main_consulta() {
 
 	$j('#buscarICO').on('click', verDatos);
     $j('#id_dependencia').on('change', setImage);
-
+    $j('#imprimirBTN').on('click', imprimeFicha);
     //valida_token();
     $.get("/obras/register-by-token", function(respu) {
         newToken=respu.access_token;
@@ -49,7 +49,13 @@ function main_consulta() {
 
 }
 
+function imprimeFicha(){
+    if ($j('#idobraUNICO').val() != null && $j('#idobraUNICO').val() !="")
+    {
+        location.href="/obras/ficha?identificador_unico="+ $j.trim($j('#idobraUNICO').val().toString());
+    };
 
+}
 
 
 function verDatos() {
@@ -72,7 +78,8 @@ function verDatos() {
         success: function(data) {
             //$j('#datos').html
            //alert('success!!! ' + data.id);
-            if (data.id!=null){location.href='/admin/obras/obra/'+data.id+'/?m=1';}
+            if (data.id!=null){location.href='/admin/obras/obra/'+data.id+'/?m=1';
+            }
             else { alert('No existen registros con el ID Único ' + idUnico);}
 
         },
