@@ -239,9 +239,13 @@ class BuscadorEndpoint(ProtectedResourceView):
                 map['sumatotal'] = int(reporte['sumatotal'])
             json_map['reporte_dependencia'].append(map)
 
+        #json_map['obras'] = []
+        #for obra in resultados['obras']:
+        #    json_map['obras'].append(obra.to_serializable_dict())
+
         json_map['obras'] = []
-        for obra in resultados['obras']:
-            json_map['obras'].append(obra.to_serializable_dict())
+        for obra in resultados['obras'].values('identificador_unico','estado__nombreEstado','denominacion','latitud','longitud'):
+            json_map['obras'].append(obra);
 
         json_map['reporte_estado'] = []
         for reporte_estado in resultados['reporte_estado']:
