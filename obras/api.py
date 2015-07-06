@@ -200,7 +200,7 @@ class IdUnicoEndpoint(ProtectedResourceView):
             if obra and obra.count() > 0:
                 obra_id = obra.first().id
 
-        return HttpResponse(json.dumps({'id': obra_id}), 'application/json')
+        return HttpResponse(obra.to_serializable_dict(), 'application/json')
 
 
 
