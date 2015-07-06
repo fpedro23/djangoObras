@@ -198,7 +198,7 @@ class IdUnicoEndpoint(ProtectedResourceView):
         if identificador_unico is not None:
             obra = Obra.objects.filter(identificador_unico=identificador_unico)
             if obra and obra.count() > 0:
-                obra_id = obra.first().id
+                obra = obra.first()
 
         return HttpResponse(obra.to_serializable_dict(), 'application/json')
 
