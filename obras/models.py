@@ -322,7 +322,7 @@ class Obra(models.Model):
     def to_serializable_dict(self):
         map = {}
 
-        map['identificador'] = self.identificador_unico
+        map['identificador_unico'] = self.identificador_unico
         if self.tipoObra:
             map['tipoObra'] = self.tipoObra.to_serializable_dict()
         else:
