@@ -192,15 +192,12 @@ class TipoDeObraEndpoint(ProtectedResourceView):
 
 
 class IdUnicoEndpoint(ProtectedResourceView):
+
     def get(self, request):
         identificador_unico = request.GET.get('identificador_unico', None)
-        obra_id = None
-        if identificador_unico is not None:
-            obra = Obra.objects.filter(identificador_unico=identificador_unico)
-            if obra and obra.count() > 0:
-                obra = obra.first()
-
-        return HttpResponse(obra.to_serializable_dict(), 'application/json')
+        return HttpResponse(
+            json.dumps(map(lambda obra: obra.to_serializable_dict(), Obra.objects.filter(identificador_unico=identificador_unico).first())),
+            'application/json')
 
 
 
