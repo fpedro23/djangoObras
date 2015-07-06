@@ -196,7 +196,7 @@ class IdUnicoEndpoint(ProtectedResourceView):
     def get(self, request):
         identificador_unico = request.GET.get('identificador_unico', None)
         return HttpResponse(
-            json.dumps(map(lambda obra: obra.to_serializable_dict(), Obra.objects.filter(identificador_unico=identificador_unico).first())),
+            json.dumps(map(lambda obra: obra.to_serializable_dict(), Obra.objects.filter(identificador_unico=identificador_unico))),
             'application/json')
 
 
