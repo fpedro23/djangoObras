@@ -23,6 +23,8 @@ urlpatterns = patterns('',
                        url(r'^api/subdependencias_arbol', api.DependenciasTreeEndpoint.as_view()),
                        url(r'^api/subdependencias_flat', api.SubependenciasFlatEndpoint.as_view()),
                        url(r'^api/dependencia_imagen', api.DependenciasIdEndpoint.as_view()),
+                       url(r'^api/idUnico', api.IdUnicoEndpoint.as_view()),
+
 
                        # Mappings Busqueda
                        url(r'^api/busqueda', api.BuscadorEndpoint.as_view()),
