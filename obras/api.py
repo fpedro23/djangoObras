@@ -89,9 +89,9 @@ class DependenciasEndpoint(ProtectedResourceView):
 
         elif token_model.user.usuario.rol == 'AD':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
-                Q(id=token_model.user.usuario.dependencia.id) |
-                Q(dependienteDe__id=token_model.user.usuario.dependencia.id))
-                        )
+                Q(id__in=token_model.user.usuario.dependencia.id) |
+                Q(dependienteDe__id__in=token_model.user.usuario.dependencia.id))
+        )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
