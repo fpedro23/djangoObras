@@ -48,7 +48,7 @@ class Dependencia(models.Model):
         if self.dependienteDe is None:
             ans['dependienteDe'] = None
         else:
-            ans['dependienteDe'] = str(self.depenienteDe.id)
+            ans['dependienteDe'] = str(self.dependienteDe.id)
 
         # We KNOW that this entry must be a FileField value
         # (therefore, calling its name attribute is safe),
