@@ -223,7 +223,11 @@ class Usuario(models.Model):
     )
     rol = models.CharField(max_length=2, choices=ROLES_CHOICES, default=USER)
     user = models.OneToOneField(User)
-    dependencia = models.ManyToManyField(Dependencia, blank=True, null=True, limit_choices_to={'dependienteDe': None}, )
+    dependencia = models.ManyToManyField(Dependencia, blank=True, null=True, limit_choices_to={
+        'dependienteDe': None,
+        'obraoprograma': 'O',
+    },
+    )
     subdependencia = models.ManyToManyField(Dependencia, blank=True, null=True,
                                             limit_choices_to={'dependienteDe__isnull': False},
                                             related_name='Subdependencias')
