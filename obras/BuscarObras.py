@@ -89,6 +89,7 @@ class BuscarObras:
         if query is not None:
             #print query
             obras = Obra.objects.filter(query)
+            obras = obras.order_by('identificador_unico')
 
         #Reporte general
         obras_totales = obras.count()
@@ -99,6 +100,7 @@ class BuscarObras:
 
         #Reporte Estado
         reporte_estado = obras.values('estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_estado = reporte_estado.order_by('estado__nombreEstado')
 
         reporte_general = {
             'obras_totales':obras_totales,

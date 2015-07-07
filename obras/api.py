@@ -15,6 +15,7 @@ from pptx.util import Pt
 from django.core.servers.basehttp import FileWrapper
 import mimetypes
 from django.http import StreamingHttpResponse
+from django.db.models import Count, Sum
 
 def get_usuario_for_token(token):
     if token:
@@ -334,7 +335,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2015 = obras.filter(fechaInicio__year=2015)
         obras2015_proceso = obras2015.filter(tipoObra_id=2)
         the_list = []
-        for obra in obras2015_proceso.values('latitud', 'longitud', 'estado__nombreEstado'):
+        for obra in obras2015_proceso.values('latitud', 'longitud', 'estado__nombreEstado').annotate(numero_obras=Count('estado')):
             self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_proceso']['obras'] = the_list
@@ -342,7 +343,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 
         obras2015_proyectadas = obras2015.filter(tipoObra_id=1)
         the_list = []
-        for obra in obras2015_proyectadas.values('latitud', 'longitud', 'estado__nombreEstado'):
+        for obra in obras2015_proyectadas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(numero_obras=Count('estado')):
             self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
@@ -350,7 +351,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 
         obras2015_concluidas = obras2015.filter(tipoObra_id=3)
         the_list = []
-        for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado'):
+        for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(numero_obras=Count('estado')):
             self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_concluidas']['obras'] = the_list

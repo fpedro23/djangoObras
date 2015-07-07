@@ -196,7 +196,7 @@ function puntosMapa(Datos) {
     var arregloObjeto = new Object();
     for(var i= 0;i<Datos.reporte2015.obras_concluidas.obras.length;i++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].estado + ", obras Concluidas");
+        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].estado + ", obras Concluidas : " + Datos.reporte2015.obras_concluidas.obras[i].numero_obras);
         arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].latitud);
         arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].longitud);
         arregloSimple.push(i);
@@ -205,7 +205,7 @@ function puntosMapa(Datos) {
 
     for(var j= 0;j<Datos.reporte2015.obras_proceso.obras.length;j++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].estado + ", obras en Proceso");
+        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].estado + ", obras en Proceso  : " + Datos.reporte2015.obras_proceso.obras[i].numero_obras);
         arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].latitud);
         arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].longitud);
         arregloSimple.push(j+i);
@@ -213,7 +213,7 @@ function puntosMapa(Datos) {
     }
     for(var k= 0;k<Datos.reporte2015.obras_proyectadas.obras.length;k++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].estado + ", obras Proyectadas");
+        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].estado + ", obras Proyectadas : " + Datos.reporte2015.obras_proyectadas.obras[i].numero_obras);
         arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].latitud);
         arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].longitud);
         arregloSimple.push(k+j);

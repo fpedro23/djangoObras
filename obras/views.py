@@ -638,7 +638,7 @@ def fichaTecnica(request):
 
         #generales
         prs.slides[0].shapes[9].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[9].text = json_map['obras'][0]['identificador']
+        prs.slides[0].shapes[9].text = json_map['obras'][0]['identificador_unico']
         prs.slides[0].shapes[10].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[10].text = json_map['obras'][0]['denominacion']
         prs.slides[0].shapes[11].text_frame.paragraphs[0].font.size = Pt(8)
