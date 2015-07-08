@@ -63,10 +63,24 @@ function main_consulta() {
     $j('#enviaPDF2').on('click', demoFromHTML2)
 
 
+    volverHistorico();
 
 
 
 
+
+}
+
+function volverHistorico() {
+    //var variable = (opener) ? opener.location.href : 'No disponible' ;
+    //document.write(variable);
+    var sHistorico = $j('#historico').val();
+    if (sHistorico.toString() =="SI") {
+        $.get("/obras/register-by-token", function (respu) {
+           newToken = respu.access_token;
+           verDatos()
+        });
+    }
 }
 
 function demoFromHTML() {
@@ -258,7 +272,7 @@ function verDatos() {
     if(fechaFin2!=""){ajax_data.fechaFinSegunda=$j.date(fechaFin2);}
     if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
     if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
-    if(denominacion!=""){ajax_data.denominacion=denominacion;}
+    if(denominacion!=""){ajax_data.denominacion=denominacion.toUpperCase();}
     if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
 
 
@@ -269,6 +283,7 @@ function verDatos() {
         data: ajax_data,
         success: function(data) {
             //$j('#datos').html
+            $j('#historico').val("SI");
             tablaI(data);
             tablaD(data);
             datosJson=data;
@@ -1279,7 +1294,7 @@ function tablaI(Datos){
     sHtmlistado = sHtml;
     for(var i= 0;i<Datos.obras.length;i++){
         sHtml +='<tr>'
-                +'<td><a href="/admin/obras/obra/' + Datos.obras[i].id + '/">' + Datos.obras[i].identificador_unico +'</a></td>'
+                +'<td><a href="/admin/obras/obra/' + Datos.obras[i].id + '/?m=1">' + Datos.obras[i].identificador_unico +'</a></td>'
                 +'<td>' + Datos.obras[i].denominacion +'</td>'
                 +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
                 +'</tr>'
