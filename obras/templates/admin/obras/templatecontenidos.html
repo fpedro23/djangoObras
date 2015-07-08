@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    <div id="regresarBTN" onclick="location.href='{% url 'admin:index' %}'">
+    <div id="regresarBTN" onclick="window.history.go(-1);">
     </div>   <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
 
     <div id="welcome">NOMBRE DE LA SECCION</div>

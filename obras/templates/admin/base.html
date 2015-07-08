@@ -200,7 +200,7 @@
 
         {% block breadcrumbs %}
         <div class="breadcrumbs">
-        <a href="{% url 'admin:index' %}"><< Regresar</a>
+        <a href="window.history.go(-1);"><< Regresar</a>
         {% if title %} &rsaquo; {{ title }}{% endif %}
         </div>
         {% endblock %}
