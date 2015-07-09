@@ -261,14 +261,14 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['reporte_dependencia'] = []
         for reporte in resultados['reporte_dependencia']:
             map = {}
-        map['dependencia'] = Dependencia.objects.get(
-            nombreDependencia=reporte['dependencia__nombreDependencia']).to_serializable_dict()
-        map['numero_obras'] = reporte['numero_obras']
-        if reporte['sumatotal'] is None:
-            map['sumatotal'] = 0
-        else:
-            map['sumatotal'] = int(reporte['sumatotal'])
-        json_map['reporte_dependencia'].append(map)
+            map['dependencia'] = Dependencia.objects.get(
+                nombreDependencia=reporte['dependencia__nombreDependencia']).to_serializable_dict()
+            map['numero_obras'] = reporte['numero_obras']
+            if reporte['sumatotal'] is None:
+                map['sumatotal'] = 0
+            else:
+                map['sumatotal'] = int(reporte['sumatotal'])
+            json_map['reporte_dependencia'].append(map)
 
         # json_map['obras'] = []
         #for obra in resultados['obras']:
@@ -280,18 +280,19 @@ class BuscadorEndpoint(ProtectedResourceView):
             json_map['obras'].append(obra);
 
             json_map['reporte_estado'] = []
+
         for reporte_estado in resultados['reporte_estado']:
             map = {}
-        if reporte_estado['sumatotal'] is None:
-            map['sumatotal'] = 0.0
+            if reporte_estado['sumatotal'] is None:
+                map['sumatotal'] = 0.0
 
-        else:
-            map['sumatotal'] = float(reporte_estado['sumatotal'])
-        map['estado'] = Estado.objects.get(
-            nombreEstado=reporte_estado['estado__nombreEstado']).to_serializable_dict()
-        map['numeroObras'] = reporte_estado['numero_obras']
+            else:
+                map['sumatotal'] = float(reporte_estado['sumatotal'])
+            map['estado'] = Estado.objects.get(
+                nombreEstado=reporte_estado['estado__nombreEstado']).to_serializable_dict()
+            map['numeroObras'] = reporte_estado['numero_obras']
 
-        json_map['reporte_estado'].append(map)
+            json_map['reporte_estado'].append(map)
 
         json_map['reporte_general'] = []
         map = {}
