@@ -24,6 +24,8 @@ urlpatterns = patterns('',
                        url(r'^api/subdependencias_flat', api.SubependenciasFlatEndpoint.as_view()),
                        url(r'^api/dependencia_imagen', api.DependenciasIdEndpoint.as_view()),
                        url(r'^api/idUnico', api.IdUnicoEndpoint.as_view()),
+                       url(r'^api/idUnicoIpad', api.IdUnicoEndpointIpad.as_view()),
+
 
 
                        # Mappings Busqueda

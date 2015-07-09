@@ -205,6 +205,15 @@ class IdUnicoEndpoint(ProtectedResourceView):
         return HttpResponse(json.dumps({'id': obra_id}), 'application/json')
 
 
+class IdUnicoEndpointIpad(ProtectedResourceView):
+
+    def get(self, request):
+        identificador_unico = request.GET.get('identificador_unico', None)
+        return HttpResponse(
+            json.dumps(map(lambda obra: obra.to_serializable_dict(), Obra.objects.filter(identificador_unico=identificador_unico))),
+            'application/json')
+
+
 
 class BuscadorEndpoint(ProtectedResourceView):
     def get(self, request):
