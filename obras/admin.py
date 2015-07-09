@@ -39,7 +39,7 @@ class UsuarioInline(admin.StackedInline):
 class UserAdmin(UserAdmin):
     inlines = (UsuarioInline, )
     list_per_page = 8
-    list_display = ('username', 'first_name', 'last_name', 'email', 'get_dependencia',)
+    list_display = ('username', 'first_name', 'last_name', 'email', 'get_dependencia', 'get_subdependencia')
     fieldsets = (
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (('AuthInfo'), {'fields': ('username', 'password')}),
@@ -79,10 +79,14 @@ class UserAdmin(UserAdmin):
         super(UserAdmin, self).delete_model(request, obj)
 
 
+    def get_subdependencia(self, obj):
+        return ",\n".join([dependencia.nombreDependencia for dependencia in obj.usuario.subdependencia.all()])
+
     def get_dependencia(self, obj):
         return ",\n".join([dependencia.nombreDependencia for dependencia in obj.usuario.dependencia.all()])
 
     get_dependencia.short_description = 'Dependencia'
+    get_subdependencia.short_description = 'SubDependencia'
 
     def get_queryset(self, request):
         arreglo_dependencias = []
