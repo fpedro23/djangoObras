@@ -487,16 +487,21 @@ def hipervinculo_concluidas_proceso_proyectadas(request):
 @login_required()
 def consulta_web(request):
 
+    print request.user.usuario.rol
+
     if request.user.usuario.rol == 'SA':
         dependencias = Dependencia.objects.all()
+
     elif request.user.usuario.rol == 'AD':
         dependencias = Dependencia.objects.filter(
-                Q(id=request.user.usuario.dependencia.id) |
-                Q(dependienteDe__id=request.user.usuario.dependencia.id))
+                Q(id__in=request.user.usuario.dependencia.all()) |
+                Q(dependienteDe__id__in=request.user.usuario.dependencia.all()))
+
     elif request.user.usuario.rol == 'US':
         dependencias = Dependencia.objects.filter(
-                    Q(id=request.user.usuario.dependencia.id)
+                    Q(id__in=request.user.usuario.subdependencia.all())
                     )
+
     #templates = loader.get_template('consultas/busqueda_general.html')
     template = loader.get_template('admin/obras/consulta_filtros/consulta-filtros.html')
     context = RequestContext(request, {
