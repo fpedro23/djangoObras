@@ -241,16 +241,16 @@ class BuscadorEndpoint(ProtectedResourceView):
 
         elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
 
-            for dependencia in user.usuario.dependencia.all:
+            for dependencia in user.usuario.dependencia.all():
                 arreglo_dependencias.append(dependencia.id)
 
-            for subdependencia in user.usuario.subdependencia.all:
+            for subdependencia in user.usuario.subdependencia.all():
                 arreglo_dependencias.append(subdependencia.id)
 
             buscador.dependencias = arreglo_dependencias
 
         elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
-            for subdependencia in user.usuario.subdependencia.all:
+            for subdependencia in user.usuario.subdependencia.all():
                 arreglo_dependencias.append(subdependencia.id)
 
             buscador.dependencias = arreglo_dependencias
