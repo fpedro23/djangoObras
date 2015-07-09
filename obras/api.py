@@ -1,21 +1,17 @@
 import json
+from datetime import *
+
 from django.db.models import Q
 from django.http import HttpResponse
 from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
+from django.db.models import Count
+
 from obras.BuscarObras import BuscarObras
-from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador,\
+from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador, \
     InstanciaEjecutora, get_subdependencias_as_list_flat
 from obras.views import get_array_or_none
-from datetime import *
 
-from pptx import Presentation
-from pptx.util import Pt
-
-from django.core.servers.basehttp import FileWrapper
-import mimetypes
-from django.http import StreamingHttpResponse
-from django.db.models import Count, Sum
 
 def get_usuario_for_token(token):
     if token:
@@ -92,7 +88,7 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
                 Q(dependienteDe__in=token_model.user.usuario.dependencia.all()))
-        )
+                        )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
@@ -127,6 +123,7 @@ class DependenciasTreeEndpoint(ProtectedResourceView):
             ans.append(dep.get_tree())
 
         return HttpResponse(json.dumps(ans), 'application/json')
+
 
 class DependenciasIdEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -193,7 +190,6 @@ class TipoDeObraEndpoint(ProtectedResourceView):
 
 
 class IdUnicoEndpoint(ProtectedResourceView):
-
     def get(self, request):
         identificador_unico = request.GET.get('identificador_unico', None)
         obra_id = None
@@ -206,17 +202,19 @@ class IdUnicoEndpoint(ProtectedResourceView):
 
 
 class IdUnicoEndpointIpad(ProtectedResourceView):
-
     def get(self, request):
         identificador_unico = request.GET.get('identificador_unico', None)
         return HttpResponse(
-            json.dumps(map(lambda obra: obra.to_serializable_dict(), Obra.objects.filter(identificador_unico=identificador_unico))),
+            json.dumps(map(lambda obra: obra.to_serializable_dict(),
+                           Obra.objects.filter(identificador_unico=identificador_unico))),
             'application/json')
-
 
 
 class BuscadorEndpoint(ProtectedResourceView):
     def get(self, request):
+
+        user = AccessToken.objects.get(token=request.GET.get('access_token')).user
+
         buscador = BuscarObras(
             idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
             iddependencias=get_array_or_none(request.GET.get('dependencia')),
@@ -235,42 +233,65 @@ class BuscadorEndpoint(ProtectedResourceView):
             denominacion=request.GET.get('denominacion', None),
             instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
         )
+
+        arreglo_dependencias = []
+
+        if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia') is None):
+            buscador.dependencias = None
+
+        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia') is None):
+
+            for dependencia in user.usuario.dependencia:
+                arreglo_dependencias.append(dependencia.id)
+
+            for subdependencia in user.usuario.subdependencia:
+                arreglo_dependencias.append(subdependencia.id)
+
+            buscador.dependencias = arreglo_dependencias
+
+        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia') is None):
+            for subdependencia in user.usuario.subdependencia:
+                arreglo_dependencias.append(subdependencia.id)
+
+            buscador.dependencias = arreglo_dependencias
+
         resultados = buscador.buscar()
 
         json_map = {}
         json_map['reporte_dependencia'] = []
         for reporte in resultados['reporte_dependencia']:
             map = {}
-            map['dependencia'] = Dependencia.objects.get(
-                nombreDependencia=reporte['dependencia__nombreDependencia']).to_serializable_dict()
-            map['numero_obras'] = reporte['numero_obras']
-            if reporte['sumatotal'] is None:
-                map['sumatotal'] = 0
-            else:
-                map['sumatotal'] = int(reporte['sumatotal'])
-            json_map['reporte_dependencia'].append(map)
+        map['dependencia'] = Dependencia.objects.get(
+            nombreDependencia=reporte['dependencia__nombreDependencia']).to_serializable_dict()
+        map['numero_obras'] = reporte['numero_obras']
+        if reporte['sumatotal'] is None:
+            map['sumatotal'] = 0
+        else:
+            map['sumatotal'] = int(reporte['sumatotal'])
+        json_map['reporte_dependencia'].append(map)
 
-        #json_map['obras'] = []
+        # json_map['obras'] = []
         #for obra in resultados['obras']:
         #    json_map['obras'].append(obra.to_serializable_dict())
 
         json_map['obras'] = []
-        for obra in resultados['obras'].values('id','identificador_unico','estado__nombreEstado','denominacion','latitud','longitud',"dependencia__imagenDependencia"):
+        for obra in resultados['obras'].values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion',
+                                               'latitud', 'longitud', "dependencia__imagenDependencia"):
             json_map['obras'].append(obra);
 
-        json_map['reporte_estado'] = []
+            json_map['reporte_estado'] = []
         for reporte_estado in resultados['reporte_estado']:
             map = {}
-            if reporte_estado['sumatotal'] is None:
-                map['sumatotal'] = 0.0
+        if reporte_estado['sumatotal'] is None:
+            map['sumatotal'] = 0.0
 
-            else:
-                map['sumatotal'] = float(reporte_estado['sumatotal'])
-            map['estado'] = Estado.objects.get(
-                nombreEstado=reporte_estado['estado__nombreEstado']).to_serializable_dict()
-            map['numeroObras'] = reporte_estado['numero_obras']
+        else:
+            map['sumatotal'] = float(reporte_estado['sumatotal'])
+        map['estado'] = Estado.objects.get(
+            nombreEstado=reporte_estado['estado__nombreEstado']).to_serializable_dict()
+        map['numeroObras'] = reporte_estado['numero_obras']
 
-            json_map['reporte_estado'].append(map)
+        json_map['reporte_estado'].append(map)
 
         json_map['reporte_general'] = []
         map = {}
@@ -285,8 +306,6 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['reporte_general'].append(map)
 
         return HttpResponse(json.dumps(json_map), 'application/json')
-
-
 
 
 class InauguradorEndpoint(ProtectedResourceView):
@@ -308,9 +327,9 @@ class NumeroObrasPendientes(ProtectedResourceView):
 
         if token_model.user.usuario.rol == 'AD':
             dependencias = Dependencia.objects.filter(
-                    Q(id__in=arreglo_dependencias) |
-                    Q(dependienteDe__id__in=arreglo_dependencias)
-                    )
+                Q(id__in=arreglo_dependencias) |
+                Q(dependienteDe__id__in=arreglo_dependencias)
+            )
 
             for dependencia in dependencias:
                 total_obras = total_obras + dependencia.obra_set.filter(autorizada=False).count()
@@ -348,7 +367,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2015 = obras.filter(fechaInicio__year=2015)
         obras2015_proceso = obras2015.filter(tipoObra_id=2)
         the_list = []
-        for obra in obras2015_proceso.values('latitud', 'longitud', 'estado__nombreEstado').annotate(numero_obras=Count('estado')):
+        for obra in obras2015_proceso.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
+                numero_obras=Count('estado')):
             self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_proceso']['obras'] = the_list
@@ -356,7 +376,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 
         obras2015_proyectadas = obras2015.filter(tipoObra_id=1)
         the_list = []
-        for obra in obras2015_proyectadas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(numero_obras=Count('estado')):
+        for obra in obras2015_proyectadas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
+                numero_obras=Count('estado')):
             self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
@@ -364,7 +385,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 
         obras2015_concluidas = obras2015.filter(tipoObra_id=3)
         the_list = []
-        for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(numero_obras=Count('estado')):
+        for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
+                numero_obras=Count('estado')):
             self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte2015']['obras_concluidas']['obras'] = the_list
@@ -397,13 +419,12 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 
 
 class ReporteNoTrabajoEndpoint(ProtectedResourceView):
-
     def get(self, request):
-            comp_date = datetime.now() - timedelta(15)
-            print comp_date
-            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
-                fecha_ultima_modificacion__lt=comp_date))
+        comp_date = datetime.now() - timedelta(15)
+        print comp_date
+        dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+            fecha_ultima_modificacion__lt=comp_date))
 
-            return HttpResponse(json.dumps(dicts), 'application/json')
+        return HttpResponse(json.dumps(dicts), 'application/json')
 
 
