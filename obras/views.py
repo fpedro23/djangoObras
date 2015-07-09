@@ -560,7 +560,7 @@ def obras_iniciadas(request):
 
     query = Q(fechaInicio__lte= datetime.datetime.now().date())
     if not (usuario.rol == 'SA'):
-        subdependencias = get_subdependencias_as_list_flat(usuario.dependencia)
+        subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
         query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
     obras = Obra.objects.filter(query)
 
@@ -579,7 +579,7 @@ def obras_vencidas(request):
         obras = Obra.objects.filter(fechaTermino__lte=today)
     else:
         obras = Obra.objects.filter(Q(fechaTermino__lte=today) & Q(
-            dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia)))
+            dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())))
 
     template = loader.get_template('admin/obras/consulta_predefinidos/consulta-predefinidos.html')
     context = RequestContext(request, {
