@@ -92,7 +92,8 @@ class BuscarObras:
 
         if query is not None:
             #print query
-            obras = Obra.objects.filter(query)[self.limite_min:self.limite_max]
+            obras = Obra.objects.filter(query)
+            obras = obras.order_by('identificador_unico')
 
 
         #Reporte general
@@ -112,7 +113,7 @@ class BuscarObras:
         }
 
         reportes = {
-            'obras': obras,
+            'obras': obras[self.limite_min:self.limite_max],
             'reporte_general': reporte_general,
             'reporte_dependencia': reporte_dependencia,
             'reporte_estado': reporte_estado,
