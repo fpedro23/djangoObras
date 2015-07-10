@@ -92,28 +92,32 @@ class BuscarObras:
             query = query & Q(instanciaEjecutora__id__in=self.instancia_ejecutora)
 
         if query is not None:
-            #print query
+            # print query
             obras = Obra.objects.filter(query)
             obras = obras.order_by('identificador_unico')
 
 
-        #Reporte general
+        # Reporte general
         obras_totales = obras.count()
         total_invertido = obras.aggregate(Sum('inversionTotal'))
 
         #Reporte Dependencia
-        reporte_dependencia = obras.values('dependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_dependencia = obras.values('dependencia__nombreDependencia').annotate(
+            numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
 
         #Reporte SubDependencia
-        reporte_subdependencia = obras.values('dependencia__nombreDependencia', 'subdependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_subdependencia = obras.values('dependencia__nombreDependencia',
+                                              'subdependencia__nombreDependencia').annotate(
+            numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
 
 
         #Reporte Estado
-        reporte_estado = obras.values('estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_estado = obras.values('estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(
+            sumatotal=Sum('inversionTotal'))
         reporte_estado = reporte_estado.order_by('estado__nombreEstado')
 
         reporte_general = {
-            'obras_totales':obras_totales,
+            'obras_totales': obras_totales,
             'total_invertido': total_invertido,
         }
 
@@ -126,6 +130,7 @@ class BuscarObras:
         }
 
         return reportes
+
 
 class BuscaObra:
     def __init__(
@@ -146,20 +151,20 @@ class BuscaObra:
             query = Q(identificador_unico=self.identificador_unico)
 
         if query is not None:
-            #print query
+            # print query
             obras = Obra.objects.filter(query)
             if obras and obras.count() > 0:
                 obra_id = obras.first().id
-                queryInversion= Q(obra__id=obra_id)
-                queryClasificacion= Q(obra__id=obra_id)
-                DInversion=DetalleInversion.objects.filter(queryInversion)
-                DClasificacion=DetalleClasificacion.objects.filter(queryClasificacion).values('tipoClasificacion__id','subclasificacion__nombreTipoClasificacion')
-
+                queryInversion = Q(obra__id=obra_id)
+                queryClasificacion = Q(obra__id=obra_id)
+                DInversion = DetalleInversion.objects.filter(queryInversion)
+                DClasificacion = DetalleClasificacion.objects.filter(queryClasificacion).values('tipoClasificacion__id',
+                                                                                                'subclasificacion__nombreTipoClasificacion')
 
         reporte = {
             'obras': obras,
-            'DInversion':DInversion,
-            'DClasificacion':DClasificacion,
+            'DInversion': DInversion,
+            'DClasificacion': DClasificacion,
         }
 
         return reporte
