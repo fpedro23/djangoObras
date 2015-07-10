@@ -398,3 +398,25 @@ class ReporteNoTrabajoEndpoint(ProtectedResourceView):
             return HttpResponse(json.dumps(dicts), 'application/json')
 
 
+class ReporteObrasPorAutorizar(ProtectedResourceView):
+
+    def get(self, request):
+        dependencias = get_usuario_for_token(request.GET.get('access_token')).dependencia.all()
+
+        if dependencias and dependencias.count() > 0:
+            obras = Obra.objects.filter(
+                Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
+                Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
+            )
+        else:
+            obras = Obra.objects.all()
+
+        obras = obras.filter(autorizada=False).values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'latitud', 'longitud', 'dependencia__imagenDependencia')
+
+        the_list = []
+        for obra in obras:
+            the_list.append(obra)
+
+        return HttpResponse(json.dumps(the_list), 'application/json')
+
+
