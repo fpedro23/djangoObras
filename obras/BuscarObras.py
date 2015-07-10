@@ -93,7 +93,7 @@ class BuscarObras:
         if query is not None:
             #print query
             obras = Obra.objects.filter(query)[self.limite_min:self.limite_max]
-            obras = obras.order_by('identificador_unico')
+
 
         #Reporte general
         obras_totales = obras.count()
