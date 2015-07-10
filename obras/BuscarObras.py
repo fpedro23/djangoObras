@@ -65,6 +65,7 @@ class BuscarObras:
 
         if self.dependencias is not None:
             query = query & Q(dependencia__id__in=self.dependencias)
+            query = query | Q(subdependencia__id__in=self.dependencias)
 
         if self.estados is not None:
             query = query & Q(estado__id__in=self.estados)
@@ -103,6 +104,10 @@ class BuscarObras:
         #Reporte Dependencia
         reporte_dependencia = obras.values('dependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
 
+        #Reporte SubDependencia
+        reporte_subdependencia = obras.values('subdependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+
+
         #Reporte Estado
         reporte_estado = obras.values('estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
         reporte_estado = reporte_estado.order_by('estado__nombreEstado')
@@ -117,6 +122,7 @@ class BuscarObras:
             'reporte_general': reporte_general,
             'reporte_dependencia': reporte_dependencia,
             'reporte_estado': reporte_estado,
+            'reporte_subdependencia': reporte_subdependencia,
         }
 
         return reportes
