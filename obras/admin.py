@@ -241,6 +241,7 @@ class ObrasAdmin(admin.ModelAdmin):
         'autorizada',
         'tipoObra',
         'dependencia',
+        'subdependencia',
         'senalizacion',
         'inaugurada',
         'fechaInicio',
@@ -366,11 +367,11 @@ class ObrasAdmin(admin.ModelAdmin):
         if request.user.usuario.rol == 'SA':
             print 'Query Set Superadmin'
             return qs
+
         elif request.user.usuario.rol == 'AD':
             print 'Query Set Administrador dependencia'
             a = request.user.usuario.dependencia.all()
 
-            print(a)
 
             return qs.filter(
                 Q(dependencia__id__in=arreglo_dependencias) |
@@ -378,8 +379,12 @@ class ObrasAdmin(admin.ModelAdmin):
             )
         elif request.user.usuario.rol == 'US':
             print 'Query Set Usuario'
+            for subdependencia in request.user.usuario.subdependencia.all():
+                print(subdependencia.id)
+                arreglo_dependencias.append(subdependencia.id)
+
             return qs.filter(
-                Q(dependencia__id__in=arreglo_dependencias)
+                Q(subdependencia__id__in=arreglo_dependencias)
             )
 
 
