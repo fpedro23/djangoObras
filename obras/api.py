@@ -395,7 +395,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
         reporte['reporte2015']['obras_proyectadas']['total'] = obras2015_proyectadas.count()
 
-        obras2015_concluidas = obras2015.filter(tipoObra_id=3)
+        obras2015_concluidas = obras.filter(Q(fechaTermino__year=2015) & Q(tipoObra_id=3))
         the_list = []
         for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
                 numero_obras=Count('estado')):
