@@ -232,6 +232,8 @@ class BuscadorEndpoint(ProtectedResourceView):
             fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
             denominacion=request.GET.get('denominacion', None),
             instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
+            limite_min=request.GET.get("limiteMin"),
+            limite_max=request.GET.get("limiteMax"),
         )
 
         arreglo_dependencias = []

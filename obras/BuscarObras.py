@@ -23,6 +23,8 @@ class BuscarObras:
             fecha_fin_segunda,
             denominacion,
             instancia_ejecutora,
+            limite_min,
+            limite_max,
     ):
         self.clasificaciones = clasificaciones
         self.estados = estados
@@ -42,6 +44,8 @@ class BuscarObras:
 
         self.denominacion = denominacion
         self.instancia_ejecutora = instancia_ejecutora
+        self.limite_min = limite_min
+        self.limite_max = limite_max
 
     def buscar(self):
 
@@ -88,7 +92,7 @@ class BuscarObras:
 
         if query is not None:
             #print query
-            obras = Obra.objects.filter(query)
+            obras = Obra.objects.filter(query)[self.limite_min:self.limite_max]
             obras = obras.order_by('identificador_unico')
 
         #Reporte general
