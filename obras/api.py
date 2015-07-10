@@ -88,7 +88,7 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
                 Q(dependienteDe__in=token_model.user.usuario.dependencia.all()))
-                        )
+        )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id=token_model.user.usuario.dependencia.id))
@@ -272,7 +272,7 @@ class BuscadorEndpoint(ProtectedResourceView):
                 map['sumatotal'] = int(reporte['sumatotal'])
             json_map['reporte_dependencia'].append(map)
 
-        # json_map['obras'] = []
+        #json_map['obras'] = []
         #for obra in resultados['obras']:
         #    json_map['obras'].append(obra.to_serializable_dict())
 
@@ -355,16 +355,14 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 
 
         if dependencias and dependencias.count() > 0:
-
             if get_usuario_for_token(request.GET.get('access_token')).rol == 'US':
-                obras = Obra.objects.filter(
-                    Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
-                )
-
+               obras = Obra.objects.filter(
+                   Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+               )
             else:
                 obras = Obra.objects.filter(
-                    Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
-                    Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
+                   Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
+                   Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
                 )
         else:
             obras = Obra.objects.all()
@@ -437,6 +435,34 @@ class ReporteNoTrabajoEndpoint(ProtectedResourceView):
         dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
             fecha_ultima_modificacion__lt=comp_date))
 
-        return HttpResponse(json.dumps(dicts), 'application/json')
+            return HttpResponse(json.dumps(dicts), 'application/json')
+
+
+class ReporteObrasPorAutorizar(ProtectedResourceView):
+
+    def get(self, request):
+        dependencias = get_usuario_for_token(request.GET.get('access_token')).dependencia.all()
+        subdependencias = get_usuario_for_token(request.GET.get('access_token')).subdependencia.all()
+
+        if dependencias and dependencias.count() > 0:
+            if get_usuario_for_token(request.GET.get('access_token')).rol == 'US':
+               obras = Obra.objects.filter(
+                   Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+               )
+            else:
+                obras = Obra.objects.filter(
+                   Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
+                   Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
+                )
+        else:
+            obras = Obra.objects.all()
+
+        obras = obras.filter(autorizada=False).values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'latitud', 'longitud', 'dependencia__imagenDependencia')
+
+        the_list = []
+        for obra in obras:
+            the_list.append(obra)
+
+        return HttpResponse(json.dumps(the_list), 'application/json')
 
 
