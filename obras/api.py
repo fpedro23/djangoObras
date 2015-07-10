@@ -435,7 +435,7 @@ class ReporteNoTrabajoEndpoint(ProtectedResourceView):
         dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
             fecha_ultima_modificacion__lt=comp_date))
 
-            return HttpResponse(json.dumps(dicts), 'application/json')
+        return HttpResponse(json.dumps(dicts), 'application/json')
 
 
 class ReporteObrasPorAutorizar(ProtectedResourceView):
