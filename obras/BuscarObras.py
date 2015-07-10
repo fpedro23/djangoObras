@@ -105,7 +105,7 @@ class BuscarObras:
         reporte_dependencia = obras.values('dependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
 
         #Reporte SubDependencia
-        reporte_subdependencia = obras.values('subdependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_subdependencia = obras.values('dependencia__nombreDependencia', 'subdependencia__nombreDependencia').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
 
 
         #Reporte Estado
