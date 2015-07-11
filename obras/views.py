@@ -828,16 +828,29 @@ def abrir_pptx(archivo):
     f.close()
 
 @login_required()
-@user_passes_test(is_super_admin)
 def balance_general_ppt(request):
-    prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
     usuario = request.user.usuario
+    dependencias = usuario.dependencia.all()
+    subdependencias = usuario.subdependencia.all()
+    query = Q()
+    if dependencias and dependencias.count() > 0:
+        if usuario.rol == 'US':
+            query = Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+        else:
+
+            query = Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) | Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias)
+        )
+
+
+
+    prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
+
     # informacion para el 2013
     start_date = datetime.date(2012, 12, 01)
     end_date = datetime.date(2013, 12, 31)
     obras2013 = Obra.objects.filter(
         Q(fechaTermino__range=(start_date, end_date)),
-        Q(tipoObra=3)
+        Q(tipoObra=3),query
     )
 
     total_obras_2013 = obras2013.count()
@@ -848,7 +861,7 @@ def balance_general_ppt(request):
     end_date = datetime.date(2014, 12, 31)
     obras2014 = Obra.objects.filter(
         Q(fechaTermino__range=(start_date, end_date)),
-        Q(tipoObra=3)
+        Q(tipoObra=3),query
     )
 
     total_obras_2014 = obras2014.count()
@@ -856,7 +869,7 @@ def balance_general_ppt(request):
 
     # informacion para obras en proceso
     obras_proceso = Obra.objects.filter(
-        Q(tipoObra=2)
+        Q(tipoObra=2),query
     )
 
     total_obras_proceso = obras_proceso.count()
@@ -864,7 +877,7 @@ def balance_general_ppt(request):
 
     # informacion para obras proyectadas
     obras_proyectadas = Obra.objects.filter(
-        Q(tipoObra=1)
+        Q(tipoObra=1),query
     )
 
     total_obras_proyectadas = obras_proyectadas.count()
@@ -872,19 +885,46 @@ def balance_general_ppt(request):
 
     # informacion para obras totales
     total_obras = total_obras_2013 + total_obras_2014 + total_obras_proceso + total_obras_proyectadas
-    total_invertido = total_invertido_2013.get('inversionTotal__sum',0) + total_invertido_2014.get(
-        'inversionTotal__sum',0) + total_invertido_proceso.get('inversionTotal__sum',0) + total_invertido_proyectadas.get(
-        'inversionTotal__sum',0)
+
+    total_invertido = 0
+    if total_invertido_2013.get('inversionTotal__sum',0):
+        total_invertido = total_invertido + total_invertido_2013.get('inversionTotal__sum',0)
+    if total_invertido_2014.get('inversionTotal__sum',0):
+        total_invertido = total_invertido + total_invertido_2014.get('inversionTotal__sum',0)
+    if total_invertido_proceso.get('inversionTotal__sum',0):
+        total_invertido = total_invertido + total_invertido_proceso.get('inversionTotal__sum',0)
+    if total_invertido_proyectadas.get('inversionTotal__sum',0):
+        total_invertido = total_invertido + total_invertido_proyectadas.get('inversionTotal__sum',0)
+
+    totalinvertido2013=0
+    if total_invertido_2013.get('inversionTotal__sum',0):
+        totalinvertido2013 = total_invertido_2013.get('inversionTotal__sum',0)
+
+    totalinvertido2014=0
+    if total_invertido_2014.get('inversionTotal__sum',0):
+        totalinvertido2014 = total_invertido_2014.get('inversionTotal__sum',0)
+
+    totalinvertidoproceso=0
+    if total_invertido_proceso.get('inversionTotal__sum',0):
+        totalinvertidoproceso = total_invertido_proceso.get('inversionTotal__sum',0)
+
+    totalinvertidoproyectadas=0
+    if total_invertido_proyectadas.get('inversionTotal__sum',0):
+        totalinvertidoproyectadas = total_invertido_proyectadas.get('inversionTotal__sum',0)
+
+    #total_invertido_2013.get('inversionTotal__sum',0) + total_invertido_2014.get(
+    #'inversionTotal__sum',0) + total_invertido_proceso.get('inversionTotal__sum',0) + total_invertido_proyectadas.get(
+    #'inversionTotal__sum',0)
 
 
     prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_2013)
-    prs.slides[0].shapes[16].text= '$ {0:,.2f}'.format(total_invertido_2013.get('inversionTotal__sum',0))
+    prs.slides[0].shapes[16].text= '$ {0:,.2f}'.format(totalinvertido2013)
     prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_2014)
-    prs.slides[0].shapes[18].text= '$ {0:,.2f}'.format(total_invertido_2014.get('inversionTotal__sum',0))
+    prs.slides[0].shapes[18].text= '$ {0:,.2f}'.format(totalinvertido2014)
     prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_proceso)
-    prs.slides[0].shapes[22].text= '$ {0:,.2f}'.format(total_invertido_proceso.get('inversionTotal__sum',0))
+    prs.slides[0].shapes[22].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
     prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_proyectadas)
-    prs.slides[0].shapes[24].text= '$ {0:,.2f}'.format(total_invertido_proyectadas.get('inversionTotal__sum',0))
+    prs.slides[0].shapes[24].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
     prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras)
     prs.slides[0].shapes[20].text= '$ {0:,.2f}'.format(total_invertido)
 
@@ -903,36 +943,68 @@ def balance_general_ppt(request):
 
 
 @login_required()
-@user_passes_test(is_super_admin)
 def hiper_info_general_ppt(request):
     prs = Presentation('obras/static/ppt/HIPERVINCULO_INFORMACION_GENERAL.pptx')
     usuario = request.user.usuario
+    dependencias = usuario.dependencia.all()
+    subdependencias = usuario.subdependencia.all()
+    query = Q()
+    if dependencias and dependencias.count() > 0:
+        if usuario.rol == 'US':
+            query = Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+        else:
+
+            query = Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) | Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias)
+        )
+
     obras_concluidas = Obra.objects.filter(
-        Q(tipoObra=3)
+        Q(tipoObra=3),query
+
     )
 
     obras_proceso = Obra.objects.filter(
-        Q(tipoObra=2)
+        Q(tipoObra=2),query
     )
 
     obras_proyectadas = Obra.objects.filter(
-        Q(tipoObra=1)
+        Q(tipoObra=1),query
     )
 
-    total_obras_proyectadas = obras_proyectadas.count()
-    total_obras_proceso = obras_proceso.count()
-    total_obras_concluidas = obras_concluidas.count()
+    total_obras_proyectadas=0
+    totalinvertidoproyectadas=0
+    total_obras_proceso =0
+    totalinvertidoproceso=0
+    total_obras_concluidas =0
+    totalinvertidoconcluidas =0
 
-    total_invertido_proyectadas = obras_proyectadas.aggregate(Sum('inversionTotal'))
-    total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
-    total_invertido_concluidas = obras_concluidas.aggregate(Sum('inversionTotal'))
+    if obras_proyectadas:
+        total_obras_proyectadas = obras_proyectadas.count()
+        total_invertido_proyectadas = obras_proyectadas.aggregate(Sum('inversionTotal'))
+        totalinvertidoproyectadas = total_invertido_proyectadas.get('inversionTotal__sum',0)
+    if obras_proceso:
+        total_obras_proceso = obras_proceso.count()
+        total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
+        totalinvertidoproceso = total_invertido_proceso.get('inversionTotal__sum',0)
+
+    if obras_concluidas:
+        total_obras_concluidas = obras_concluidas.count()
+        total_invertido_concluidas = obras_concluidas.aggregate(Sum('inversionTotal'))
+        totalinvertidoconcluidas = total_invertido_concluidas.get('inversionTotal__sum',0)
+
+    #total_obras_proyectadas = obras_proyectadas.count()
+    #total_obras_proceso = obras_proceso.count()
+    #total_obras_concluidas = obras_concluidas.count()
+
+    #total_invertido_proyectadas = obras_proyectadas.aggregate(Sum('inversionTotal'))
+    #total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
+    #total_invertido_concluidas = obras_concluidas.aggregate(Sum('inversionTotal'))
 
     prs.slides[0].shapes[3].text= '{0:,}'.format(total_obras_concluidas)
-    prs.slides[0].shapes[4].text= '$ {0:,.2f}'.format(total_invertido_concluidas.get('inversionTotal__sum',0))
+    prs.slides[0].shapes[4].text= '$ {0:,.2f}'.format(totalinvertidoconcluidas)
     prs.slides[1].shapes[3].text= '{0:,}'.format(total_obras_proceso)
-    prs.slides[1].shapes[4].text= '$ {0:,.2f}'.format(total_invertido_proceso.get('inversionTotal__sum',0))
+    prs.slides[1].shapes[4].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
     prs.slides[2].shapes[3].text= '{0:,}'.format(total_obras_proyectadas)
-    prs.slides[2].shapes[4].text= '$ {0:,.2f}'.format(total_invertido_proyectadas.get('inversionTotal__sum',0))
+    prs.slides[2].shapes[4].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
 
 
 
@@ -1193,6 +1265,9 @@ def hiper_por_entidad_ppt(request):
 
         totalObrasGeneral = totalObras14_18+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_proceso
         totalInvertidoGeneral = totalInvertido14_18+totalinvertido2013+totalinvertido2014+totalinvertidoproceso
+
+        #for x in range(9,31):
+        #    prs.slides[indiceSlide].shapes[x].text_frame.paragraphs[0].font.size = Pt(8)
 
         prs.slides[indiceSlide].shapes[9].text= '{0:,}'.format(total_obras_concluidas_2013)
         prs.slides[indiceSlide].shapes[10].text= '$ {0:,.2f}'.format(totalinvertido2013)
