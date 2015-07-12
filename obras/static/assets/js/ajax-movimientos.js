@@ -116,4 +116,61 @@ function setImage(){
 
 
 
+    $j(document).ready(function() {
+         $j("input[name=inaugurada]").click(function () {
+            var inauguradaOPC  = $j('input:radio[name=inaugurada]:checked').val();
+             if (inauguradaOPC != "True") {
+                 $j("#id_inaugurador").val('---------');
+                 $j("#id_inaugurador").prop('disabled','disabled');
+             }
+             else{
+                  $j("#id_inaugurador").removeAttr("disabled");
+             }
 
+
+         });
+
+
+         $j('select#id_tipoObra').on('change',function () {
+                var statusO = $j(this).val();
+                var avanceO = $j("#id_porcentajeAvance").val();
+
+                if (statusO == "1" && avanceO > 0) {
+                    alert('Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.');
+                    $j("#id_tipoObra").val('---------');
+                }
+                else if (statusO == "2" && (avanceO == 0 || avanceO == 100))
+                {
+                    alert('Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.');
+                    $j("#id_tipoObra").val('---------');
+                }
+                else if (statusO == "3" && avanceO <100)
+                {
+                    alert('Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.');
+                    $j("#id_tipoObra").val('---------');
+                }
+
+         });
+
+         $j('#id_porcentajeAvance').on('change',function (){
+                var avanceO = $j(this).val();
+                var statusO = $j('select#id_tipoObra').val();
+
+                if (statusO == "1" && avanceO > 0) {
+                    alert('Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.');
+                    $j("#id_porcentajeAvance").val('0');
+                }
+                else if (statusO == "2" && (avanceO == 0 || avanceO == 100))
+                {
+                    alert('Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.');
+                    $j("#id_porcentajeAvance").val('0');
+                }
+                else if (statusO == "3" && avanceO <100)
+                {
+                    alert('Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.');
+                    $j("#id_porcentajeAvance").val('100');
+                }
+
+         });
+
+    });
