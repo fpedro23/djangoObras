@@ -227,14 +227,13 @@ class Usuario(models.Model):
         'dependienteDe': None,
         'obraoprograma': 'O',
     },
-    )
+                                         )
     subdependencia = models.ManyToManyField(Dependencia, blank=True, null=True,
                                             limit_choices_to={'dependienteDe__isnull': False},
                                             related_name='Subdependencias')
 
 
 @python_2_unicode_compatible
-
 class InstanciaEjecutora(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -284,7 +283,9 @@ class Obra(models.Model):
                                                symmetrical=False,
                                                limit_choices_to={
                                                    'subclasificacionDe': None,
-                                               }
+                                               },
+                                               null=True,
+                                               blank=True,
 
                                                )
 
@@ -316,8 +317,8 @@ class Obra(models.Model):
     municipio = models.CharField(max_length=200)
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=False, default=1)
     autorizada = models.BooleanField(default=False)
-    latitud = models.FloatField()
-    longitud = models.FloatField()
+    latitud = models.FloatField(null=True, blank=True)
+    longitud = models.FloatField(null=True, blank=True)
     id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200, null=True, blank=True)
 
     def __str__(self):  # __unicode__ on Python 2
@@ -359,7 +360,7 @@ class Obra(models.Model):
 
         # map['tipoClasificacion'] = []
         # if self.tipoClasificacion:
-        #    for tipoClasificacion in self.tipoClasificacion.all():
+        # for tipoClasificacion in self.tipoClasificacion.all():
         #        map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
 
         map['subclasificaciones'] = []
@@ -453,7 +454,10 @@ class Ubicacion(models.Model):
 
 class DetalleInversion(models.Model):
     obra = models.ForeignKey(Obra)
-    tipoInversion = models.ForeignKey(TipoInversion, )
+    tipoInversion = models.ForeignKey(TipoInversion,
+                                      null=True,
+                                      blank=True
+                                      )
     monto = models.FloatField()
 
     class Meta:
@@ -474,7 +478,9 @@ class DetalleClasificacion(models.Model):
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
                                           limit_choices_to={
                                               'subclasificacionDe': None,
-                                          }
+                                          },
+                                          null=True,
+                                          blank=True
                                           )
 
     subclasificacion = ChainedForeignKey(TipoClasificacion,

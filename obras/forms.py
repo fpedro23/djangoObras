@@ -23,12 +23,30 @@ class DetalleClasificacionAddForm(forms.ModelForm):
         model = DetalleClasificacion
         fields = '__all__'
 
+    def save(self, commit=True):
+        instance = super(DetalleClasificacionAddForm,self).save(commit=False)
+        print instance.tipoClasificacion
+        if instance.tipoClasificacion is None:
+            print 'Is null'
+            DetalleClasificacion.delete(instance)
+            return
+        return super(DetalleClasificacionAddForm, self).save(commit)
+
 
 
 class DetalleInversionAddForm(forms.ModelForm):
     class Meta:
         model = DetalleInversion
         fields = '__all__'
+
+    def save(self, commit=True):
+        instance = super(DetalleInversionAddForm, self).save(commit=False)
+        print instance.tipoInversion
+        if instance.tipoInversion is None:
+            print 'IS NULL'
+            DetalleInversion.delete(instance)
+            return
+        return super(DetalleInversionAddForm, self).save(commit)
 
 
 class AddObraForm(forms.ModelForm):
