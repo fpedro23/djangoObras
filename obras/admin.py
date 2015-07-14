@@ -221,12 +221,15 @@ class DetalleInversionInline(admin.TabularInline):
     form = DetalleInversionAddForm
     model = DetalleInversion
     extra = 1
+    can_delete = False
 
 
 class DetalleClasificacionInline(admin.TabularInline):
     form = DetalleClasificacionAddForm
     model = DetalleClasificacion
     extra = 1
+    can_delete = False
+
 
 
 class ObrasAdmin(admin.ModelAdmin):
