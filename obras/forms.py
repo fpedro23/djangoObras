@@ -53,12 +53,19 @@ class AddObraForm(forms.ModelForm):
     class Meta:
         model = Obra
         fields = '__all__'
+        customClearableInput = forms.ClearableFileInput()
+        customClearableInput.clear_checkbox_label = 'Borrar'
+
         widgets = {'tipoMoneda': forms.RadioSelect(renderer=HorizRadioRenderer),
                    'inaugurada': forms.RadioSelect(renderer=HorizRadioRenderer),
                    'descripcion': forms.Textarea,
                    'observaciones': forms.Textarea,
                    'tipoClasificacion': forms.CheckboxSelectMultiple,
-                   'tipoInversion': forms.CheckboxSelectMultiple
+                   'tipoInversion': forms.CheckboxSelectMultiple,
+                   'fotoAntes': customClearableInput,
+                   'fotoDurante': customClearableInput,
+                   'fotoDespues': customClearableInput,
+
         }
 
     def save(self, commit=True):
