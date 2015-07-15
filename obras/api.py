@@ -49,9 +49,13 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
         if not (usuario.rol == 'SA'):
             subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
             query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
-        obras = Obra.objects.filter(query)
+        obras = Obra.objects.filter(query).values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'totalInversion')
 
-        return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
+        the_list = []
+        for obra in obras:
+            the_list.append(obra)
+
+        return HttpResponse(json.dumps(the_list), 'application/json')
 
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
@@ -63,9 +67,13 @@ class ObrasVencidasEndpoint(ProtectedResourceView):
             obras = Obra.objects.filter(fechaTermino__lte=today)
         else:
             obras = Obra.objects.filter(Q(fechaTermino__lte=today) & Q(
-                dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())))
+                dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all()))).values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'totalInversion')
 
-        return HttpResponse(json.dumps(map(lambda obra: obra.to_serializable_dict(), obras)), 'application/json')
+        the_list = []
+        for obra in obras:
+            the_list.append(obra)
+
+        return HttpResponse(json.dumps(the_list), 'application/json')
 
 
 class ObrasForDependenciaEndpoint(ProtectedResourceView):
@@ -75,9 +83,13 @@ class ObrasForDependenciaEndpoint(ProtectedResourceView):
         if usuario.rol == 'SA':
             obras = Obra.objects.all()
         else:
-            obras = usuario.dependencia.get_obras()
+            obras = Obra.filter(dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all()))
 
-        return HttpResponse(map(lambda obra: obra.to_serializable_dict(), obras), 'application/json')
+        the_list = []
+        for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'totalInversion'):
+            the_list.append(obra)
+
+        return HttpResponse(json.dumpst(the_list), 'application/json')
 
 
 class DependenciasEndpoint(ProtectedResourceView):
