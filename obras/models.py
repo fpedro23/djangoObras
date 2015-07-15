@@ -449,17 +449,28 @@ class Obra(models.Model):
         return map
 
 
+def content_file_documento_fuente(instance, filename):
+    # print instance.identificador_unico
+    # ext = filename.split('.')[-1]
+    # filename = instance.identificador_unico + '_ANTES.'+ext
+    return '/'.join(['documentosFuente', instance.obra.identificador_unico, filename])
+
+
 @python_2_unicode_compatible
 class DocumentoFuente(models.Model):
-    descripcion = models.CharField(max_length=50, blank=True, null=True)
-    documento = models.FileField(upload_to="/", blank=True, null=True)
-    obra = models.ForeignKey('Obra', blank=True, null=True)
+    descripcion = models.CharField(max_length=50,)
+    documento = models.FileField(upload_to=content_file_documento_fuente, )
+    obra = models.ForeignKey('Obra',)
 
     def __str__(self):
         return self.descripcion
 
     def __unicode__(self):
         return self.descripcion
+
+    def delete(self, using=None):
+        self.documento.delete()
+        super(DocumentoFuente, self).delete(using)
 
 
 # modelo temporal para probar ubicaciones de obras en mapa

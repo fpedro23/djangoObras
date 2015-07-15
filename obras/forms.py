@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from obras.models import Obra, Dependencia
 from obras.models import Obra, DetalleInversion
-from obras.models import Obra, DetalleInversion, DetalleClasificacion
+from obras.models import Obra, DetalleInversion, DetalleClasificacion, DocumentoFuente
 import itertools
 from datetime import datetime
 from django.utils.safestring import mark_safe
@@ -35,6 +35,28 @@ class DetalleClasificacionAddForm(forms.ModelForm):
             DetalleClasificacion.delete(instance)
             return
         return super(DetalleClasificacionAddForm, self).save(commit)
+
+
+class DocumentoFuenteForm(forms.ModelForm):
+    class Meta:
+        model = DocumentoFuente
+        fields = "__all__"
+
+    def save(self, commit=True):
+        print "OVERAID"
+        instance = super(DocumentoFuenteForm, self).save(commit=False)
+
+        if instance.id is not None:  # Revisa si existe ese objeto
+            a = DocumentoFuente.objects.filter(id=instance.id).first()
+
+            if a.documento.name != "":  # revisa si tiene una foto asignada
+
+                if instance.documento.name != a.documento.name:  # revisa si cambio la foto asignada
+                    route = settings.MEDIA_ROOT + "/" + a.documento.name  # borra la anterior y pon la nueva
+                    print route
+                    os.remove(route)
+
+        return super(DocumentoFuenteForm, self).save(commit)
 
 
 class DetalleInversionAddForm(forms.ModelForm):
@@ -74,7 +96,7 @@ class AddObraForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super(AddObraForm, self).save(commit=False)
         instance.dependencia.fecha_ultima_modificacion = datetime.now()
-        print instance.dependencia.fecha_ultima_modificacion
+        # print instance.dependencia.fecha_ultima_modificacion
         instance.dependencia.save()
         if instance.id and not instance.autorizada:
             obra = Obra.objects.get(id=instance.id)
@@ -96,7 +118,7 @@ class AddObraForm(forms.ModelForm):
                 if not Obra.objects.filter(identificador_unico=instance.identificador_unico).exists():
                     break
 
-        print(instance.identificador_unico)
+        # print(instance.identificador_unico)
 
         # http://stackoverflow.com/questions/1355150/django-when-saving-how-can-you-check-if-a-field-has-changed
         if instance.id is not None: #Revisa si existe ese objeto
@@ -122,7 +144,6 @@ class AddObraForm(forms.ModelForm):
                     route = settings.MEDIA_ROOT + "/" + a.fotoDespues.name  # borra la anterior y pon la nueva
                     print route
                     os.remove(route)
-
 
         return super(AddObraForm, self).save(commit=commit)
 
