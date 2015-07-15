@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 from smart_selects.db_fields import ChainedForeignKey
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
 # TODO agregar nombres verbose a los modelos
 
@@ -252,6 +254,28 @@ class InstanciaEjecutora(models.Model):
 BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguracion'))
 
 
+def content_file_antes(instance, filename):
+    print instance.identificador_unico
+    ext = filename.split('.')[-1]
+    filename = instance.identificador_unico + '_ANTES.'+ext
+    return '/'.join(['imagenesObras', instance.identificador_unico, filename])
+
+
+def content_file_durante(instance, filename):
+    print instance.identificador_unico
+    ext = filename.split('.')[-1]
+    filename = instance.identificador_unico + '_DURANTE.'+ext
+    return '/'.join(['imagenesObras', instance.identificador_unico, filename])
+
+
+def content_file_despues(instance, filename):
+    print instance.identificador_unico
+    ext = filename.split('.')[-1]
+    filename = instance.identificador_unico + '_DESPUES.'+ext
+    return '/'.join(['imagenesObras', instance.identificador_unico, filename])
+
+
+
 @python_2_unicode_compatible
 class Obra(models.Model):
     # TODO agrupar semanticamente todos los campos de obras
@@ -308,9 +332,9 @@ class Obra(models.Model):
     susceptibleInauguracion = models.BooleanField(default=False)
     porcentajeAvance = models.DecimalField(max_digits=5, decimal_places=2)
     observaciones = models.CharField(max_length=200)
-    fotoAntes = models.FileField(blank=True, null=True)
-    fotoDurante = models.FileField(blank=True, null=True)
-    fotoDespues = models.FileField(blank=True, null=True)
+    fotoAntes = models.FileField(blank=True, null=True, upload_to=content_file_antes)
+    fotoDurante = models.FileField(blank=True, null=True, upload_to=content_file_durante)
+    fotoDespues = models.FileField(blank=True, null=True, upload_to=content_file_despues)
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True)
     inaugurada = models.NullBooleanField(choices=BOOL_CHOICES)
     poblacionObjetivo = models.CharField(max_length=200)

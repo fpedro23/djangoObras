@@ -8,14 +8,18 @@ from obras.models import Obra, DetalleInversion, DetalleClasificacion
 import itertools
 from datetime import datetime
 from django.utils.safestring import mark_safe
+import os
+from django.conf import settings
+
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
     """ this overrides widget method to put radio buttons horizontally
         instead of vertically.
     """
+
     def render(self):
-            """Outputs radios"""
-            return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+        """Outputs radios"""
+        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
 
 class DetalleClasificacionAddForm(forms.ModelForm):
@@ -24,14 +28,13 @@ class DetalleClasificacionAddForm(forms.ModelForm):
         fields = '__all__'
 
     def save(self, commit=True):
-        instance = super(DetalleClasificacionAddForm,self).save(commit=False)
+        instance = super(DetalleClasificacionAddForm, self).save(commit=False)
         print instance.tipoClasificacion
         if instance.tipoClasificacion is None:
             print 'Is null'
             DetalleClasificacion.delete(instance)
             return
         return super(DetalleClasificacionAddForm, self).save(commit)
-
 
 
 class DetalleInversionAddForm(forms.ModelForm):
@@ -66,14 +69,13 @@ class AddObraForm(forms.ModelForm):
                    'fotoDurante': customClearableInput,
                    'fotoDespues': customClearableInput,
 
-        }
+                   }
 
     def save(self, commit=True):
         instance = super(AddObraForm, self).save(commit=False)
         instance.dependencia.fecha_ultima_modificacion = datetime.now()
         print instance.dependencia.fecha_ultima_modificacion
         instance.dependencia.save()
-
         if instance.id and not instance.autorizada:
             obra = Obra.objects.get(id=instance.id)
             usuario = LogEntry.objects.filter(
@@ -88,13 +90,40 @@ class AddObraForm(forms.ModelForm):
         if instance.identificador_unico is None:
 
             for x in itertools.count(1):
-                string_id = '%s-%s-%.3d' % ('OB', instance.dependencia.nombreDependencia, x)
+                string_id = '%s_%s_%.3d' % ('OB', instance.dependencia.nombreDependencia, x)
                 string_id.upper()
                 instance.identificador_unico = string_id
                 if not Obra.objects.filter(identificador_unico=instance.identificador_unico).exists():
                     break
 
         print(instance.identificador_unico)
+
+        # http://stackoverflow.com/questions/1355150/django-when-saving-how-can-you-check-if-a-field-has-changed
+        if instance.id is not None: #Revisa si existe ese objeto
+            a = Obra.objects.filter(id=instance.id).first()
+
+            if a.fotoAntes.name != "":  # revisa si tiene una foto asignada
+
+                if instance.fotoAntes.name != a.fotoAntes.name:  # revisa si cambio la foto asignada
+                    route = settings.MEDIA_ROOT + "/" + a.fotoAntes.name  # borra la anterior y pon la nueva
+                    print route
+                    os.remove(route)
+
+            if a.fotoDurante.name != "":  # revisa si tiene una foto asignada
+
+                if instance.fotoDurante.name != a.fotoDurante.name:  # revisa si cambio la foto asignada
+                    route = settings.MEDIA_ROOT + "/" + a.fotoDurante.name  # borra la anterior y pon la nueva
+                    print route
+                    os.remove(route)
+
+            if a.fotoDespues.name != "":  # revisa si tiene una foto asignada
+
+                if instance.fotoDespues.name != a.fotoDespues.name:  # revisa si cambio la foto asignada
+                    route = settings.MEDIA_ROOT + "/" + a.fotoDespues.name  # borra la anterior y pon la nueva
+                    print route
+                    os.remove(route)
+
+
         return super(AddObraForm, self).save(commit=commit)
 
 
