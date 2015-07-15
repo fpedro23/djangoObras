@@ -26,10 +26,18 @@ class TipoObra(models.Model):
         return ans
 
 
+def content_file_dependencia(instance, filename):
+    # print instance.identificador_unico
+    # ext = filename.split('.')[-1]
+    # filename = instance.identificador_unico + '_ANTES.'+ext
+    return '/'.join(['imagenesDependencias', instance.nombreDependencia, filename])
+
+
+
 @python_2_unicode_compatible
 class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
-    imagenDependencia = models.FileField(upload_to="./", blank=True, null=True)
+    imagenDependencia = models.FileField(upload_to=content_file_dependencia, blank=True, null=True)
     dependienteDe = models.ForeignKey('self', null=True, blank=True)
     obraoprograma = models.CharField(max_length=1, null=True, blank=True, default='O')
     fecha_ultima_modificacion = models.DateTimeField(null=True, blank=True)
