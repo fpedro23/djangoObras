@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import SimpleListFilter
 
 from obras.models import *
-from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm
+from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm, DocumentoFuenteForm
 from django.contrib.auth.models import Group
 
 
@@ -148,7 +148,7 @@ class ClasificacionInLine(admin.StackedInline):
 class DocumentoFuenteInline(admin.TabularInline):
     model = DocumentoFuente
     extra = 1
-
+    form = DocumentoFuenteForm
 
 class DependenciaListFilter(SimpleListFilter):
     # USAGE
@@ -221,12 +221,15 @@ class DetalleInversionInline(admin.TabularInline):
     form = DetalleInversionAddForm
     model = DetalleInversion
     extra = 1
+    can_delete = False
 
 
 class DetalleClasificacionInline(admin.TabularInline):
     form = DetalleClasificacionAddForm
     model = DetalleClasificacion
-    extra = 4
+    extra = 1
+    can_delete = False
+
 
 
 class ObrasAdmin(admin.ModelAdmin):
