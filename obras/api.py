@@ -476,4 +476,3 @@ class ReporteObrasPorAutorizar(ProtectedResourceView):
 
         return HttpResponse(json.dumps(the_list), 'application/json')
 
-
