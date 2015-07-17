@@ -45,40 +45,125 @@ function main_consulta() {
 	});
 
     valida_token();
-
+    //volverHistorico();
+    //$j('#obrasPorAutorizar').on('click', verDatos('obras_por_autorizar'))
+    //$j('#obrasIniciadas').on('click', verDatos('obras_iniciadas'))
+    //$j('#obrasVencidas').on('click', verDatos('obras_vencidas'))
+    //$j('#obrasPorDependencia').on('click', verDatos('obras_por_dependencia'))
     $j('#obrasPorAutorizar').on('click', verDatos)
+    $j('#obrasIniciadas').on('click', obrasIniciadas)
+    $j('#obrasVencidas').on('click', obrasVencidas)
+    $j('#obrasPorDependencia').on('click', obrasPorDependencia)
 
 
 }
 
 
 function verDatos() {
-
+    $j('#load3').removeClass("mfp-hide");
+    $j('#load3').addClass("mfp-show");
     var ajax_data = {
       "access_token"  : newToken
     };
-
-    $j("#ajaxProgress").show();
     $j.ajax({
         url: '/obras/api/obras_por_autorizar',
         type: 'get',
         data: ajax_data,
         success: function(data) {
-            tablaI(data);
+            $j('#historico').val("SI");
+            tablaI(data,'Obras por Autorizar');
             datosJson=data;
+            $j('#load3').addClass("mfp-hide");
         },
         error: function(data) {
+            $j('#load3').addClass("mfp-hide");
             alert('error!!! ' + data.status);
         }
     });
 }
 
-function tablaI(Datos){
+
+function obrasIniciadas() {
+    $j('#load1').removeClass("mfp-hide");
+    $j('#load1').addClass("mfp-show");
+
+    var ajax_data = {
+      "access_token"  : newToken
+    };
+    $j.ajax({
+        url: '/obras/api/obras_iniciadas',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+            $j('#historico').val("SI");
+            tablaI(data,'Obras Iniciadas');
+            datosJson=data;
+            $j('#load1').addClass("mfp-hide");
+        },
+        error: function(data) {
+            $j('#load1').addClass("mfp-hide");
+            alert('error!!! ' + data.status);
+        }
+    });
+
+}
+
+function obrasVencidas() {
+    $j('#load2').removeClass("mfp-hide");
+    $j('#load2').addClass("mfp-show");
+    var ajax_data = {
+      "access_token"  : newToken
+    };
+    $j.ajax({
+        url: '/obras/api/obras_vencidas',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+            $j('#historico').val("SI");
+            tablaI(data,'Obras Vencidas');
+            datosJson=data;
+            $j('#load2').addClass("mfp-hide");
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+            $j('#load2').addClass("mfp-hide");
+        }
+    });
+
+}
+
+function obrasPorDependencia() {
+    $j('#load3').removeClass("mfp-hide");
+    $j('#load3').addClass("mfp-show");
+    var ajax_data = {
+      "access_token"  : newToken
+    };
+    $j.ajax({
+        url: '/obras/api/obras_por_dependencia',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+            $j('#historico').val("SI");
+            tablaI(data,'Obras por Dependencia');
+            datosJson=data;
+            $j('#load3').addClass("mfp-hide");
+        },
+        error: function(data) {
+            $j('#load3').addClass("mfp-hide");
+            alert('error!!! ' + data.status);
+
+        }
+    });
+
+}
+
+function tablaI(Datos,titulo){
     var sHtmlExporta="";
     var sHtmlShorter="";
     var sHtmlistado="";
 
-    sHtmlExporta= '<table id="tablaExporta2" class="table table-striped">'
+
+    var sHtml = '<table id="tablaIzquierda" class="table table-striped">'
                 +' <colgroup>'
                 +' <col width="30%">'
                 +' <col width="40%">'
@@ -91,17 +176,7 @@ function tablaI(Datos){
                             +'<th>Estado</th>'
                         +'</tr>'
                 +'</thead>'
-                +'<tbody>';
-    sHtmlShorter ='<table cellspacing="1" class="tablesorter" id="tablaIzquierda">';
-    sHtmlistado ='<table cellspacing="1" id="tablaListado">';
-    var sHtml='<thead>'
-                        +'<tr>'
-                            +'<th>Id</th>'
-                            +'<th>Denominaci&oacute;n</th>'
-                            +'<th>Estado</th>'
-                        +'</tr>'
-                    +'</thead>'
-                    +'<tfoot>'
+                +'<tfoot>'
                         +'<tr>'
                             +'<th>Id</th>'
                             +'<th>Denominaci&oacute;n</th>'
@@ -123,36 +198,16 @@ function tablaI(Datos){
 
                     +'</tfoot>'
                     +'<tbody>';
-    sHtmlistado = sHtml;
-    for(var i= 0;i<Datos.obras.length;i++){
+    for(var i= 0;i<Datos.length;i++){
         sHtml +='<tr>'
-                +'<td><a href="/admin/obras/obra/' + Datos.obras[i].id + '/?m=1">' + Datos.obras[i].identificador_unico +'</a></td>'
-                +'<td>' + Datos.obras[i].denominacion +'</td>'
-                +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
-                +'</tr>'
-
-        sHtmlistado +='<tr>'
-                +'<td>' + Datos.obras[i].identificador_unico +'</td>'
-                +'<td>' + Datos.obras[i].denominacion +'</td>'
-                +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
-                +'</tr>'
-        sHtmlExporta += '<tr>'
-                +'<td>' + Datos.obras[i].identificador_unico +'</td>'
-                +'<td>' + Datos.obras[i].denominacion +'</td>'
-                +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
+                +'<td><a href="/admin/obras/obra/' + Datos[i].id + '/?m=1">' + Datos[i].identificador_unico +'</a></td>'
+                +'<td>' + Datos[i].denominacion +'</td>'
+                +'<td>' + Datos[i].estado__nombreEstado +'</td>'
                 +'</tr>'
     }
 
         sHtml +='</tbody>'
                 +'</table>'
-
-               /*+'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
-                +'<link class="theme blue" rel="stylesheet" href="../../static/assets/tablesorter/themes/blue/theme.blue.css">'
-                +'<script type="text/javascript" src="../../static/assets/tablesorter/jquery.tablesorter.js"></script>'
-                +'<script src="../../static/assets/tablesorter/jquery.tablesorter.widgets.js"></script>'
-                +'<script type="text/javascript" src="../../static/assets/tablesorter/widget-pager.js"></script>'
-                +'<script src="../../static/assets/tablesorter/widget-scroller.js"></script>' */
-
                 +'<script id="js" type="text/javascript">'
                 +'$ts(function() {'
                 +'    $ts("#tablaIzquierda").tablesorter({'
@@ -178,13 +233,23 @@ function tablaI(Datos){
                 +'    }'
                 +'});'
                 +'});'
-                +'</script>';
-
-    sHtmlExporta +='</tbody>'
+                +'</script>'
+                +'</tbody>'
                 +'</table>';
-     $j('#tabla-exporta2').hide();
-    $j('#datos').html(sHtmlShorter + sHtml);
-    $j('#tabla-exporta2').html(sHtmlExporta);
+    $j('#titulo').html(titulo);
+    $j('#tabla').html(sHtml);
+
 
 }
 
+function volverHistorico() {
+    //var variable = (opener) ? opener.location.href : 'No disponible' ;
+    //document.write(variable);
+    var sHistorico = $j('#historico').val();
+    if (sHistorico.toString() =="SI") {
+        $.get("/obras/register-by-token", function (respu) {
+           newToken = respu.access_token;
+           verDatos()
+        });
+    }
+}
