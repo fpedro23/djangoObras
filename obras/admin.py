@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import SimpleListFilter
+from django.http import HttpResponseRedirect
 
 from obras.models import *
 from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm, DocumentoFuenteForm
@@ -51,6 +52,13 @@ class UserAdmin(UserAdmin):
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (('Permissions'), {'fields': ('is_active',)}),
     )
+
+    def response_add(self, request, obj, post_url_continue=None):
+
+        if '_addanother' not in request.POST:
+            return HttpResponseRedirect('/admin/auth/user')
+        else:
+            return super(UserAdmin, self).response_add(request, obj, post_url_continue)
 
     def save_model(self, request, obj, form, change):
         obj.is_staff = True
