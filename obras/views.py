@@ -667,28 +667,30 @@ def fichaTecnica(request):
 
 
         #generales
+        prs.slides[0].shapes[8].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[8].text = json_map['obras'][0]['identificador_unico']
         prs.slides[0].shapes[9].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[9].text = json_map['obras'][0]['identificador_unico']
+        prs.slides[0].shapes[9].text = json_map['obras'][0]['denominacion']
         prs.slides[0].shapes[10].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[10].text = json_map['obras'][0]['denominacion']
+        prs.slides[0].shapes[10].text = json_map['obras'][0]['dependencia']['nombreDependencia']
         prs.slides[0].shapes[11].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[11].text = json_map['obras'][0]['dependencia']['nombreDependencia']
+        prs.slides[0].shapes[11].text = json_map['obras'][0]['estado']['nombreEstado']
         prs.slides[0].shapes[12].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[12].text = json_map['obras'][0]['estado']['nombreEstado']
+        prs.slides[0].shapes[12].text = json_map['obras'][0]['municipio']
         prs.slides[0].shapes[13].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[13].text = json_map['obras'][0]['municipio']
+        prs.slides[0].shapes[13].text = json_map['obras'][0]['fechaInicio']
         prs.slides[0].shapes[14].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[14].text = json_map['obras'][0]['fechaInicio']
+        prs.slides[0].shapes[14].text = json_map['obras'][0]['fechaTermino']
         prs.slides[0].shapes[15].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[15].text = json_map['obras'][0]['fechaTermino']
-        prs.slides[0].shapes[16].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[16].text = json_map['obras'][0]['tipoObra']['nombreTipoObra']
+        prs.slides[0].shapes[15].text = json_map['obras'][0]['tipoObra']['nombreTipoObra']
 
+        prs.slides[0].shapes[16].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[16].text = str(json_map['obras'][0]['porcentajeAvance'])
         prs.slides[0].shapes[17].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[17].text = str(json_map['obras'][0]['porcentajeAvance'])
-        prs.slides[0].shapes[18].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[18].text = json_map['obras'][0]['fechaModificacion']
+        prs.slides[0].shapes[17].text = json_map['obras'][0]['fechaModificacion']
         #detalle inversion
+        prs.slides[0].shapes[18].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[18].text = "No"
         prs.slides[0].shapes[19].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[19].text = "No"
         prs.slides[0].shapes[20].text_frame.paragraphs[0].font.size = Pt(8)
@@ -700,49 +702,49 @@ def fichaTecnica(request):
         prs.slides[0].shapes[23].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[23].text = "No"
         prs.slides[0].shapes[24].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[24].text = "No"
-        prs.slides[0].shapes[25].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[25].text = "N/A"
+        prs.slides[0].shapes[24].text = "N/A"
 
         for DI in json_map['DInversion']:
             if not (DI['tipoInversion'] is None):
                 if DI['tipoInversion'] == 1:
+                    prs.slides[0].shapes[18].text_frame.paragraphs[0].font.size = Pt(8)
+                    prs.slides[0].shapes[18].text = "Si"
+                if DI['tipoInversion'] == 2:
                     prs.slides[0].shapes[19].text_frame.paragraphs[0].font.size = Pt(8)
                     prs.slides[0].shapes[19].text = "Si"
-                if DI['tipoInversion'] == 2:
+                if DI['tipoInversion'] == 3:
                     prs.slides[0].shapes[20].text_frame.paragraphs[0].font.size = Pt(8)
                     prs.slides[0].shapes[20].text = "Si"
-                if DI['tipoInversion'] == 3:
+                if DI['tipoInversion'] == 4:
                     prs.slides[0].shapes[21].text_frame.paragraphs[0].font.size = Pt(8)
                     prs.slides[0].shapes[21].text = "Si"
-                if DI['tipoInversion'] == 4:
+                if DI['tipoInversion'] == 5:
                     prs.slides[0].shapes[22].text_frame.paragraphs[0].font.size = Pt(8)
                     prs.slides[0].shapes[22].text = "Si"
-                if DI['tipoInversion'] == 5:
+                if DI['tipoInversion'] == 6:
                     prs.slides[0].shapes[23].text_frame.paragraphs[0].font.size = Pt(8)
                     prs.slides[0].shapes[23].text = "Si"
-                if DI['tipoInversion'] == 6:
-                    prs.slides[0].shapes[24].text_frame.paragraphs[0].font.size = Pt(8)
-                    prs.slides[0].shapes[24].text = "Si"
 
+        prs.slides[0].shapes[25].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[25].text = str(json_map['obras'][0]['inversionTotal'])
         prs.slides[0].shapes[26].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[26].text = str(json_map['obras'][0]['inversionTotal'])
-        prs.slides[0].shapes[27].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[27].text = json_map['obras'][0]['tipoMoneda']['nombreTipoDeMoneda']
+        prs.slides[0].shapes[26].text = json_map['obras'][0]['tipoMoneda']['nombreTipoDeMoneda']
         #poblacion
+        prs.slides[0].shapes[27].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[27].text = json_map['obras'][0]['poblacionObjetivo']
         prs.slides[0].shapes[28].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[28].text = json_map['obras'][0]['poblacionObjetivo']
+        prs.slides[0].shapes[28].text = json_map['obras'][0]['impacto']['nombreImpacto']
         prs.slides[0].shapes[29].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[29].text = json_map['obras'][0]['impacto']['nombreImpacto']
-        prs.slides[0].shapes[30].text_frame.paragraphs[0].font.size = Pt(8)
         if json_map['obras'][0]['senalizacion']=="false":
-            prs.slides[0].shapes[30].text = "No"
+            prs.slides[0].shapes[29].text = "No"
         else:
-            prs.slides[0].shapes[30].text = "Si"
+            prs.slides[0].shapes[29].text = "Si"
 
         #clasificacion y subclasificacion
-        prs.slides[0].shapes[31].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[31].text = "No"
+        prs.slides[0].shapes[30].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[30].text = "No"
+        prs.slides[0].shapes[32].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[32].text = "No"
         prs.slides[0].shapes[33].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[33].text = "No"
         prs.slides[0].shapes[34].text_frame.paragraphs[0].font.size = Pt(8)
@@ -751,51 +753,49 @@ def fichaTecnica(request):
         prs.slides[0].shapes[35].text = "No"
         prs.slides[0].shapes[36].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[36].text = "No"
-        prs.slides[0].shapes[37].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[37].text = "No"
         for DC in json_map['DClasificacion']:
             if DC['tipoClasificacion'] == 1:
+                prs.slides[0].shapes[30].text_frame.paragraphs[0].font.size = Pt(8)
+                prs.slides[0].shapes[30].text = "Si"
                 prs.slides[0].shapes[31].text_frame.paragraphs[0].font.size = Pt(8)
-                prs.slides[0].shapes[31].text = "Si"
-                prs.slides[0].shapes[32].text_frame.paragraphs[0].font.size = Pt(8)
-                prs.slides[0].shapes[32].text = DC['subClasificacion']
+                prs.slides[0].shapes[31].text = DC['subClasificacion']
             if DC['tipoClasificacion'] == 2:
+                prs.slides[0].shapes[32].text_frame.paragraphs[0].font.size = Pt(8)
+                prs.slides[0].shapes[32].text = "Si"
+            if DC['tipoClasificacion'] == 3:
                 prs.slides[0].shapes[33].text_frame.paragraphs[0].font.size = Pt(8)
                 prs.slides[0].shapes[33].text = "Si"
-            if DC['tipoClasificacion'] == 3:
+            if DC['tipoClasificacion'] == 4:
                 prs.slides[0].shapes[34].text_frame.paragraphs[0].font.size = Pt(8)
                 prs.slides[0].shapes[34].text = "Si"
-            if DC['tipoClasificacion'] == 4:
+            if DC['tipoClasificacion'] == 5:
                 prs.slides[0].shapes[35].text_frame.paragraphs[0].font.size = Pt(8)
                 prs.slides[0].shapes[35].text = "Si"
-            if DC['tipoClasificacion'] == 5:
+            if DC['tipoClasificacion'] == 6:
                 prs.slides[0].shapes[36].text_frame.paragraphs[0].font.size = Pt(8)
                 prs.slides[0].shapes[36].text = "Si"
-            if DC['tipoClasificacion'] == 6:
-                prs.slides[0].shapes[37].text_frame.paragraphs[0].font.size = Pt(8)
-                prs.slides[0].shapes[37].text = "Si"
 
         #descripcion
-        prs.slides[0].shapes[38].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[38].text = json_map['obras'][0]['descripcion']
+        prs.slides[0].shapes[37].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[37].text = json_map['obras'][0]['descripcion']
         #observaciones
-        prs.slides[0].shapes[39].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[39].text = json_map['obras'][0]['observaciones']
+        prs.slides[0].shapes[38].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[38].text = json_map['obras'][0]['observaciones']
         #inauguracion
-        prs.slides[0].shapes[40].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[39].text_frame.paragraphs[0].font.size = Pt(8)
         if json_map['obras'][0]['inaugurada'] == "false":
+            prs.slides[0].shapes[39].text = "No"
+        else:
+            prs.slides[0].shapes[39].text = "Si"
+
+        prs.slides[0].shapes[40].text_frame.paragraphs[0].font.size = Pt(8)
+        if json_map['obras'][0]['susceptibleInauguracion'] == "false":
             prs.slides[0].shapes[40].text = "No"
         else:
             prs.slides[0].shapes[40].text = "Si"
 
         prs.slides[0].shapes[41].text_frame.paragraphs[0].font.size = Pt(8)
-        if json_map['obras'][0]['susceptibleInauguracion'] == "false":
-            prs.slides[0].shapes[41].text = "No"
-        else:
-            prs.slides[0].shapes[41].text = "Si"
-
-        prs.slides[0].shapes[42].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[42].text = json_map['obras'][0]['inaugurador']['nombreCargoInaugura']
+        prs.slides[0].shapes[41].text = json_map['obras'][0]['inaugurador']['nombreCargoInaugura']
 
         #logo dependencia
         top = Inches(1)
