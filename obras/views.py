@@ -802,9 +802,24 @@ def fichaTecnica(request):
         left = Inches(0.4)
         pic = prs.slides[0].shapes.add_picture('obras' + json_map['obras'][0]['dependencia']['imagenDependencia'], left, top)
 
+        #imagenes de la obra
+        left = Inches(7.08)
+        top = Inches(5.93)
+        width = Inches(0.76)
+        height = Inches(0.78)
+        print "foto antes" + json_map['obras'][0]['fotoAntes']
+        if json_map['obras'][0]['fotoAntes'] != "":
+            pic = prs.slides[0].shapes.add_picture('obras/media/' + json_map['obras'][0]['fotoAntes'], left, top, width, height)
+        left = Inches(7.9291)
+        top = Inches(5.93)
+        if json_map['obras'][0]['fotoDurante'] != "":
+            pic = prs.slides[0].shapes.add_picture('obras/media/' + json_map['obras'][0]['fotoDurante'], left, top, width, height)
+        left = Inches(8.7677)
+        top = Inches(5.93)
+        if json_map['obras'][0]['fotoDespues'] != "":
+            pic = prs.slides[0].shapes.add_picture('obras/media/' + json_map['obras'][0]['fotoDespues'], left, top, width, height)
 
         prs.save('obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
-
 
         the_file = 'obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx'
         filename = os.path.basename(the_file)
