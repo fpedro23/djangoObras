@@ -10,6 +10,8 @@ from datetime import datetime
 from django.utils.safestring import mark_safe
 import os
 from django.conf import settings
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.edit import CreateView
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
@@ -75,11 +77,13 @@ class DetalleInversionAddForm(forms.ModelForm):
 
 
 class AddObraForm(forms.ModelForm):
+
     class Meta:
         model = Obra
         fields = '__all__'
         customClearableInput = forms.ClearableFileInput()
         customClearableInput.clear_checkbox_label = 'Borrar'
+
 
         widgets = {'tipoMoneda': forms.RadioSelect(renderer=HorizRadioRenderer),
                    'inaugurada': forms.RadioSelect(renderer=HorizRadioRenderer),
@@ -90,7 +94,6 @@ class AddObraForm(forms.ModelForm):
                    'fotoAntes': customClearableInput,
                    'fotoDurante': customClearableInput,
                    'fotoDespues': customClearableInput,
-
                    }
 
     def save(self, commit=True):
@@ -146,5 +149,3 @@ class AddObraForm(forms.ModelForm):
                     os.remove(route)
 
         return super(AddObraForm, self).save(commit=commit)
-
-

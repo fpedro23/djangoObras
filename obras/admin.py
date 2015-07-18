@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import SimpleListFilter
 from django.http import HttpResponseRedirect
-
+from django.contrib import messages
 from obras.models import *
 from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm, DocumentoFuenteForm
 from django.contrib.auth.models import Group
@@ -245,6 +245,7 @@ class ObrasAdmin(admin.ModelAdmin):
     inlinesClasificacion = [ClasificacionInLine]
     inlines = (DetalleInversionInline, DocumentoFuenteInline, DetalleClasificacionInline)
 
+
     list_display = (
         'identificador_unico',
         'estado',
@@ -260,6 +261,18 @@ class ObrasAdmin(admin.ModelAdmin):
     list_filter = [DependenciaListFilter, 'autorizada']
     readonly_fields = ('identificador_unico',)
     actions = [make_authorized, make_unauthorized]
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            success_message = 'La obra \"%s\" se ha modificado exitosamente.' % obj.denominacion
+
+            self.message_user(request, success_message, level=messages.SUCCESS)
+        else:
+            success_message = 'La obra \"%s\" se ha creado exitosamente.' % obj.denominacion
+
+            self.message_user(request, success_message, level=messages.SUCCESS)
+
+        super(ObrasAdmin, self).save_model(request, obj, form, change)
 
     def get_fields(self, request, obj=None):
         if request.user.usuario.rol == 'US':
