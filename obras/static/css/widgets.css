@@ -498,7 +498,7 @@ ul.orderer li.deleted:hover, ul.orderer li.deleted a.selector:hover {
     width: 15px;
     height: 15px;
     border: 0px none;
-    outline: 0; /* Remove dotted border around link */
+    zoom: 80%;
 }
 
 .inline-deletelink:hover {

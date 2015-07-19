@@ -45,11 +45,10 @@
           {% for line in fieldset %}
             {% for field in line %}
               {% if not field.field.is_hidden %}
-              <td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %} style="background: #ffffff; border:0px;">
+              <td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %} width="50%" style="background: #ffffff; border:0px;">
               {% if field.is_readonly %}
                   <p>{{ field.contents }}</p>
               {% else %}
-                  {{ field.field.errors.as_ul }}
                       {{ field.field }}
               {% endif %}
               </td>

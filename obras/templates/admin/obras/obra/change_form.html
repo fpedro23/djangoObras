@@ -51,8 +51,9 @@ x++;
 }
     $(document).ready(function($) {
 
+
         $("tr input.action-select").actions();
-        if ($_GET("m")==1) {
+        if ($_GET("m")==1 || (window.location.href).search('add')<0) {
             $("#walta").hide();
             $("#wmod").show();
             $("#buscar").show();

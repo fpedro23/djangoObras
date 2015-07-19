@@ -1,3 +1,4 @@
+{% load static %}
 <fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
  <div class="datosCATALOGOS">
   <div id="tituloCUADROS">DATOS GENERALES</div>
@@ -12,7 +13,15 @@
                 Nombre de Clasificación:</label></div>
 
             <div class="col-md-6 colmod"><input class="vTextField" id="id_nombreTipoClasificacion" maxlength="200" name="nombreTipoClasificacion" type="text"
-                                value="{{ field.field.value|default_if_none:"" }}"/></div>
+                                value="{{ field.field.value|default_if_none:"" }}"/>
+            {% if field.field.errors %}
+                             <img id="imgerr-{{ field.field.name }}" data-toggle="tooltip" data-placement="left"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="13px" height="13px">
+                            <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
+                            <script> $(document).ready(function($) {
+                                var $te = jQuery.noConflict();
+                                $te('#imgerr-{{ field.field.name}}').tooltip({html:true});});</script>
+                    {% endif %}
+            </div>
             </div>
         {% endif %}
 
@@ -23,7 +32,14 @@
                 <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
                 Clasificación de:</label></div>
 
-            <div class="col-md-6 colmod">{{ field.field }}</div>
+            <div class="col-md-6 colmod">{{ field.field }}
+              {% if field.field.errors %}
+                             <img id="imgerr-{{ field.field.name }}" data-toggle="tooltip" data-placement="left"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="13px" height="13px">
+                            <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
+                            <script> $(document).ready(function($) {
+                                var $te = jQuery.noConflict();
+                                $te('#imgerr-{{ field.field.name}}').tooltip({html:true});});</script>
+                    {% endif %}</div>
             </div>
         {% endif %}
 
@@ -36,7 +52,13 @@
               </div>
                 <div class="col-md-6 colmod">
                     <input class="vTextField" id="id_nombreTipoClasificacionCorta" maxlength="200" name="nombreTipoClasificacionCorta" type="text" value="{{ field.field.value|default_if_none:"" }}"/>
-
+                    {% if field.field.errors %}
+                             <img id="imgerr-{{ field.field.name }}" data-toggle="tooltip" data-placement="left"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="13px" height="13px">
+                            <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
+                            <script> $(document).ready(function($) {
+                                var $te = jQuery.noConflict();
+                                $te('#imgerr-{{ field.field.name}}').tooltip({html:true});});</script>
+                    {% endif %}
                 </div>
         </div>
         {% endif %}

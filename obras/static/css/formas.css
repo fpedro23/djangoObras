@@ -342,8 +342,8 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
      font-size: 12px;
     font-weight: bold;
     color: #B92025;
-    top: 300px;
-	left: 439px;
+    top: 100px;
+	left: 301px;
  }
 
 
@@ -414,7 +414,7 @@ input[type=file] {
 .rendFile{
       font-family: "soberana_sanslight";
     font-size: 11px;
-    width: 90%;
+    width: 95%;
      height: 16px;
     padding: 0px 0px;
 }
@@ -895,4 +895,26 @@ label {
     font-family: "soberana_sanslight";
     font-size: 11px;
     width: 100%;
+}
+
+.field-subclasificacion select{
+    width: 80%;
+}
+
+.field-tipoClasificacion{
+    width: 70%;
+}
+
+.field-monto input[type=number]{
+    width: 80%;
+}
+
+.tooltip{
+    background-color: red;
+    font-size: 10px;
+    font-family: "soberana_sanslight";
+}
+
+.depwid{
+    width: 90%;
 }
