@@ -26,6 +26,9 @@ urlpatterns = patterns('',
                        url(r'^api/idUnico', api.IdUnicoEndpoint.as_view()),
                        url(r'^api/idIpad', api.IdUnicoEndpointIpad.as_view()),
                        url(r'^api/obras_por_autorizar', api.ReporteObrasPorAutorizar.as_view()),
+                       url(r'^api/obras_iniciadas', api.ObrasIniciadasEndpoint.as_view()),
+                       url(r'^api/obras_vencidas', api.ObrasVencidasEndpoint.as_view()),
+                       url(r'^api/obras_por_dependencia', api.ObrasForDependenciaEndpoint.as_view()),
 
 
                        # Mappings Busqueda
@@ -35,10 +38,10 @@ urlpatterns = patterns('',
                        url(r'^api/id_unico', api.IdUnicoEndpoint.as_view()),
 
                        # Mappings Reportes
-                       url(r'^obras_iniciadas', views.obras_iniciadas),
-                       url(r'^obras_vencidas', views.obras_vencidas),
-                       url(r'^obras_dependencia', views.obras_for_dependencia),
-                       url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
+                       #url(r'^obras_iniciadas', views.obras_iniciadas),
+                       #url(r'^obras_vencidas', views.obras_vencidas),
+                       #url(r'^obras_dependencia', views.obras_for_dependencia),
+                       #url(r'^api/inicio', api.ReporteInicioEndpoint.as_view()),
 
                        # Otros endpoints
                        url(r'^api/hora', api.HoraEndpoint.as_view()),

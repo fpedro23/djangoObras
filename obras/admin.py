@@ -258,6 +258,8 @@ class ObrasAdmin(admin.ModelAdmin):
         'inaugurada',
         'fechaInicio',
         'fechaTermino')
+    ordering = ['identificador_unico']
+
     list_filter = [DependenciaListFilter, 'autorizada']
     readonly_fields = ('identificador_unico',)
     actions = [make_authorized, make_unauthorized]

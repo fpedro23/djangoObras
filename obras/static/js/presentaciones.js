@@ -24,9 +24,9 @@ function main_presentaciones() {
     $('#hiperporsectorppt').on('click', hiper_por_sector);
     $('#hiperporentidadppt').on('click', hiper_por_entidad);
 
-    $('#obrasIniciadas').on('click', verObrasIniciadas);
-    $('#obrasVencidas').on('click', verObrasVencidas);
-    $('#obrasDependencia').on('click', verObrasDependencia);
+    //$('#obrasIniciadas').on('click', verObrasIniciadas);
+    //$('#obrasVencidas').on('click', verObrasVencidas);
+    //$('#obrasDependencia').on('click', verObrasDependencia);
 
 
 }
@@ -48,7 +48,7 @@ function hiper_por_entidad() {
 }
 
 
-function verObrasIniciadas() {
+/*function verObrasIniciadas() {
     $('#load1').removeClass("mfp-hide");
     $('#load1').addClass("mfp-show");
 }
@@ -61,4 +61,4 @@ function verObrasVencidas() {
 function verObrasDependencia() {
     $('#load13').removeClass("mfp-hide");
     $('#load13').addClass("mfp-show");
-}
+}*/

@@ -440,13 +440,13 @@ class Obra(models.Model):
         else:
             map['fotoAntes'] = self.fotoAntes.name
         if self.fotoDurante is None:
-            map['fotoAntes'] = None
+            map['fotoDurante'] = None
         else:
-            map['fotoAntes'] = self.fotoDurante.name
+            map['fotoDurante'] = self.fotoDurante.name
         if self.fotoDespues is None:
-            map['fotoAntes'] = None
+            map['fotoDespues'] = None
         else:
-            map['fotoAntes'] = self.fotoDespues.name
+            map['fotoDespues'] = self.fotoDespues.name
         map['inaugurada'] = self.inaugurada
         map['poblacionObjetivo'] = self.poblacionObjetivo
         map['municipio'] = self.municipio
