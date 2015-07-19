@@ -121,7 +121,7 @@ class UserAdmin(UserAdmin):
 
 
 class DependenciaAdmin(admin.ModelAdmin):
-    exclude = ('fecha_ultima_modificacion', 'obraoprograma',)
+    exclude = ('fecha_ultima_modificacion', 'obraoprograma', 'orden_secretaria')
 
     def get_queryset(self, request):
         """Limit Pages to those that belong to the request's user."""

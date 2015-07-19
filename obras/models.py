@@ -41,6 +41,7 @@ class Dependencia(models.Model):
     dependienteDe = models.ForeignKey('self', null=True, blank=True)
     obraoprograma = models.CharField(max_length=1, null=True, blank=True, default='O')
     fecha_ultima_modificacion = models.DateTimeField(null=True, blank=True)
+    orden_secretaria = models.FloatField(null=True, blank=True)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreDependencia
