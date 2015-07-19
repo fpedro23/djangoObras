@@ -50,7 +50,6 @@
               {% if field.is_readonly %}
                   <p>{{ field.contents }}</p>
               {% else %}
-                  {{ field.field.errors.as_ul }}
                   {{ field.field }}
               {% endif %}
               </td>
