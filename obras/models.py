@@ -33,12 +33,15 @@ def content_file_dependencia(instance, filename):
     return '/'.join(['imagenesDependencias', instance.nombreDependencia, filename])
 
 
-
 @python_2_unicode_compatible
 class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
     imagenDependencia = models.FileField(upload_to=content_file_dependencia, blank=True, null=True)
-    dependienteDe = models.ForeignKey('self', null=True, blank=True)
+
+    dependienteDe = models.ForeignKey('self', null=True, blank=True, limit_choices_to={
+        'obraoprograma': 'O',
+    })
+
     obraoprograma = models.CharField(max_length=1, null=True, blank=True, default='O')
     fecha_ultima_modificacion = models.DateTimeField(null=True, blank=True)
     orden_secretaria = models.FloatField(null=True, blank=True)
@@ -266,23 +269,22 @@ BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguracion'))
 def content_file_antes(instance, filename):
     print instance.identificador_unico
     ext = filename.split('.')[-1]
-    filename = instance.identificador_unico + '_ANTES.'+ext
+    filename = instance.identificador_unico + '_ANTES.' + ext
     return '/'.join(['imagenesObras', instance.identificador_unico, filename])
 
 
 def content_file_durante(instance, filename):
     print instance.identificador_unico
     ext = filename.split('.')[-1]
-    filename = instance.identificador_unico + '_DURANTE.'+ext
+    filename = instance.identificador_unico + '_DURANTE.' + ext
     return '/'.join(['imagenesObras', instance.identificador_unico, filename])
 
 
 def content_file_despues(instance, filename):
     print instance.identificador_unico
     ext = filename.split('.')[-1]
-    filename = instance.identificador_unico + '_DESPUES.'+ext
+    filename = instance.identificador_unico + '_DESPUES.' + ext
     return '/'.join(['imagenesObras', instance.identificador_unico, filename])
-
 
 
 @python_2_unicode_compatible
@@ -295,6 +297,7 @@ class Obra(models.Model):
                                     blank=True,
                                     limit_choices_to={
                                         'dependienteDe': None,
+                                        'obraoprograma': 'O',
                                     })
 
     subdependencia = ChainedForeignKey(Dependencia,
@@ -394,7 +397,7 @@ class Obra(models.Model):
         # map['tipoClasificacion'] = []
         # if self.tipoClasificacion:
         # for tipoClasificacion in self.tipoClasificacion.all():
-        #        map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
+        # map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
 
         map['subclasificaciones'] = []
         if self.subclasificacion:
@@ -467,9 +470,9 @@ def content_file_documento_fuente(instance, filename):
 
 @python_2_unicode_compatible
 class DocumentoFuente(models.Model):
-    descripcion = models.CharField(max_length=50,)
+    descripcion = models.CharField(max_length=50, )
     documento = models.FileField(upload_to=content_file_documento_fuente, )
-    obra = models.ForeignKey('Obra',)
+    obra = models.ForeignKey('Obra', )
 
     def __str__(self):
         return self.descripcion
