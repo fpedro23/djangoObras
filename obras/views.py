@@ -490,7 +490,7 @@ def consulta_web(request):
     print request.user.usuario.rol
 
     if request.user.usuario.rol == 'SA':
-        dependencias = Dependencia.objects.filtet(
+        dependencias = Dependencia.objects.filter(
             Q(obraoprograma='O')
         )
 
