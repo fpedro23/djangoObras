@@ -12,14 +12,14 @@ import sys
 import site
 
 # Add the site-packages of the chosen virtualenv to work with
-site.addsitedir('/home/obrasapf/djangoObras/obras/lib/python2.7/site-packages')
+site.addsitedir('/home/obrasapf/djangoObras/venv/lib/python2.7/site-packages')
 
 # Add the app's directory to the PYTHONPATH
-sys.path.append('/home/obrasapf/djangoObras/obras')
-sys.path.append('/home/obrasapf/djangoObras/obras/obras')
+sys.path.append('/home/obrasapf/djangoObras')
+sys.path.append('/home/obrasapf/djangoObras/djangoObrasYProgramas')
 
 # Activate your virtual env
-activate_env = os.path.expanduser("/home/obrasapf/djangoObras/obras/bin/activate_this.py")
+activate_env = os.path.expanduser("/home/obrasapf/djangoObras/venv/bin/activate_this.py")
 execfile(activate_env, dict(__file__=activate_env))
 
 
