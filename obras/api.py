@@ -284,6 +284,21 @@ class BuscadorEndpoint(ProtectedResourceView):
                 map['sumatotal'] = int(reporte['sumatotal'])
             json_map['reporte_dependencia'].append(map)
 
+        json_map['reporte_subdependencia'] = []
+        for reporteSub in resultados['reporte_subdependencia']:
+            map = {}
+            if reporteSub['subdependencia__nombreDependencia'] is not None:
+                map['subdependencia'] = Dependencia.objects.get(
+                    nombreDependencia=reporteSub['subdependencia__nombreDependencia']).to_serializable_dict()
+            else:
+                map['subdependencia'] = Dependencia.objects.get(
+                    nombreDependencia=reporteSub['dependencia__nombreDependencia']).to_serializable_dict()
+            map['numero_obras'] = reporteSub['numero_obras']
+            if reporteSub['sumatotal'] is None:
+                map['sumatotal'] = 0
+            else:
+                map['sumatotal'] = int(reporteSub['sumatotal'])
+            json_map['reporte_subdependencia'].append(map)
         #json_map['obras'] = []
         #for obra in resultados['obras']:
         #    json_map['obras'].append(obra.to_serializable_dict())

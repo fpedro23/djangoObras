@@ -532,6 +532,17 @@ function PDF () {
                                             </article>
                                        </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-xs-10">
+                                           <p>SubDependencia</p>
+                                       </div>
+                                       <div class="col-xs-2">
+                                           <article id="ver_grafica_subdependencia">
+                                               {% csrf_token %}
+                                                <input type="radio" name="graficaTipo" id="subdependencia" value="SubDependencia"/>
+                                            </article>
+                                       </div>
+                                    </div>
                                     <div class="row"><div class="col-xs-10">
                                        <p>Estado</p>
                                        </div>
@@ -1063,6 +1074,16 @@ function PDF () {
                            <article id="ver_tabla_dependencia">
                                {% csrf_token %}
                                 <input type="radio" name="tipoReporte" id="dependencia" value="Dependencia" checked/>
+                            </article>
+                       </div>
+                   </div>
+                   <div class="row"><div class="col-xs-5">
+                       SubDependencia
+                       </div>
+                       <div class="col-xs-2">
+                           <article id="ver_tabla_subdependencia">
+                               {% csrf_token %}
+                                <input type="radio" name="tipoReporte" id="subdependencia" value="SubDependencia"/>
                             </article>
                        </div>
                    </div>
