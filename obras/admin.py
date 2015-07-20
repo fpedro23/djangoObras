@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import SimpleListFilter
-
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 from obras.models import *
-from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm
+from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm, DocumentoFuenteForm
 from django.contrib.auth.models import Group
 
 
@@ -51,6 +52,13 @@ class UserAdmin(UserAdmin):
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (('Permissions'), {'fields': ('is_active',)}),
     )
+
+    def response_add(self, request, obj, post_url_continue=None):
+
+        if '_addanother' not in request.POST:
+            return HttpResponseRedirect('/admin/auth/user')
+        else:
+            return super(UserAdmin, self).response_add(request, obj, post_url_continue)
 
     def save_model(self, request, obj, form, change):
         obj.is_staff = True
@@ -113,7 +121,7 @@ class UserAdmin(UserAdmin):
 
 
 class DependenciaAdmin(admin.ModelAdmin):
-    exclude = ('fecha_ultima_modificacion', 'obraoprograma',)
+    exclude = ('fecha_ultima_modificacion', 'obraoprograma', 'orden_secretaria')
 
     def get_queryset(self, request):
         """Limit Pages to those that belong to the request's user."""
@@ -148,7 +156,7 @@ class ClasificacionInLine(admin.StackedInline):
 class DocumentoFuenteInline(admin.TabularInline):
     model = DocumentoFuente
     extra = 1
-
+    form = DocumentoFuenteForm
 
 class DependenciaListFilter(SimpleListFilter):
     # USAGE
@@ -221,18 +229,22 @@ class DetalleInversionInline(admin.TabularInline):
     form = DetalleInversionAddForm
     model = DetalleInversion
     extra = 1
+    can_delete = False
 
 
 class DetalleClasificacionInline(admin.TabularInline):
     form = DetalleClasificacionAddForm
     model = DetalleClasificacion
-    extra = 4
+    extra = 1
+    can_delete = False
+
 
 
 class ObrasAdmin(admin.ModelAdmin):
     form = AddObraForm
     inlinesClasificacion = [ClasificacionInLine]
     inlines = (DetalleInversionInline, DocumentoFuenteInline, DetalleClasificacionInline)
+
 
     list_display = (
         'identificador_unico',
@@ -246,9 +258,23 @@ class ObrasAdmin(admin.ModelAdmin):
         'inaugurada',
         'fechaInicio',
         'fechaTermino')
+    ordering = ['identificador_unico']
+
     list_filter = [DependenciaListFilter, 'autorizada']
     readonly_fields = ('identificador_unico',)
     actions = [make_authorized, make_unauthorized]
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            success_message = 'La obra \"%s\" se ha modificado exitosamente.' % obj.denominacion
+
+            self.message_user(request, success_message, level=messages.SUCCESS)
+        else:
+            success_message = 'La obra \"%s\" se ha creado exitosamente.' % obj.denominacion
+
+            self.message_user(request, success_message, level=messages.SUCCESS)
+
+        super(ObrasAdmin, self).save_model(request, obj, form, change)
 
     def get_fields(self, request, obj=None):
         if request.user.usuario.rol == 'US':

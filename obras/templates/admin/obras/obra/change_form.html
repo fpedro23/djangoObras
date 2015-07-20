@@ -51,8 +51,9 @@ x++;
 }
     $(document).ready(function($) {
 
+
         $("tr input.action-select").actions();
-        if ($_GET("m")==1) {
+        if ($_GET("m")==1 || (window.location.href).search('add')<0) {
             $("#walta").hide();
             $("#wmod").show();
             $("#buscar").show();
@@ -226,16 +227,36 @@ x++;
 
 
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-                    <script src="{% static "assets/bootstrap/js/bootstrap-datepicker.js"%}"></script>
+
+
+
+                           <script src="{% static "assets/bootstrap/js/bootstrap-datepicker.js"%}"></script>
+
+
                    <script type="text/javascript">
-                    var $dp = jQuery.noConflict();
-                    $dp('#id_fechaInicio').datepicker({
-                        autoclose:true,
-                        orientation:'bottom'
-                    });
-                       $dp('#id_fechaTermino').datepicker({
-                        autoclose:true
-                    });
+
+                        var $dp = jQuery.noConflict();
+
+
+                        $dp('#id_fechaInicio').datepicker({
+                            autoclose: true
+                        }).on('changeDate', function (selected) {
+                            var startDate = new Date(selected.date.valueOf());
+                            $dp('#id_fechaTermino').datepicker('setStartDate', startDate);
+                            }).on('clearDate', function (selected) {
+                            $dp('#id_fechaTermino').datepicker('setStartDate', null);
+                        });
+
+                        $dp('#id_fechaTermino').datepicker({
+                            autoclose: true
+                        }).on('changeDate', function (selected) {
+                            var endDate = new Date(selected.date.valueOf());
+                            $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
+                            }).on('clearDate', function (selected) {
+                            $dp('#id_fechaInicio').datepicker('setEndDate', null);
+                        });
+
+
                     </script>
 
                  <script src="{% static "assets/js/jquery.numeric.js"%}"></script>

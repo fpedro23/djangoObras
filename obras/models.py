@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 from smart_selects.db_fields import ChainedForeignKey
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
 # TODO agregar nombres verbose a los modelos
 
@@ -24,13 +26,25 @@ class TipoObra(models.Model):
         return ans
 
 
+def content_file_dependencia(instance, filename):
+    # print instance.identificador_unico
+    # ext = filename.split('.')[-1]
+    # filename = instance.identificador_unico + '_ANTES.'+ext
+    return '/'.join(['imagenesDependencias', instance.nombreDependencia, filename])
+
+
 @python_2_unicode_compatible
 class Dependencia(models.Model):
     nombreDependencia = models.CharField(max_length=200)
-    imagenDependencia = models.FileField(upload_to="./", blank=True, null=True)
-    dependienteDe = models.ForeignKey('self', null=True, blank=True)
+    imagenDependencia = models.FileField(upload_to=content_file_dependencia, blank=True, null=True)
+
+    dependienteDe = models.ForeignKey('self', null=True, blank=True, limit_choices_to={
+        'obraoprograma': 'O',
+    })
+
     obraoprograma = models.CharField(max_length=1, null=True, blank=True, default='O')
     fecha_ultima_modificacion = models.DateTimeField(null=True, blank=True)
+    orden_secretaria = models.FloatField(null=True, blank=True)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreDependencia
@@ -227,14 +241,13 @@ class Usuario(models.Model):
         'dependienteDe': None,
         'obraoprograma': 'O',
     },
-    )
+                                         )
     subdependencia = models.ManyToManyField(Dependencia, blank=True, null=True,
                                             limit_choices_to={'dependienteDe__isnull': False},
                                             related_name='Subdependencias')
 
 
 @python_2_unicode_compatible
-
 class InstanciaEjecutora(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -253,6 +266,27 @@ class InstanciaEjecutora(models.Model):
 BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguracion'))
 
 
+def content_file_antes(instance, filename):
+    print instance.identificador_unico
+    ext = filename.split('.')[-1]
+    filename = instance.identificador_unico + '_ANTES.' + ext
+    return '/'.join(['imagenesObras', instance.identificador_unico, filename])
+
+
+def content_file_durante(instance, filename):
+    print instance.identificador_unico
+    ext = filename.split('.')[-1]
+    filename = instance.identificador_unico + '_DURANTE.' + ext
+    return '/'.join(['imagenesObras', instance.identificador_unico, filename])
+
+
+def content_file_despues(instance, filename):
+    print instance.identificador_unico
+    ext = filename.split('.')[-1]
+    filename = instance.identificador_unico + '_DESPUES.' + ext
+    return '/'.join(['imagenesObras', instance.identificador_unico, filename])
+
+
 @python_2_unicode_compatible
 class Obra(models.Model):
     # TODO agrupar semanticamente todos los campos de obras
@@ -263,6 +297,7 @@ class Obra(models.Model):
                                     blank=True,
                                     limit_choices_to={
                                         'dependienteDe': None,
+                                        'obraoprograma': 'O',
                                     })
 
     subdependencia = ChainedForeignKey(Dependencia,
@@ -284,7 +319,9 @@ class Obra(models.Model):
                                                symmetrical=False,
                                                limit_choices_to={
                                                    'subclasificacionDe': None,
-                                               }
+                                               },
+                                               null=True,
+                                               blank=True,
 
                                                )
 
@@ -307,17 +344,17 @@ class Obra(models.Model):
     susceptibleInauguracion = models.BooleanField(default=False)
     porcentajeAvance = models.DecimalField(max_digits=5, decimal_places=2)
     observaciones = models.CharField(max_length=200)
-    fotoAntes = models.FileField(blank=True, null=True)
-    fotoDurante = models.FileField(blank=True, null=True)
-    fotoDespues = models.FileField(blank=True, null=True)
+    fotoAntes = models.FileField(blank=True, null=True, upload_to=content_file_antes)
+    fotoDurante = models.FileField(blank=True, null=True, upload_to=content_file_durante)
+    fotoDespues = models.FileField(blank=True, null=True, upload_to=content_file_despues)
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True)
     inaugurada = models.NullBooleanField(choices=BOOL_CHOICES)
     poblacionObjetivo = models.CharField(max_length=200)
     municipio = models.CharField(max_length=200)
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=False, default=1)
     autorizada = models.BooleanField(default=False)
-    latitud = models.FloatField()
-    longitud = models.FloatField()
+    latitud = models.FloatField(null=True, blank=True)
+    longitud = models.FloatField(null=True, blank=True)
     id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200, null=True, blank=True)
 
     def __str__(self):  # __unicode__ on Python 2
@@ -359,8 +396,8 @@ class Obra(models.Model):
 
         # map['tipoClasificacion'] = []
         # if self.tipoClasificacion:
-        #    for tipoClasificacion in self.tipoClasificacion.all():
-        #        map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
+        # for tipoClasificacion in self.tipoClasificacion.all():
+        # map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
 
         map['subclasificaciones'] = []
         if self.subclasificacion:
@@ -406,13 +443,13 @@ class Obra(models.Model):
         else:
             map['fotoAntes'] = self.fotoAntes.name
         if self.fotoDurante is None:
-            map['fotoAntes'] = None
+            map['fotoDurante'] = None
         else:
-            map['fotoAntes'] = self.fotoDurante.name
+            map['fotoDurante'] = self.fotoDurante.name
         if self.fotoDespues is None:
-            map['fotoAntes'] = None
+            map['fotoDespues'] = None
         else:
-            map['fotoAntes'] = self.fotoDespues.name
+            map['fotoDespues'] = self.fotoDespues.name
         map['inaugurada'] = self.inaugurada
         map['poblacionObjetivo'] = self.poblacionObjetivo
         map['municipio'] = self.municipio
@@ -424,17 +461,28 @@ class Obra(models.Model):
         return map
 
 
+def content_file_documento_fuente(instance, filename):
+    # print instance.identificador_unico
+    # ext = filename.split('.')[-1]
+    # filename = instance.identificador_unico + '_ANTES.'+ext
+    return '/'.join(['documentosFuente', instance.obra.identificador_unico, filename])
+
+
 @python_2_unicode_compatible
 class DocumentoFuente(models.Model):
-    descripcion = models.CharField(max_length=50, blank=True, null=True)
-    documento = models.FileField(upload_to="/", blank=True, null=True)
-    obra = models.ForeignKey('Obra', blank=True, null=True)
+    descripcion = models.CharField(max_length=50, )
+    documento = models.FileField(upload_to=content_file_documento_fuente, )
+    obra = models.ForeignKey('Obra', )
 
     def __str__(self):
         return self.descripcion
 
     def __unicode__(self):
         return self.descripcion
+
+    def delete(self, using=None):
+        self.documento.delete()
+        super(DocumentoFuente, self).delete(using)
 
 
 # modelo temporal para probar ubicaciones de obras en mapa
@@ -453,7 +501,10 @@ class Ubicacion(models.Model):
 
 class DetalleInversion(models.Model):
     obra = models.ForeignKey(Obra)
-    tipoInversion = models.ForeignKey(TipoInversion, )
+    tipoInversion = models.ForeignKey(TipoInversion,
+                                      null=True,
+                                      blank=True
+                                      )
     monto = models.FloatField()
 
     class Meta:
@@ -474,7 +525,9 @@ class DetalleClasificacion(models.Model):
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
                                           limit_choices_to={
                                               'subclasificacionDe': None,
-                                          }
+                                          },
+                                          null=True,
+                                          blank=True
                                           )
 
     subclasificacion = ChainedForeignKey(TipoClasificacion,

@@ -45,10 +45,10 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
         if not (usuario.rol == 'SA'):
             subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
             query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
-        obras = Obra.objects.filter(query).values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'totalInversion')
+        obras = Obra.objects.filter(query)
 
         the_list = []
-        for obra in obras:
+        for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
             the_list.append(obra)
 
         return HttpResponse(json.dumps(the_list), 'application/json')
@@ -63,10 +63,10 @@ class ObrasVencidasEndpoint(ProtectedResourceView):
             obras = Obra.objects.filter(fechaTermino__lte=today)
         else:
             obras = Obra.objects.filter(Q(fechaTermino__lte=today) & Q(
-                dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all()))).values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'totalInversion')
+                dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())))
 
         the_list = []
-        for obra in obras:
+        for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
             the_list.append(obra)
 
         return HttpResponse(json.dumps(the_list), 'application/json')
@@ -82,10 +82,10 @@ class ObrasForDependenciaEndpoint(ProtectedResourceView):
             obras = Obra.filter(dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all()))
 
         the_list = []
-        for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'totalInversion'):
+        for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
             the_list.append(obra)
 
-        return HttpResponse(json.dumpst(the_list), 'application/json')
+        return HttpResponse(json.dumps(the_list), 'application/json')
 
 
 class DependenciasEndpoint(ProtectedResourceView):
@@ -475,5 +475,4 @@ class ReporteObrasPorAutorizar(ProtectedResourceView):
             the_list.append(obra)
 
         return HttpResponse(json.dumps(the_list), 'application/json')
-
 

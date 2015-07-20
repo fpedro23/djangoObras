@@ -102,14 +102,15 @@ class BuscarObras:
         total_invertido = obras.aggregate(Sum('inversionTotal'))
 
         #Reporte Dependencia
-        reporte_dependencia = obras.values('dependencia__nombreDependencia').annotate(
+        reporte_dependencia = obras.values('dependencia__nombreDependencia','dependencia__orden_secretaria').annotate(
             numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_dependencia = reporte_dependencia.order_by('dependencia__orden_secretaria')
 
         #Reporte SubDependencia
-        reporte_subdependencia = obras.values('dependencia__nombreDependencia',
+        reporte_subdependencia = obras.values('dependencia__nombreDependencia','dependencia__orden_secretaria',
                                               'subdependencia__nombreDependencia').annotate(
             numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
-
+        reporte_subdependencia = reporte_subdependencia.order_by('dependencia__orden_secretaria')
 
         #Reporte Estado
         reporte_estado = obras.values('estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(

@@ -30,7 +30,7 @@
 .scrollDocumentos{
       position: relative;
       top: 0px;
-      height: 99%;
+      height: 75%;
       overflow: auto;
       width:99%;
 }
@@ -344,6 +344,9 @@
                                {% endif %}
                         </td>
                     </tr>
+         {% endif %}
+         {% if field.field.name == "montoRegistroHacendario" %}
+
                     <tr>
                         <td width="58%" class="texto" style="padding-right:0px;">  <label class="required" for="id_montoRegistroHacendario"> Recursos Federales Autorizados:</label></td>
                         <td width="42%" class="texto">  {{ field.field }}
