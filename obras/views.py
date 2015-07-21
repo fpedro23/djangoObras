@@ -4,6 +4,7 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
+import pptx.exc as exceptions
 
 from obras.tools import *
 from obras.BuscarObras import BuscaObra
