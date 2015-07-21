@@ -6,8 +6,10 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 admin.autodiscover()
 
+
 urlpatterns = patterns(
     '',
+    url(r'^$', 'obras.views.redirect_admin', name='redirect_admin'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^obras/', include('obras.urls')),

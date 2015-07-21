@@ -15,7 +15,7 @@ from obras.models import Obra
 import datetime
 
 from obras.BuscarObras import BuscarObras
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from oauth2_provider.models import AccessToken
 
 from pptx import Presentation
@@ -1396,3 +1396,7 @@ def hiper_por_entidad_ppt(request):
     response['Content-Disposition'] = "attachment; filename=%s" % filename
 
     return response
+
+
+def redirect_admin(request):
+    return redirect('admin/')
