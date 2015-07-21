@@ -127,6 +127,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/obrasapf/djangoObras/static'
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'obras/templates/'),
