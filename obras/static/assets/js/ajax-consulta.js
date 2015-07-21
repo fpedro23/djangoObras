@@ -49,9 +49,11 @@ function main_consulta() {
 	$j('#ver_datos #button').on('click', verDatos);
     $j('#ver_tabla_estado #estado').on('click', mostrarTablas);
     $j('#ver_tabla_dependencia #dependencia').on('click', mostrarTablas)
+    $j('#ver_tabla_subdependencia #subdependencia').on('click', mostrarTablas)
     $j('#ver_grafica #grafica').on('click', graficas)
     $j('#ver_grafica_estado #estado').on('click', graficas);
     $j('#ver_grafica_dependencia #dependencia').on('click', graficas);
+    $j('#ver_grafica_subdependencia #subdependencia').on('click', graficas);
     $j('#ver_grafica_tipos #tipoGrafica').on('change', graficas);
     $j('#ver_grafica_datos #datosGrafica').on('change', graficas);
     $j('#go_Graficas #goGraficas').on('click', enviaFiltrosGrafica);
@@ -350,15 +352,27 @@ function graficas(){
         SeriesCategorias = jsonSeriesCategorias(datosJson,tipoReporte);
         SeriesTipeadas = jsonSeriesTipeada(datosJson,tipoReporte,datosGrafica);
     }else{
-        for (var i = 0; i < datosJson.reporte_estado.length; i++) {
-            categorias.push(datosJson.reporte_estado[i].estado.nombreEstado);
-            datas.push(datosJson.reporte_estado[i].numeroObras);
-            montos.push(datosJson.reporte_estado[i].sumatotal);
-            titulo="Número de obras por Estado";
+        if (tipoReporte=="SubDependencia") {
+            for (var i = 0; i < datosJson.reporte_subdependencia.length; i++) {
+                categorias.push(datosJson.reporte_subdependencia[i].subdependencia.nombreDependencia);
+                datas.push(datosJson.reporte_subdependencia[i].numero_obras);
+                montos.push(datosJson.reporte_subdependencia[i].sumatotal);
+                titulo="Número de obras por SubDependencia";
+            }
+            Series=jsonSeries(datosJson,tipoReporte);
+            SeriesCategorias = jsonSeriesCategorias(datosJson,tipoReporte);
+            SeriesTipeadas = jsonSeriesTipeada(datosJson,tipoReporte,datosGrafica);
+        }else {
+            for (var i = 0; i < datosJson.reporte_estado.length; i++) {
+                categorias.push(datosJson.reporte_estado[i].estado.nombreEstado);
+                datas.push(datosJson.reporte_estado[i].numeroObras);
+                montos.push(datosJson.reporte_estado[i].sumatotal);
+                titulo = "Número de obras por Estado";
+            }
+            Series = jsonSeries(datosJson, tipoReporte);
+            SeriesCategorias = jsonSeriesCategorias(datosJson, tipoReporte);
+            SeriesTipeadas = jsonSeriesTipeada(datosJson, tipoReporte, datosGrafica);
         }
-        Series=jsonSeries(datosJson,tipoReporte);
-        SeriesCategorias = jsonSeriesCategorias(datosJson,tipoReporte);
-        SeriesTipeadas = jsonSeriesTipeada(datosJson,tipoReporte,datosGrafica);
     }
 
     Highcharts.setOptions({
@@ -1430,6 +1444,23 @@ function tablaD(Datos){
         }
     }
 
+    if (tipoReporte=="SubDependencia") {
+        subdependenciasChecked="checked";
+        for (var i = 0; i < Datos.reporte_subdependencia.length; i++) {
+            sHtml += '<tr>'
+            + '<td width= "60%">' + Datos.reporte_subdependencia[i].subdependencia.nombreDependencia + '</td>'
+            + '<td width= "20%" align="right">' + formato_numero(Datos.reporte_subdependencia[i].numero_obras, 0, '.', ',') + '</td>'
+            + '<td width= "20%" align="right">' + formato_numero(Datos.reporte_subdependencia[i].sumatotal, 2, '.', ',') + '</td>'
+            + '</tr>'
+
+            sHtmlExporta += '<tr>'
+            + '<td width= "60%">' + Datos.reporte_subdependencia[i].subdependencia.nombreDependencia + '</td>'
+            + '<td width= "20%" align="right">' + formato_numero(Datos.reporte_subdependencia[i].numero_obras, 0, '.', ',') + '</td>'
+            + '<td width= "20%" align="right">' + formato_numero(Datos.reporte_subdependencia[i].sumatotal, 2, '.', ',') + '</td>'
+            + '</tr>'
+        }
+    }
+
     if (tipoReporte=="Estado") {
         estadosChecked="checked";
         for (var i = 0; i < Datos.reporte_estado.length; i++) {
@@ -1494,7 +1525,7 @@ function tablaD(Datos){
                 +'    headerTemplate : "{content} {icon}",'
                 +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
                 +'    widgetOptions : {'
-                +'        scroller_height : 130,'
+                +'        scroller_height : 110,'
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
@@ -1574,6 +1605,17 @@ $j.tablaGrafica = function(Datos){
             + '<td>' + Datos.reporte_dependencia[i].dependencia.nombreDependencia + '</td>'
             + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].numero_obras, 0, '.', ',') + '</td>'
             + '<td align="right">' + formato_numero(Datos.reporte_dependencia[i].sumatotal, 2, '.', ',') + '</td>'
+            + '</tr>'
+        }
+    }
+
+    if (tipoReporte=="SubDependencia") {
+        subdependenciasChecked="checked";
+        for (var i = 0; i < Datos.reporte_subdependencia.length; i++) {
+            sHtml += '<tr>'
+            + '<td>' + Datos.reporte_subdependencia[i].subdependencia.nombreDependencia + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_subdependencia[i].numero_obras, 0, '.', ',') + '</td>'
+            + '<td align="right">' + formato_numero(Datos.reporte_subdependencia[i].sumatotal, 2, '.', ',') + '</td>'
             + '</tr>'
         }
     }

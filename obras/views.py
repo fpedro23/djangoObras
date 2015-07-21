@@ -4,7 +4,6 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
-import pptx.exc as exceptions
 
 from obras.tools import *
 from obras.BuscarObras import BuscaObra
@@ -491,9 +490,7 @@ def consulta_web(request):
     print request.user.usuario.rol
 
     if request.user.usuario.rol == 'SA':
-        dependencias = Dependencia.objects.filter(
-            Q(obraoprograma='O')
-        )
+        dependencias = Dependencia.objects.exclude(obraoprograma='P')
 
     elif request.user.usuario.rol == 'AD':
         dependencias = Dependencia.objects.filter(
