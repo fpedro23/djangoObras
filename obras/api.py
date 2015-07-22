@@ -94,7 +94,10 @@ class DependenciasEndpoint(ProtectedResourceView):
         token_model = AccessToken.objects.get(token=token)
 
         if token_model.user.usuario.rol == 'SA':
-            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.all())
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+                Q(obraoprograma='O')
+            )
+            )
 
         elif token_model.user.usuario.rol == 'AD':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
