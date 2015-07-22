@@ -505,7 +505,9 @@
               <div class="pie">
                   <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                         <tr>
-                            <td colspan="2" class="texto">  {{field.field|add_attributes:"checked:true" }} Autorizar cambios</td>
+                            <td colspan="2" class="texto">
+                                {{field.field}} Autorizada
+                            </td>
                          </tr>
                   </table>
               </div>
@@ -514,7 +516,7 @@
 
      {% endfor %}
    {% endfor %}
-        <div class="submitlineObra">
+        <div class="submitlineObra" style="">
                 <!--<div class="eliminarOBTN" onclick="location.href='/admin/obras/obra/{ original.pk }}/delete';"></div>-->
                 <div class="salirOBTN" onclick="location.href='/obras/movimientos'"></div>
                 <div class="guardarOBTN" onclick="document.getElementById('{{ opts.model_name }}_form').submit('_save');"></div>

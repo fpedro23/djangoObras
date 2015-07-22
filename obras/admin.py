@@ -265,6 +265,11 @@ class ObrasAdmin(admin.ModelAdmin):
     actions = [make_authorized, make_unauthorized]
 
     def save_model(self, request, obj, form, change):
+        print request.user.usuario.rol
+
+        if change and request.user.usuario.rol == 'US':
+            obj.autorizada = False
+
         if change:
             success_message = 'La obra \"%s\" se ha modificado exitosamente.' % obj.denominacion
 

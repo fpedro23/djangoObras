@@ -104,16 +104,20 @@ class AddObraForm(forms.ModelForm):
         instance.dependencia.fecha_ultima_modificacion = datetime.now()
         # print instance.dependencia.fecha_ultima_modificacion
         instance.dependencia.save()
+
         if instance.id and not instance.autorizada:
             obra = Obra.objects.get(id=instance.id)
-            usuario = LogEntry.objects.filter(
-                object_id=obra.id,
-                action_flag=ADDITION,
-                content_type__id__exact=ContentType.objects.get_for_model(Obra).id
-            ).order_by('action_time').last().user
-            send_mail('Cambios obra %s no autorizados' % obra.identificador_unico,
-                      'Los cambios a a la obra %s no fueron autorizados' % obra.identificador_unico,
-                      'edicomexsa@gmail.com', [usuario.email])
+            try:
+                usuario = LogEntry.objects.filter(
+                    object_id=obra.id,
+                    action_flag=ADDITION,
+                    content_type__id__exact=ContentType.objects.get_for_model(Obra).id
+                ).order_by('action_time').last().user
+                send_mail('Cambios obra %s no autorizados' % obra.identificador_unico,
+                          'Los cambios a a la obra %s no fueron autorizados' % obra.identificador_unico,
+                          'edicomexsa@gmail.com', [usuario.email])
+            except Exception as e:
+                print e
 
         if instance.identificador_unico is None:
 
