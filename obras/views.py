@@ -638,7 +638,7 @@ def ajax_prueba(request):
 # reportes de power point ************************************************************************************
 
 def fichaTecnica(request):
-        prs = Presentation('obras/static/ppt/FichaTecnicaObras.pptx')
+        prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/FichaTecnicaObras.pptx')
         usuario = request.user.usuario
         buscador = BuscaObra(
             identificador_unico=request.GET.get('identificador_unico', None)
@@ -800,7 +800,7 @@ def fichaTecnica(request):
         #logo dependencia
         top = Inches(1)
         left = Inches(0.4)
-        pic = prs.slides[0].shapes.add_picture('obras' + json_map['obras'][0]['dependencia']['imagenDependencia'], left, top)
+        pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras' + json_map['obras'][0]['dependencia']['imagenDependencia'], left, top)
 
         #imagenes de la obra
         left = Inches(7.08)
@@ -809,19 +809,19 @@ def fichaTecnica(request):
         height = Inches(0.78)
         print "foto antes" + json_map['obras'][0]['fotoAntes']
         if json_map['obras'][0]['fotoAntes'] != "":
-            pic = prs.slides[0].shapes.add_picture('obras/media/' + json_map['obras'][0]['fotoAntes'], left, top, width, height)
+            pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoAntes'], left, top, width, height)
         left = Inches(7.9291)
         top = Inches(5.93)
         if json_map['obras'][0]['fotoDurante'] != "":
-            pic = prs.slides[0].shapes.add_picture('obras/media/' + json_map['obras'][0]['fotoDurante'], left, top, width, height)
+            pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoDurante'], left, top, width, height)
         left = Inches(8.7677)
         top = Inches(5.93)
         if json_map['obras'][0]['fotoDespues'] != "":
-            pic = prs.slides[0].shapes.add_picture('obras/media/' + json_map['obras'][0]['fotoDespues'], left, top, width, height)
+            pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoDespues'], left, top, width, height)
 
-        prs.save('obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
+        prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
 
-        the_file = 'obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx'
+        the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx'
         filename = os.path.basename(the_file)
         chunk_size = 8192
         response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
@@ -858,7 +858,7 @@ def balance_general_ppt(request):
 
 
 
-    prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRINCIPAL_BALANCE_GENERAL.pptx')
 
     # informacion para el 2013
     start_date = datetime.date(2012, 12, 01)
@@ -882,6 +882,14 @@ def balance_general_ppt(request):
     total_obras_2014 = obras2014.count()
     total_invertido_2014 = obras2014.aggregate(Sum('inversionTotal'))
 
+    # informacion para obras concluidas
+    obras_concluidas = Obra.objects.filter(
+        Q(tipoObra=3),query
+    )
+
+    total_obras_concluidas = obras_concluidas.count()
+    total_invertido_concluidas = obras_concluidas.aggregate(Sum('inversionTotal'))
+
     # informacion para obras en proceso
     obras_proceso = Obra.objects.filter(
         Q(tipoObra=2),query
@@ -899,25 +907,20 @@ def balance_general_ppt(request):
     total_invertido_proyectadas = obras_proyectadas.aggregate(Sum('inversionTotal'))
 
     # informacion para obras totales
-    total_obras = total_obras_2013 + total_obras_2014 + total_obras_proceso + total_obras_proyectadas
+    total_obras = total_obras_concluidas + total_obras_proceso + total_obras_proyectadas
+
 
     total_invertido = 0
-    if total_invertido_2013.get('inversionTotal__sum',0):
-        total_invertido = total_invertido + total_invertido_2013.get('inversionTotal__sum',0)
-    if total_invertido_2014.get('inversionTotal__sum',0):
-        total_invertido = total_invertido + total_invertido_2014.get('inversionTotal__sum',0)
+    if total_invertido_concluidas.get('inversionTotal__sum',0):
+        total_invertido = total_invertido + total_invertido_concluidas.get('inversionTotal__sum',0)
     if total_invertido_proceso.get('inversionTotal__sum',0):
         total_invertido = total_invertido + total_invertido_proceso.get('inversionTotal__sum',0)
     if total_invertido_proyectadas.get('inversionTotal__sum',0):
         total_invertido = total_invertido + total_invertido_proyectadas.get('inversionTotal__sum',0)
 
-    totalinvertido2013=0
-    if total_invertido_2013.get('inversionTotal__sum',0):
-        totalinvertido2013 = total_invertido_2013.get('inversionTotal__sum',0)
-
-    totalinvertido2014=0
-    if total_invertido_2014.get('inversionTotal__sum',0):
-        totalinvertido2014 = total_invertido_2014.get('inversionTotal__sum',0)
+    totalinvertidoconcluidas=0
+    if total_invertido_concluidas.get('inversionTotal__sum',0):
+        totalinvertidoconcluidas = total_invertido_concluidas.get('inversionTotal__sum',0)
 
     totalinvertidoproceso=0
     if total_invertido_proceso.get('inversionTotal__sum',0):
@@ -932,21 +935,19 @@ def balance_general_ppt(request):
     #'inversionTotal__sum',0)
 
 
-    prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_2013)
-    prs.slides[0].shapes[16].text= '$ {0:,.2f}'.format(totalinvertido2013)
-    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_2014)
-    prs.slides[0].shapes[18].text= '$ {0:,.2f}'.format(totalinvertido2014)
-    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_proceso)
-    prs.slides[0].shapes[22].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
-    prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_proyectadas)
-    prs.slides[0].shapes[24].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
-    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras)
-    prs.slides[0].shapes[20].text= '$ {0:,.2f}'.format(total_invertido)
+    prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_concluidas)
+    prs.slides[0].shapes[16].text= '$ {0:,.2f}'.format(totalinvertidoconcluidas)
+    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[0].shapes[18].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
+    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_proyectadas)
+    prs.slides[0].shapes[20].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
+    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras)
+    prs.slides[0].shapes[22].text= '$ {0:,.2f}'.format(total_invertido)
 
 
-    prs.save('obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
 
-    the_file = 'obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
@@ -959,7 +960,7 @@ def balance_general_ppt(request):
 
 @login_required()
 def hiper_info_general_ppt(request):
-    prs = Presentation('obras/static/ppt/HIPERVINCULO_INFORMACION_GENERAL.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INFORMACION_GENERAL.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
     subdependencias = usuario.subdependencia.all()
@@ -1014,18 +1015,24 @@ def hiper_info_general_ppt(request):
     #total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
     #total_invertido_concluidas = obras_concluidas.aggregate(Sum('inversionTotal'))
 
+    prs.slides[0].shapes[3].text_frame.paragraphs[0].font.size = Pt(9)
     prs.slides[0].shapes[3].text= '{0:,}'.format(total_obras_concluidas)
+    prs.slides[0].shapes[4].text_frame.paragraphs[0].font.size = Pt(9)
     prs.slides[0].shapes[4].text= '$ {0:,.2f}'.format(totalinvertidoconcluidas)
+    prs.slides[1].shapes[3].text_frame.paragraphs[0].font.size = Pt(9)
     prs.slides[1].shapes[3].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[1].shapes[4].text_frame.paragraphs[0].font.size = Pt(9)
     prs.slides[1].shapes[4].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
+    prs.slides[2].shapes[3].text_frame.paragraphs[0].font.size = Pt(9)
     prs.slides[2].shapes[3].text= '{0:,}'.format(total_obras_proyectadas)
+    prs.slides[2].shapes[4].text_frame.paragraphs[0].font.size = Pt(9)
     prs.slides[2].shapes[4].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
 
 
 
-    prs.save('obras/static/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx')
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx')
 
-    the_file = 'obras/static/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx'
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
@@ -1040,13 +1047,13 @@ def hiper_info_general_ppt(request):
 @login_required()
 @user_passes_test(is_super_admin)
 def hiper_inauguradas_ppt(request):
-    prs = Presentation('obras/static/ppt/HIPERVINCULO_INAUGURADAS_SENALIZADAS.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INAUGURADAS_SENALIZADAS.pptx')
     usuario = request.user.usuario
     # falta implementar
 
-    prs.save('obras/static/ppt/ppt-generados/hiper_inauguradas_' + str(usuario.user.id) + '.pptx')
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_' + str(usuario.user.id) + '.pptx')
 
-    the_file = 'obras/static/ppt/ppt-generados/hiper_inauguradas_' + str(usuario.user.id) + '.pptx'
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
@@ -1059,100 +1066,93 @@ def hiper_inauguradas_ppt(request):
 @login_required()
 @user_passes_test(is_super_admin)
 def hiper_por_sector_ppt(request):
-    prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
     usuario = request.user.usuario
-    start_date_2013 = datetime.date(2012, 12, 01)
-    end_date_2013 = datetime.date(2013, 12, 31)
 
-    start_date_2014 = datetime.date(2014, 01, 01)
-    end_date_2014 = datetime.date(2014, 12, 31)
+    start_date = datetime.date(2015, 01, 01)
+    end_date = datetime.date(2015, 12, 31)
     dependencias = {}
 
     for dependencia in Dependencia.objects.filter(
-        Q(obraoprograma='O')
+        Q(obraoprograma='O'),Q(dependienteDe=None)
     ):
         print dependencia.nombreDependencia
 
-        obras_2013_concluidas = Obra.objects.filter(
-            Q(fechaTermino__range=(start_date_2013, end_date_2013)),
+
+        obras_concluidas = Obra.objects.filter(
+            Q(fechaTermino__range=(start_date, end_date)),
             Q(tipoObra=3),
             Q(dependencia=dependencia),
         )
 
-        obras_2014_concluidas = Obra.objects.filter(
-            Q(fechaTermino__range=(start_date_2014, end_date_2014)),
-            Q(tipoObra=3),
-            Q(dependencia=dependencia),
-        )
-
-        obras_2014_proceso = Obra.objects.filter(
-            Q(fechaTermino__range=(start_date_2014, end_date_2014)),
+        obras_proceso = Obra.objects.filter(
+            Q(fechaTermino__range=(start_date, end_date)),
             Q(tipoObra=2),
             Q(dependencia=dependencia),
         )
 
-        obras_2014_proyectadas = Obra.objects.filter(
-            Q(fechaTermino__range=(start_date_2014, end_date_2014)),
+        obras_proyectadas = Obra.objects.filter(
+            Q(fechaTermino__range=(start_date, end_date)),
             Q(tipoObra=1),
             Q(dependencia=dependencia),
         )
 
-        total_obras_concluidas_2013 = obras_2013_concluidas.count()
-        total_obras_concluidas_2014 = obras_2014_concluidas.count()
-        total_obras_proceso = obras_2014_proceso.count()
-        total_obras_proyectadas = obras_2014_proyectadas.count()
 
-        total_invertido_2013 = obras_2013_concluidas.aggregate(Sum('inversionTotal'))
-        total_invertido_2014 = obras_2014_concluidas.aggregate(Sum('inversionTotal'))
-        total_invertido_proceso = obras_2014_proceso.aggregate(Sum('inversionTotal'))
-        total_invertido_proyectadas = obras_2014_proyectadas.aggregate(Sum('inversionTotal'))
+        total_obras_concluidas = obras_concluidas.count()
+        total_obras_proceso = obras_proceso.count()
+        total_obras_proyectadas = obras_proyectadas.count()
+
+
+        total_invertido_concluidas = obras_concluidas.aggregate(Sum('inversionTotal'))
+        total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
+        total_invertido_proyectadas = obras_proyectadas.aggregate(Sum('inversionTotal'))
 
 
 
         if dependencia.nombreDependencia =='SEGOB': indiceSlide =0
-        elif dependencia.nombreDependencia =='SEDESOL': indiceSlide =4
-        elif dependencia.nombreDependencia =='SEMARNAT': indiceSlide = 8
-        elif dependencia.nombreDependencia =='SAGARPA': indiceSlide = 12
-        elif dependencia.nombreDependencia =='SCT': indiceSlide = 16
-        elif dependencia.nombreDependencia =='SEP': indiceSlide = 20
-        elif dependencia.nombreDependencia =='SS': indiceSlide = 24
-        elif dependencia.nombreDependencia =='SEDATU': indiceSlide = 28
-        elif dependencia.nombreDependencia =='SECTUR': indiceSlide = 32
-        elif dependencia.nombreDependencia =='PEMEX': indiceSlide = 36
-        elif dependencia.nombreDependencia =='CFE': indiceSlide = 40
-        elif dependencia.nombreDependencia =='IMSS': indiceSlide = 44
-        elif dependencia.nombreDependencia =='ISSSTE': indiceSlide = 48
-        elif dependencia.nombreDependencia =='CONAGUA': indiceSlide = 52
-        else: indiceSlide =56
+        elif dependencia.nombreDependencia =='SEDESOL': indiceSlide =2
+        elif dependencia.nombreDependencia =='SEMARNAT': indiceSlide = 4
+        elif dependencia.nombreDependencia =='SAGARPA': indiceSlide = 6
+        elif dependencia.nombreDependencia =='SCT': indiceSlide = 8
+        elif dependencia.nombreDependencia =='SEP': indiceSlide = 10
+        elif dependencia.nombreDependencia =='SS': indiceSlide = 12
+        elif dependencia.nombreDependencia =='SEDATU': indiceSlide = 14
+        elif dependencia.nombreDependencia =='SECTUR': indiceSlide = 16
+        elif dependencia.nombreDependencia =='PEMEX': indiceSlide = 18
+        elif dependencia.nombreDependencia =='CFE': indiceSlide = 20
+        elif dependencia.nombreDependencia =='IMSS': indiceSlide = 22
+        elif dependencia.nombreDependencia =='ISSSTE': indiceSlide = 24
+        elif dependencia.nombreDependencia =='CONAGUA': indiceSlide = 26
+        else: indiceSlide =28
 
         totalinvertidoproceso=0
-        totalinvertido2013=0
-        totalinvertido2014=0
+        totalinvertidoconcluidas=0
         totalinvertidoproyectadas=0
-        if str(total_invertido_2013.get('inversionTotal__sum',0)) != 'None': totalinvertido2013=total_invertido_2013.get('inversionTotal__sum',0)
-        if str(total_invertido_2014.get('inversionTotal__sum',0)) != 'None': totalinvertido2014=total_invertido_2014.get('inversionTotal__sum',0)
+
+        if str(total_invertido_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertidoconcluidas=total_invertido_concluidas.get('inversionTotal__sum',0)
         if str(total_invertido_proyectadas.get('inversionTotal__sum',0)) != 'None': totalinvertidoproyectadas=total_invertido_proyectadas.get('inversionTotal__sum',0)
         if str(total_invertido_proceso.get('inversionTotal__sum',0)) != 'None': totalinvertidoproceso=total_invertido_proceso.get('inversionTotal__sum',0)
 
-        TOTAL_INVERTIDO=totalinvertido2013+totalinvertido2014+totalinvertidoproceso+totalinvertidoproyectadas
-        TOTAL_OBRAS=total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_proceso+total_obras_proyectadas
+        TOTAL_INVERTIDO=totalinvertidoconcluidas+totalinvertidoproceso+totalinvertidoproyectadas
+        TOTAL_OBRAS=total_obras_concluidas+total_obras_proceso+total_obras_proyectadas
 
-        prs.slides[indiceSlide].shapes[5].text= '{0:,}'.format(total_obras_concluidas_2013)
-        prs.slides[indiceSlide].shapes[6].text= '$ {0:,.2f}'.format(totalinvertido2013)
-        prs.slides[indiceSlide].shapes[7].text= '{0:,}'.format(total_obras_concluidas_2014)
-        prs.slides[indiceSlide].shapes[8].text= '$ {0:,.2f}'.format(totalinvertido2014)
-        prs.slides[indiceSlide].shapes[9].text= '{0:,}'.format(TOTAL_OBRAS)
-        prs.slides[indiceSlide].shapes[10].text= '$ {0:,.2f}'.format(TOTAL_INVERTIDO)
-        prs.slides[indiceSlide].shapes[11].text= '{0:,}'.format(total_obras_proceso)
-        prs.slides[indiceSlide].shapes[12].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
-        prs.slides[indiceSlide].shapes[13].text= '{0:,}'.format(total_obras_proyectadas)
-        prs.slides[indiceSlide].shapes[14].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
+        for x in range(5,13):
+            prs.slides[indiceSlide].shapes[x].text_frame.paragraphs[0].font.size = Pt(14)
+
+        prs.slides[indiceSlide].shapes[5].text= '{0:,}'.format(total_obras_concluidas)
+        prs.slides[indiceSlide].shapes[6].text= '$ {0:,.2f}'.format(totalinvertidoconcluidas)
+        prs.slides[indiceSlide].shapes[7].text= '{0:,}'.format(TOTAL_OBRAS)
+        prs.slides[indiceSlide].shapes[8].text= '$ {0:,.2f}'.format(TOTAL_INVERTIDO)
+        prs.slides[indiceSlide].shapes[9].text= '{0:,}'.format(total_obras_proceso)
+        prs.slides[indiceSlide].shapes[10].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
+        prs.slides[indiceSlide].shapes[11].text= '{0:,}'.format(total_obras_proyectadas)
+        prs.slides[indiceSlide].shapes[12].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
 
 
 
-    prs.save('obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
 
-    the_file = 'obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx'
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
@@ -1164,7 +1164,7 @@ def hiper_por_sector_ppt(request):
 @login_required()
 @user_passes_test(is_super_admin)
 def hiper_por_entidad_ppt(request):
-    prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
     usuario = request.user.usuario
     start_date_2012 = datetime.date(2012, 01, 01)
     end_date_2012 = datetime.date(2012, 12, 31)
@@ -1385,9 +1385,120 @@ def hiper_por_entidad_ppt(request):
         indiceSlide=indiceSlide+1
 
 
-    prs.save('obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
 
-    the_file = 'obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
+
+
+@login_required()
+@user_passes_test(is_super_admin)
+def hiper_concluidas_ppt(request):
+    prs = Presentation('obras/static/ppt/HIPERVINCULO_CONCLUIDAS.pptx')
+    usuario = request.user.usuario
+    start_date_2012 = datetime.date(2012, 01, 01)
+    end_date_2012 = datetime.date(2012, 12, 31)
+
+    start_date_2013 = datetime.date(2013, 01, 01)
+    end_date_2013 = datetime.date(2013, 12, 31)
+
+    start_date_2014 = datetime.date(2014, 01, 01)
+    end_date_2014 = datetime.date(2014, 12, 31)
+
+    start_date_2015 = datetime.date(2015, 01, 01)
+    end_date_2015 = datetime.date(2015, 12, 31)
+
+    obras_2012_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2012, end_date_2012)),
+        Q(tipoObra=3),
+    )
+    obras_2013_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2013, end_date_2013)),
+        Q(tipoObra=3),
+    )
+    obras_2014_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2014, end_date_2014)),
+        Q(tipoObra=3),
+    )
+    obras_2015_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(tipoObra=3),
+    )
+
+    obras_proceso = Obra.objects.filter(
+        Q(tipoObra=2),
+    )
+
+    obras_proyectadas = Obra.objects.filter(
+        Q(tipoObra=1),
+    )
+
+    total_obras_concluidas_2012 = obras_2012_concluidas.count()
+    total_obras_concluidas_2013 = obras_2013_concluidas.count()
+    total_obras_concluidas_2014 = obras_2014_concluidas.count()
+    total_obras_concluidas_2015 = obras_2015_concluidas.count()
+    total_obras_proceso = obras_proceso.count()
+    total_obras_proyectadas = obras_proyectadas.count()
+
+
+    total_invertido_2012_concluidas = obras_2012_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2013_concluidas = obras_2013_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2014_concluidas = obras_2014_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2015_concluidas = obras_2015_concluidas.aggregate(Sum('inversionTotal'))
+
+    total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
+    total_invertido_proyectadas = obras_proyectadas.aggregate(Sum('inversionTotal'))
+
+    totalinvertido2012=0
+    totalinvertido2013=0
+    totalinvertido2014=0
+    totalinvertido2015=0
+    totalinvertidoproceso=0
+    totalinvertidoproyectadas=0
+
+    if str(total_invertido_2012_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2012=total_invertido_2012_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2013_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2013=total_invertido_2013_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2014_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2014=total_invertido_2014_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2015_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2015=total_invertido_2015_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_proceso.get('inversionTotal__sum',0)) != 'None': totalinvertidoproceso=total_invertido_proceso.get('inversionTotal__sum',0)
+    if str(total_invertido_proyectadas.get('inversionTotal__sum',0)) != 'None': totalinvertidoproyectadas=total_invertido_proyectadas.get('inversionTotal__sum',0)
+
+    totalObrasConcluidas= total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015
+    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015
+
+    for x in range(2,12):
+        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(16)
+
+    #concluidas
+    prs.slides[0].shapes[2].text= '{0:,}'.format(totalObrasConcluidas)
+    prs.slides[0].shapes[3].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
+    prs.slides[0].shapes[4].text= '{0:,}'.format(total_obras_concluidas_2012)
+    prs.slides[0].shapes[5].text= '{0:,.2f}'.format(totalinvertido2012)
+    prs.slides[0].shapes[6].text= '{0:,}'.format(total_obras_concluidas_2013)
+    prs.slides[0].shapes[7].text= '{0:,.2f}'.format(totalinvertido2013)
+    prs.slides[0].shapes[8].text= '{0:,}'.format(total_obras_concluidas_2014)
+    prs.slides[0].shapes[9].text= '{0:,.2f}'.format(totalinvertido2014)
+    prs.slides[0].shapes[10].text= '{0:,}'.format(total_obras_concluidas_2015)
+    prs.slides[0].shapes[11].text= '{0:,.2f}'.format(totalinvertido2015)
+
+    #proceso
+    prs.slides[1].shapes[22].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[1].shapes[23].text= '{0:,.2f}'.format(totalinvertidoproceso)
+
+    #proyectadas
+    prs.slides[2].shapes[24].text= '{0:,}'.format(total_obras_proyectadas)
+    prs.slides[2].shapes[25].text= '{0:,.2f}'.format(totalinvertidoproyectadas)
+
+    prs.save('obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx')
+
+    the_file = 'obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
