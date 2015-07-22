@@ -284,7 +284,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             if reporte['sumatotal'] is None:
                 map['sumatotal'] = 0
             else:
-                map['sumatotal'] = int(reporte['sumatotal'])
+                map['sumatotal'] = float(reporte['sumatotal'])
             json_map['reporte_dependencia'].append(map)
 
         json_map['reporte_subdependencia'] = []
@@ -300,7 +300,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             if reporteSub['sumatotal'] is None:
                 map['sumatotal'] = 0
             else:
-                map['sumatotal'] = int(reporteSub['sumatotal'])
+                map['sumatotal'] = float(reporteSub['sumatotal'])
             json_map['reporte_subdependencia'].append(map)
         #json_map['obras'] = []
         #for obra in resultados['obras']:
