@@ -56,7 +56,10 @@ class DocumentoFuenteForm(forms.ModelForm):
                 if instance.documento.name != a.documento.name:  # revisa si cambio la foto asignada
                     route = settings.MEDIA_ROOT + "/" + a.documento.name  # borra la anterior y pon la nueva
                     print route
-                    os.remove(route)
+                    try:
+                        os.remove(route)
+                    except Exception as e:
+                        print e
 
         return super(DocumentoFuenteForm, self).save(commit)
 
