@@ -132,7 +132,10 @@ class AddObraForm(forms.ModelForm):
                 if instance.fotoAntes.name != a.fotoAntes.name:  # revisa si cambio la foto asignada
                     route = settings.MEDIA_ROOT + "/" + a.fotoAntes.name  # borra la anterior y pon la nueva
                     print route
-                    os.remove(route)
+                    try:
+                        os.remove(route)
+                    except Exception as e:
+                        print e
 
             if a.fotoDurante.name != "":  # revisa si tiene una foto asignada
 
