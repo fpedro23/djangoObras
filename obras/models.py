@@ -520,9 +520,9 @@ class DetalleClasificacion(models.Model):
     class Meta:
         unique_together = [("obra", "tipoClasificacion")]
 
-
     obra = models.ForeignKey(Obra)
     tipoClasificacion = models.ForeignKey(TipoClasificacion,
+                                          related_name="obra_clasificacion",
                                           limit_choices_to={
                                               'subclasificacionDe': None,
                                           },
@@ -531,7 +531,7 @@ class DetalleClasificacion(models.Model):
                                           )
 
     subclasificacion = ChainedForeignKey(TipoClasificacion,
-                                         related_name='%(class)s_subclasificaciones',
+                                         related_name='obra_subclasificacion',
                                          chained_field='tipoClasificacion',
                                          chained_model_field='subclasificacionDe',
                                          null=True,

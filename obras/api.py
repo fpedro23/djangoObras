@@ -249,6 +249,9 @@ class BuscadorEndpoint(ProtectedResourceView):
             instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
             limite_min=request.GET.get("limiteMin"),
             limite_max=request.GET.get("limiteMax"),
+            busqueda_rapida=request.GET.get("busquedaRapida", None),
+            id_obra=request.GET.get("idObra", None),
+            susceptible_inauguracion=request.GET.get("susceptible", None)
         )
 
         arreglo_dependencias = []
@@ -309,10 +312,9 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['obras'] = []
         for obra in resultados['obras'].values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion',
                                                'latitud', 'longitud', "dependencia__imagenDependencia"):
-            json_map['obras'].append(obra);
+            json_map['obras'].append(obra)
 
-            json_map['reporte_estado'] = []
-
+        json_map['reporte_estado'] = []
         for reporte_estado in resultados['reporte_estado']:
             map = {}
             if reporte_estado['sumatotal'] is None:

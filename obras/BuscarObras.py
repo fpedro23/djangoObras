@@ -25,10 +25,14 @@ class BuscarObras:
             instancia_ejecutora,
             limite_min,
             limite_max,
+            busqueda_rapida,
+            id_obra,
+            susceptible_inauguracion
     ):
         self.clasificaciones = clasificaciones
         self.estados = estados
         self.inaugurada = inaugurada
+        self.susceptible_inauguracion = susceptible_inauguracion
         self.impactos = impactos
         self.idTipoObra = idtipoobra
         self.dependencias = iddependencias
@@ -36,6 +40,7 @@ class BuscarObras:
         self.inauguradores = inauguradores
         self.inversion_minima = inversion_minima
         self.inversion_maxima = inversion_maxima
+        self.id_obra = id_obra
 
         self.fecha_inicio_primera = fecha_inicio_primera
         self.fecha_inicio_segunda = fecha_inicio_segunda
@@ -47,52 +52,62 @@ class BuscarObras:
         self.limite_min = limite_min
         self.limite_max = limite_max
 
+        self.busqueda_rapida = busqueda_rapida
+
     def buscar(self):
 
         query = Q()
+        if self.id_obra is not None:
+            query = Q(identificador_unico=self.id_obra)
+        elif self.busqueda_rapida is not None:
+            query = Q(denominacion__icontains=self.busqueda_rapida) | Q(descripcion__icontains=self.busqueda_rapida)
+        elif self.denominacion is not None:
+            query = query & Q(denominacion__icontains=self.denominacion)
 
-        if self.idTipoObra is not None:
-            query = Q(tipoObra__id__in=self.idTipoObra)
+        else:
 
-        if self.fecha_inicio_primera is not None and self.fecha_inicio_segunda is not None:
-            query = query & Q(fechaInicio__range=(self.fecha_inicio_primera, self.fecha_inicio_segunda))
+            if self.idTipoObra is not None:
+                query = Q(tipoObra__id__in=self.idTipoObra)
 
-        if self.fecha_fin_primera is not None and self.fecha_fin_segunda is not None:
-            query = query & Q(fechaTermino__range=(self.fecha_fin_primera, self.fecha_fin_segunda))
+            if self.fecha_inicio_primera is not None and self.fecha_inicio_segunda is not None:
+                query = query & Q(fechaInicio__range=(self.fecha_inicio_primera, self.fecha_inicio_segunda))
 
-        if self.inversion_minima is not None and self.inversion_maxima is not None:
-            query = query & Q(inversionTotal__range=(self.inversion_minima, self.inversion_maxima))
+            if self.fecha_fin_primera is not None and self.fecha_fin_segunda is not None:
+                query = query & Q(fechaTermino__range=(self.fecha_fin_primera, self.fecha_fin_segunda))
 
-        if self.dependencias is not None:
-            query = query & Q(dependencia__id__in=self.dependencias)
-            query = query | Q(subdependencia__id__in=self.dependencias)
+            if self.inversion_minima is not None and self.inversion_maxima is not None:
+                query = query & Q(inversionTotal__range=(self.inversion_minima, self.inversion_maxima))
 
-        if self.estados is not None:
-            query = query & Q(estado__id__in=self.estados)
+            if self.dependencias is not None:
+                query = query & Q(dependencia__id__in=self.dependencias)
+                query = query | Q(subdependencia__id__in=self.dependencias)
 
-        if self.clasificaciones is not None:
-            query = query & Q(tipoClasificacion__id__in=self.clasificaciones)
+            if self.estados is not None:
+                query = query & Q(estado__id__in=self.estados)
 
-        if self.inversiones is not None:
-            query = query & Q(tipoInversion__id__in=self.inversiones)
+            if self.clasificaciones is not None:
+                query = query & Q(detalleclasificacion__tipoClasificacion__id__in=self.clasificaciones)
 
-        if self.inauguradores is not None:
-            query = query & Q(inaugurador__id__in=self.inauguradores)
+            if self.inversiones is not None:
+                query = query & Q(tipoInversion__id__in=self.inversiones)
 
-        if self.inaugurada is not None:
-            query = query & Q(inaugurada=self.inaugurada)
+            if self.inauguradores is not None:
+                query = query & Q(inaugurador__id__in=self.inauguradores)
 
-        if self.impactos is not None:
-            query = query & Q(impacto__id__in=self.impactos)
+            if self.inaugurada is not None:
+                query = query & Q(inaugurada=self.inaugurada)
 
-        if self.denominacion is not None:
-            query = query & Q(denominacion__contains=self.denominacion)
+            if self.susceptible_inauguracion is not None:
+                query = query & Q(susceptibleInauguracion=self.susceptible_inauguracion)
 
-        if self.instancia_ejecutora is not None:
-            query = query & Q(instanciaEjecutora__id__in=self.instancia_ejecutora)
+            if self.impactos is not None:
+                query = query & Q(impacto__id__in=self.impactos)
+
+            if self.instancia_ejecutora is not None:
+                query = query & Q(instanciaEjecutora__id__in=self.instancia_ejecutora)
 
         if query is not None:
-            # print query
+            print query
             obras = Obra.objects.filter(query)
             obras = obras.order_by('identificador_unico')
 
