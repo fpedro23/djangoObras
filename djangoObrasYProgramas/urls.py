@@ -18,6 +18,7 @@ urlpatterns = patterns(
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
     url(r'^chaining/', include('smart_selects.urls')),
+    url(r'^ios/','obras.views.ios_view'),
 
     url(r'^obras/ayuda$', 'obras.views.ayuda', name='ayuda'),
     url(r'^obras/catalogo$', 'obras.views.catalogo', name='catalogo'),
