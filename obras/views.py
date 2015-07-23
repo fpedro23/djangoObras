@@ -1514,6 +1514,6 @@ def redirect_admin(request):
 
 def ios_view(request):
     return HttpResponse('<a href="itms-services://?action=download-manifest&'
-                        'url=https://obrasapf.mx/static/ios'
+                        'url=https://obrasapf.mx/static/ios/'
                         'manifest.plist">'
                         'Instalar App</a>')
