@@ -414,7 +414,7 @@ input[type=file] {
 .rendFile{
       font-family: "soberana_sanslight";
     font-size: 11px;
-    width: 95%;
+    width: 87%;
      height: 16px;
     padding: 0px 0px;
 }
@@ -586,13 +586,13 @@ td, th {
 	border: 0px solid #327451;
 	border-radius: 0px;
 	width: 340px;
-	height: 84px;
+	height: 87px;
 	font-family: 'soberana_sanslight';
 	font-size: 13px;
 	color: #6A6B6C;
 	position: absolute;
 	left: 1px;
-	top: 110px;
+	top: 112px;
 }
 .inauguracion{
 	border: 2px solid #327451;
@@ -918,3 +918,8 @@ label {
 .depwid{
     width: 90%;
 }
+
+.field-descripcion input[type=text]{
+    width:85%;
+}
+

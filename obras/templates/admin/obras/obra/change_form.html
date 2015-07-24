@@ -239,19 +239,45 @@ x++;
 
 
                         $dp('#id_fechaInicio').datepicker({
-                            autoclose: true
-                        }).on('changeDate', function (selected) {
-                            var startDate = new Date(selected.date.valueOf());
-                            $dp('#id_fechaTermino').datepicker('setStartDate', startDate);
-                            }).on('clearDate', function (selected) {
-                            $dp('#id_fechaTermino').datepicker('setStartDate', null);
-                        });
+                            autoclose: true  ,
+                            setEndDate: $dp('#id_fechaTermino').val()
+                            }).on('changeDate', function (selected) {
+                                  var startDate = new Date(selected.date.valueOf());
+                                  var endDate = $dp('#id_fechaTermino').val();
+                                  var NDDate =   new Date($dp('#id_fechaTermino').datepicker("getDate"));
+                                  if (endDate != "") {
+                                      if (startDate > NDDate) {
+                                          alert("La fecha de Inicio debe ser anterior a la fecha de Término");
+                                          $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
+                                          $dp('#id_fechaInicio').SetDate(endDate);
+                                      }
+                                  }
+                                    else
+                                    { $dp('#id_fechaTermino').datepicker('setStartDate', startDate); }
+                               }).on('clearDate', function (selected) {
+                                     $dp('#id_fechaTermino').datepicker('setStartDate', null);
+                                  });
 
                         $dp('#id_fechaTermino').datepicker({
-                            autoclose: true
+                            autoclose: true          ,
+                            setStartDate: $dp('#id_fechaInicio').val()
                         }).on('changeDate', function (selected) {
                             var endDate = new Date(selected.date.valueOf());
-                            $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
+                            var startDate = $dp('#id_fechaInicio').val();
+                            var STDate =   new Date($dp('#id_fechaInicio').datepicker("getDate"));
+
+                              if (startDate != "") {
+                                  if (STDate > endDate) {
+                                      alert("La fecha de Término debe ser posterior a la fecha de Inicio");
+                                      $dp('#id_fechaTermino').datepicker('setStartDate', startDate);
+                                      $dp('#id_fechaTermino').setDate(startDate);
+                                  }
+                              }
+                              else
+                              {
+                                 $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
+                              }
+
                             }).on('clearDate', function (selected) {
                             $dp('#id_fechaInicio').datepicker('setEndDate', null);
                         });

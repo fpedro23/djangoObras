@@ -148,14 +148,15 @@ x++;
         {{ cl.formset.non_form_errors }}
     {% endif %}
    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
-      {% block search %}{#% search_form cl %#}{% endblock %}
+
+      {% block search %}{% search_form cl %}{% endblock %}
       {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
 
       {% block filters %}
          {% if cl.has_filters %}
-          <div id="changelist-filter" hidden="true" style="width: 2px; height: 2px;">
-
-            {% for spec in cl.filter_specs %}{% endfor %}
+          <div id="changelist-filter">
+           <h2>{% trans 'Filter' %}</h2>
+            {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
           </div>
         {% endif %}
       {% endblock %}

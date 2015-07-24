@@ -173,4 +173,23 @@ function setImage(){
 
          });
 
+        $j('#id_fechaInicio').on('changeDate',function(){
+            var vFecIni = this.val();
+            alert("entra");
+            if ($j('#id_fechaTermino').val() != "")
+            {
+                var iniDate = new Date(vFecIni),
+                endDate = new Date($j('#id_fechaTermino').val());
+                if(iniDate > endDate) {
+                    alert("error");
+                }
+            }
+        });
+
+        $j('#id_fechaTermino').on('change',function(){
+            var vFecFin = this.val();
+        });
+
+
+
     });
