@@ -106,7 +106,7 @@ class DependenciasEndpoint(ProtectedResourceView):
         )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
-                Q(id=token_model.user.usuario.dependencia.id))
+                Q(id__in=token_model.user.usuario.subdependencia.all()))
                         )
 
         return HttpResponse(json.dumps(dicts), 'application/json')
