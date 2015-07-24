@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
@@ -290,8 +291,8 @@ def content_file_despues(instance, filename):
 @python_2_unicode_compatible
 class Obra(models.Model):
     # TODO agrupar semanticamente todos los campos de obras
-    identificador_unico = models.SlugField(unique=True, null=True, )
-    tipoObra = models.ForeignKey(TipoObra)
+    identificador_unico = models.SlugField(unique=True, null=True, verbose_name='Identificador Único')
+    tipoObra = models.ForeignKey(TipoObra, verbose_name='Tipo de Obra')
     dependencia = models.ForeignKey(Dependencia, related_name='%(class)s_dependencia',
                                     null=True,
                                     blank=True,
@@ -338,13 +339,13 @@ class Obra(models.Model):
                                          )
 
     inaugurador = models.ForeignKey(Inaugurador, null=True, blank=True)
-    denominacion = models.CharField(max_length=200)
+    denominacion = models.CharField(max_length=200, verbose_name='Denominación')
     descripcion = models.CharField(max_length=200)
-    fechaInicio = models.DateField()
+    fechaInicio = models.DateField(verbose_name="Fecha de Inicio")
     fechaTermino = models.DateField(verbose_name="Fecha de Termino")
     inversionTotal = models.FloatField()
     totalBeneficiarios = models.FloatField()
-    senalizacion = models.BooleanField(default=False)
+    senalizacion = models.BooleanField(default=False, verbose_name='Señalización')
     susceptibleInauguracion = models.BooleanField(default=False)
     porcentajeAvance = models.DecimalField(max_digits=5, decimal_places=2)
     observaciones = models.CharField(max_length=200)
