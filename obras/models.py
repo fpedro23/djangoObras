@@ -426,7 +426,7 @@ class Obra(models.Model):
         if self.fechaModificacion is None:
             map['fechaModificacion'] = None
         else:
-            map['fechaModificacion'] = self.fechaModificacion.__str__()
+            map['fechaModificacion'] = self.fechaModificacion.isoformat()
         if self.fechaInicio is None:
             map['fechaInicio'] = None
         else:
