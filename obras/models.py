@@ -312,7 +312,11 @@ class Obra(models.Model):
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
-    tipoInversion = models.ManyToManyField(TipoInversion, through='DetalleInversion', null=True, blank=True, )
+
+    tipoInversion = models.ManyToManyField(TipoInversion,
+                                           through='DetalleInversion',
+                                           null=True,
+                                           blank=True, )
 
     tipoClasificacion = models.ManyToManyField("self", TipoClasificacion,
                                                through='DetalleClasificacion',
@@ -333,7 +337,7 @@ class Obra(models.Model):
                                          blank=True,
                                          )
 
-    inaugurador = models.ForeignKey(Inaugurador)
+    inaugurador = models.ForeignKey(Inaugurador, null=True, blank=True)
     denominacion = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
     fechaInicio = models.DateField()
@@ -394,10 +398,14 @@ class Obra(models.Model):
             for tipoInversion in self.tipoInversion.all():
                 map['tipoInversion'].append(tipoInversion.to_serializable_dict())
 
-        # map['tipoClasificacion'] = []
-        # if self.tipoClasificacion:
-        # for tipoClasificacion in self.tipoClasificacion.all():
-        # map['tipoClasificacion'].append(tipoClasificacion.to_serializable_dict())
+        map['tipoClasificacion'] = []
+        try:
+            detalles = DetalleClasificacion.objects.filter(obra__id=self.id)
+            for detalleTipoClasificacion in detalles.all():
+                map['tipoClasificacion'].append(detalleTipoClasificacion.tipoClasificacion.to_serializable_dict())
+
+        except Exception as e:
+            print e
 
         map['subclasificaciones'] = []
         if self.subclasificacion:
