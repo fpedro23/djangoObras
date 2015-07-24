@@ -122,7 +122,7 @@ class AddObraForm(forms.ModelForm):
         if instance.identificador_unico is None:
 
             for x in itertools.count(1):
-                string_id = '%s_%s_%.3d' % ('OB', instance.dependencia.nombreDependencia, x)
+                string_id = '%s_%s_%.5d' % ('OB', instance.dependencia.nombreDependencia, x)
                 string_id.upper()
                 instance.identificador_unico = string_id
                 if not Obra.objects.filter(identificador_unico=instance.identificador_unico).exists():
