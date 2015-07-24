@@ -2008,7 +2008,7 @@ def hiper_nacional_ppt(request):
 
 @login_required()
 def hiper_rangos_ppt(request):
-    prs = Presentation('obras/static/ppt/HIPERVINCULO_RANGOS.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_RANGOS.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
     subdependencias = usuario.subdependencia.all()
