@@ -1,4 +1,5 @@
 # coding=utf-8
+import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
@@ -264,7 +265,7 @@ class InstanciaEjecutora(models.Model):
         return ans
 
 
-BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguracion'))
+BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguración'))
 
 
 def content_file_antes(instance, filename):
@@ -342,7 +343,7 @@ class Obra(models.Model):
     denominacion = models.CharField(max_length=200, verbose_name='Denominación')
     descripcion = models.CharField(max_length=200)
     fechaInicio = models.DateField(verbose_name="Fecha de Inicio")
-    fechaTermino = models.DateField(verbose_name="Fecha de Termino")
+    fechaTermino = models.DateField(verbose_name="Fecha de Término")
     inversionTotal = models.FloatField()
     totalBeneficiarios = models.FloatField()
     senalizacion = models.BooleanField(default=False, verbose_name='Señalización')
@@ -361,6 +362,7 @@ class Obra(models.Model):
     latitud = models.FloatField(null=True, blank=True)
     longitud = models.FloatField(null=True, blank=True)
     id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200, null=True, blank=True)
+
 
     def __str__(self):  # __unicode__ on Python 2
         return self.denominacion
