@@ -340,7 +340,6 @@ class ObrasAdmin(admin.ModelAdmin):
     inlinesClasificacion = [ClasificacionInLine]
     inlines = (DetalleInversionInline, DocumentoFuenteInline, DetalleClasificacionInline)
 
-
     list_display = (
         'identificador_unico',
         'estado',
@@ -352,7 +351,9 @@ class ObrasAdmin(admin.ModelAdmin):
         'senalizacion',
         'inaugurada',
         'fechaInicio',
-        'fechaTermino')
+        'fechaTermino',
+        'fechaModificacion',
+    )
     ordering = ['identificador_unico']
 
     list_filter = [DependenciaListFilter, 'autorizada', SubDependenciaListFilter, EstadoListFilter, ]
