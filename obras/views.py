@@ -4,7 +4,7 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from decimal import *
 from obras.tools import *
 from obras.BuscarObras import BuscaObra
 from pptx.util import Pt
@@ -13,6 +13,8 @@ import json
 from obras.models import *
 from obras.models import Obra
 import datetime
+import tempfile
+#from flask import send_file
 
 from obras.BuscarObras import BuscarObras
 from django.shortcuts import render_to_response
@@ -1044,24 +1046,6 @@ def hiper_info_general_ppt(request):
     #abrir_pptx('hiper_info_general.pptx')
     #return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
-@login_required()
-@user_passes_test(is_super_admin)
-def hiper_inauguradas_ppt(request):
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INAUGURADAS_SENALIZADAS.pptx')
-    usuario = request.user.usuario
-    # falta implementar
-
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_' + str(usuario.user.id) + '.pptx')
-
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_' + str(usuario.user.id) + '.pptx'
-    filename = os.path.basename(the_file)
-    chunk_size = 8192
-    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
-                           content_type=mimetypes.guess_type(the_file)[0])
-    response['Content-Length'] = os.path.getsize(the_file)
-    response['Content-Disposition'] = "attachment; filename=%s" % filename
-
-    return response
 
 @login_required()
 @user_passes_test(is_super_admin)
@@ -1399,10 +1383,20 @@ def hiper_por_entidad_ppt(request):
 
 
 @login_required()
-@user_passes_test(is_super_admin)
 def hiper_concluidas_ppt(request):
-    prs = Presentation('obras/static/ppt/HIPERVINCULO_CONCLUIDAS.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_CONCLUIDAS.pptx')
     usuario = request.user.usuario
+    dependencias = usuario.dependencia.all()
+    subdependencias = usuario.subdependencia.all()
+    query = Q()
+    if dependencias and dependencias.count() > 0:
+        if usuario.rol == 'US':
+            query = Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+        else:
+
+            query = Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) | Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias)
+        )
+
     start_date_2012 = datetime.date(2012, 01, 01)
     end_date_2012 = datetime.date(2012, 12, 31)
 
@@ -1417,27 +1411,27 @@ def hiper_concluidas_ppt(request):
 
     obras_2012_concluidas = Obra.objects.filter(
         Q(fechaTermino__range=(start_date_2012, end_date_2012)),
-        Q(tipoObra=3),
+        Q(tipoObra=3),query,
     )
     obras_2013_concluidas = Obra.objects.filter(
         Q(fechaTermino__range=(start_date_2013, end_date_2013)),
-        Q(tipoObra=3),
+        Q(tipoObra=3),query,
     )
     obras_2014_concluidas = Obra.objects.filter(
         Q(fechaTermino__range=(start_date_2014, end_date_2014)),
-        Q(tipoObra=3),
+        Q(tipoObra=3),query,
     )
     obras_2015_concluidas = Obra.objects.filter(
         Q(fechaTermino__range=(start_date_2015, end_date_2015)),
-        Q(tipoObra=3),
+        Q(tipoObra=3),query,
     )
 
     obras_proceso = Obra.objects.filter(
-        Q(tipoObra=2),
+        Q(tipoObra=2),query,
     )
 
     obras_proyectadas = Obra.objects.filter(
-        Q(tipoObra=1),
+        Q(tipoObra=1),query,
     )
 
     total_obras_concluidas_2012 = obras_2012_concluidas.count()
@@ -1474,7 +1468,13 @@ def hiper_concluidas_ppt(request):
     totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015
 
     for x in range(2,12):
-        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(16)
+        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(14)
+
+    for x in range(2,4):
+        prs.slides[1].shapes[x].text_frame.paragraphs[0].font.size = Pt(14)
+
+    for x in range(2,4):
+        prs.slides[2].shapes[x].text_frame.paragraphs[0].font.size = Pt(14)
 
     #concluidas
     prs.slides[0].shapes[2].text= '{0:,}'.format(totalObrasConcluidas)
@@ -1489,16 +1489,737 @@ def hiper_concluidas_ppt(request):
     prs.slides[0].shapes[11].text= '{0:,.2f}'.format(totalinvertido2015)
 
     #proceso
-    prs.slides[1].shapes[22].text= '{0:,}'.format(total_obras_proceso)
-    prs.slides[1].shapes[23].text= '{0:,.2f}'.format(totalinvertidoproceso)
+    prs.slides[1].shapes[2].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[1].shapes[3].text= '{0:,.2f}'.format(totalinvertidoproceso)
 
     #proyectadas
-    prs.slides[2].shapes[24].text= '{0:,}'.format(total_obras_proyectadas)
-    prs.slides[2].shapes[25].text= '{0:,.2f}'.format(totalinvertidoproyectadas)
+    prs.slides[2].shapes[2].text= '{0:,}'.format(total_obras_proyectadas)
+    prs.slides[2].shapes[3].text= '{0:,.2f}'.format(totalinvertidoproyectadas)
 
-    prs.save('obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx')
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx')
 
-    the_file = 'obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx'
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
+
+@login_required()
+def hiper_inauguradas_ppt(request):
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INAUGURADAS.pptx')
+    usuario = request.user.usuario
+    dependencias = usuario.dependencia.all()
+    subdependencias = usuario.subdependencia.all()
+    query = Q()
+    if dependencias and dependencias.count() > 0:
+        if usuario.rol == 'US':
+            query = Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+        else:
+
+            query = Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) | Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias)
+        )
+
+    start_date_2012 = datetime.date(2012, 01, 01)
+    end_date_2012 = datetime.date(2012, 12, 31)
+
+    start_date_2013 = datetime.date(2013, 01, 01)
+    end_date_2013 = datetime.date(2013, 12, 31)
+
+    start_date_2014 = datetime.date(2014, 01, 01)
+    end_date_2014 = datetime.date(2014, 12, 31)
+
+    start_date_2015 = datetime.date(2015, 01, 01)
+    end_date_2015 = datetime.date(2015, 12, 31)
+
+    #inauguradas presidente
+    obras_2012_inauguradas_P = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2012, end_date_2012)),
+        Q(inaugurador_id=1),query,
+    )
+    obras_2013_inauguradas_P = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2013, end_date_2013)),
+        Q(inaugurador_id=1),query,
+    )
+    obras_2014_inauguradas_P = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2014, end_date_2014)),
+        Q(inaugurador_id=1),query,
+    )
+    obras_2015_inauguradas_P = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(inaugurador_id=1),query,
+    )
+    #inauguradas otros
+    obras_2012_inauguradas_O = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2012, end_date_2012)),
+        Q(inaugurador_id=7),query,
+    )
+    obras_2013_inauguradas_O = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2013, end_date_2013)),
+        Q(inaugurador_id=7),query,
+    )
+    obras_2014_inauguradas_O = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2014, end_date_2014)),
+        Q(inaugurador_id=7),query,
+    )
+    obras_2015_inauguradas_O = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(inaugurador_id=7),query,
+    )
+
+    #SENIALIZADAS concluidas
+    obras_2012_senializadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2012, end_date_2012)),
+        Q(tipoObra=3),Q(senalizacion=1),query,
+    )
+    obras_2013_senializadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2013, end_date_2013)),
+        Q(tipoObra=3),Q(senalizacion=1),query,
+    )
+    obras_2014_senializadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2014, end_date_2014)),
+        Q(tipoObra=3),Q(senalizacion=1),query,
+    )
+    obras_2015_senializadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(tipoObra=3),Q(senalizacion=1),query,
+    )
+
+    obras_proceso = Obra.objects.filter(
+        Q(tipoObra=2),Q(senalizacion=1),query,
+    )
+
+    obras_proyectadas = Obra.objects.filter(
+        Q(tipoObra=1),Q(senalizacion=1),query,
+    )
+
+    total_obras_inauguradas_P_2012 = obras_2012_inauguradas_P.count()
+    total_obras_inauguradas_P_2013 = obras_2013_inauguradas_P.count()
+    total_obras_inauguradas_P_2014 = obras_2014_inauguradas_P.count()
+    total_obras_inauguradas_P_2015 = obras_2015_inauguradas_P.count()
+
+    total_obras_inauguradas_O_2012 = obras_2012_inauguradas_O.count()
+    total_obras_inauguradas_O_2013 = obras_2013_inauguradas_O.count()
+    total_obras_inauguradas_O_2014 = obras_2014_inauguradas_O.count()
+    total_obras_inauguradas_O_2015 = obras_2015_inauguradas_O.count()
+
+    total_obras_inauguradas_P= total_obras_inauguradas_P_2012+total_obras_inauguradas_P_2013+total_obras_inauguradas_P_2014+total_obras_inauguradas_P_2015
+    total_obras_inauguradas_O= total_obras_inauguradas_O_2012+total_obras_inauguradas_O_2013+total_obras_inauguradas_O_2014+total_obras_inauguradas_O_2015
+
+    total_obras_senializadas_2012 = obras_2012_senializadas.count()
+    total_obras_senializadas_2013 = obras_2013_senializadas.count()
+    total_obras_senializadas_2014 = obras_2014_senializadas.count()
+    total_obras_senializadas_2015 = obras_2015_senializadas.count()
+
+    total_obras_proceso = obras_proceso.count()
+    total_obras_proyectadas = obras_proyectadas.count()
+
+    total_obras_senializadas =  total_obras_senializadas_2012+total_obras_senializadas_2013+total_obras_senializadas_2014+total_obras_senializadas_2015+total_obras_proceso+total_obras_proyectadas
+
+
+    for x in range(8,25):
+        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(10)
+
+    #inauguradas
+    prs.slides[0].shapes[8].text= '{0:,}'.format(total_obras_inauguradas_P_2012)
+    prs.slides[0].shapes[9].text= '{0:,}'.format(total_obras_inauguradas_O_2012)
+    prs.slides[0].shapes[10].text= '{0:,}'.format(total_obras_inauguradas_P_2013)
+    prs.slides[0].shapes[11].text= '{0:,}'.format(total_obras_inauguradas_O_2013)
+    prs.slides[0].shapes[12].text= '{0:,}'.format(total_obras_inauguradas_P_2014)
+    prs.slides[0].shapes[13].text= '{0:,}'.format(total_obras_inauguradas_O_2014)
+    prs.slides[0].shapes[14].text= '{0:,}'.format(total_obras_inauguradas_P_2015)
+    prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_inauguradas_O_2015)
+    prs.slides[0].shapes[16].text= '{0:,}'.format(total_obras_inauguradas_P)
+    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_inauguradas_O)
+    #SENIALIZADAS
+    prs.slides[0].shapes[18].text= '{0:,}'.format(total_obras_senializadas_2012)
+    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_senializadas_2013)
+    prs.slides[0].shapes[20].text= '{0:,}'.format(total_obras_senializadas_2014)
+    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_senializadas_2015)
+    prs.slides[0].shapes[22].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_proyectadas)
+    prs.slides[0].shapes[24].text= '{0:,}'.format(total_obras_senializadas)
+
+
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx')
+
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
+
+@login_required()
+def hiper_interestatal_ppt(request):
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INTERESTATAL.pptx')
+    usuario = request.user.usuario
+    dependencias = usuario.dependencia.all()
+    subdependencias = usuario.subdependencia.all()
+    query = Q()
+    if dependencias and dependencias.count() > 0:
+        if usuario.rol == 'US':
+            query = Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+        else:
+
+            query = Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) | Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias)
+        )
+
+    start_date_2012 = datetime.date(2012, 01, 01)
+    end_date_2012 = datetime.date(2012, 12, 31)
+
+    start_date_2013 = datetime.date(2013, 01, 01)
+    end_date_2013 = datetime.date(2013, 12, 31)
+
+    start_date_2014 = datetime.date(2014, 01, 01)
+    end_date_2014 = datetime.date(2014, 12, 31)
+
+    start_date_2015 = datetime.date(2015, 01, 01)
+    end_date_2015 = datetime.date(2015, 12, 31)
+
+    start_date_2016 = datetime.date(2016, 01, 01)
+    end_date_2016 = datetime.date(2016, 12, 31)
+
+    start_date_2017 = datetime.date(2017, 01, 01)
+    end_date_2017 = datetime.date(2017, 12, 31)
+
+    start_date_2018 = datetime.date(2018, 01, 01)
+    end_date_2018 = datetime.date(2018, 12, 31)
+
+    obras_2012_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2012, end_date_2012)),
+        Q(estado_id=34),Q(tipoObra=3),query,
+    )
+    obras_2013_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2013, end_date_2013)),
+        Q(estado_id=34),Q(tipoObra=3),query,
+    )
+    obras_2014_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2014, end_date_2014)),
+        Q(estado_id=34),Q(tipoObra=3),query,
+    )
+    obras_2015_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(estado_id=34),Q(tipoObra=3),query,
+    )
+
+    obras_proceso = Obra.objects.filter(
+        Q(estado_id=34),Q(tipoObra=2),query,
+    )
+
+    obras_2015_proyectadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(estado_id=34),Q(tipoObra=1),query,
+    )
+    obras_2016_proyectadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2016, end_date_2016)),
+        Q(estado_id=34),Q(tipoObra=1),query,
+    )
+    obras_2017_proyectadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2017, end_date_2017)),
+        Q(estado_id=34),Q(tipoObra=1),query,
+    )
+    obras_2018_proyectadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2018, end_date_2018)),
+        Q(estado_id=34),Q(tipoObra=1),query,
+    )
+
+    total_obras_concluidas_2012 = obras_2012_concluidas.count()
+    total_obras_concluidas_2013 = obras_2013_concluidas.count()
+    total_obras_concluidas_2014 = obras_2014_concluidas.count()
+    total_obras_concluidas_2015 = obras_2015_concluidas.count()
+    total_obras_concluidas = total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015
+    total_obras_proceso = obras_proceso.count()
+    total_obras_proyectadas_2015 = obras_2015_proyectadas.count()
+    total_obras_proyectadas_2016 = obras_2016_proyectadas.count()
+    total_obras_proyectadas_2017 = obras_2017_proyectadas.count()
+    total_obras_proyectadas_2018 = obras_2018_proyectadas.count()
+    total_obras_proyectadas = total_obras_proyectadas_2015+total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
+    total_obras = total_obras_concluidas+total_obras_proceso+total_obras_proyectadas
+
+    total_invertido_2012_concluidas = obras_2012_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2013_concluidas = obras_2013_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2014_concluidas = obras_2014_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2015_concluidas = obras_2015_concluidas.aggregate(Sum('inversionTotal'))
+
+    total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
+
+    total_invertido_2015_proyectadas = obras_2015_proyectadas.aggregate(Sum('inversionTotal'))
+    total_invertido_2016_proyectadas = obras_2016_proyectadas.aggregate(Sum('inversionTotal'))
+    total_invertido_2017_proyectadas = obras_2017_proyectadas.aggregate(Sum('inversionTotal'))
+    total_invertido_2018_proyectadas = obras_2018_proyectadas.aggregate(Sum('inversionTotal'))
+
+    totalinvertido2012=0
+    totalinvertido2013=0
+    totalinvertido2014=0
+    totalinvertido2015=0
+    totalinvertidoproceso=0
+    totalproyectadas2015=0
+    totalproyectadas2016=0
+    totalproyectadas2017=0
+    totalproyectadas2018=0
+
+    if str(total_invertido_2012_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2012=total_invertido_2012_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2013_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2013=total_invertido_2013_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2014_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2014=total_invertido_2014_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2015_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2015=total_invertido_2015_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_proceso.get('inversionTotal__sum',0)) != 'None': totalinvertidoproceso=total_invertido_proceso.get('inversionTotal__sum',0)
+    if str(total_invertido_2015_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2015=total_invertido_2015_proyectadas.get('inversionTotal__sum',0)
+    if str(total_invertido_2016_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2016=total_invertido_2016_proyectadas.get('inversionTotal__sum',0)
+    if str(total_invertido_2017_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2017=total_invertido_2017_proyectadas.get('inversionTotal__sum',0)
+    if str(total_invertido_2018_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2018=total_invertido_2018_proyectadas.get('inversionTotal__sum',0)
+
+    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015
+    totalInvertidoProyectadas=totalproyectadas2015+totalproyectadas2016+totalproyectadas2017+totalproyectadas2018
+    totalInvertido = totalInvertidoConcluidas+totalinvertidoproceso+totalInvertidoProyectadas
+
+    for x in range(9,31):
+        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(8)
+
+    for x in range(31,33):
+        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(14)
+
+
+    #concluidas
+    prs.slides[0].shapes[9].text= '{0:,}'.format(total_obras_concluidas_2012)
+    prs.slides[0].shapes[10].text= '{0:,.2f}'.format(totalinvertido2012)
+    prs.slides[0].shapes[11].text= '{0:,}'.format(total_obras_concluidas_2013)
+    prs.slides[0].shapes[12].text= '{0:,.2f}'.format(totalinvertido2013)
+    prs.slides[0].shapes[13].text= '{0:,}'.format(total_obras_concluidas_2014)
+    prs.slides[0].shapes[14].text= '{0:,.2f}'.format(totalinvertido2014)
+    prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_concluidas_2015)
+    prs.slides[0].shapes[16].text= '{0:,.2f}'.format(totalinvertido2015)
+    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_concluidas)
+    prs.slides[0].shapes[18].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
+    #proceso
+    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[0].shapes[20].text= '{0:,.2f}'.format(totalinvertidoproceso)
+    #proyectadas
+    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_proyectadas_2015)
+    prs.slides[0].shapes[22].text= '{0:,.2f}'.format(totalproyectadas2015)
+    prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_proyectadas_2016)
+    prs.slides[0].shapes[24].text= '{0:,.2f}'.format(totalproyectadas2016)
+    prs.slides[0].shapes[25].text= '{0:,}'.format(total_obras_proyectadas_2017)
+    prs.slides[0].shapes[26].text= '{0:,.2f}'.format(totalproyectadas2017)
+    prs.slides[0].shapes[27].text= '{0:,}'.format(total_obras_proyectadas_2018)
+    prs.slides[0].shapes[28].text= '{0:,.2f}'.format(totalproyectadas2017)
+
+    prs.slides[0].shapes[29].text= '{0:,}'.format(total_obras_proyectadas)
+    prs.slides[0].shapes[30].text= '{0:,.2f}'.format(totalInvertidoProyectadas)
+
+    #totales
+    prs.slides[0].shapes[31].text= '{0:,}'.format(total_obras)
+    prs.slides[0].shapes[32].text= '{0:,.2f}'.format(totalInvertido)
+
+
+
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_interestatal_' + str(usuario.user.id) + '.pptx')
+
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_interestatal_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
+
+@login_required()
+def hiper_nacional_ppt(request):
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_NACIONAL.pptx')
+    usuario = request.user.usuario
+    dependencias = usuario.dependencia.all()
+    subdependencias = usuario.subdependencia.all()
+    query = Q()
+    if dependencias and dependencias.count() > 0:
+        if usuario.rol == 'US':
+            query = Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+        else:
+
+            query = Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) | Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias)
+        )
+
+    start_date_2012 = datetime.date(2012, 01, 01)
+    end_date_2012 = datetime.date(2012, 12, 31)
+
+    start_date_2013 = datetime.date(2013, 01, 01)
+    end_date_2013 = datetime.date(2013, 12, 31)
+
+    start_date_2014 = datetime.date(2014, 01, 01)
+    end_date_2014 = datetime.date(2014, 12, 31)
+
+    start_date_2015 = datetime.date(2015, 01, 01)
+    end_date_2015 = datetime.date(2015, 12, 31)
+
+    start_date_2016 = datetime.date(2016, 01, 01)
+    end_date_2016 = datetime.date(2016, 12, 31)
+
+    start_date_2017 = datetime.date(2017, 01, 01)
+    end_date_2017 = datetime.date(2017, 12, 31)
+
+    start_date_2018 = datetime.date(2018, 01, 01)
+    end_date_2018 = datetime.date(2018, 12, 31)
+
+    obras_2012_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2012, end_date_2012)),
+        Q(estado_id=33),Q(tipoObra=3),query,
+    )
+    obras_2013_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2013, end_date_2013)),
+        Q(estado_id=33),Q(tipoObra=3),query,
+    )
+    obras_2014_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2014, end_date_2014)),
+        Q(estado_id=33),Q(tipoObra=3),query,
+    )
+    obras_2015_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(estado_id=33),Q(tipoObra=3),query,
+    )
+
+    obras_proceso = Obra.objects.filter(
+        Q(estado_id=33),Q(tipoObra=2),query,
+    )
+
+    obras_2015_proyectadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(estado_id=33),Q(tipoObra=1),query,
+    )
+    obras_2016_proyectadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2016, end_date_2016)),
+        Q(estado_id=33),Q(tipoObra=1),query,
+    )
+    obras_2017_proyectadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2017, end_date_2017)),
+        Q(estado_id=33),Q(tipoObra=1),query,
+    )
+    obras_2018_proyectadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2018, end_date_2018)),
+        Q(estado_id=33),Q(tipoObra=1),query,
+    )
+
+    total_obras_concluidas_2012 = obras_2012_concluidas.count()
+    total_obras_concluidas_2013 = obras_2013_concluidas.count()
+    total_obras_concluidas_2014 = obras_2014_concluidas.count()
+    total_obras_concluidas_2015 = obras_2015_concluidas.count()
+    total_obras_concluidas = total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015
+    total_obras_proceso = obras_proceso.count()
+    total_obras_proyectadas_2015 = obras_2015_proyectadas.count()
+    total_obras_proyectadas_2016 = obras_2016_proyectadas.count()
+    total_obras_proyectadas_2017 = obras_2017_proyectadas.count()
+    total_obras_proyectadas_2018 = obras_2018_proyectadas.count()
+    total_obras_proyectadas = total_obras_proyectadas_2015+total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
+    total_obras = total_obras_concluidas+total_obras_proceso+total_obras_proyectadas
+
+    total_invertido_2012_concluidas = obras_2012_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2013_concluidas = obras_2013_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2014_concluidas = obras_2014_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2015_concluidas = obras_2015_concluidas.aggregate(Sum('inversionTotal'))
+
+    total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
+
+    total_invertido_2015_proyectadas = obras_2015_proyectadas.aggregate(Sum('inversionTotal'))
+    total_invertido_2016_proyectadas = obras_2016_proyectadas.aggregate(Sum('inversionTotal'))
+    total_invertido_2017_proyectadas = obras_2017_proyectadas.aggregate(Sum('inversionTotal'))
+    total_invertido_2018_proyectadas = obras_2018_proyectadas.aggregate(Sum('inversionTotal'))
+
+    totalinvertido2012=0
+    totalinvertido2013=0
+    totalinvertido2014=0
+    totalinvertido2015=0
+    totalinvertidoproceso=0
+    totalproyectadas2015=0
+    totalproyectadas2016=0
+    totalproyectadas2017=0
+    totalproyectadas2018=0
+
+    if str(total_invertido_2012_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2012=total_invertido_2012_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2013_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2013=total_invertido_2013_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2014_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2014=total_invertido_2014_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2015_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2015=total_invertido_2015_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_proceso.get('inversionTotal__sum',0)) != 'None': totalinvertidoproceso=total_invertido_proceso.get('inversionTotal__sum',0)
+    if str(total_invertido_2015_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2015=total_invertido_2015_proyectadas.get('inversionTotal__sum',0)
+    if str(total_invertido_2016_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2016=total_invertido_2016_proyectadas.get('inversionTotal__sum',0)
+    if str(total_invertido_2017_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2017=total_invertido_2017_proyectadas.get('inversionTotal__sum',0)
+    if str(total_invertido_2018_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2018=total_invertido_2018_proyectadas.get('inversionTotal__sum',0)
+
+    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015
+    totalInvertidoProyectadas=totalproyectadas2015+totalproyectadas2016+totalproyectadas2017+totalproyectadas2018
+    totalInvertido = totalInvertidoConcluidas+totalinvertidoproceso+totalInvertidoProyectadas
+
+    for x in range(9,31):
+        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(8)
+
+    for x in range(31,33):
+        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(14)
+
+
+    #concluidas
+    prs.slides[0].shapes[9].text= '{0:,}'.format(total_obras_concluidas_2012)
+    prs.slides[0].shapes[10].text= '{0:,.2f}'.format(totalinvertido2012)
+    prs.slides[0].shapes[11].text= '{0:,}'.format(total_obras_concluidas_2013)
+    prs.slides[0].shapes[12].text= '{0:,.2f}'.format(totalinvertido2013)
+    prs.slides[0].shapes[13].text= '{0:,}'.format(total_obras_concluidas_2014)
+    prs.slides[0].shapes[14].text= '{0:,.2f}'.format(totalinvertido2014)
+    prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_concluidas_2015)
+    prs.slides[0].shapes[16].text= '{0:,.2f}'.format(totalinvertido2015)
+    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_concluidas)
+    prs.slides[0].shapes[18].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
+    #proceso
+    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[0].shapes[20].text= '{0:,.2f}'.format(totalinvertidoproceso)
+    #proyectadas
+    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_proyectadas_2015)
+    prs.slides[0].shapes[22].text= '{0:,.2f}'.format(totalproyectadas2015)
+    prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_proyectadas_2016)
+    prs.slides[0].shapes[24].text= '{0:,.2f}'.format(totalproyectadas2016)
+    prs.slides[0].shapes[25].text= '{0:,}'.format(total_obras_proyectadas_2017)
+    prs.slides[0].shapes[26].text= '{0:,.2f}'.format(totalproyectadas2017)
+    prs.slides[0].shapes[27].text= '{0:,}'.format(total_obras_proyectadas_2018)
+    prs.slides[0].shapes[28].text= '{0:,.2f}'.format(totalproyectadas2017)
+
+    prs.slides[0].shapes[29].text= '{0:,}'.format(total_obras_proyectadas)
+    prs.slides[0].shapes[30].text= '{0:,.2f}'.format(totalInvertidoProyectadas)
+
+    #totales
+    prs.slides[0].shapes[31].text= '{0:,}'.format(total_obras)
+    prs.slides[0].shapes[32].text= '{0:,.2f}'.format(totalInvertido)
+
+
+
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx')
+
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx'
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
+
+@login_required()
+def hiper_rangos_ppt(request):
+    prs = Presentation('obras/static/ppt/HIPERVINCULO_RANGOS.pptx')
+    usuario = request.user.usuario
+    dependencias = usuario.dependencia.all()
+    subdependencias = usuario.subdependencia.all()
+    query = Q()
+    if dependencias and dependencias.count() > 0:
+        if usuario.rol == 'US':
+            query = Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+        else:
+
+            query = Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) | Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias)
+        )
+
+    #concluidas
+    obras_concluidas_1 = Obra.objects.filter(
+        Q(tipoObra=3),Q(inversionTotal__range=(0, 9.99)),query,
+    )
+    obras_concluidas_2 = Obra.objects.filter(
+        Q(tipoObra=3),Q(inversionTotal__range=(10, 49.99)),query,
+    )
+    obras_concluidas_3 = Obra.objects.filter(
+        Q(tipoObra=3),Q(inversionTotal__range=(50, 99.99)),query,
+    )
+    obras_concluidas_4 = Obra.objects.filter(
+        Q(tipoObra=3),Q(inversionTotal__range=(100, 199.99)),query,
+    )
+    obras_concluidas_5 = Obra.objects.filter(
+        Q(tipoObra=3),Q(inversionTotal__range=(200, 400.99)),query,
+    )
+    obras_concluidas_6 = Obra.objects.filter(
+        Q(tipoObra=3),Q(inversionTotal__range=(500, 10000000000.99)),query,
+    )
+
+    #proceso
+    obras_proceso_1 = Obra.objects.filter(
+        Q(tipoObra=2),Q(inversionTotal__range=(0, 9.99)),query,
+    )
+    obras_proceso_2 = Obra.objects.filter(
+        Q(tipoObra=2),Q(inversionTotal__range=(10, 49.99)),query,
+    )
+    obras_proceso_3 = Obra.objects.filter(
+        Q(tipoObra=2),Q(inversionTotal__range=(50, 99.99)),query,
+    )
+    obras_proceso_4 = Obra.objects.filter(
+        Q(tipoObra=2),Q(inversionTotal__range=(100, 199.99)),query,
+    )
+    obras_proceso_5 = Obra.objects.filter(
+        Q(tipoObra=2),Q(inversionTotal__range=(200, 400.99)),query,
+    )
+    obras_proceso_6 = Obra.objects.filter(
+        Q(tipoObra=2),Q(inversionTotal__range=(500, 10000000000.99)),query,
+    )
+    #proyectadas
+    obras_proyectadas_1 = Obra.objects.filter(
+        Q(tipoObra=1),Q(inversionTotal__range=(0, 9.99)),query,
+    )
+    obras_proyectadas_2 = Obra.objects.filter(
+        Q(tipoObra=1),Q(inversionTotal__range=(10, 49.99)),query,
+    )
+    obras_proyectadas_3 = Obra.objects.filter(
+        Q(tipoObra=1),Q(inversionTotal__range=(50, 99.99)),query,
+    )
+    obras_proyectadas_4 = Obra.objects.filter(
+        Q(tipoObra=1),Q(inversionTotal__range=(100, 199.99)),query,
+    )
+    obras_proyectadas_5 = Obra.objects.filter(
+        Q(tipoObra=1),Q(inversionTotal__range=(200, 400.99)),query,
+    )
+    obras_proyectadas_6 = Obra.objects.filter(
+        Q(tipoObra=1),Q(inversionTotal__range=(500, 10000000000.99)),query,
+    )
+
+    #concluidas
+    total_obras_concluidas_1 = obras_concluidas_1.count()
+    total_obras_concluidas_2 = obras_concluidas_2.count()
+    total_obras_concluidas_3 = obras_concluidas_3.count()
+    total_obras_concluidas_4 = obras_concluidas_4.count()
+    total_obras_concluidas_5 = obras_concluidas_5.count()
+    total_obras_concluidas_6 = obras_concluidas_6.count()
+    total_concluidas = total_obras_concluidas_1+total_obras_concluidas_2+total_obras_concluidas_3+total_obras_concluidas_4+total_obras_concluidas_5+total_obras_concluidas_6
+    print('division' + str(Decimal(total_obras_concluidas_1)/Decimal(total_concluidas)))
+    ciento_concluidas_1 = (Decimal(total_obras_concluidas_1)/Decimal(total_concluidas))*100
+    ciento_concluidas_2 = (Decimal(total_obras_concluidas_2)/Decimal(total_concluidas))*100
+    ciento_concluidas_3 = (Decimal(total_obras_concluidas_3)/Decimal(total_concluidas))*100
+    ciento_concluidas_4 = (Decimal(total_obras_concluidas_4)/Decimal(total_concluidas))*100
+    ciento_concluidas_5 = (Decimal(total_obras_concluidas_5)/Decimal(total_concluidas))*100
+    ciento_concluidas_6 = (Decimal(total_obras_concluidas_6)/Decimal(total_concluidas))*100
+    total_ciento_concluidas = ciento_concluidas_1+ciento_concluidas_2+ciento_concluidas_3+ciento_concluidas_4+ciento_concluidas_5+ciento_concluidas_6
+    #proceso
+    total_obras_proceso_1 = obras_proceso_1.count()
+    total_obras_proceso_2 = obras_proceso_2.count()
+    total_obras_proceso_3 = obras_proceso_3.count()
+    total_obras_proceso_4 = obras_proceso_4.count()
+    total_obras_proceso_5 = obras_proceso_5.count()
+    total_obras_proceso_6 = obras_proceso_6.count()
+    total_proceso = total_obras_proceso_1+total_obras_proceso_2+total_obras_proceso_3+total_obras_proceso_4+total_obras_proceso_5+total_obras_proceso_6
+    ciento_proceso_1 = (Decimal(total_obras_proceso_1)/Decimal(total_proceso))*100
+    ciento_proceso_2 = (Decimal(total_obras_proceso_2)/Decimal(total_proceso))*100
+    ciento_proceso_3 = (Decimal(total_obras_proceso_3)/Decimal(total_proceso))*100
+    ciento_proceso_4 = (Decimal(total_obras_proceso_4)/Decimal(total_proceso))*100
+    ciento_proceso_5 = (Decimal(total_obras_proceso_5)/Decimal(total_proceso))*100
+    ciento_proceso_6 = (Decimal(total_obras_proceso_6)/Decimal(total_proceso))*100
+    total_ciento_proceso = ciento_proceso_1+ciento_proceso_2+ciento_proceso_3+ciento_proceso_4+ciento_proceso_5+ciento_proceso_6
+    #proyectadas
+    total_obras_proyectadas_1 = obras_proyectadas_1.count()
+    total_obras_proyectadas_2 = obras_proyectadas_2.count()
+    total_obras_proyectadas_3 = obras_proyectadas_3.count()
+    total_obras_proyectadas_4 = obras_proyectadas_4.count()
+    total_obras_proyectadas_5 = obras_proyectadas_5.count()
+    total_obras_proyectadas_6 = obras_proyectadas_6.count()
+    total_proyectadas = total_obras_proyectadas_1+total_obras_proyectadas_2+total_obras_proyectadas_3+total_obras_proyectadas_4+total_obras_proyectadas_5+total_obras_proyectadas_6
+    ciento_proyectadas_1 = (Decimal(total_obras_proyectadas_1)/Decimal(total_proyectadas))*100
+    ciento_proyectadas_2 = (Decimal(total_obras_proyectadas_2)/Decimal(total_proyectadas))*100
+    ciento_proyectadas_3 = (Decimal(total_obras_proyectadas_3)/Decimal(total_proyectadas))*100
+    ciento_proyectadas_4 = (Decimal(total_obras_proyectadas_4)/Decimal(total_proyectadas))*100
+    ciento_proyectadas_5 = (Decimal(total_obras_proyectadas_5)/Decimal(total_proyectadas))*100
+    ciento_proyectadas_6 = (Decimal(total_obras_proyectadas_6)/Decimal(total_proyectadas))*100
+    total_ciento_proyectadas=ciento_proyectadas_1+ciento_proyectadas_2+ciento_proyectadas_3+ciento_proyectadas_4+ciento_proyectadas_5+ciento_proyectadas_6
+    #totales
+    total_obras_1 = total_obras_concluidas_1+total_obras_proceso_1+total_obras_proyectadas_1
+    total_obras_2 = total_obras_concluidas_2+total_obras_proceso_2+total_obras_proyectadas_2
+    total_obras_3 = total_obras_concluidas_3+total_obras_proceso_3+total_obras_proyectadas_3
+    total_obras_4 = total_obras_concluidas_4+total_obras_proceso_4+total_obras_proyectadas_4
+    total_obras_5 = total_obras_concluidas_5+total_obras_proceso_5+total_obras_proyectadas_5
+    total_obras_6 = total_obras_concluidas_6+total_obras_proceso_6+total_obras_proyectadas_6
+    total_obras = total_obras_1+total_obras_2+total_obras_3+total_obras_4+total_obras_5+total_obras_6
+    ciento_obras_1 = (Decimal(total_obras_1)/Decimal(total_obras))*100
+    ciento_obras_2 = (Decimal(total_obras_2)/Decimal(total_obras))*100
+    ciento_obras_3 = (Decimal(total_obras_3)/Decimal(total_obras))*100
+    ciento_obras_4 = (Decimal(total_obras_4)/Decimal(total_obras))*100
+    ciento_obras_5 = (Decimal(total_obras_5)/Decimal(total_obras))*100
+    ciento_obras_6 = (Decimal(total_obras_6)/Decimal(total_obras))*100
+    total_ciento_obras = ciento_obras_1+ciento_obras_2+ciento_obras_3+ciento_obras_4+ciento_obras_5+ciento_obras_6
+
+    for x in range(13,69):
+        prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(10)
+
+    #concluidas
+    prs.slides[0].shapes[13].text= '{0:,}'.format(total_obras_concluidas_1)
+    prs.slides[0].shapes[14].text= '{0:,}'.format(total_obras_concluidas_2)
+    prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_concluidas_3)
+    prs.slides[0].shapes[16].text= '{0:,}'.format(total_obras_concluidas_4)
+    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_concluidas_5)
+    prs.slides[0].shapes[18].text= '{0:,}'.format(total_obras_concluidas_6)
+    prs.slides[0].shapes[19].text= '{0:,}'.format(total_concluidas)
+    prs.slides[0].shapes[20].text= '{0:,.2f}'.format(ciento_concluidas_1)
+    prs.slides[0].shapes[21].text= '{0:,.2f}'.format(ciento_concluidas_2)
+    prs.slides[0].shapes[22].text= '{0:,.2f}'.format(ciento_concluidas_3)
+    prs.slides[0].shapes[23].text= '{0:,.2f}'.format(ciento_concluidas_4)
+    prs.slides[0].shapes[24].text= '{0:,.2f}'.format(ciento_concluidas_5)
+    prs.slides[0].shapes[25].text= '{0:,.2f}'.format(ciento_concluidas_6)
+    prs.slides[0].shapes[26].text= '{0:,.2f}'.format(total_ciento_concluidas)
+    #proceso
+    prs.slides[0].shapes[27].text= '{0:,}'.format(total_obras_proceso_1)
+    prs.slides[0].shapes[28].text= '{0:,}'.format(total_obras_proceso_2)
+    prs.slides[0].shapes[29].text= '{0:,}'.format(total_obras_proceso_3)
+    prs.slides[0].shapes[30].text= '{0:,}'.format(total_obras_proceso_4)
+    prs.slides[0].shapes[31].text= '{0:,}'.format(total_obras_proceso_5)
+    prs.slides[0].shapes[32].text= '{0:,}'.format(total_obras_proceso_6)
+    prs.slides[0].shapes[33].text= '{0:,}'.format(total_proceso)
+    prs.slides[0].shapes[34].text= '{0:,.2f}'.format(ciento_proceso_1)
+    prs.slides[0].shapes[35].text= '{0:,.2f}'.format(ciento_proceso_2)
+    prs.slides[0].shapes[36].text= '{0:,.2f}'.format(ciento_proceso_3)
+    prs.slides[0].shapes[37].text= '{0:,.2f}'.format(ciento_proceso_4)
+    prs.slides[0].shapes[38].text= '{0:,.2f}'.format(ciento_proceso_5)
+    prs.slides[0].shapes[39].text= '{0:,.2f}'.format(ciento_proceso_6)
+    prs.slides[0].shapes[40].text= '{0:,.2f}'.format(total_ciento_proceso)
+    #proyectadas
+    prs.slides[0].shapes[41].text= '{0:,}'.format(total_obras_proyectadas_1)
+    prs.slides[0].shapes[42].text= '{0:,}'.format(total_obras_proyectadas_2)
+    prs.slides[0].shapes[43].text= '{0:,}'.format(total_obras_proyectadas_3)
+    prs.slides[0].shapes[44].text= '{0:,}'.format(total_obras_proyectadas_4)
+    prs.slides[0].shapes[45].text= '{0:,}'.format(total_obras_proyectadas_5)
+    prs.slides[0].shapes[46].text= '{0:,}'.format(total_obras_proyectadas_6)
+    prs.slides[0].shapes[47].text= '{0:,}'.format(total_proyectadas)
+    prs.slides[0].shapes[48].text= '{0:,.2f}'.format(ciento_proyectadas_1)
+    prs.slides[0].shapes[49].text= '{0:,.2f}'.format(ciento_proyectadas_2)
+    prs.slides[0].shapes[50].text= '{0:,.2f}'.format(ciento_proyectadas_3)
+    prs.slides[0].shapes[51].text= '{0:,.2f}'.format(ciento_proyectadas_4)
+    prs.slides[0].shapes[52].text= '{0:,.2f}'.format(ciento_proyectadas_5)
+    prs.slides[0].shapes[53].text= '{0:,.2f}'.format(ciento_proyectadas_6)
+    prs.slides[0].shapes[54].text= '{0:,.2f}'.format(total_ciento_proyectadas)
+    #totales
+    prs.slides[0].shapes[55].text= '{0:,}'.format(total_obras_1)
+    prs.slides[0].shapes[56].text= '{0:,}'.format(total_obras_2)
+    prs.slides[0].shapes[57].text= '{0:,}'.format(total_obras_3)
+    prs.slides[0].shapes[58].text= '{0:,}'.format(total_obras_4)
+    prs.slides[0].shapes[59].text= '{0:,}'.format(total_obras_5)
+    prs.slides[0].shapes[60].text= '{0:,}'.format(total_obras_6)
+    prs.slides[0].shapes[61].text= '{0:,}'.format(total_obras)
+    prs.slides[0].shapes[62].text= '{0:,.2f}'.format(ciento_obras_1)
+    prs.slides[0].shapes[63].text= '{0:,.2f}'.format(ciento_obras_2)
+    prs.slides[0].shapes[64].text= '{0:,.2f}'.format(ciento_obras_3)
+    prs.slides[0].shapes[65].text= '{0:,.2f}'.format(ciento_obras_4)
+    prs.slides[0].shapes[66].text= '{0:,.2f}'.format(ciento_obras_5)
+    prs.slides[0].shapes[67].text= '{0:,.2f}'.format(ciento_obras_6)
+    prs.slides[0].shapes[68].text= '{0:,.2f}'.format(total_ciento_obras)
+
+
+
+    #f = tempfile.TemporaryFile()
+    #prs.save(f)
+    #f.seek(0)
+    #response = send_file(f, as_attachment=True, attachment_filename='nuevo.pptx', add_etags=False)
+
+    #f.seek(0, os.SEEK_END)
+    #size = f.tell()
+    #f.seek(0)
+    #response.headers.extend({'Content-Length': size,'Cache-Control': 'no-cache' })
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_rangos_' + str(usuario.user.id) + '.pptx')
+
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_rangos_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
