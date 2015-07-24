@@ -158,6 +158,7 @@ class DocumentoFuenteInline(admin.TabularInline):
     extra = 1
     form = DocumentoFuenteForm
 
+
 class DependenciaListFilter(SimpleListFilter):
     # USAGE
     # In your admin class, pass three filter class as tuple for the list_filter attribute:
@@ -165,7 +166,7 @@ class DependenciaListFilter(SimpleListFilter):
     # list_filter = (CategoryListFilter,)
     # Human-readable title which will be displayed in the
     # right admin sidebar just above the filter options.
-    title = ('Dependencias',)
+    title = 'Dependencia'
 
     parameter_name = 'dependencia'
 
@@ -179,15 +180,14 @@ class DependenciaListFilter(SimpleListFilter):
         """
         arreglo_dependencias = []
         for dependencia in request.user.usuario.dependencia.all():
-            print(dependencia.id)
             arreglo_dependencias.append(dependencia.id)
 
         if request.user.usuario.rol == 'SA':  # Secretaria tecnica
-            dependencias = Dependencia.objects.all()
+            dependencias = Dependencia.objects.filter(obraoprograma='O')
         elif request.user.usuario.rol == 'AD':  # Dependencia
             dependencias = Dependencia.objects.filter(
-                Q(id__in=arreglo_dependencias) |
-                Q(dependienteDe__id__in=arreglo_dependencias)
+                Q(id__in=arreglo_dependencias) &
+                Q(obraoprograma='O')
 
             )
         elif request.user.usuario.rol == 'US':
@@ -209,6 +209,101 @@ class DependenciaListFilter(SimpleListFilter):
 
         if self.value():
             return queryset.filter(dependencia__id=self.value())
+
+
+class SubDependenciaListFilter(SimpleListFilter):
+    # USAGE
+    # In your admin class, pass three filter class as tuple for the list_filter attribute:
+    #
+    # list_filter = (CategoryListFilter,)
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'Subdependencia'
+
+    parameter_name = 'subdependencia'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        arreglo_dependencias = []
+        for dependencia in request.user.usuario.dependencia.all():
+            arreglo_dependencias.append(dependencia.id)
+
+        if request.user.usuario.rol == 'SA':  # Secretaria tecnica
+            dependencias = Dependencia.objects.filter(
+                Q(obraoprograma='O') &
+                Q(dependienteDe__isnull=False)
+            )
+
+        elif request.user.usuario.rol == 'AD':  # Dependencia
+            dependencias = Dependencia.objects.filter(
+                Q(dependienteDe__id__in=arreglo_dependencias) &
+                Q(obraoprograma='O')
+
+            )
+        elif request.user.usuario.rol == 'US':
+            for dependencia in request.user.usuario.subdependencia.all():
+                arreglo_dependencias.append(dependencia.id)
+
+            dependencias = Dependencia.objects.filter(
+                Q(dependienteDe__id__in=arreglo_dependencias)
+            )
+
+        list_tuple = []
+        for dependencia in dependencias:
+            list_tuple.append((dependencia.id, dependencia.nombreDependencia))
+        return list_tuple
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+
+        if self.value():
+            return queryset.filter(subdependencia__id=self.value())
+
+
+class EstadoListFilter(SimpleListFilter):
+    # USAGE
+    # In your admin class, pass three filter class as tuple for the list_filter attribute:
+    #
+    # list_filter = (CategoryListFilter,)
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'Estado'
+
+    parameter_name = 'estado'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+
+        list_tuple = []
+        for estado in Estado.objects.all():
+            list_tuple.append((estado.id, estado.nombreEstado))
+        return list_tuple
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+
+        if self.value():
+            return queryset.filter(estado__id=self.value())
 
 
 def make_authorized(obrasadmin, request, queryset):
@@ -260,7 +355,7 @@ class ObrasAdmin(admin.ModelAdmin):
         'fechaTermino')
     ordering = ['identificador_unico']
 
-    list_filter = [DependenciaListFilter, 'autorizada']
+    list_filter = [DependenciaListFilter, 'autorizada', SubDependenciaListFilter, EstadoListFilter, ]
     readonly_fields = ('identificador_unico',)
     actions = [make_authorized, make_unauthorized]
 
