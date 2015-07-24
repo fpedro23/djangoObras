@@ -257,7 +257,9 @@ function verDatos() {
 
 
     var ajax_data = {
-      "access_token"  : newToken
+      "access_token"  : newToken,
+      "limiteMin":0,
+      "limiteMax":1000
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
