@@ -288,26 +288,31 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 
 #changelist-filter {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 45px;
+    left: 907px;
     z-index: 1000;
-    width: 160px;
+    width: 110px;
     border-left: 1px solid #ddd;
     background: #efefef;
     margin: 0;
+    overflow: scroll;
+    height: 357px;
 }
 
 #changelist-filter h2 {
     font-family: "soberana_sanslight";
     font-size: 11px;
-    padding: 2px 5px;
+    padding: 2px 2px;
     border-bottom: 1px solid #ddd;
+    margin-top: 2px;
 }
 
 #changelist-filter h3 {
     font-family: "soberana_sanslight";
-    font-size: 12px;
+    font-size: 11px;
     margin-bottom: 0;
+    font-style: italic;
+    margin-top: 2px;
 }
 
 #changelist-filter ul {
@@ -322,7 +327,9 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 }
 
 #changelist-filter a {
-    color: #fff;
+    color: #ACADB0;
+    margin-top: 2px;
+    font-size: 10px;
 }
 
 #changelist-filter a:hover {
@@ -336,7 +343,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 }
 
 #changelist-filter li.selected a {
-    color: #999 !important;
+    color: #6A6B79 !important;
 }
 
 /* DATE DRILLDOWN */

@@ -163,7 +163,7 @@
 
        {% if field.field.name == "longitud" %}
                   <tr>
-                      <td class="texto"> <label class="required" for="id_longitud">Latitud:</label></td>
+                      <td class="texto"> <label class="required" for="id_longitud">Longitud:</label></td>
                       <td class="texto"> {{ field.field }}
                           {% if field.errors %}
                              <img id="imgerr9" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
