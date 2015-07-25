@@ -212,14 +212,17 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 
 #changelist .paginator {
     color: #666;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    background: white url(../img/nav-bg.gif) 0 180% repeat-x;
+    border-top: 0px solid #696969;
+    /*border-bottom: 1px solid #eee;
+    background: white url(../img/nav-bg.gif) 0 180% repeat-x;*/
     overflow: hidden;
+    height: 22px;
+    padding-bottom: 0px;
+    padding-top: 0px;
 }
 
 .change-list .filtered .paginator {
-    border-right: 1px solid #ddd;
+    border-right: 0px solid #ddd;
 }
 
 /* CHANGELIST TABLES */
@@ -288,22 +291,23 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 
 #changelist-filter {
     position: absolute;
-    top: 45px;
+    top: 63px;
     left: 907px;
     z-index: 1000;
     width: 110px;
     border-left: 1px solid #ddd;
-    background: #efefef;
+    background: #e4e5e6;
     margin: 0;
-    overflow: scroll;
-    height: 357px;
+    overflow: auto;
+    height: 430px;
+    font-family: "soberana_sanslight";
 }
 
 #changelist-filter h2 {
     font-family: "soberana_sanslight";
     font-size: 11px;
     padding: 2px 2px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #808080;
     margin-top: 2px;
 }
 
@@ -379,8 +383,8 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 .paginator {
     font-family: "soberana_sanslight";
     font-size: 11px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     line-height: 22px;
     margin: 0;
     border-top: 1px solid #ddd;

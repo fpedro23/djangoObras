@@ -467,8 +467,8 @@
             <div data-spy="scroll" data-target=".navbar" data-offset="2" class="scrollFotos">
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                         <tr>
-                            <td width="20%" class="texto"><label for="id_fotoAntes">Antes:</label></td>
-                            <td width="80%" class="texto">{{ field.field|add_desc:"inside"  }}
+                            <td width="32%" class="texto"><label for="id_fotoAntes">Antes:</label></td>
+                            <td width="68%" class="texto">{{ field.field|add_desc:"inside"  }}
                                    {% if field.errors %}
                                    <img id="imgerr25" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                                   {% endif %}
