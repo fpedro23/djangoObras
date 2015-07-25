@@ -200,6 +200,9 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	left: 123px;
 	top: 90px;
     overflow: scroll;
+    /*border-bottom: 1px;
+    border-bottom-color: rgb(108, 108, 108);
+    border-bottom-style: solid;*/
 }
 
 
@@ -255,11 +258,14 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-family: "soberana_sanslight";
 	font-size: 18px;
 	color: #6A6B6C;
-	width: 450px;
+	width: 694px;
 	height: 30px;
 	position: absolute;
 	left: 123px;
-	top: 420px;
+	top: 400px;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #6A6B6C;
 }
 
 .salirBTN{
