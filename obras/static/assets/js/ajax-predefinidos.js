@@ -11,6 +11,8 @@ $j(document).on('ready', main_consulta);
 var datosJson
 var newToken
 
+var descripcionIniciadas = "Obras proyectadas cuya fecha de inicio ya venció, es decir; obras proyectadas que a la fecha actual ya deberían estar en proceso";
+var descripcionVencidas = "Obras en proceso cuya fecha de término ya venció, es decir; obras en proceso que a la fecha actual ya deberían estar concluidas";
 function valida_token(){
 var ajax_datatoken = {
       "access_token"  : 'O9BfPpYQuu6a5ar4rGTd2dRdaYimVa'
@@ -96,7 +98,7 @@ function obrasIniciadas() {
         data: ajax_data,
         success: function(data) {
             $j('#historico').val("SI");
-            tablaI(data,'Obras Iniciadas');
+            tablaI(data,'Obras Iniciadas',descripcionIniciadas);
             datosJson=data;
             $j('#load1').addClass("mfp-hide");
         },
@@ -114,13 +116,15 @@ function obrasVencidas() {
     var ajax_data = {
       "access_token"  : newToken
     };
+    //alert(descripcionVencidas);
     $j.ajax({
         url: '/obras/api/obras_vencidas',
         type: 'get',
         data: ajax_data,
         success: function(data) {
             $j('#historico').val("SI");
-            tablaI(data,'Obras Vencidas');
+
+            tablaI(data,'Obras Vencidas',descripcionVencidas);
             datosJson=data;
             $j('#load2').addClass("mfp-hide");
         },
@@ -144,7 +148,7 @@ function obrasPorDependencia() {
         data: ajax_data,
         success: function(data) {
             $j('#historico').val("SI");
-            tablaI(data,'Obras por Dependencia');
+            tablaI(data,'Obras por Dependencia','');
             datosJson=data;
             $j('#load3').addClass("mfp-hide");
         },
@@ -157,7 +161,7 @@ function obrasPorDependencia() {
 
 }
 
-function tablaI(Datos,titulo){
+function tablaI(Datos,titulo,descripcion){
     var sHtmlExporta="";
     var sHtmlShorter="";
     var sHtmlistado="";
@@ -237,6 +241,7 @@ function tablaI(Datos,titulo){
                 +'</tbody>'
                 +'</table>';
     $j('#titulo').html(titulo);
+    $j('#descripcion').html(descripcion);
     $j('#tabla').html(sHtml);
 
 

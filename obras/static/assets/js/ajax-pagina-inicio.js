@@ -142,9 +142,17 @@ function pieGrafica(datas,titulo,dona,nombreData) {
                 enabled: true,
                 alpha: 45,
                 beta: 0
+            },
+            style: {
+                 color: '#FFFFFF',
+                 font: 'bold 12px "Trebuchet MS", Verdana, sans-serif'
             }
         },
         title: {
+            style: {
+                 color: '#FFFFFF',
+                 fontFamily: 'soberana_sanslight'
+            },
             text: titulo
         },
         credits: {
