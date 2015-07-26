@@ -83,7 +83,7 @@
                       <td class="texto">ID interno:</td>
                       <td class="texto">{{ field.field }}
                          {% if field.errors %}
-                             <img id="imgerr1" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr1" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                          {% endif %}
                       </td>
                  </tr>
@@ -95,7 +95,7 @@
                       <td class="texto"> <label class="required" for="id_denominacion">Denominacion:</label></td>
                       <td class="texto"> {{ field.field|addcss:"texto"}}
                             {% if field.errors %}
-                             <img id="imgerr2" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr2" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                       </td>
                   </tr>
@@ -106,7 +106,7 @@
                       {% csrf_token %}
                       <td class="texto"> {{ field.field }}
                            {% if field.errors %}
-                             <img id="imgerr3" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr3" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}</td>
                   </tr>
           {% endif %}
@@ -115,7 +115,7 @@
                       <td class="texto">  <label class="required" for="id_subdependencia">SubDependencia:</label></td>
                       <td class="texto"> {{ field.field }}
                         {% if field.errors %}
-                             <img id="imgerr4" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr4" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                       </td>
                   </tr>
@@ -125,7 +125,7 @@
                       <td class="texto"> <label for="id_instanciaEjecutora">Instancia Ejecutora:</label></td>
                       <td class="texto"> {{ field.field }}
                           {% if field.errors %}
-                             <img id="imgerr5" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr5" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                       </td>
                   </tr>
@@ -135,7 +135,7 @@
                       <td class="texto"> <label class="required" for="id_estado">Estado:</label></td>
                       <td class="texto"> {{ field.field }}
                             {% if field.errors %}
-                             <img id="imgerr6" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr6" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                       </td>
                   </tr>
@@ -145,7 +145,7 @@
                       <td class="texto"> <label class="required" for="id_municipio">Municipio:</label></td>
                       <td class="texto"> {{ field.field }}
                           {% if field.errors %}
-                             <img id="imgerr7" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr7" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                       </td>
                   </tr>
@@ -155,7 +155,7 @@
                       <td class="texto"> <label class="required" for="id_latitud">Latitud:</label></td>
                       <td class="texto"> {{ field.field }}
                             {% if field.errors %}
-                             <img id="imgerr8" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr8" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                       </td>
                   </tr>
@@ -166,7 +166,7 @@
                       <td class="texto"> <label class="required" for="id_longitud">Longitud:</label></td>
                       <td class="texto"> {{ field.field }}
                           {% if field.errors %}
-                             <img id="imgerr9" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr9" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                       </td>
                   </tr>
@@ -187,7 +187,7 @@
                             <td colspan="5" >
                              {{ field.field|add_attributes:"class:areadesc"  }}
                               {% if field.errors %}
-                                 <img id="imgerr10" data-toggle="tooltip" data-placement="left"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                                 <img id="imgerr10" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                                {% endif %}
                             </td>
                          </tr>
@@ -198,7 +198,7 @@
                  <td width="10%" class="texto"><label class="required" for="id_porcentajeAvance">Avance:</label></td>
                   <td width="30%" class="texto" style="padding-left: 0px;"> {{ field.field|add_desc:"style=width:80%;"  }}
                           {% if field.errors %}
-                             <img id="imgerr11" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr11" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                   </td>
 
@@ -209,7 +209,7 @@
                  <td width="10%" class="texto" style="padding-right: 0px;"><label class="required" for="id_tipoObra">Status:</label></td>
                   <td width="30%" class="texto" style="padding-left: 1px;"> {{ field.field|add_attributes:"class:statusfield" }}
                              {% if field.errors %}
-                             <img id="imgerr12" data-toggle="tooltip" data-placement="left"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr12" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                   </td>
                   <td width="2%" class="texto" </td>
@@ -224,7 +224,7 @@
 
                         <td width="60%" class="texto">{{ field.field}}
                             {% if field.errors %}
-                             <img id="imgerr13" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr13" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                         </td>
                     </tr></table>
@@ -239,7 +239,7 @@
                  <td width="40%" class="texto">  <label class="required" for="id_fechaTermino" style="font-size: 11px;">Fecha de Término:</label></td>
                   <td width="60%" class="texto"> {{ field.field }}
                      {% if field.errors %}
-                         <img id="imgerr14" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                         <img id="imgerr14" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                      {% endif %}
                   </td>
                </tr></table>
@@ -262,7 +262,7 @@
                           <td width="44%" class="texto"> <label class="required" for="id_poblacionObjetivo">Población Objetivo</label></td>
                           <td width="56%" class="texto">{{ field.field }}
                             {% if field.errors %}
-                             <img id="imgerr15" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr15" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                           </td>
                         </tr>
@@ -273,7 +273,7 @@
                  <td width="40%" class="texto"> <label class="required" for="id_totalBeneficiarios">Número de Beneficiarios</label></td>
                   <td width="60%" class="texto"> {{ field.field }}
                     {% if field.errors %}
-                             <img id="imgerr16" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr16" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                     {% endif %}
                   </td>
               </tr>
@@ -285,7 +285,7 @@
                  <td width="40%" class="texto"> <label class="required" for="id_impacto">Impacto</label></td>
                   <td width="60%" class="texto"> {{ field.field }}
                     {% if field.errors %}
-                             <img id="imgerr17" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr17" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                   </td>
               </tr>
@@ -297,7 +297,7 @@
                  <td width="40%" class="texto"> <label class="required" for="id_senalizacion">Señalización:</label></td>
                   <td width="60%" class="texto" style="alignment: top;"> {{ field.field }}
                     {% if field.errors %}
-                             <img id="imgerr18" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr18" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                   </td>
               </tr>
@@ -340,7 +340,7 @@
                         <td width="58%" class="texto" style="padding-right:0px;">  <label for="id_registroHacendario"> Registro de Cartera de Inversión:</label></td>
                         <td widht="42%" class="texto">  {{ field.field }}
                           {% if field.errors %}
-                                 <img id="imgerr19" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                                 <img id="imgerr19" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                                {% endif %}
                         </td>
                     </tr>
@@ -351,7 +351,7 @@
                         <td width="58%" class="texto" style="padding-right:0px;">  <label class="required" for="id_montoRegistroHacendario"> Recursos Federales Autorizados:</label></td>
                         <td width="42%" class="texto">  {{ field.field }}
                           {% if field.errors %}
-                                 <img id="imgerr20" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                                 <img id="imgerr20" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                                {% endif %}
                         </td>
                     </tr>
@@ -377,7 +377,7 @@
                                      {{ radio   }}
                        {% endfor %}
                       {% if field.errors %}
-                             <img id="imgerr21" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr21" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                     </td>
 
@@ -416,7 +416,7 @@
                        </tr>
                    </table>
                       {% if field.errors %}
-                             <img id="imgerr22" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr22" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                 </td>
             </tr>
@@ -427,7 +427,7 @@
                <td class="texto" width="40%">  <label class="required" for="id_inaugurador">Inaugurador:</label></td>
                <td class="texto" width="60%">{{ field.field }}
                   {% if field.errors %}
-                             <img id="imgerr23" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr23" data-toggle="tooltip" data-placement="left"  title="{% for error in field.field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                </td>
             </tr>
@@ -448,7 +448,7 @@
                                 <div id="observaciones">
                              {{ field.field|add_attributes:"class:areaobs" }}
                                       {% if field.errors %}
-                             <img id="imgerr24" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr24" data-toggle="tooltip" data-placement="left"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                                     </div>
                             </td>
@@ -470,7 +470,7 @@
                             <td width="32%" class="texto"><label for="id_fotoAntes">Antes:</label></td>
                             <td width="68%" class="texto">{{ field.field|add_desc:"inside"  }}
                                    {% if field.errors %}
-                                   <img id="imgerr25" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                                   <img id="imgerr25" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                                   {% endif %}
                             </td>
                          </tr>
@@ -481,7 +481,7 @@
                             <td width="20%" class="texto"><label for="id_fotoDurante">Durante:</label></td>
                             <td width="80%" class="texto"> {{ field.field |add_desc:"inside" }}
                               {% if field.errors %}
-                             <img id="imgerr26" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr26" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                             </td>
                          </tr>
@@ -492,7 +492,7 @@
                             <td width="20%" class="texto"><label for="id_fotoDespues">Después:</label></td>
                             <td width="80%" class="texto">  {{ field.field |add_desc:"inside" }}
                               {% if field.errors %}
-                             <img id="imgerr27" data-toggle="tooltip" data-placement="right"  title="{% for error in field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
+                             <img id="imgerr27" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                             </td>
                          </tr>

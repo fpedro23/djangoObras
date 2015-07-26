@@ -247,10 +247,31 @@ x++;
                                   var NDDate =   new Date($dp('#id_fechaTermino').datepicker("getDate"));
                                   if (endDate != "") {
                                       if (startDate > NDDate) {
-                                          alert("La fecha de Inicio debe ser anterior a la fecha de Término");
+                                          //alert("La fecha de Inicio debe ser anterior a la fecha de Término");
+                                          $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'La fecha de Inicio debe ser anterior a la fecha de Término.'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+
                                           $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
                                           $dp('#id_fechaInicio').SetDate(endDate);
                                       }
+                                      else
+                                    { $dp('#id_fechaTermino').datepicker('setStartDate', startDate); }
                                   }
                                     else
                                     { $dp('#id_fechaTermino').datepicker('setStartDate', startDate); }
@@ -268,10 +289,34 @@ x++;
 
                               if (startDate != "") {
                                   if (STDate > endDate) {
-                                      alert("La fecha de Término debe ser posterior a la fecha de Inicio");
+                                      //alert("La fecha de Término debe ser posterior a la fecha de Inicio");
+
+                                      $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'La fecha de Término debe ser posterior a la fecha de Inicio.'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+
                                       $dp('#id_fechaTermino').datepicker('setStartDate', startDate);
                                       $dp('#id_fechaTermino').setDate(startDate);
                                   }
+                                  else
+                                      {
+                                         $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
+                                      }
                               }
                               else
                               {
