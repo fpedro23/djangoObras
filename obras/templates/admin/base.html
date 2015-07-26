@@ -214,7 +214,7 @@
                     $pp.magnificPopup.open({
                         items: {
                             src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
-                                  + '<div class="class="textoALERTA"">'
+                                  + '<div >'
                                   + ' <ul class="messagelist">{% for message in messages%}'
                                   + '{% if forloop.first %}'
                                   + '  <li{% if message.tags %} class="textoALERTA"{% endif %}>{{ message|capfirst }}</li>'
@@ -264,9 +264,9 @@
     {% block footer %}<!-- Editar contenido aqui, no es necesario hacer mas clases cointainer, siempre dejar la misma estructura de row seguido por col-lo que sea.  -->
     <div class="footer">
 	<div id="txtFOOT">
-    Residencia Oficial de Los Pinos Teléfono: 5093 53 00 Atención a la ciudadanía: 01 800 080 1127 (llamada sin costo)<br />
-Presidencia de la República, México – Alguno derechos reservados 2015<br />
-Política de privacidad y manejo de datos personales
+    <div class="row"><div class="col-md-12">Residencia Oficial de Los Pinos Teléfono: 5093 53 00 Atención a la ciudadanía: 01 800 080 1127 (llamada sin costo)</div></div>
+    <div class="row"><div class="col-md-12">Presidencia de la República, México – Alguno derechos reservados 2015</div></div>
+    <div class="row"><div class="col-md-12">Política de privacidad y manejo de datos personales</div></div>
 
     </div>
 
