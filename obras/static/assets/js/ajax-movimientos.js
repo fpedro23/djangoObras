@@ -70,7 +70,6 @@ function verDatos() {
     if(idUnico.toString()!=""){ajax_data.identificador_unico=idUnico.toString();}
 
 
-
     $j.ajax({
         url: '/obras/api/id_unico',
         type: 'get',
@@ -80,7 +79,27 @@ function verDatos() {
            //alert('success!!! ' + data.id);
             if (data.id!=null){location.href='/admin/obras/obra/'+data.id+'/?m=1';
             }
-            else { alert('No existen registros con el ID Único ' + idUnico);}
+            else {
+                //alert('No existen registros con el ID Único ' + idUnico);
+                    $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'No existen registros con el ID Único: ' + idUnico
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+            }
 
         },
         error: function(data) {
@@ -108,7 +127,25 @@ function setImage(){
 
                 },
                 error: function(data) {
-                    alert('Error ' + data.status);
+                    // alert('Error ' + data.status);
+                         $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'Error ' + data.status
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
                 }
             });
         }
@@ -136,17 +173,74 @@ function setImage(){
                 var avanceO = $j("#id_porcentajeAvance").val();
 
                 if (statusO == "1" && avanceO > 0) {
-                    alert('Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.');
+                    //alert('Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.');
+                      $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.'
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+
                     $j("#id_tipoObra").val('---------');
                 }
                 else if (statusO == "2" && (avanceO == 0 || avanceO == 100))
                 {
-                    alert('Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.');
+                    //alert('Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.');
+                    $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.'
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+
                     $j("#id_tipoObra").val('---------');
                 }
                 else if (statusO == "3" && avanceO <100)
                 {
-                    alert('Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.');
+                    //alert('Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.');
+                    $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.'
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+
                     $j("#id_tipoObra").val('---------');
                 }
 
@@ -157,39 +251,77 @@ function setImage(){
                 var statusO = $j('select#id_tipoObra').val();
 
                 if (statusO == "1" && avanceO > 0) {
-                    alert('Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.');
+                    //alert('Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.');
+                    $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.'
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+
                     $j("#id_porcentajeAvance").val('0');
                 }
                 else if (statusO == "2" && (avanceO == 0 || avanceO == 100))
                 {
-                    alert('Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.');
+                    //alert('Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.');
+                    $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.'
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+
                     $j("#id_porcentajeAvance").val('0');
                 }
                 else if (statusO == "3" && avanceO <100)
                 {
-                    alert('Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.');
+                    //alert('Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.');
+                    $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.'
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+
                     $j("#id_porcentajeAvance").val('100');
                 }
 
          });
-
-        $j('#id_fechaInicio').on('changeDate',function(){
-            var vFecIni = this.val();
-            alert("entra");
-            if ($j('#id_fechaTermino').val() != "")
-            {
-                var iniDate = new Date(vFecIni),
-                endDate = new Date($j('#id_fechaTermino').val());
-                if(iniDate > endDate) {
-                    alert("error");
-                }
-            }
-        });
-
-        $j('#id_fechaTermino').on('change',function(){
-            var vFecFin = this.val();
-        });
-
-
 
     });
