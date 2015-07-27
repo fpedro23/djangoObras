@@ -129,6 +129,11 @@ class Estado(models.Model):
 
 @python_2_unicode_compatible
 class Impacto(models.Model):
+
+    class Meta:
+        verbose_name = "Tipo de Impacto"
+        verbose_name_plural = "Tipos de Impacto"
+
     nombreImpacto = models.CharField(max_length=200)
 
     def __str__(self):  # __unicode__ on Python 2
@@ -142,6 +147,11 @@ class Impacto(models.Model):
 
 @python_2_unicode_compatible
 class TipoInversion(models.Model):
+
+    class Meta:
+        verbose_name = "Tipo de Inversión"
+        verbose_name_plural = "Tipos de Inversión"
+
     nombreTipoInversion = models.CharField(max_length=200)
     nombreTipoInversionCorta = models.CharField(max_length=200)
 
@@ -156,6 +166,11 @@ class TipoInversion(models.Model):
 
 @python_2_unicode_compatible
 class TipoClasificacion(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Tipos de Clasificación"
+        verbose_name = "Tipo de Clasificación"
+
     subclasificacionDe = models.ForeignKey('self', null=True, blank=True,
                                            limit_choices_to={
                                                'subclasificacionDe': None,
@@ -204,6 +219,11 @@ class TipoClasificacion(models.Model):
 
 @python_2_unicode_compatible
 class Inaugurador(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Inauguradores"
+        verbose_name = "Inaugurador"
+
     nombreCargoInaugura = models.CharField(max_length=200)
 
     def __str__(self):  # __unicode__ on Python 2
