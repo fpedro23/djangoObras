@@ -183,7 +183,11 @@ class DependenciaListFilter(SimpleListFilter):
             arreglo_dependencias.append(dependencia.id)
 
         if request.user.usuario.rol == 'SA':  # Secretaria tecnica
-            dependencias = Dependencia.objects.filter(obraoprograma='O')
+            dependencias = Dependencia.objects.filter(
+                Q(obraoprograma='O') &
+                Q(dependienteDe__isnull=True)
+            )
+
         elif request.user.usuario.rol == 'AD':  # Dependencia
             dependencias = Dependencia.objects.filter(
                 Q(id__in=arreglo_dependencias) &
@@ -334,7 +338,6 @@ class DetalleClasificacionInline(admin.TabularInline):
     can_delete = False
 
 
-
 class ObrasAdmin(admin.ModelAdmin):
     form = AddObraForm
     inlinesClasificacion = [ClasificacionInLine]
@@ -348,8 +351,6 @@ class ObrasAdmin(admin.ModelAdmin):
         'tipoObra',
         'dependencia',
         'subdependencia',
-        'senalizacion',
-        'inaugurada',
         'fechaInicio',
         'fechaTermino',
         'fechaModificacion',
