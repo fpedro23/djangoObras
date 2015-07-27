@@ -41,29 +41,40 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        query = Q(fechaInicio__lte=datetime.now().date())
+        query = Q(fechaInicio__lte=datetime.now().date()) & Q(tipoObra_id=1)
         if not (usuario.rol == 'SA'):
             subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
             query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
         obras = Obra.objects.filter(query)
 
-        the_list = []
+        json_ans = '['
         for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
-            the_list.append(obra)
+            json_ans += '{"id":'
+            json_ans += obra['id']
 
-        return HttpResponse(json.dumps(the_list), 'application/json')
+            json_ans += ',"identificador_unico":'
+            json_ans += obra['identificador_unico']
+
+            json_ans += ',"estado__nombreEstado":'
+            json_ans += obra['estado__nombreEstado']
+
+            json_ans += ',"denominacion":'
+            json_ans += obra['denominacion']
+
+            json_ans += '"}'
+
+        return HttpResponse(json_ans, 'application/json')
 
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        today = datetime.now().date()
-        if usuario.rol == 'SA':
-            obras = Obra.objects.filter(fechaTermino__lte=today)
-        else:
-            obras = Obra.objects.filter(Q(fechaTermino__lte=today) & Q(
-                dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())))
+        query = Q(fechaTermino__lte=datetime.now().date()) & Q(tipoObra_id=2)
+        if not usuario.rol == 'SA':
+            subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
+            query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
+        obras = Obra.objects.filter(query)
 
         the_list = []
         for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
