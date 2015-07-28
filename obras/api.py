@@ -49,21 +49,24 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
 
         json_ans = '['
         for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
-            json_ans += '{"id":'
-            json_ans += obra['id']
+            json_ans += '{"id":"'
+            json_ans += str(obra['id'])
 
-            json_ans += ',"identificador_unico":'
+            json_ans += '","identificador_unico":"'
             json_ans += obra['identificador_unico']
 
-            json_ans += ',"estado__nombreEstado":'
+            json_ans += '","estado__nombreEstado":"'
             json_ans += obra['estado__nombreEstado']
 
-            json_ans += ',"denominacion":'
+            json_ans += '","denominacion":"'
             json_ans += obra['denominacion']
 
-            json_ans += '"}'
+            json_ans += '"},'
+        json_ans = json_ans[:-1]
+        json_ans += ']'
 
         return HttpResponse(json_ans, 'application/json')
+
 
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
