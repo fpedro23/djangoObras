@@ -186,7 +186,7 @@ class SubependenciasFlatEndpoint(ProtectedResourceView):
 class ClasificacionEndpoint(ProtectedResourceView):
     def get(self, request):
         if request.GET.get('id', False):
-            clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id=1)
+            clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id=request.GET.get('id'))
         else:
             clasificaciones = TipoClasificacion.objects.filter(subclasificacionDe_id__isnull=True)
 
@@ -262,7 +262,9 @@ class BuscadorEndpoint(ProtectedResourceView):
             limite_max=request.GET.get("limiteMax"),
             busqueda_rapida=request.GET.get("busquedaRapida", None),
             id_obra=request.GET.get("idObra", None),
-            susceptible_inauguracion=request.GET.get("susceptible", None)
+            susceptible_inauguracion=request.GET.get("susceptible", None),
+            subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
+
         )
 
         arreglo_dependencias = []

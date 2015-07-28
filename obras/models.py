@@ -285,7 +285,7 @@ class InstanciaEjecutora(models.Model):
         return ans
 
 
-BOOL_CHOICES = ((True, 'Si'), (False, 'No'), (None, 'Sin inauguración'))
+BOOL_CHOICES = ((True, 'Sí'), (False, 'No'), (None, 'Sin inauguración'))
 
 
 def content_file_antes(instance, filename):
