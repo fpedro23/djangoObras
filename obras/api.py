@@ -475,9 +475,11 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 class ReporteNoTrabajoEndpoint(ProtectedResourceView):
     def get(self, request):
         comp_date = datetime.now() - timedelta(15)
+        print "****"
         print comp_date
         dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
-            fecha_ultima_modificacion__lt=comp_date))
+            Q(obraoprograma='O') &
+            Q(fecha_ultima_modificacion__lt=comp_date)))
 
         return HttpResponse(json.dumps(dicts), 'application/json')
 
