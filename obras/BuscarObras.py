@@ -27,7 +27,8 @@ class BuscarObras:
             limite_max,
             busqueda_rapida,
             id_obra,
-            susceptible_inauguracion
+            susceptible_inauguracion,
+            subclasificacion,
     ):
         self.clasificaciones = clasificaciones
         self.estados = estados
@@ -41,6 +42,7 @@ class BuscarObras:
         self.inversion_minima = inversion_minima
         self.inversion_maxima = inversion_maxima
         self.id_obra = id_obra
+        self.subclasificacion = subclasificacion
 
         self.fecha_inicio_primera = fecha_inicio_primera
         self.fecha_inicio_segunda = fecha_inicio_segunda
@@ -105,6 +107,9 @@ class BuscarObras:
 
             if self.instancia_ejecutora is not None:
                 query = query & Q(instanciaEjecutora__id__in=self.instancia_ejecutora)
+
+            if self.subclasificacion is not None:
+                query = query & Q(detalleclasificacion__subclasificacion__id__in=self.subclasificacion)
 
         if query is not None:
             print query
