@@ -121,6 +121,7 @@ USE_TZ = True
 
 SESSION_COOKIE_AGE = 35900
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+LOGIN_URL = '/admin/login/'
 
 
 # Static files (CSS, JavaScript, Images)

@@ -424,6 +424,9 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2015 = obras.filter(fechaInicio__year=2015)
         obras2015_proceso = obras2015.filter(tipoObra_id=2)
         the_list = []
+
+        # Grafico
+
         for obra in obras2015_proceso.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
                 numero_obras=Count('estado')):
             self.rename_estado(obra)
@@ -440,6 +443,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
         reporte['reporte2015']['obras_proyectadas']['total'] = obras2015_proyectadas.count()
 
+
+
         obras2015_concluidas = obras.filter(Q(fechaTermino__year=2015) & Q(tipoObra_id=3))
         the_list = []
         for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
@@ -448,6 +453,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte2015']['obras_concluidas']['obras'] = the_list
         reporte['reporte2015']['obras_concluidas']['total'] = obras2015_concluidas.count()
+
+        #Obras Concluidas, barra inferior
 
         obras2014 = obras.filter(Q(fechaTermino__year=2014) & Q(tipoObra_id=3))
         the_list = []

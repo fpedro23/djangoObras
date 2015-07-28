@@ -836,6 +836,7 @@ def fichaTecnica(request):
         #print(json_map)
         #return HttpResponse(json.dumps(json_map), 'application/json')
 
+@login_required()
 def reportes_predefinidos(request):
     return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
@@ -1656,7 +1657,7 @@ def hiper_inauguradas_ppt(request):
 
     return response
 
-@login_required()
+@login_required
 def hiper_interestatal_ppt(request):
     prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INTERESTATAL.pptx')
     usuario = request.user.usuario
@@ -2233,7 +2234,7 @@ def hiper_rangos_ppt(request):
 def redirect_admin(request):
     return redirect('admin/')
 
-
+@login_required
 def ios_view(request):
     return render_to_response('ios.html')
     #return HttpResponse('<a href="itms-services://?action=download-manifest&'
