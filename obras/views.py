@@ -524,10 +524,29 @@ def consulta_web(request):
 @login_required()
 def ver_video(request):
     cualVideo=request.GET.get('cualVideo', None),
+    print(str(cualVideo[0]))
+    if str(cualVideo[0]) =='creacionObra.mp4':
+        tituloVideo='Crear una Obra',
+    elif str(cualVideo[0]) =='modificacionObra.mp4':
+        tituloVideo='Modificar una Obra',
+    elif str(cualVideo[0]) =='agregarClasificacion.mp4':
+        tituloVideo='Agregar una Clasificacion',
+    elif str(cualVideo[0]) =='buscarClasificacion.mp4':
+        tituloVideo='Buscar una Clasificacion',
+    elif str(cualVideo[0]) =='crearUsuario.mp4':
+        tituloVideo='Agregar un Usuario',
+    elif str(cualVideo[0]) =='modificarUsuario.mp4':
+        tituloVideo='Modificar un Usuario',
+    elif str(cualVideo[0]) =='buscarUsuario.mp4':
+        tituloVideo='Buscar un Usuario',
+    elif str(cualVideo[0]) =='eliminarUsuario.mp4':
+        tituloVideo='Eliminar un Usuario',
 
-    template = loader.get_template('admin/obras/videos/video_vista.html')
+
+    template = loader.get_template('admin/obras/videos/videos_lista.html')
     context = RequestContext(request, {
         'cualVideo': cualVideo,
+        'tituloVideo': tituloVideo,
     })
     return HttpResponse(template.render(context))
 

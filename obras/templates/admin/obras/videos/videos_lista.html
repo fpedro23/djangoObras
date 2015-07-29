@@ -4,9 +4,29 @@
 
     <link href="{% static "css/menu.css" %}" rel="stylesheet">  <!--AQUI VAN TODOS LOS ARCHIVOS DE ESTILO EXTRA QUE SE REQUIEREN PARA LA PAGINA O JS-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="{% static "assets/bootstrap/css/bootstrap.css"%}" />
+
+
     <link href="{% static "css/styles.css"%}" rel="stylesheet">
 
+
+    <script type="text/javascript" src="{% static "assets/js/ajax-videos.js"%}"></script>
+
+    <!-- Chang URLs to wherever Video.js files will be hosted -->
+     <link href="{% static "assets/video-js/video-js.css"%}" rel="stylesheet" type="text/css">
+    <!-- video.js must be in the <head> for older IEs to work. -->
+    <script src="{% static "assets/video-js/video.js"%}"></script>
+
+    <!-- Unless using the CDN hosted version, update the URL to the Flash SWF -->
+    <script>
+        videojs.options.flash.swf = "video-js.swf";
+    </script>
+    <style type="text/css">
+      .vjs-default-skin { color: #970b0b; }
+      .vjs-default-skin .vjs-play-progress,
+      .vjs-default-skin .vjs-volume-level { background-color: #0b7811 }
+    </style>
 
 {% endblock %}
 {% block breadcrumbs %}
@@ -18,40 +38,68 @@
     </div>   <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
 
     <div id="welcome">Manuales de Ayuda al Usuario en Video</div>
-    <div id="recuadroVIDEO01" onclick="location.href='/obras/ver_video?cualVideo=creacionObra.mp4'">
-        <div id="textoDESCRI">
-        Registro de una obra nueva
-        </div>
-      </div>
+    <input type="hidden" name="historico" id="historico"/>
+    <div class="row" style="padding-right: 18px; padding-left: 0px; padding-bottom: 0px; padding-top: 0px ">
+       <div class="col-md-3">
+           <div class="panel-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title">Obras</h6>
+                                </div>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li style="height: 25px"><a href="/obras/ver_video?cualVideo=creacionObra.mp4" >Crear una Obra <span id="load1" class="glyphicon glyphicon-refresh glyphicon-refresh-animate mfp-hide"></span></a></li>
+                                    <li style="height: 30px"><a href="/obras/ver_video?cualVideo=modificacionObra.mp4" >Modificar una Obra <span id="load2" class="glyphicon glyphicon-refresh glyphicon-refresh-animate mfp-hide"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title">Clasificaciones</h6>
+                                </div>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li style="height: 25px"><a href="/obras/ver_video?cualVideo=agregarClasificacion.mp4"  >Agregar una Clasificación</a></li>
+                                    <li style="height: 30px"><a href="/obras/ver_video?cualVideo=buscarClasificacion.mp4"  >Buscar una Clasificación </a></li>
+                                </ul>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title">Usuarios</h6>
+                                </div>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li style="height: 25px"><a href="/obras/ver_video?cualVideo=crearUsuario.mp4"  >Agregar un usuario</a></li>
+                                    <li style="height: 25px"><a href="/obras/ver_video?cualVideo=buscarUsuario.mp4"  >Buscar un usuario</a></li>
+                                    <li style="height: 25px"><a href="/obras/ver_video?cualVideo=modificarUsuario.mp4"  >Modificar un Usuario </a></li>
+                                    <li style="height: 30px"><a href="/obras/ver_video?cualVideo=eliminarUsuario.mp4"  >Eliminar un usuario</a></li>
+                                </ul>
+                            </div>
 
-      <div id="recuadroVIDEO02" onclick="location.href='/obras/ver_video?cualVideo=modificacionObra.mp4'">
-        <div id="textoDESCRI">
-            Modificar una obra existente
-        </div>
-      </div>
+           </div>
 
-      <div id="recuadroVIDEO03" onclick="location.href='/obras/ver_video?cualVideo=agregarClasificacion.mp4'">
-        <div id="textoDESCRI">
-            Registrar una clasificación nueva
-        </div>
-      </div>
+       </div>
 
-      <div id="recuadroVIDEO04" onclick="location.href='/obras/ver_video?cualVideo=buscarClasificacion.mp4'">
-        <div id="textoDESCRI">
-            Buscar una clasificación existente
-        </div>
-      </div>
+       <div class="col-md-9-box" style="height: 433px">
+            </br>
+            <div class="col-md-12 titulo" id="titulo">
+                {% for titulo in tituloVideo %}
+                           {{ titulo }}
+                {% endfor %}
+            </div>
+            <div class="col-md-12 " id="vistaVideo">
+            {% for video in cualVideo %}
+                <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="720" height="370"
+                      poster=""
+                      data-setup="{}">
 
-      <div id="recuadroVIDEO05" onclick="location.href='/obras/ver_video?cualVideo=crearUsuario.mp4'">
-        <div id="textoDESCRI">
-            Registrar un usuario nuevo
-        </div>
-      </div>
+                            <source src="https://obrasapf.mx/media/tutoriales/{{ video }}" type='video/mp4'/>
 
-      <div id="recuadroVIDEO06" onclick="location.href='/obras/ver_video?cualVideo=modificarUsuario.mp4'">
-        <div id="textoDESCRI">
-            Modificar un usuario existente.
-      </div>
+
+                    <p class="vjs-no-js">Para ver el vídeo por favor habilite JavaScript y considere actualizar a un navegador web que <a href="http://videojs.com/html5-video-support/" target="_blank">soporte video en HTML5</a></p>
+                </video>
+             {% endfor %}
+            </div>
+           </br>
+            <div class="col-md-12" id="descripcion"></div>
+       </div>
     </div>
+
 
 {% endblock %}
