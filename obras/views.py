@@ -50,6 +50,9 @@ def register_by_access_token(request):
 def ayuda(request):
     return render_to_response('admin/obras/ayuda/c_ayuda.html', locals(),
                               context_instance=RequestContext(request))
+def videos(request):
+    return render_to_response('admin/obras/videos/videos_lista.html', locals(),
+                              context_instance=RequestContext(request))
 
 def catalogo(request):
     return render_to_response('admin/obras/catalogo.html', locals(),
@@ -518,6 +521,15 @@ def consulta_web(request):
     })
     return HttpResponse(template.render(context))
 
+@login_required()
+def ver_video(request):
+    cualVideo=request.GET.get('cualVideo', None),
+
+    template = loader.get_template('admin/obras/videos/video_vista.html')
+    context = RequestContext(request, {
+        'cualVideo': cualVideo,
+    })
+    return HttpResponse(template.render(context))
 
 def get_array_or_none(the_string):
     if the_string is None:

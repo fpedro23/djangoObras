@@ -58,6 +58,8 @@ urlpatterns = patterns('',
                        url(r'^buscar-obras/', views.consulta_web),
                        url(r'^consultar-obras', views.buscar_obras_web),
                        url(r'^prueba', views.ajax_prueba),
+                       url(r'^videos', views.videos),
+                       url(r'^ver_video', views.ver_video),
 
                        url('^ficha', views.fichaTecnica),
                        url(r'^reportes-predefinidos', views.reportes_predefinidos),
