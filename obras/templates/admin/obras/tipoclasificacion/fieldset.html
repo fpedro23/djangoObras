@@ -9,7 +9,7 @@
 
         <div class="row field-nombreTipoClasificacion rowmod" style="border-bottom: 15px; padding-bottom: 10px;">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_nombreTipoClasificacion">
-                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                <span class="error__msg">*</span>
                 Nombre de Clasificación:</label></div>
 
             <div class="col-md-6 colmod"><input class="vTextField" id="id_nombreTipoClasificacion" maxlength="200" name="nombreTipoClasificacion" type="text"
@@ -29,7 +29,7 @@
 
         <div class="row field-nombreTipoClasificacion rowmod" style="border-bottom: 15px; padding-bottom: 10px;">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_subclasificacionDe">
-                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                <span class="error__msg">*</span>
                 Clasificación de:</label></div>
 
             <div class="col-md-6 colmod">{{ field.field }}
@@ -47,7 +47,7 @@
         <div class="row field-nombreTipoClasificacionCorta rowmod">
               <div class="col-md-6 colmod" align="left">
                         <label class="required" id="label-fld" for="id_nombreTipoClasificacionCorta">
-                             <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                             <span class="error__msg">*</span>
                             Nombre Corto:</label>
               </div>
                 <div class="col-md-6 colmod">

@@ -46,7 +46,7 @@
                 <tr>
                     <td align="left" width="40%" valign="top">
                         <label for="id_username" id="tit_1">
-                            <span class="{% if form.password.errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
+                            <span class="error__msg">*</span>
                             Usuario :
                         </label>
                     </td>
@@ -63,7 +63,7 @@
                 </tr>
                 <tr>
                     <td align="left" width="40%" valign="top">
-                    <label for="id_password" id="tit_1"><span class="{% if form.password.errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
+                    <label for="id_password" id="tit_1"><span class="error__msg">*</span>
                             Contraseña :</label>&nbsp;
                     </td>
                     <td align="right" width="60%">    {{ form.password }}

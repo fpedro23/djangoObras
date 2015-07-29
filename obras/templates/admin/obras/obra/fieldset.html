@@ -222,7 +222,7 @@
                     <table width="100%" class="texto"><tr>
                         <td width="40%" class="texto"> <label class="required" for="id_fechaInicio" style="font-size: 11px;">Fecha de Inicio:</label></td>
 
-                        <td width="60%" class="texto">{{ field.field}}
+                        <td width="60%" class="texto">{{ field.field|addcss:"form-control2"}}
                             {% if field.errors %}
                              <img id="imgerr13" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
