@@ -1,0 +1,57 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}
+
+    <link href="{% static "css/menu.css" %}" rel="stylesheet">  <!--AQUI VAN TODOS LOS ARCHIVOS DE ESTILO EXTRA QUE SE REQUIEREN PARA LA PAGINA O JS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "assets/bootstrap/css/bootstrap.css"%}" />
+    <link href="{% static "css/styles.css"%}" rel="stylesheet">
+
+
+{% endblock %}
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+
+    <div id="regresarBTN" onclick="location.href='/obras/ayuda'">
+    </div>   <!--AGREGAR A DONDE SE VA A REGRESAR CON ESTA URL REGRESA A LA PÀGINA PRINCIPAL-->
+
+    <div id="welcome">Manuales de Ayuda al Usuario en Video</div>
+    <div id="recuadroVIDEO01" onclick="location.href='/obras/ver_video?cualVideo=creacionObra.mp4'">
+        <div id="textoDESCRI">
+        Registro de una obra nueva
+        </div>
+      </div>
+
+      <div id="recuadroVIDEO02" onclick="location.href='/obras/ver_video?cualVideo=modificacionObra.mp4'">
+        <div id="textoDESCRI">
+            Modificar una obra existente
+        </div>
+      </div>
+
+      <div id="recuadroVIDEO03" onclick="location.href='/obras/ver_video?cualVideo=agregarClasificacion.mp4'">
+        <div id="textoDESCRI">
+            Registrar una clasificación nueva
+        </div>
+      </div>
+
+      <div id="recuadroVIDEO04" onclick="location.href='/obras/ver_video?cualVideo=buscarClasificacion.mp4'">
+        <div id="textoDESCRI">
+            Buscar una clasificación existente
+        </div>
+      </div>
+
+      <div id="recuadroVIDEO05" onclick="location.href='/obras/ver_video?cualVideo=crearUsuario.mp4'">
+        <div id="textoDESCRI">
+            Registrar un usuario nuevo
+        </div>
+      </div>
+
+      <div id="recuadroVIDEO06" onclick="location.href='/obras/ver_video?cualVideo=modificarUsuario.mp4'">
+        <div id="textoDESCRI">
+            Modificar un usuario existente.
+      </div>
+    </div>
+
+{% endblock %}

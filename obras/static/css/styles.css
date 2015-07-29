@@ -585,3 +585,99 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
     margin-left: 2px;
     vertical-align: middle;
 }
+
+#recuadroVIDEO01{
+	width: 270px;
+	height: 220px;
+
+	position: absolute;
+	top: 31px;
+	left: 90px;
+	border: 1px solid black;
+}
+#recuadroVIDEO01:hover{
+    cursor: pointer;
+}
+#recuadroVIDEO02{
+	width: 270px;
+	height: 220px;
+
+	position:absolute;
+	top: 31px;
+	left: 373px;
+	border: 1px solid black;
+}
+#recuadroVIDEO02:hover{
+    cursor: pointer;
+}
+#recuadroVIDEO03{
+	width: 270px;
+	height: 220px;
+
+	position: absolute;
+	top: 31px;
+	left: 656px;
+	border: 1px solid black;
+}
+#recuadroVIDEO03:hover{
+    cursor: pointer;
+}
+#recuadroVIDEO04{
+	width: 270px;
+	height: 220px;
+
+	position: absolute;
+	top: 261px;
+	left: 90px;
+
+	border: 1px solid black;
+}
+#recuadroVIDEO04:hover{
+    cursor: pointer;
+}
+#recuadroVIDEO05{
+	width: 270px;
+	height: 220px;
+
+	position: absolute;
+	top: 261px;
+	left: 373px;
+
+	border: 1px solid black;
+}
+#recuadroVIDEO05:hover{
+    cursor: pointer;
+}
+#recuadroVIDEO06{
+	width: 270px;
+	height: 220px;
+
+	position: absolute;
+	top: 261px;
+	left: 656px;
+
+	border: 1px solid black;
+}
+#recuadroVIDEO06:hover{
+    cursor: pointer;
+}
+
+#textoDESCRI{
+	font-family:"Soberana Texto";
+	font-size: 15px;
+	font-weight:normal;
+	color:#000000;
+
+	width:246px;
+	height: 80px;
+
+	position:absolute;
+	margin-top:150px;
+	left:12px;
+}
+
+#vistaVideo{
+	position: absolute;
+	top: 30px;
+	left: 120px;
+}
