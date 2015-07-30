@@ -11,7 +11,7 @@
                 {% if field.field.name == "nombreImpacto" %}
                     <div class="row field-nombreImpacto rowmod" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_nombreImpacto">
-                        <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                         <span class="error__msg">*</span>
                        Tipo de Impacto:</label></div>
 
                     <div class="col-md-6 colmod"><input class="vTextField" id="id_nombreImpacto" maxlength="200" name="nombreImpacto" type="text"

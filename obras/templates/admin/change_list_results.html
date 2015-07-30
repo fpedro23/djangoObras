@@ -47,13 +47,13 @@ $ts(function() {
 {% if results %}
 
     <div class="camposRL" id="RLT" hidden="true" {% if cl.opts.verbose_name == "obra" %} {{ "style='width: 887px; left:5px; top:60px; height:430px;'"}}{% endif %}>
-        <table id="result_list" class="changelist" style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:0px; border-color: #6A6B6C; ">
-           <thead>
-                <tr style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:0px; border-color: #6A6B6C; ">
+        <table id="result_list" class="changelist" style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:0px; border-color: #e4e5e6; ">
+           <thead style="background-color: #e4e5e6; border-color: #e4e5e6; border-left-color: #e4e5e6; border-top-color: #e4e5e6; border-right-color: #e4e5e6; border-top: 1px; border-right: 1px; border-left: 1px; border-bottom:0px;">
+                <tr style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:0px; border-color: #e4e5e6; ">
                 {% for header in result_headers %}
 
 
-                    <th scope="col" {{ header.class_attrib }} style="border-bottom:1px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #6A6B6C; ">
+                    <th scope="col" {{ header.class_attrib }} style="border-bottom:0px; border-top: 1px; border-right: 1px; border-left: 1px; padding:4px; border-color: #e4e5e6; ">
 
                     <div class="text" style="font-family: 'soberana_textobold';">{% if header.sortable %}<a href="{{ header.url_primary }}" style="text-decoration: underline;">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
                      <div class="clear"></div>

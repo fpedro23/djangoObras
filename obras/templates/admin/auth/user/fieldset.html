@@ -3,7 +3,7 @@
 {% if fieldset.name == "Personal info" %}
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
      <div class="datosGENERALES">
-     <div id="tituloCUADROS">
+     <div id="tituloCUADROS" style="height: 39px;">
     	DATOS GENERALES
          <br><br>
     </div>
@@ -47,7 +47,7 @@
              {% if field.field.name == "email" %}
                 <div class="row  field-email" align="left" style="border-bottom: 15px; padding-bottom: 10px;">
                     <div class="col-md-4"  >
-                       <label for="id_email">* E-mail:</label>
+                       <label for="id_email"><span class="error__msg">*</span> E-mail:</label>
                     </div>
                     <div class="col-md-8" >
                         {{ field.field }}
@@ -70,15 +70,18 @@
  {% if fieldset.name == "AuthInfo" %}
 <fieldset class="module aligned {{ fieldset.classes }}" style="border: 0px;">
      <div class="datosINICIO">
-     <div id="tituloCUADROS">DATOS DE ACCESO
+     <div id="tituloCUADROS" style="height: 39px;">DATOS DE ACCESO
       <br><br></div>
     {% for line in fieldset %}
         {% for field in line %}
              {% if field.field.name == "username" %}
                 <div class="row  field-username" style="border-bottom: 15px; padding-bottom: 10px;">
+
                     <div class="col-md-4"  >
-                        <label class="required" for="id_username">* Usuario:</label>
+
+                        <label class="required" for="id_username"><span class="error__msg">*</span> Usuario:</label>
                     </div>
+
                     <div class="col-md-8" >
                         <input id="id_username" maxlength="30" name="username" type="text" value="{{ field.field.value|default_if_none:"" }}" />
                            {% if field.errors %}
@@ -94,8 +97,10 @@
 
             {% if field.field.name == "password1" %}
                 <div class="row field-password1" style="border-bottom: 15px; padding-bottom: 10px;">
+
                     <div class="col-md-4">
-                        <label class="required" for="id_password1">*Contraseña:</label>
+
+                        <label class="required" for="id_password1"><span class="error__msg">*</span> Contraseña:</label>
                     </div>
                     <div class="col-md-8" >
 
@@ -115,8 +120,10 @@
 
             {% if field.field.name == "password2" %}
                 <div class="row field-password2" style="border-bottom: 15px; padding-bottom: 10px;">
+
                     <div class="col-md-4">
-                        <label class="required" for="id_password2">*Contraseña:</label>
+
+                        <label class="required" for="id_password2"><span class="error__msg">*</span> Contraseña:</label>
                     </div>
                     <div class="col-md-8" >
                         <input id="id_password1" name="password2" type="password" value="{{ field.field.value|default_if_none:"" }}"/>
@@ -139,7 +146,7 @@
 
 {% if fieldset.name  == "Permissions" %}
       <div class="datosESPECIFICO">
-    <div id="tituloCUADROS">DATOS DE PERFIL DE USUARIO<br><br></div>
+    <div id="tituloCUADROS" style="height: 39px;">DATOS DE PERFIL DE USUARIO</div>
     </div>
     <div class="campos04">
 <fieldset class="module aligned wide {{ fieldset.classes }}" style="border: 0px;">
@@ -177,9 +184,9 @@
          {% for line in fieldset %}
             {% for field in line %}
                {% if field.field.name == "rol" %}
-                 <div class="row field-rol">
-                    <div class="col-md-4" >
-                        <label class="required" for="id_rol">* Rol:</label>
+                 <div class="row">
+                    <div class="col-md-4">
+                        <label class="required" for="id_rol"><span class="error__msg">*</span> Rol:</label>
                     </div>
                     <div class="col-md-8" >
                             {{ field.field|add_attributes:"class:usurol" }}
@@ -197,7 +204,7 @@
                {% if field.field.name == "dependencia" %}
                   <div class="row field-dependencia" style="padding-top: 8px;">
                     <div class="col-md-4" >
-                        <label style="padding-right: 0px;" for="id_usuario-0-dependencia">* Dependencia:</label>
+                        <label style="padding-right: 0px;" for="id_usuario-0-dependencia"><span class="error__msg">*</span> Dependencia:</label>
                     </div>
                     <div class="col-md-8" >
                         {{ field.field|add_attributes:"class:usudependencia" }}
