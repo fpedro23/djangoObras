@@ -53,6 +53,9 @@ def ayuda(request):
 def videos(request):
     return render_to_response('admin/obras/videos/videos_lista.html', locals(),
                               context_instance=RequestContext(request))
+def manualesPdf(request):
+    return render_to_response('admin/obras/manuales/manuales_lista.html', locals(),
+                              context_instance=RequestContext(request))
 
 def catalogo(request):
     return render_to_response('admin/obras/catalogo.html', locals(),
