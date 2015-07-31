@@ -17,8 +17,8 @@ $nums(window).bind('scroll', function () {
 
 $nums(document).ready(function() {
     
-    $nums('#inversionInicial').numeric({ decimalPlaces: 2 });
-    $nums('#inversionFinal').numeric({ decimalPlaces: 2 });
+    $nums('#inversionInicial').numeric({ decimalPlaces: 2,negative: false },function() { alert("No negative values"); this.value = ""; this.focus(); });
+    $nums('#inversionFinal').numeric({ decimalPlaces: 2,negative: false });
  
     
     

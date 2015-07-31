@@ -255,7 +255,17 @@ function verDatos() {
     var inversionFinal = $l("#inversionFinal").val();
     var denominacion = $l("#denominacion").val();
 
+    if (fechaInicio1!=""){fechaInicio1 = myDateFormatter($dp('#fechaInicial1').datepicker("getDate"));}
+    if (fechaInicio2!=""){ fechaInicio2 = myDateFormatter($dp('#fechaInicial2').datepicker("getDate"));}
+    if (fechaFin1!=""){fechaFin1 = myDateFormatter($dp('#fechaFinal1').datepicker("getDate"));}
+    if (fechaFin2!=""){fechaFin2 = myDateFormatter($dp('#fechaFinal2').datepicker("getDate"));}
 
+
+
+
+    alert(fechaInicio1);
+    alert(fechaInicio2);
+    alert(fechaFin1);
     var ajax_data = {
       "access_token"  : newToken,
       "limiteMin":0,
@@ -1698,6 +1708,23 @@ $j.tablaGrafica = function(Datos){
         $j('#divTablaGrafica').html($j(sHtml));
 
 }
+
+
+function myDateFormatter (dateObject) {
+        var d = new Date(dateObject);
+        var day = d.getDate();
+        var month = d.getMonth()+1;
+        var year = d.getFullYear()
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var fecha =year + "-" + month + "-" + day;
+
+        return fecha;
+    };
 
 
 
