@@ -224,21 +224,21 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	width: 320px;
 	height: 100px;
 	position: absolute;
-	left: 685px;
-	top: 158px;
+	left: 687px;
+	top: 180px;
     padding-left: 4px;
     padding-right: 2px;
 }
 
 .campos04{
 	font-family: "soberana_sanslight";
-	font-size: 15px;
+	font-size: 11px;
 	color: #6A6B6C;
 	width: 200px;
 	height: 30px;
 	position: absolute;
-	left: 685px;
-	top: 295px;
+	left: 684px;
+	top: 284px;
     padding-left: 4px;
     padding-right: 2px;
 }
