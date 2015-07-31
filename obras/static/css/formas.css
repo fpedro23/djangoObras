@@ -177,9 +177,9 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 
 .campos01{
 	font-family: "soberana_sanslight";
-	font-size: 18px;
+	font-size: 12px;
 	color: #6A6B6C;
-	width: 400px;
+	width: 600px;
 	height: 300px;
 	position: absolute;
 	left: 123px;
@@ -925,7 +925,16 @@ label {
     width: 90%;
 }
 
-.field-descripcion input[type=text]{
-    width:85%;
+.field-descripcion input[type=text] {
+    width:100px;
+
+}
+.field-descripcion input[type=file] {
+    width:200px;
+
 }
 
+
+.field-documento td{
+    width:100%;
+}
