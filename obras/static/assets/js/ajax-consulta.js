@@ -255,7 +255,17 @@ function verDatos() {
     var inversionFinal = $l("#inversionFinal").val();
     var denominacion = $l("#denominacion").val();
 
+    if (fechaInicio1!=""){fechaInicio1 = myDateFormatter($dp('#fechaInicial1').datepicker("getDate"));}
+    if (fechaInicio2!=""){ fechaInicio2 = myDateFormatter($dp('#fechaInicial2').datepicker("getDate"));}
+    if (fechaFin1!=""){fechaFin1 = myDateFormatter($dp('#fechaFinal1').datepicker("getDate"));}
+    if (fechaFin2!=""){fechaFin2 = myDateFormatter($dp('#fechaFinal2').datepicker("getDate"));}
 
+
+
+
+    alert(fechaInicio1);
+    alert(fechaInicio2);
+    alert(fechaFin1);
     var ajax_data = {
       "access_token"  : newToken,
       "limiteMin":0,
@@ -1276,13 +1286,20 @@ function tablaI(Datos){
                         +'</tr>'
                 +'</thead>'
                 +'<tbody>';
-    sHtmlShorter ='<table cellspacing="1" class="tablesorter" id="tablaIzquierda">';
+    sHtmlShorter ='<table cellspacing="1"  id="tablaIzquierda">'
+                +' <colgroup>'
+                +' <col width="28%">'
+                +' <col width="36%">'
+                +' <col width="28%">';
+
+
+
     sHtmlistado ='<table cellspacing="1" id="tablaListado">';
     var sHtml='<thead>'
                         +'<tr>'
-                            +'<th>Id</th>'
-                            +'<th>Denominaci&oacute;n</th>'
-                            +'<th>Estado</th>'
+                            +'<th width="30%">Id</th>'
+                            +'<th width="40%">Denominaci&oacute;n</th>'
+                            +'<th width="30%">Estado</th>'
                         +'</tr>'
                     +'</thead>'
                     +'<tfoot>'
@@ -1306,14 +1323,18 @@ function tablaI(Datos){
                         +'</select></td></tr>'
 
                     +'</tfoot>'
+                    //+' </colgroup>'
                     +'<tbody>';
+
+
     sHtmlistado = sHtml;
     for(var i= 0;i<Datos.obras.length;i++){
-        sHtml +='<tr>'
-                +'<td><a href="/admin/obras/obra/' + Datos.obras[i].id + '/?m=1">' + Datos.obras[i].identificador_unico +'</a></td>'
-                +'<td>' + Datos.obras[i].denominacion +'</td>'
-                +'<td>' + Datos.obras[i].estado__nombreEstado +'</td>'
+                sHtml +='<tr>'
+                +'<td style="width:28%"><a href="/admin/obras/obra/' + Datos.obras[i].id + '/?m=1">' + Datos.obras[i].identificador_unico +'</a></td>'
+                +'<td style="width:36%">' + Datos.obras[i].denominacion +'</td>'
+                +'<td style="width:28%">' + Datos.obras[i].estado__nombreEstado +'</td>'
                 +'</tr>'
+
 
         sHtmlistado +='<tr>'
                 +'<td>' + Datos.obras[i].identificador_unico +'</td>'
@@ -1327,7 +1348,7 @@ function tablaI(Datos){
                 +'</tr>'
     }
 
-        sHtml +='</tbody>'
+        sHtml +=' </tbody>'
                 +'</table>'
 
                /*+'<link class="ui-theme" rel="stylesheet" href="../../static/assets/tablesorter/css/jquery-ui.min.css">'
@@ -1349,15 +1370,22 @@ function tablaI(Datos){
                 +'        scroller_upAfterSort: true,'
                 +'        scroller_jumpToHeader: true,'
                 +'        scroller_barWidth : null,'
-                +'          pager_selectors: {'
+                //+'        pager_output: "{startRow:input} to {endRow} of {totalRows} rows",'
+                //+'        pager_updateArrows: true,'
+                //+'        pager_startPage: 0,'
+                //+'        pager_size: 10,'
+                //+'        pager_savePages: true,'
+                //+'        pager_fixedHeight: true,'
+                //+'        pager_removeRows: false,'
+                +'        pager_selectors: {'
                 +'                container   : "#pagerI",'
                 +'                first       : "#firstI",'
                 +'                prev        : "#prevI",'
                 +'                next        : "#nextI",'
                 +'                last        : "#lastI",'
                 +'                gotoPage    : "#gotoPageI",'
-                +'                pageDisplay : "#pagedisplayI",'
-                +'                pageSize    : "#pagesizeI"'
+                +'                pagedisplay : "#pagedisplayI",'
+                +'                pagesize    : "#pagesizeI"'
                 +'        }'
                 +'    }'
                 +'});'
@@ -1395,7 +1423,12 @@ function tablaD(Datos){
                         +'</tr>'
                 +'</thead>'
                 +'<tbody>';
-    sHtmlShorter ='<table cellspacing="1" class="tablesorter" id="tablaDerecha">';
+    sHtmlShorter ='<table cellspacing="1"  id="tablaDerecha">'
+                +' <colgroup>'
+                +' <col width="30%">'
+                +' <col width="40%">'
+                +' <col width="30%">'
+                +' </colgroup> ';
     //alert($j('input:radio[name=tipoReporte]:checked').val());
 
     var sHtml='<thead>'
@@ -1538,7 +1571,7 @@ function tablaD(Datos){
                 +'                next        : "#nextD",'
                 +'                last        : "#lastD",'
                 +'                gotoPage    : "#gotoPageD",'
-                +'                pageDisplay : "#displayPage",'
+                +'                pagedisplay : "#displayPage",'
                 +'                pageSize    : "#pagesizeD"'
                 +'        }'
                 +'    }'
@@ -1569,7 +1602,12 @@ $j.tablaGrafica = function(Datos){
                     +     'Reporte'
                    + ' </div>'
                + '</div>'
-                    +'<table cellspacing="1"  class="tablesorter" id="tablaGrafica">'
+                    +'<table cellspacing="1"   id="tablaGrafica">'
+                    +' <colgroup>'
+                    +' <col width="30%">'
+                    +' <col width="40%">'
+                    +' <col width="30%">'
+                    +' </colgroup> '
                     +'<thead>'
                         +'<tr>'
                             +'<th>Tipo Inversi&oacute;n</th>'
@@ -1598,8 +1636,12 @@ $j.tablaGrafica = function(Datos){
                         +'</select></td></tr>'
 
                     +'</tfoot>'
-                    +'<tbody>';
-
+                    +'<tbody>'
+                    +' <colgroup>'
+                    +' <col width="30%">'
+                    +' <col width="40%">'
+                    +' <col width="30%">'
+                    +' </colgroup> ';
     if (tipoReporte=="Dependencia") {
         dependenciasChecked="checked";
         for (var i = 0; i < Datos.reporte_dependencia.length; i++) {
@@ -1655,7 +1697,7 @@ $j.tablaGrafica = function(Datos){
                 +'                next        : "#nextG",'
                 +'                last        : "#lastG",'
                 +'                gotoPage    : "#gotoPageG",'
-                +'                pageDisplay : "#displayPageG",'
+                +'                pagedisplay : "#displayPageG",'
                 +'                pageSize    : "#pagesizeG"'
                 +'        }'
                 +'    }'
@@ -1666,6 +1708,23 @@ $j.tablaGrafica = function(Datos){
         $j('#divTablaGrafica').html($j(sHtml));
 
 }
+
+
+function myDateFormatter (dateObject) {
+        var d = new Date(dateObject);
+        var day = d.getDate();
+        var month = d.getMonth()+1;
+        var year = d.getFullYear()
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var fecha =year + "-" + month + "-" + day;
+
+        return fecha;
+    };
 
 
 

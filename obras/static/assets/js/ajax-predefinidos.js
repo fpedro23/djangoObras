@@ -168,7 +168,7 @@ function tablaI(Datos,titulo,descripcion){
     var sHtmlistado="";
 
 
-    var sHtml = '<table id="tablaIzquierda" class="table table-striped">'
+    var sHtml = '<table cellspacing="1"  id="tablaIzquierda">'
                 +' <colgroup>'
                 +' <col width="30%">'
                 +' <col width="40%">'
@@ -203,6 +203,7 @@ function tablaI(Datos,titulo,descripcion){
 
                     +'</tfoot>'
                     +'<tbody>';
+
     for(var i= 0;i<Datos.length;i++){
         sHtml +='<tr>'
                 +'<td><a href="/admin/obras/obra/' + Datos[i].id + '/?m=1">' + Datos[i].identificador_unico +'</a></td>'
@@ -238,9 +239,8 @@ function tablaI(Datos,titulo,descripcion){
                 +'    }'
                 +'});'
                 +'});'
-                +'</script>'
-                +'</tbody>'
-                +'</table>';
+                +'</script>';
+
     $j('#titulo').html(titulo);
     $j('#descripcion').html(descripcion);
     $j('#tabla').html(sHtml);

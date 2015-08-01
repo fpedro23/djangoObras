@@ -60,6 +60,7 @@ urlpatterns = patterns('',
                        url(r'^prueba', views.ajax_prueba),
                        url(r'^videos', views.videos),
                        url(r'^ver_video', views.ver_video),
+                       url(r'^manuales-Pdf', views.manualesPdf),
 
                        url('^ficha', views.fichaTecnica),
                        url(r'^reportes-predefinidos', views.reportes_predefinidos),
