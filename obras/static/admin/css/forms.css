@@ -33,12 +33,11 @@ form h4 {
 label {
     font-weight: normal !important;
     color: #666;
-    font-size: 12px;
+    font: 11px 'soberana_sanslight';
 }
 
 .required label, label.required {
-    font-weight: bold !important;
-    color: #333 !important;
+    font: 11px 'soberana_sanslight';
 }
 
 /* RADIO BUTTONS */
@@ -66,7 +65,7 @@ form ul.inline li {
 
 .aligned label {
     display: block;
-    padding: 3px 10px 0 0;
+    padding: 3px 0px 0 0;
     float: left;
     word-wrap: normal;
 }
@@ -255,6 +254,7 @@ body.popup .submit-row {
 }
 
 .inline-group .aligned label {
+    font: 11pt 'soberana_sanslight';
     width: 8em;
 }
 
