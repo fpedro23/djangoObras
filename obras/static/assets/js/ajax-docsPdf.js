@@ -20,11 +20,19 @@ function main_consulta() {
 		}
 	});
 
-    $j('#crearObra').on('click', crear_obra)
-    $j('#modificarObra').on('click', modificar_obra)
-    $j('#agregarClasificacion').on('click', agregar_clasificacion)
-    $j('#buscarClasificacion').on('click', buscar_clasificacion)
+    $j('#crearObra').on('click', crear_obra);
+    $j('#modificarObra').on('click', modificar_obra);
 
+    $j('#consultaFiltros').on('click', consulta_filtros);
+    $j('#consultaPredefinidos').on('click', consulta_predefinida);
+    $j('#listadoObras').on('click', lista_obras);
+    $j('#catalogoDependencias').on('click', dependencias);
+    $j('#catalogoSubdependencias').on('click', subdependencias);
+    $j('#catalogoClasificaciones').on('click', clasificacion);
+    $j('#catalogoInversion').on('click', inversion);
+    $j('#catalogoImpacto').on('click', impacto);
+    $j('#catalogoInauguradores').on('click', inaugurador);
+    $j('#catalogoUsuarios').on('click', usuarios);
 
 }
 
@@ -32,20 +40,47 @@ function crear_obra(){
     verDocPdf('ManualAltaObra','Crear una Obra');
 }
 function modificar_obra(){
-    //verVideo('modificacionObra.mp4','Modificar una Obra');
+    verDocPdf('ManualModificarObra','Modificar una Obra');
 }
-function agregar_clasificacion(){
-    //verVideo('agregarClasificacion.mp4','Agregar una Clasificación');
+
+function consulta_filtros(){
+    verDocPdf('ManualConsultaMedianteFiltros','Consulta Mediante Filtros');
 }
-function buscar_clasificacion(){
-    //verVideo('buscarClasificacion.mp4','Buscar una Clasificación');
+function consulta_predefinida(){
+    verDocPdf('ManualConsultaPredefinida','Consultas Predefinidas');
 }
-function verDocPdf(nombreVideo,titulo){
+function lista_obras(){
+    verDocPdf('ManualListaObras','Listado de Obras');
+}
+
+function clasificacion(){
+    verDocPdf('ManualCatalogoClasificacion','Catálogo de Clasificación');
+}
+function dependencias(){
+    verDocPdf('ManualCatalogoDependencias','Catálogo de Dependencias');
+}
+function subdependencias(){
+    verDocPdf('ManualCatalogoSubDependencias','Catálogo de Sub Dependencias');
+}
+function impacto(){
+    verDocPdf('ManualCatalogoImpacto','Catálogo de Impactos');
+}
+function inaugurador(){
+    verDocPdf('ManualCatalogoInauguradores','Catálogo de Inauguradores');
+}
+function usuarios(){
+    verDocPdf('ManualUsuarios','Catálogo de Usuarios');
+}
+function inversion(){
+    verDocPdf('ManualCatalogoInversion','Catálogo de tipos de Invesión');
+}
+
+function verDocPdf(nombrePdf,titulo){
 
 
     $('#titulo').html(titulo);
     //$j('#descripcion').html(descripcion);
-    $('#vistaPdf').html('<embed src="media/videos/Python_Web_Development_with_Django.pdf" width="720" height="375">');
+    $('#vistaPdf').html('<embed src="https://obrasapf.mx/media/tutorialesPDF/'+ nombrePdf +'.pdf" width="720" height="375">');
 
 
 }
