@@ -1,13 +1,13 @@
 import requests
 
-SECRET = 'Byr8I8CTKVSVtw0lPLQz03ljL2d2fwPKW23dEUylv2ofEtPZ6oFbvEQh5SGnp76rjrY8dedmvDWaOjOp1mwZfbxy893ouARVIlqMP8eaXdem07A0AwswSzBFsu1zXuOC'
+SECRET = 'Ito4EuoY5hhWuOynPlOxJkgiAguO2tHpFsIZHgkh6HMjN4gHLsOdbOmHxMitMAdJs9FoJS5lK9DiVIiurS6CeocgCVgKHR6JEBt69HY1nsWXaE1bFA7ZpjNQLbrhlgpf'
 payload = {
     'grant_type': 'password',
-    'username': 'ags',
-    'password': 'ags',
-    'client_id': 'U5YLz9L5QNnZ7llan3YW9I6za0mQp8YWozWAsRO6',
+    'username': 'fcabeza',
+    'password': 'fcabeza',
+    'client_id': 'nJKmO290WGy5TY4GAmxK23cg8mgTDaYf9bgfE5Mx',
     'client_secret': SECRET,
     'scope': 'write read'
 }
 # print requests.post('http://edicomex.com.mx:7500/o/token/', payload).text
-print requests.post('http://localhost:7902/o/token/', payload).text
+print requests.post('https://obrasapf.mx/o/token/', payload).text

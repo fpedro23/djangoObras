@@ -327,7 +327,7 @@ class BuscadorEndpoint(ProtectedResourceView):
 
         json_map['obras'] = []
         for obra in resultados['obras'].values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion',
-                                               'latitud', 'longitud', "dependencia__imagenDependencia"):
+                                               'latitud', 'longitud', 'dependencia__imagenDependencia'):
             json_map['obras'].append(obra)
 
         json_map['reporte_estado'] = []
