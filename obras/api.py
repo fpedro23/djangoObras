@@ -7,7 +7,7 @@ from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
 from django.db.models import Count
 
-from obras.BuscarObras import BuscarObras
+from obras.BuscarObras import BuscarObras,ListarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador, \
     InstanciaEjecutora, get_subdependencias_as_list_flat
 from obras.views import get_array_or_none
@@ -357,6 +357,70 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['reporte_general'].append(map)
 
         return HttpResponse(json.dumps(json_map), 'application/json')
+
+
+
+class ListarEndpoint(ProtectedResourceView):
+    def get(self, request):
+
+        user = AccessToken.objects.get(token=request.GET.get('access_token')).user
+
+        listado = ListarObras(
+            idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+            iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            estados=get_array_or_none(request.GET.get('estado')),
+            clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
+            inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
+            inauguradores=get_array_or_none(request.GET.get('inaugurador')),
+            impactos=get_array_or_none(request.GET.get('impacto')),
+            inaugurada=request.GET.get('inaugurada', None),
+            inversion_minima=request.GET.get('inversionMinima', None),
+            inversion_maxima=request.GET.get('inversionMaxima', None),
+            fecha_inicio_primera=request.GET.get('fechaInicio', None),
+            fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+            fecha_fin_primera=request.GET.get('fechaFin', None),
+            fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+            denominacion=request.GET.get('denominacion', None),
+            instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
+            busqueda_rapida=request.GET.get("busquedaRapida", None),
+            id_obra=request.GET.get("idObra", None),
+            susceptible_inauguracion=request.GET.get("susceptible", None),
+            subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
+
+        )
+
+        arreglo_dependencias = []
+
+        if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
+            listado.dependencias = None
+
+        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
+
+            for dependencia in user.usuario.dependencia.all():
+                arreglo_dependencias.append(dependencia.id)
+
+            for subdependencia in user.usuario.subdependencia.all():
+                arreglo_dependencias.append(subdependencia.id)
+
+            listado.dependencias = arreglo_dependencias
+
+        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
+            for subdependencia in user.usuario.subdependencia.all():
+                arreglo_dependencias.append(subdependencia.id)
+
+            listado.dependencias = arreglo_dependencias
+
+        resultados = listado.buscarLista()
+
+        print resultados['obras'].query
+        #json_map = {}
+        #json_map['obras'] = []
+
+        for obra in resultados['obras']:
+           id_unico=obra.identificador_unico
+
+        return HttpResponse(json.dumps(json_map), 'application/json')
+
 
 
 class InauguradorEndpoint(ProtectedResourceView):

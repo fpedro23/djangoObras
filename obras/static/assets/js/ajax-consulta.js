@@ -56,8 +56,8 @@ function main_consulta() {
     $j('#ver_grafica_subdependencia #subdependencia').on('click', graficas);
     $j('#ver_grafica_tipos #tipoGrafica').on('change', graficas);
     $j('#ver_grafica_datos #datosGrafica').on('change', graficas);
-    $j('#go_Graficas #goGraficas').on('click', enviaFiltrosGrafica);
     $j('#art_limpiar #limpiar').on('click', limpia);
+    $j('#listado #listar').on('click', listarObras)
 
     $j('#regresaGraficas #regresarBTN').on('click', regresa)
     $j('#openWin').on('click', openWin)
@@ -185,13 +185,15 @@ jQuery.fn.reset = function () {
   $j(this).each (function() { this.reset(); });
 }
 
-function enviaFiltrosGrafica() {
+function listarObras() {
     var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
     var fechaInicio1 = $l("#fechaInicial1").val();
     var fechaInicio2 = $l("#fechaInicial2").val();
@@ -199,14 +201,23 @@ function enviaFiltrosGrafica() {
     var fechaFin2 = $l("#fechaFinal2").val();
     var inversionInicial = $l("#inversionInicial").val();
     var inversionFinal = $l("#inversionFinal").val();
+    var denominacion = $l("#denominacion").val();
+
+    if (fechaInicio1!=""){fechaInicio1 = myDateFormatter($dp('#fechaInicial1').datepicker("getDate"));}
+    if (fechaInicio2!=""){ fechaInicio2 = myDateFormatter($dp('#fechaInicial2').datepicker("getDate"));}
+    if (fechaFin1!=""){fechaFin1 = myDateFormatter($dp('#fechaFinal1').datepicker("getDate"));}
+    if (fechaFin2!=""){fechaFin2 = myDateFormatter($dp('#fechaFinal2').datepicker("getDate"));}
+
+
 
 
     var ajax_data = {
-      "access_token"  : $j('[name="csrfmiddlewaretoken"]').val()  //'3JrrYpjjShuhPp81AsvTPW1VVJS3RG'
+      "access_token"  : newToken
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
     if(arrayEstatusObra.toString()!=""){ajax_data.tipoDeObra=arrayEstatusObra.toString();}
+    if(arrayInstanciaEjecutora.toString()!=""){ajax_data.instanciaEjecutora=arrayInstanciaEjecutora.toString();}
     if(arrayEstados.toString()!=""){ajax_data.estado=arrayEstados.toString();}
     if(arrayClasificacion.toString()!=""){ajax_data.clasificacion=arrayClasificacion.toString();}
     if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
@@ -218,17 +229,17 @@ function enviaFiltrosGrafica() {
     if(fechaFin2!=""){ajax_data.fechaFinSegunda=$j.date(fechaFin2);}
     if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
     if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
+    if(denominacion!=""){ajax_data.denominacion=denominacion.toUpperCase();}
     if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
 
 
+    $j("#ajaxProgress").show();
     $j.ajax({
-        url: '/obras/graficas',
+        url: '/obras/api/listar',
         type: 'get',
         data: ajax_data,
         success: function(data) {
-            alert(data);
-            $j('#pagina').html(data);
-
+            alert('success');
         },
         error: function(data) {
             alert('error!!! ' + data.status);
@@ -263,9 +274,6 @@ function verDatos() {
 
 
 
-    alert(fechaInicio1);
-    alert(fechaInicio2);
-    alert(fechaFin1);
     var ajax_data = {
       "access_token"  : newToken,
       "limiteMin":0,

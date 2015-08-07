@@ -26,6 +26,30 @@ import mimetypes
 from django.http import StreamingHttpResponse
 from pptx.util import Inches
 
+from mysql.connector import MySQLConnection, Error
+from python_mysql_dbconfig import read_db_config
+
+
+def query_with_fetchall():
+    try:
+        dbconfig = read_db_config()
+        conn = MySQLConnection(**dbconfig)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM books")
+        rows = cursor.fetchall()
+
+        print('Total Row(s):', cursor.rowcount)
+        for row in rows:
+            print(row)
+
+    except Error as e:
+        print(e)
+
+    finally:
+        cursor.close()
+        conn.close()
+
+
 def get_user_for_token(token):
     if token:
         return AccessToken.objects.get(token=token).user
