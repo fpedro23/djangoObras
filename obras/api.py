@@ -11,7 +11,16 @@ from obras.BuscarObras import BuscarObras,ListarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador, \
     InstanciaEjecutora, get_subdependencias_as_list_flat
 from obras.views import get_array_or_none
-
+import xlsxwriter
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
+from xlsxwriter.workbook import Workbook
+from django.core.servers.basehttp import FileWrapper
+import mimetypes
+from django.http import StreamingHttpResponse
+import os,io
 
 def get_usuario_for_token(token):
     if token:
@@ -416,10 +425,26 @@ class ListarEndpoint(ProtectedResourceView):
         #json_map = {}
         #json_map['obras'] = []
 
+
+        output = io.BytesIO()
+        book = Workbook(output, {'in_memory': True})
+        sheet = book.add_worksheet('test')
+        i=0
         for obra in resultados['obras']:
            id_unico=obra.identificador_unico
+           sheet.write(i, 0, obra.identificador_unico)
+           i+=1
+        book.close()
 
-        return HttpResponse(json.dumps(json_map), 'application/json')
+        # construct response
+
+        output.seek(0)
+        response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response['Content-Disposition'] = "attachment; filename=test.xlsx"
+
+        return response
+
+        #return HttpResponse(json.dumps(json_map), 'application/json')
 
 
 
