@@ -10,7 +10,7 @@ from django.db.models import Count
 from obras.BuscarObras import BuscarObras,ListarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador, \
     InstanciaEjecutora, get_subdependencias_as_list_flat
-from obras.views import get_array_or_none
+from obras.views import get_array_or_none,get_string_or_none
 import xlsxwriter
 try:
     import cStringIO as StringIO
@@ -374,54 +374,36 @@ class ListarEndpoint(ProtectedResourceView):
 
         user = AccessToken.objects.get(token=request.GET.get('access_token')).user
 
-        listado = ListarObras(
-            idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
-            iddependencias=get_array_or_none(request.GET.get('dependencia')),
-            estados=get_array_or_none(request.GET.get('estado')),
-            clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
-            inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
-            inauguradores=get_array_or_none(request.GET.get('inaugurador')),
-            impactos=get_array_or_none(request.GET.get('impacto')),
-            inaugurada=request.GET.get('inaugurada', None),
-            inversion_minima=request.GET.get('inversionMinima', None),
-            inversion_maxima=request.GET.get('inversionMaxima', None),
-            fecha_inicio_primera=request.GET.get('fechaInicio', None),
-            fecha_inicio_segunda=request.GET.get('fechaInicio', None),
-            fecha_fin_primera=request.GET.get('fechaFin', None),
-            fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
-            denominacion=request.GET.get('denominacion', None),
-            instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
-            busqueda_rapida=request.GET.get("busquedaRapida", None),
-            id_obra=request.GET.get("idObra", None),
-            susceptible_inauguracion=request.GET.get("susceptible", None),
-            subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
 
-        )
+        idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+        iddependencias=get_array_or_none(request.GET.get('dependencia')),
+        estados=get_array_or_none(request.GET.get('estado')),
+        clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
+        inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
+        inauguradores=get_array_or_none(request.GET.get('inaugurador')),
+        impactos=get_array_or_none(request.GET.get('impacto')),
+        inaugurada=request.GET.get('inaugurada', None),
+        inversion_minima=request.GET.get('inversionMinima', None),
+        inversion_maxima=request.GET.get('inversionMaxima', None),
+        fecha_inicio_primera=request.GET.get('fechaInicio', None),
+        fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+        fecha_fin_primera=request.GET.get('fechaFin', None),
+        fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+        denominacion=request.GET.get('denominacion', None),
+        instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
+        busqueda_rapida=request.GET.get("busquedaRapida", None),
+        id_obra=request.GET.get("idObra", None),
+        susceptible_inauguracion=request.GET.get("susceptible", None),
+        subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
 
-        arreglo_dependencias = []
 
-        if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
-            listado.dependencias = None
+        p_dependencias=""
+        for dependencia in iddependencias[0]:
+            p_dependencias += str(dependencia) + ","
+        #p_dependencias="dependencia_id in (" + p_dependencias[:-1] + ")"
+        results = Obra.searchList(p_dependencias[:-1])
 
-        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
-
-            for dependencia in user.usuario.dependencia.all():
-                arreglo_dependencias.append(dependencia.id)
-
-            for subdependencia in user.usuario.subdependencia.all():
-                arreglo_dependencias.append(subdependencia.id)
-
-            listado.dependencias = arreglo_dependencias
-
-        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
-            for subdependencia in user.usuario.subdependencia.all():
-                arreglo_dependencias.append(subdependencia.id)
-
-            listado.dependencias = arreglo_dependencias
-
-        resultados = listado.buscarLista()
-
-        print resultados['obras'].query
+        print results[0]
         #json_map = {}
         #json_map['obras'] = []
 
@@ -430,9 +412,24 @@ class ListarEndpoint(ProtectedResourceView):
         book = Workbook(output, {'in_memory': True})
         sheet = book.add_worksheet('test')
         i=0
-        for obra in resultados['obras']:
-           id_unico=obra.identificador_unico
-           sheet.write(i, 0, obra.identificador_unico)
+        for obra in results:
+           id_unico=obra[0]
+           sheet.write(i, 0, obra[0])
+           sheet.write(i, 1, obra[1])
+           sheet.write(i, 2, obra[3])
+           sheet.write(i, 3, obra[5])
+           sheet.write(i, 4, obra[8])
+           sheet.write(i, 5, obra[9])
+           sheet.write(i, 6, obra[10])
+           sheet.write(i, 7, obra[12])
+           sheet.write(i, 8, obra[21])
+           sheet.write(i, 9, obra[22])
+           sheet.write(i, 10, obra[23])
+           sheet.write(i, 11, obra[24])
+           sheet.write(i, 12, obra[25])
+           sheet.write(i, 13, obra[26])
+           sheet.write(i, 14, obra[36])
+           sheet.write(i, 15, obra[37])
            i+=1
         book.close()
 

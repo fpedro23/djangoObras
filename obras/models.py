@@ -6,6 +6,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from smart_selects.db_fields import ChainedForeignKey
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
+from django.db import connection
 
 # TODO agregar nombres verbose a los modelos
 
@@ -490,6 +491,22 @@ class Obra(models.Model):
             map['tipoMoneda'] = self.tipoMoneda.to_serializable_dict()
 
         return map
+    # static method to perform a parameter
+    @staticmethod
+    def searchList(identificador):
+        # create a cursor
+        cur = connection.cursor()
+        # execute the stored procedure passing in
+        # A SOME parameters
+        cur.callproc('sp_listado', (identificador,))
+        # grab the results
+        results = cur.fetchall()
+        cur.close()
+
+        # wrap the results up into Document domain objects
+        #return [Obra(*row) for row in results]
+        return results
+
 
 
 def content_file_documento_fuente(instance, filename):

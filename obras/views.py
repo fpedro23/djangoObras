@@ -617,6 +617,11 @@ def get_array_or_none(the_string):
     else:
         return map(int, the_string.split(','))
 
+def get_string_or_none(the_string):
+    if the_string is None:
+        return None
+    else:
+        return the_string.split(',')
 
 def buscar_obras_web(request):
     #TODO cambiar los parametros 'None' por get del request
