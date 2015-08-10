@@ -113,10 +113,10 @@ class AddObraForm(forms.ModelForm):
                     content_type__id__exact=ContentType.objects.get_for_model(Obra).id
                 ).order_by('action_time').last().user.usuario.dependencia.get_contactos()
 
-                for contacto in contactos:
-                    send_mail('Cambios obra %s no autorizados' % obra.identificador_unico,
-                          'Los cambios a a la obra %s no fueron autorizados' % obra.identificador_unico,
-                          'edicomexsa@gmail.com', [contacto.user.email])
+                # for contacto in contactos:
+                #     send_mail('Cambios obra %s no autorizados' % obra.identificador_unico,
+                #           'Los cambios a a la obra %s no fueron autorizados' % obra.identificador_unico,
+                #           'edicomexsa@gmail.com', [contacto.user.email])
             except Exception as e:
                 print e
 
