@@ -21,6 +21,8 @@ from django.core.servers.basehttp import FileWrapper
 import mimetypes
 from django.http import StreamingHttpResponse
 import os,io
+from django_downloadview import VirtualDownloadView
+from django_downloadview import VirtualFile
 
 def get_usuario_for_token(token):
     if token:
@@ -397,9 +399,31 @@ class ListarEndpoint(ProtectedResourceView):
         subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
 
 
+        arreglo_dependencias = []
         p_dependencias=""
-        for dependencia in iddependencias[0]:
-            p_dependencias += str(dependencia) + ","
+        if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
+            p_dependencias = ","
+
+        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
+
+            for dependencia in user.usuario.dependencia.all():
+                arreglo_dependencias.append(dependencia.id)
+
+            for subdependencia in user.usuario.subdependencia.all():
+                arreglo_dependencias.append(subdependencia.id)
+
+            iddependencias = arreglo_dependencias
+
+        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
+            for subdependencia in user.usuario.subdependencia.all():
+                arreglo_dependencias.append(subdependencia.id)
+
+            iddependencias = arreglo_dependencias
+
+
+        if iddependencias[0] is not None:
+            for dependencia in iddependencias[0]:
+                p_dependencias += str(dependencia) + ","
         #p_dependencias="dependencia_id in (" + p_dependencias[:-1] + ")"
         results = Obra.searchList(p_dependencias[:-1])
 
@@ -408,8 +432,8 @@ class ListarEndpoint(ProtectedResourceView):
         #json_map['obras'] = []
 
 
-        output = io.BytesIO()
-        book = Workbook(output, {'in_memory': True})
+        output = StringIO.StringIO()
+        book = Workbook(output)
         sheet = book.add_worksheet('test')
         i=0
         for obra in results:
@@ -435,11 +459,23 @@ class ListarEndpoint(ProtectedResourceView):
 
         # construct response
 
+        #output.seek(0)
+        #response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        #response['Content-Disposition'] = "attachment; filename=test.xlsx"
+
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename="devices.xlsx"'
+        response['Content-Length'] = output.tell()
+
         output.seek(0)
-        response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-        response['Content-Disposition'] = "attachment; filename=test.xlsx"
+
+
+
+
 
         return response
+
+
 
         #return HttpResponse(json.dumps(json_map), 'application/json')
 

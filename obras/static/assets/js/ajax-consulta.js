@@ -37,9 +37,11 @@ function main_consulta() {
 		beforeSend: function(xhr, settings) {
 			if(settings.type == "POST"){
 				xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
+                //xhr.overrideMimeType( "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8" );
 			}
             if(settings.type == "GET"){
 				xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
+                //xhr.overrideMimeType( "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8" );
 			}
 		}
 	});
@@ -203,6 +205,8 @@ function listarObras() {
     var inversionFinal = $l("#inversionFinal").val();
     var denominacion = $l("#denominacion").val();
 
+    var URL="/obras/api/listar?access_token=" + newToken
+
     if (fechaInicio1!=""){fechaInicio1 = myDateFormatter($dp('#fechaInicial1').datepicker("getDate"));}
     if (fechaInicio2!=""){ fechaInicio2 = myDateFormatter($dp('#fechaInicial2').datepicker("getDate"));}
     if (fechaFin1!=""){fechaFin1 = myDateFormatter($dp('#fechaFinal1').datepicker("getDate"));}
@@ -210,42 +214,28 @@ function listarObras() {
 
 
 
+    if(arrayDependencias.toString()!=""){URL += "&dependencia=" + arrayDependencias.toString();}
+    if(arrayEstatusObra.toString()!=""){URL += "&tipoDeObra=" + arrayEstatusObra.toString();}
+    if(arrayInstanciaEjecutora.toString()!=""){URL += "&instanciaEjecutora=" + arrayInstanciaEjecutora.toString();}
+    if(arrayEstados.toString()!=""){URL += "&estado=" + arrayEstados.toString();}
+    if(arrayClasificacion.toString()!=""){URL += "&clasificacion=" + arrayClasificacion.toString();}
+    if(arrayTipoInversion.toString()!=""){URL += "&tipoDeInversion=" + arrayTipoInversion.toString();}
+    if(arrayInaugurador.toString()!=""){URL += "&inaugurador=" + arrayInaugurador.toString();}
+    if(arrayImpacto.toString()!=""){URL += "&impacto=" + arrayImpacto.toString();}
+    if(fechaInicio1!=""){URL += "&fechaInicio=" + $j.date(fechaInicio1);}
+    if(fechaInicio2!=""){URL += "&fechaInicioSegunda=" + $j.date(fechaInicio2);}
+    if(fechaFin1!=""){URL += "&fechaFin=" + $j.date(fechaFin1);}
+    if(fechaFin2!=""){URL += "&fechaFinSegunda=" + $j.date(fechaFin2);}
+    if(inversionInicial!=""){URL += "&inversionMinima=" + inversionInicial;}
+    if(inversionFinal!=""){URL += "&inversionMaxima=" + inversionFinal;}
+    if(denominacion!=""){URL += "&denominacion=" + denominacion.toUpperCase();}
+    if($j('#inauguradas').is(':checked')){URL += "&inaugurada =" +  $j('#inauguradas').is(':checked');}
 
-    var ajax_data = {
-      "access_token"  : newToken
-    };
-
-    if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
-    if(arrayEstatusObra.toString()!=""){ajax_data.tipoDeObra=arrayEstatusObra.toString();}
-    if(arrayInstanciaEjecutora.toString()!=""){ajax_data.instanciaEjecutora=arrayInstanciaEjecutora.toString();}
-    if(arrayEstados.toString()!=""){ajax_data.estado=arrayEstados.toString();}
-    if(arrayClasificacion.toString()!=""){ajax_data.clasificacion=arrayClasificacion.toString();}
-    if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
-    if(arrayInaugurador.toString()!=""){ajax_data.inaugurador=arrayInaugurador.toString();}
-    if(arrayImpacto.toString()!=""){ajax_data.impacto=arrayImpacto.toString();}
-    if(fechaInicio1!=""){ajax_data.fechaInicio=$j.date(fechaInicio1);}
-    if(fechaInicio2!=""){ajax_data.fechaInicioSegunda=$j.date(fechaInicio2);}
-    if(fechaFin1!=""){ajax_data.fechaFin=$j.date(fechaFin1);}
-    if(fechaFin2!=""){ajax_data.fechaFinSegunda=$j.date(fechaFin2);}
-    if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
-    if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
-    if(denominacion!=""){ajax_data.denominacion=denominacion.toUpperCase();}
-    if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
-
-
-    $j("#ajaxProgress").show();
-    $j.ajax({
-        url: '/obras/api/listar',
-        type: 'get',
-        data: ajax_data,
-        success: function(data) {
-            alert('success');
-        },
-        error: function(data) {
-            alert('error!!! ' + data.status);
-        }
-    });
+    alert(URL);
+    location.href = URL
 }
+
+
 
 
 function verDatos() {
