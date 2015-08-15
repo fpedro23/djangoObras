@@ -1270,7 +1270,7 @@ function tablaI(Datos){
     var sHtmlShorter="";
     var sHtmlistado="";
 
-    sHtmlExporta= '<table id="tablaExporta2" class="table table-striped">'
+    sHtmlExporta= '<table id="tablaExporta2" class="table2excel">'
                 +' <colgroup>'
                 +' <col width="30%">'
                 +' <col width="40%">'
