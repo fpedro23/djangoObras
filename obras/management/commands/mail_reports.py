@@ -21,12 +21,17 @@ class Command(BaseCommand):
 
             print '[{0}/{1}/{2} {3}:{4}:{5}] Enviando correos'.format(today.day, today.month, today.year, today.hour, today.minute, today.second)
             for contacto in dependencia.get_contactos():
-                try:
-                    send_mail('Reporte de obras por autorizar',
-                          content,
-                          'edicomexsa@gmail.com', [contacto.email])
-                    print '[{0}/{1}/{2} {3}:{4}:{5}] Correo enviado a {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, contacto.user.email)
-                except Exception as e:
-                    print '[{0}/{1}/{2} {3}:{4}:{5}] Error al enviar correo a {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, contacto.user.email)
-                    print '[{0}/{1}/{2} {3}:{4}:{5}] {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, e.message)
+                 try:
+                 	if obras.count() > 0:
+				send_mail('Reporte de obras por autorizar',
+        	                  content,
+                	          'edicomexsa@gmail.com', ['marcelogomez321@gmail.com'])
+			else:
+				send_mail('Reporte de obras por autorizar',
+                                  'Su dependencia no tiene obras con cambios por autorizar',
+                                  'edicomexsa@gmail.com', [contacto.user.email])
+                 	print '[{0}/{1}/{2} {3}:{4}:{5}] Correo enviado a {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, contacto.user.email)
+                 except Exception as e:
+                 	print '[{0}/{1}/{2} {3}:{4}:{5}] Error al enviar correo a {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, contacto.user.email)
+                 	print '[{0}/{1}/{2} {3}:{4}:{5}] {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, e.message)
             print 'Finalizando envio de correos'
