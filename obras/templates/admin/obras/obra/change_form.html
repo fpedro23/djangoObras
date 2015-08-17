@@ -134,8 +134,32 @@ x++;
 
         //alert(sub0+sub1+sub2+sub3+sub4+sub5+sub6+sub7);
         TotInv=sub0+sub1+sub2+sub3+sub4+sub5+sub6+sub7;
+        if (TotInv > 0){
+             $tt('#id_inversionTotal').val(TotInv);
+        }
+        else
+        {
+            $tt('#id_inversionTotal').val('');
+            $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El monto de Inversión Total debe ser diferente a 0.'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
 
-         $tt('#id_inversionTotal').val(TotInv);
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+        }
+
     }
 })(django.jQuery);
 </script>

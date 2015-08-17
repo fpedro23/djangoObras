@@ -154,6 +154,40 @@ function setImage(){
 
 
     $j(document).ready(function() {
+         $j("input[type=text]").keyup(function () {
+             $j(this).val($(this).val().toUpperCase());
+
+         });
+
+        $j("textarea").keyup(function () {
+             $j(this).val($(this).val().toUpperCase());
+
+         });
+
+         $j("#guardarOBTN").on('click', function(){
+             alert("aqui");
+             if ($j('#id_inversionTotal').val() == 0 || $j('#id_inversionTotal').val() == '' ){
+                   $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'El monto de Inversión Total debe ser mayor a 0. Favor de verificar.'
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+             }
+         });
+
          $j("input[name=inaugurada]").click(function () {
             var inauguradaOPC  = $j('input:radio[name=inaugurada]:checked').val();
              if (inauguradaOPC != "True") {

@@ -89,6 +89,11 @@
                     <script type="text/javascript">
                         (function ($) {
                             $(document).ready(function () {
+
+                                 $("input[type=text]").keyup(function () {
+                                 $(this).val($(this).val().toUpperCase());
+
+                                 });
                                 $('.add-another').click(function (e) {
                                     e.preventDefault();
                                     var event = $.Event('django:add-another-related');
