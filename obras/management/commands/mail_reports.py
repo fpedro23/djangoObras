@@ -24,9 +24,9 @@ class Command(BaseCommand):
                 try:
                     send_mail('Reporte de obras por autorizar',
                           content,
-                          'edicomexsa@gmail.com', [contacto.email])
-                    print '[{0}/{1}/{2} {3}:{4}:{5}] Correo enviado a {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, contacto.user.email)
+                          'edicomexsa@gmail.com', [contacto.user.email])
+                    print '[{0}/{1}/{2} {3}:vim{4}:{5}] Correo enviado a {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, contacto.user.email)
                 except Exception as e:
                     print '[{0}/{1}/{2} {3}:{4}:{5}] Error al enviar correo a {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, contacto.user.email)
                     print '[{0}/{1}/{2} {3}:{4}:{5}] {6}'.format(today.day, today.month, today.year, today.hour, today.minute, today.second, e.message)
-            print 'Finalizando envio de correos'
+        print 'Finalizando envio de correos'
