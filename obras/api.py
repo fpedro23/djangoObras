@@ -21,8 +21,8 @@ from django.core.servers.basehttp import FileWrapper
 import mimetypes
 from django.http import StreamingHttpResponse
 import os,io
-from django_downloadview import VirtualDownloadView
-from django_downloadview import VirtualFile
+#from django_downloadview import VirtualDownloadView
+#from django_downloadview import VirtualFile
 
 def get_usuario_for_token(token):
     if token:
@@ -440,20 +440,30 @@ class ListarEndpoint(ProtectedResourceView):
            id_unico=obra[0]
            sheet.write(i, 0, obra[0])
            sheet.write(i, 1, obra[1])
-           sheet.write(i, 2, obra[3])
-           sheet.write(i, 3, obra[5])
-           sheet.write(i, 4, obra[8])
-           sheet.write(i, 5, obra[9])
-           sheet.write(i, 6, obra[10])
-           sheet.write(i, 7, obra[12])
-           sheet.write(i, 8, obra[21])
-           sheet.write(i, 9, obra[22])
-           sheet.write(i, 10, obra[23])
-           sheet.write(i, 11, obra[24])
-           sheet.write(i, 12, obra[25])
-           sheet.write(i, 13, obra[26])
-           sheet.write(i, 14, obra[36])
-           sheet.write(i, 15, obra[37])
+           sheet.write(i, 2, obra[2])
+           sheet.write(i, 3, obra[4])
+           sheet.write(i, 4, obra[5])
+           sheet.write(i, 5, obra[6])
+           sheet.write(i, 6, obra[7])
+           sheet.write(i, 7, obra[8])
+           sheet.write(i, 8, obra[9])
+           sheet.write(i, 9, obra[10])
+           sheet.write(i, 10, obra[11])
+           sheet.write(i, 11, obra[12])
+           sheet.write(i, 12, obra[13])
+           sheet.write(i, 13, obra[14])
+           sheet.write(i, 14, obra[15])
+           sheet.write(i, 15, obra[16])
+           sheet.write(i, 16, obra[17])
+           sheet.write(i, 17, obra[18])
+           sheet.write(i, 18, obra[19])
+           sheet.write(i, 19, obra[20])
+           sheet.write(i, 20, obra[21])
+           sheet.write(i, 21, obra[22])
+           sheet.write(i, 23, obra[23])
+           sheet.write(i, 24, obra[24])
+           sheet.write(i, 25, obra[25])
+
            i+=1
         book.close()
 

@@ -498,7 +498,7 @@ class Obra(models.Model):
         cur = connection.cursor()
         # execute the stored procedure passing in
         # A SOME parameters
-        cur.callproc('sp_listado', (identificador,))
+        cur.callproc('sp_listado', ('',identificador,'','',0,0,'2015-08-01','2015-08-01','2015-08-01','2015-08-01','','','','','','','','',0,))
         # grab the results
         results = cur.fetchall()
         cur.close()
