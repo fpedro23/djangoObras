@@ -58,7 +58,10 @@ class BuscarObras:
 
     def buscar(self):
 
-        query = Q(dependencia__id__in=self.dependencias) | Q(subdependencia__id__in=self.dependencias)
+        if self.dependencias is not None:
+            query = Q(dependencia__id__in=self.dependencias) | Q(subdependencia__id__in=self.dependencias)
+        else:
+            query = Q()
 
         if self.id_obra is not None:
             query = query & Q(identificador_unico=self.id_obra)
