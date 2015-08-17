@@ -164,8 +164,8 @@ function setImage(){
 
          });
 
-         $j("#guardarOBTN").on('click', function(){
-             alert("aqui");
+         $j(".guardarOBTN").on('click', function(){
+
              if ($j('#id_inversionTotal').val() == 0 || $j('#id_inversionTotal').val() == '' ){
                    $j.magnificPopup.open({
                         items: {
@@ -185,6 +185,10 @@ function setImage(){
                         e.preventDefault();
                         $j.magnificPopup.close();
                     });
+             }
+             else
+             {
+                 document.getElementById('obra_form').submit('_save');
              }
          });
 
