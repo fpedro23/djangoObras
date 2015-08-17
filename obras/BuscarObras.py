@@ -58,18 +58,20 @@ class BuscarObras:
 
     def buscar(self):
 
-        query = Q()
+        if self.dependencias is not None:
+            query = Q(dependencia__id__in=self.dependencias) | Q(subdependencia__id__in=self.dependencias)
+        else:
+            query = Q()
+
         if self.id_obra is not None:
-            query = Q(identificador_unico=self.id_obra)
+            query = query & Q(identificador_unico=self.id_obra)
         elif self.busqueda_rapida is not None:
-            query = Q(denominacion__icontains=self.busqueda_rapida) | Q(descripcion__icontains=self.busqueda_rapida)
+            query = query & Q(denominacion__icontains=self.busqueda_rapida) | Q(descripcion__icontains=self.busqueda_rapida)
         elif self.denominacion is not None:
             query = query & Q(denominacion__icontains=self.denominacion)
-
         else:
-
             if self.idTipoObra is not None:
-                query = Q(tipoObra__id__in=self.idTipoObra)
+                query = query & Q(tipoObra__id__in=self.idTipoObra)
 
             if self.fecha_inicio_primera is not None and self.fecha_inicio_segunda is not None:
                 query = query & Q(fechaInicio__range=(self.fecha_inicio_primera, self.fecha_inicio_segunda))
@@ -79,10 +81,6 @@ class BuscarObras:
 
             if self.inversion_minima is not None and self.inversion_maxima is not None:
                 query = query & Q(inversionTotal__range=(self.inversion_minima, self.inversion_maxima))
-
-            if self.dependencias is not None:
-                query = query & Q(dependencia__id__in=self.dependencias)
-                query = query | Q(subdependencia__id__in=self.dependencias)
 
             if self.estados is not None:
                 query = query & Q(estado__id__in=self.estados)
