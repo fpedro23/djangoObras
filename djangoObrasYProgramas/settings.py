@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'djangoObrasYProgramas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dbobrastest',
-        'USER': 'obras',
-        'PASSWORD': 'obras',
+        'NAME': 'dbobras',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': '',
         'PORT': '',
     }

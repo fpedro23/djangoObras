@@ -58,7 +58,7 @@
         e.preventDefault();
         var totalForms = $("#id_" + options.prefix + "-TOTAL_FORMS");
         var template = $("#" + options.prefix + "-empty");
-        var row = template.clone(true);
+        var row = template.clone(true).val("");
         row.removeClass(options.emptyCssClass)
           .addClass(options.formCssClass)
           .attr("id", options.prefix + "-" + nextIndex);

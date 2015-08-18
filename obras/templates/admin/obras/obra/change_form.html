@@ -134,8 +134,32 @@ x++;
 
         //alert(sub0+sub1+sub2+sub3+sub4+sub5+sub6+sub7);
         TotInv=sub0+sub1+sub2+sub3+sub4+sub5+sub6+sub7;
+        if (TotInv > 0){
+             $tt('#id_inversionTotal').val(TotInv);
+        }
+        else
+        {
+            $tt('#id_inversionTotal').val('');
+            $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El monto de Inversión Total debe ser diferente a 0.'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
 
-         $tt('#id_inversionTotal').val(TotInv);
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+        }
+
     }
 })(django.jQuery);
 </script>
@@ -224,6 +248,15 @@ x++;
                 {% block after_related_objects %}{% endblock %}
 
                 {% block submit_buttons_bottom %}{% endblock %}
+            {% if adminform and add %}
+    <script type="text/javascript">
+        (function($) {
+            $(document).ready(function() {
+                $('form#{{ opts.model_name }}_form :input:visible:enabled:first').focus()
+            });
+        })(django.jQuery);
+    </script>
+{% endif %}
                 {% block admin_change_form_document_ready %}
 
 
@@ -237,7 +270,7 @@ x++;
 
                         var $dp = jQuery.noConflict();
 
-
+                        //FECHA INICIO
                         $dp('#id_fechaInicio').datepicker({
                             autoclose: true  ,
                             setEndDate: $dp('#id_fechaTermino').val()
@@ -245,6 +278,7 @@ x++;
                                   var startDate = new Date(selected.date.valueOf());
                                   var endDate = $dp('#id_fechaTermino').val();
                                   var NDDate =   new Date($dp('#id_fechaTermino').datepicker("getDate"));
+                                  var today = new Date();
                                   if (endDate != "") {
                                       if (startDate > NDDate) {
                                           //alert("La fecha de Inicio debe ser anterior a la fecha de Término");
@@ -272,13 +306,83 @@ x++;
                                       }
                                       else
                                     { $dp('#id_fechaTermino').datepicker('setStartDate', startDate); }
+
+                                      //Debe ser "en proceso" si tiene una fecha de inicio anterior a hoy; y una fecha de término posterior a hoy.
+                                    if ((startDate < today) && $j('select#id_tipoObra').val()!='2') {
+                                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                            items: {
+                                                src: '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                + '<div class="textoALERTA">'
+                                                + 'El Status de la obra debe ser en PROCESO y el Avance mayor a 0'
+                                                + '</div>'
+                                                + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                + '</div>'
+                                            },
+                                            type: 'inline',
+                                            preloader: true,
+                                            modal: true
+                                        });
+
+                                        $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                            e.preventDefault();
+                                            $j.magnificPopup.close();
+                                        });
+                                    }
                                   }
                                     else
                                     { $dp('#id_fechaTermino').datepicker('setStartDate', startDate); }
+                                    //fecha de inicio mayor al dia de hoy status debe ser en proyecto
+
+                                    if ((startDate > today) && $j('select#id_tipoObra').val()!='1' ){
+                                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser PROYECTADA y el Avance igual a 0'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                                    }
+
+                                         //Debe ser "en proceso" si tiene una fecha de inicio anterior a hoy; y una fecha de término posterior a hoy.
+                                    if ((startDate < today) && $j('select#id_tipoObra').val()!='2') {
+                                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                            items: {
+                                                src: '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                + '<div class="textoALERTA">'
+                                                + 'El Status de la obra debe ser en PROCESO y el Avance mayor a 0'
+                                                + '</div>'
+                                                + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                + '</div>'
+                                            },
+                                            type: 'inline',
+                                            preloader: true,
+                                            modal: true
+                                        });
+
+                                        $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                            e.preventDefault();
+                                            $j.magnificPopup.close();
+                                        });
+                                    }
+
                                }).on('clearDate', function (selected) {
                                      $dp('#id_fechaTermino').datepicker('setStartDate', null);
                                   });
-
+                        //FECHA TERMINO
                         $dp('#id_fechaTermino').datepicker({
                             autoclose: true          ,
                             setStartDate: $dp('#id_fechaInicio').val()
@@ -286,7 +390,7 @@ x++;
                             var endDate = new Date(selected.date.valueOf());
                             var startDate = $dp('#id_fechaInicio').val();
                             var STDate =   new Date($dp('#id_fechaInicio').datepicker("getDate"));
-
+                            var today = new Date();
                               if (startDate != "") {
                                   if (STDate > endDate) {
                                       //alert("La fecha de Término debe ser posterior a la fecha de Inicio");
@@ -314,14 +418,60 @@ x++;
                                       $dp('#id_fechaTermino').setDate(startDate);
                                   }
                                   else
-                                      {
+                                  {
                                          $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
-                                      }
+                                  }
+
+                                  //Debe ser "en proceso" si tiene una fecha de inicio anterior a hoy; y una fecha de término posterior a hoy.
+                                    if ((STDate < today) && (endDate > today) && $j('select#id_tipoObra').val()!='2' ) {
+                                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                            items: {
+                                                src: '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                + '<div class="textoALERTA">'
+                                                + 'El Status de la obra debe ser en PROCESO y el Avance mayor a 0'
+                                                + '</div>'
+                                                + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                + '</div>'
+                                            },
+                                            type: 'inline',
+                                            preloader: true,
+                                            modal: true
+                                        });
+
+                                        $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                            e.preventDefault();
+                                            $j.magnificPopup.close();
+                                        });
+                                    }
                               }
                               else
                               {
                                  $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
                               }
+                                //Debe ser "concluida" si tiene una fecha de termino anterior a hoy.
+
+                                    if ((endDate < today) && $j('select#id_tipoObra').val()!='3' ){
+                                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser CONCLUIDA y el Avance igual a 100'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                                    }
 
                             }).on('clearDate', function (selected) {
                             $dp('#id_fechaInicio').datepicker('setEndDate', null);

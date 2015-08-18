@@ -64,6 +64,10 @@ x++;
             $("#depde").show();
              {% endif %}
 
+         $("input[type=text]").keyup(function () {
+             $(this).val($(this).val().toUpperCase());
+
+         });
 
     });
 })(django.jQuery);
