@@ -248,6 +248,15 @@ x++;
                 {% block after_related_objects %}{% endblock %}
 
                 {% block submit_buttons_bottom %}{% endblock %}
+            {% if adminform and add %}
+    <script type="text/javascript">
+        (function($) {
+            $(document).ready(function() {
+                $('form#{{ opts.model_name }}_form :input:visible:enabled:first').focus()
+            });
+        })(django.jQuery);
+    </script>
+{% endif %}
                 {% block admin_change_form_document_ready %}
 
 
@@ -299,6 +308,29 @@ x++;
                                   }
                                     else
                                     { $dp('#id_fechaTermino').datepicker('setStartDate', startDate); }
+                                    //fecha de inicio mayor al dia de hoy status debe ser en proyecto
+                                    var today = new Date();
+                                    if ((startDate > today) && $j('select#id_tipoObra').val()!='1' ){
+                                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser PROYECTADA y el Avance mayor a 0'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                                    }
                                }).on('clearDate', function (selected) {
                                      $dp('#id_fechaTermino').datepicker('setStartDate', null);
                                   });
@@ -346,6 +378,29 @@ x++;
                               {
                                  $dp('#id_fechaInicio').datepicker('setEndDate', endDate);
                               }
+                                //Debe ser "concluida" si tiene una fecha de termino anterior a hoy.
+                                    var today = new Date();
+                                    if ((endDate < today) && $j('select#id_tipoObra').val()!='3' ){
+                                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser CONCLUIDA y el Avance igual a 100'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                                    }
 
                             }).on('clearDate', function (selected) {
                             $dp('#id_fechaInicio').datepicker('setEndDate', null);
