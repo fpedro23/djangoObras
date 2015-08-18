@@ -51,6 +51,9 @@ class Dependencia(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.nombreDependencia
 
+    def get_contactos(self):
+        return Usuario.objects.filter(Q(dependencia=self) & Q(rol='AD'))
+
     def to_serializable_dict(self):
         ans = {}
 

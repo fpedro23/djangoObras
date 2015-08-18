@@ -50,6 +50,12 @@ def register_by_access_token(request):
 def ayuda(request):
     return render_to_response('admin/obras/ayuda/c_ayuda.html', locals(),
                               context_instance=RequestContext(request))
+def videos(request):
+    return render_to_response('admin/obras/videos/videos_lista.html', locals(),
+                              context_instance=RequestContext(request))
+def manualesPdf(request):
+    return render_to_response('admin/obras/manuales/manuales_lista.html', locals(),
+                              context_instance=RequestContext(request))
 
 def catalogo(request):
     return render_to_response('admin/obras/catalogo.html', locals(),
@@ -518,6 +524,90 @@ def consulta_web(request):
     })
     return HttpResponse(template.render(context))
 
+@login_required()
+def ver_video(request):
+    cualVideo=request.GET.get('cualVideo', None),
+    print(str(cualVideo[0]))
+    if str(cualVideo[0]) =='creacionObra.mp4':
+        tituloVideo='Crear una Obra',
+    elif str(cualVideo[0]) =='modificacionObra.mp4':
+        tituloVideo='Modificar una Obra',
+
+    elif str(cualVideo[0]) =='consultaFiltros.mp4':
+        tituloVideo='Consulta Mediante Filtros',
+    elif str(cualVideo[0]) =='consultaPredefinida.mp4':
+        tituloVideo='Consulta Predefinidos',
+
+    elif str(cualVideo[0]) =='agregarClasificacion.mp4':
+        tituloVideo='Agregar una Clasificacion',
+    elif str(cualVideo[0]) =='buscarClasificacion.mp4':
+        tituloVideo='Buscar una Clasificacion',
+    elif str(cualVideo[0]) =='modificarClasificacion.mp4':
+        tituloVideo='Modificar una Clasificacion',
+    elif str(cualVideo[0]) =='eliminarClasificacion.mp4':
+        tituloVideo='Eliminar una Clasificacion',
+
+    elif str(cualVideo[0]) =='crearUsuario.mp4':
+        tituloVideo='Agregar un Usuario',
+    elif str(cualVideo[0]) =='modificarUsuario.mp4':
+        tituloVideo='Modificar un Usuario',
+    elif str(cualVideo[0]) =='buscarUsuario.mp4':
+        tituloVideo='Buscar un Usuario',
+    elif str(cualVideo[0]) =='eliminarUsuario.mp4':
+        tituloVideo='Eliminar un Usuario',
+
+    elif str(cualVideo[0]) =='agregarDependencia.mp4':
+        tituloVideo='Agregar una Dependencia',
+    elif str(cualVideo[0]) =='buscarDependencia.mp4':
+        tituloVideo='Buscar una Dependencia',
+    elif str(cualVideo[0]) =='modificarDependencia.mp4':
+        tituloVideo='Modificar una Dependencia',
+    elif str(cualVideo[0]) =='eliminarDependencia.mp4':
+        tituloVideo='Eliminar una Dependencia',
+
+    elif str(cualVideo[0]) =='agregarSubDependencia.mp4':
+        tituloVideo='Agregar una SubDependencia',
+    elif str(cualVideo[0]) =='buscarSubDependencia.mp4':
+        tituloVideo='Buscar una SubDependencia',
+    elif str(cualVideo[0]) =='modificarSubDependencia.mp4':
+        tituloVideo='Modificar una SubDependencia',
+    elif str(cualVideo[0]) =='eliminarSubDependencia.mp4':
+        tituloVideo='Eliminar una SubDependencia',
+
+
+    elif str(cualVideo[0]) =='agregarInversion.mp4':
+        tituloVideo='Agregar un tipo de Inversion',
+    elif str(cualVideo[0]) =='buscarInversion.mp4':
+        tituloVideo='Buscar un tipo de Inversion',
+    elif str(cualVideo[0]) =='modificarInversion.mp4':
+        tituloVideo='Modificar un tipo de Inversion',
+    elif str(cualVideo[0]) =='eliminarInversion.mp4':
+        tituloVideo='Eliminar un tipo de Inversion',
+
+    elif str(cualVideo[0]) =='agregarImpacto.mp4':
+        tituloVideo='Agregar un tipo de Impacto',
+    elif str(cualVideo[0]) =='buscarImpacto.mp4':
+        tituloVideo='Buscar un un tipo de Impacto',
+    elif str(cualVideo[0]) =='modificarImpacto.mp4':
+        tituloVideo='Modificar un un tipo de Impacto',
+    elif str(cualVideo[0]) =='eliminarImpacto.mp4':
+        tituloVideo='Eliminar un un tipo de Impacto',
+
+    elif str(cualVideo[0]) =='agregarInaugurador.mp4':
+        tituloVideo='Agregar un Inaugurador',
+    elif str(cualVideo[0]) =='buscarInaugurador.mp4':
+        tituloVideo='Buscar un Inaugurador',
+    elif str(cualVideo[0]) =='modificarInaugurador.mp4':
+        tituloVideo='Modificar un Inaugurador',
+    elif str(cualVideo[0]) =='eliminarInaugurador.mp4':
+        tituloVideo='Eliminar un Inaugurador',
+
+    template = loader.get_template('admin/obras/videos/videos_lista.html')
+    context = RequestContext(request, {
+        'cualVideo': cualVideo,
+        'tituloVideo': tituloVideo,
+    })
+    return HttpResponse(template.render(context))
 
 def get_array_or_none(the_string):
     if the_string is None:
@@ -836,6 +926,7 @@ def fichaTecnica(request):
         #print(json_map)
         #return HttpResponse(json.dumps(json_map), 'application/json')
 
+@login_required()
 def reportes_predefinidos(request):
     return render_to_response('admin/obras/consulta_predefinidos/consulta-predefinidos.html', {'clases': ''}, context_instance=RequestContext(request))
 
@@ -1656,7 +1747,7 @@ def hiper_inauguradas_ppt(request):
 
     return response
 
-@login_required()
+@login_required
 def hiper_interestatal_ppt(request):
     prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INTERESTATAL.pptx')
     usuario = request.user.usuario
@@ -2233,7 +2324,7 @@ def hiper_rangos_ppt(request):
 def redirect_admin(request):
     return redirect('admin/')
 
-
+@login_required
 def ios_view(request):
     return render_to_response('ios.html')
     #return HttpResponse('<a href="itms-services://?action=download-manifest&'

@@ -19,8 +19,15 @@
 {% block breadcrumbs %}{% endblock %}
 
 {% block content %}
-    <div class="galeria">
-          <ul class="bxslider" style=" -webkit-padding-start:0px">
+<script type="text/javascript">
+  $(document).ready(function($) {
+      $('.bxslider').show();
+      $ ("#galeria").show();
+      $("#logIn").show();
+  });
+</script>
+    <div class="galeria" id="galeria" hidden="true">
+          <ul class="bxslider" style=" -webkit-padding-start:0px" hidden="true">
               <li><img src="{% static "img/FotoGalereria/001_gal.jpg" %}" /></li>
               <li><img src="{% static "img/FotoGalereria/002_gal.jpg" %}" /></li>
               <li><img src="{% static "img/FotoGalereria/003_gal.jpg" %}" /></li>
@@ -31,7 +38,7 @@
         <!--<div class="botGAL">
         </div>-->
 
-        <div class="logIn">
+        <div class="logIn" id="logIn" hidden="true">
         <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
         	<p class="titulo">INICIAR SESIÓN</p>
             <br />
@@ -39,20 +46,36 @@
                 <tr>
                     <td align="left" width="40%" valign="top">
                         <label for="id_username" id="tit_1">
-                            <span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
+                            <span class="error__msg">*</span>
                             Usuario :
                         </label>
                     </td>
                     <td align="right" width="60%">
-                        {{ form.username }}<br><br>
+                        {{ form.username }}
+                         {% if form.username.errors %}
+                         <!--    <img id="imgerr-id_username" data-toggle="tooltip" data-placement="left"  title="{% for error in form.username.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="13px" height="13px">
+                            <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
+                            <script> $(document).ready(function($) {
+                                var $te = jQuery.noConflict();
+                                $te('#imgerr-id_username').tooltip({html:true});});</script> -->
+                    {% endif %}<br><br>
                     </td>
                 </tr>
                 <tr>
                     <td align="left" width="40%" valign="top">
-                    <label for="id_password" id="tit_1"><span class="{% if form.errors or form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "tit_1" }}{% endif %}">*</span>
+                    <label for="id_password" id="tit_1"><span class="error__msg">*</span>
                             Contraseña :</label>&nbsp;
                     </td>
-                    <td align="right" width="60%">    {{ form.password }}<br><br>
+                    <td align="right" width="60%">    {{ form.password }}
+                        {% if form.password.errors %}
+                        <!--     <img id="imgerr-id_password" data-toggle="tooltip" data-placement="left"  title="{% for error in form.password.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="13px" height="13px">
+                            <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
+                            <script> $(document).ready(function($) {
+                                var $te = jQuery.noConflict();
+                                $te('#imgerr-id_password').tooltip({html:true});});</script>-->
+                    {% endif %}
+
+                        <br><br>
                             <input type="hidden" name="next" value="{{ next }}" />
                     </td>
                 </tr>

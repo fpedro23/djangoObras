@@ -10,7 +10,7 @@
           {% if field.field.name == "nombreDependencia" %}
               <div class="row field-nombreDependencia rowmod" style="margin-bottom: 4px;">
                 <div class="col-md-6 colmod"><label id="label-fld" for="id_nombreDependencia">
-                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                <span class="error__msg">*</span>
                 Nombre de Dependencia:</label></div>
 
             <div class="col-md-6 colmod"><input class="vTextField" id="id_nombreDependencia" maxlength="200" name="nombreDependencia" type="text"
@@ -28,9 +28,9 @@
 
       {% if field.field.name == "dependienteDe" %}
 
-        <div class="row field-dependienteDe rowmod" id="depde" hidden="true">
+        <div class="row field-dependienteDe rowmod" id="depde" hidden="true" style="padding-top: 4px;">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_dependienteDe">
-                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                <span class="error__msg">*</span>
                 Dependiente de:</label></div>
 
             <div class="col-md-6 colmod">
@@ -50,7 +50,7 @@
 
         <div class="row field-imagenDependencia rowmod">
             <div class="col-md-6 colmod" align="left"><label id="label-fld" for="id_imagenDependencia">
-                <span class="{% if errors or adminform.form.non_field_errors %}{{ "error__msg" }}{% else %}{{ "label-fld" }}{% endif %}">*</span>
+                <span class="error__msg">*</span>
                 Imágen de Dependencia:</label></div>
 
             <div class="col-md-6 colmod">{{ field.field|addcss:"depwid" }}

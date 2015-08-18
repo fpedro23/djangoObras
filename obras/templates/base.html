@@ -75,7 +75,7 @@
            		<li class="dropdown right-text" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         <span class="engrane"></span> </a>
-                        <ul class="dropdown-menu" role="menu" >
+                        <ul class="dropdown-menu" role="menu" style="left: -180px;">
                            {% if user.has_usable_password %}
                                <!-- <span class="glyphicon glyphicon-cog pull-right"></span> -->
                               <li><a href="{% url 'admin:password_change' %}">Cambiar Contraseña </a></li>
@@ -89,6 +89,52 @@
         </div>
     {% endif %}
 </div>
+
+
+    <ul id="nav">
+<li class="site-name"><a href="#"> </a></li>
+    <li>
+        <div onclick="location.href='/obras/movimientos'"></div>
+        <ul>
+            <li><a href="/admin/obras/obra/add/">Alta de Obra</a></li>
+            <li><a href="#">Modificar Obra</a></li>
+        </ul>
+    </li>
+    <li><div class="CONSULTAS" onclick="location.href='/obras/consultas'"></div>
+        <ul>
+            <li><a href="/admin/obras/obra/">Consultar por Filtro</a></li>
+            <li><a href="#">Consultar Guardadas</a></li>
+        </ul>
+    </li>
+    <li><<div class="CATALOGOS" onclick="location.href='/obras/catalogo'"></div>
+        <ul>
+        <li><a href="#">De Clasificación</a></li>
+            <ul>
+                <li><a href="/admin/obras/tipoclasificacion/add">Crear</a></li>
+                <li><a href="/admin/obras/tipoclasificacion/">Buscar</a></li>
+                <li><a href="/admin/obras/tipoclasificacion/">Modificar</a></li>
+                <li><a href="/admin/obras/tipoclasificacion/?e=1">Eliminar</a></li>
+            </ul>
+        <li><a href="#">De Dependencias</a></li>
+            <ul>
+                <li><a href="/admin/obras/dependencia/add">Crear</a></li>
+                <li><a href="/admin/obras/dependencia/">Buscar</a></li>
+                <li><a href="/admin/obras/dependencia/">Modificar</a></li>
+                <li><a href="/admin/obras/dependencia/">Eliminar</a></li>
+            </ul>
+
+        </ul>
+    </li>
+    <li><div class="USUARIOS" onclick="location.href='/obras/usuarios'"></div>
+            <ul>
+                <li><a href="#">New Tweets</a></li>
+                <li><a href="#">Compose a Tweet</a></li>
+            </ul>
+    </li>
+</ul>
+
+
+
 
 
 <div class="gradiente">

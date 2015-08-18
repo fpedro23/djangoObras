@@ -222,7 +222,7 @@
                     <table width="100%" class="texto"><tr>
                         <td width="40%" class="texto"> <label class="required" for="id_fechaInicio" style="font-size: 11px;">Fecha de Inicio:</label></td>
 
-                        <td width="60%" class="texto">{{ field.field}}
+                        <td width="60%" class="texto">{{ field.field|addcss:"form-control2"}}
                             {% if field.errors %}
                              <img id="imgerr13" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
@@ -467,8 +467,8 @@
             <div data-spy="scroll" data-target=".navbar" data-offset="2" class="scrollFotos">
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="2px">
                         <tr>
-                            <td width="32%" class="texto"><label for="id_fotoAntes">Antes:</label></td>
-                            <td width="68%" class="texto">{{ field.field|add_desc:"inside"  }}
+                            <td width="{% if change %}{{ "10%" }}{% else %}{{ "32%" }}{% endif %}" class="texto"><label for="id_fotoAntes">Antes:</label></td>
+                            <td width="{% if change %}{{ "90%" }}{% else %}{{ "68%" }}{% endif %}" class="texto">{{ field.field|add_desc:"inside"  }}
                                    {% if field.errors %}
                                    <img id="imgerr25" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                                   {% endif %}
@@ -478,8 +478,8 @@
 
         {% if field.field.name == "fotoDurante" %}
                         <tr>
-                            <td width="20%" class="texto"><label for="id_fotoDurante">Durante:</label></td>
-                            <td width="80%" class="texto"> {{ field.field |add_desc:"inside" }}
+                            <td width="{% if change %}{{ "10%" }}{% else %}{{ "32%" }}{% endif %}" class="texto"><label for="id_fotoDurante">Durante:</label></td>
+                            <td width="{% if change %}{{ "90%" }}{% else %}{{ "68%" }}{% endif %}" class="texto"> {{ field.field |add_desc:"inside" }}
                               {% if field.errors %}
                              <img id="imgerr26" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
@@ -489,8 +489,8 @@
 
          {% if field.field.name == "fotoDespues" %}
                         <tr>
-                            <td width="20%" class="texto"><label for="id_fotoDespues">Después:</label></td>
-                            <td width="80%" class="texto">  {{ field.field |add_desc:"inside" }}
+                            <td width="{% if change %}{{ "10%" }}{% else %}{{ "32%" }}{% endif %}" class="texto"><label for="id_fotoDespues">Después:</label></td>
+                            <td width="{% if change %}{{ "90%" }}{% else %}{{ "68%" }}{% endif %}" class="texto">  {{ field.field |add_desc:"inside" }}
                               {% if field.errors %}
                              <img id="imgerr27" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}

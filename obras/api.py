@@ -41,29 +41,43 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        query = Q(fechaInicio__lte=datetime.now().date())
+        query = Q(fechaInicio__lte=datetime.now().date()) & Q(tipoObra_id=1)
         if not (usuario.rol == 'SA'):
             subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
             query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
         obras = Obra.objects.filter(query)
 
-        the_list = []
+        json_ans = '['
         for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
-            the_list.append(obra)
+            json_ans += '{"id":"'
+            json_ans += str(obra['id'])
 
-        return HttpResponse(json.dumps(the_list), 'application/json')
+            json_ans += '","identificador_unico":"'
+            json_ans += obra['identificador_unico']
+
+            json_ans += '","estado__nombreEstado":"'
+            json_ans += obra['estado__nombreEstado']
+
+            json_ans += '","denominacion":"'
+            json_ans += obra['denominacion']
+
+            json_ans += '"},'
+        json_ans = json_ans[:-1]
+        json_ans += ']'
+
+        return HttpResponse(json_ans, 'application/json')
+
 
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
 
-        today = datetime.now().date()
-        if usuario.rol == 'SA':
-            obras = Obra.objects.filter(fechaTermino__lte=today)
-        else:
-            obras = Obra.objects.filter(Q(fechaTermino__lte=today) & Q(
-                dependencia__in=get_subdependencias_as_list_flat(usuario.dependencia.all())))
+        query = Q(fechaTermino__lte=datetime.now().date()) & Q(tipoObra_id=2)
+        if not usuario.rol == 'SA':
+            subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
+            query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
+        obras = Obra.objects.filter(query)
 
         the_list = []
         for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
@@ -313,7 +327,7 @@ class BuscadorEndpoint(ProtectedResourceView):
 
         json_map['obras'] = []
         for obra in resultados['obras'].values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion',
-                                               'latitud', 'longitud', "dependencia__imagenDependencia"):
+                                               'latitud', 'longitud', 'dependencia__imagenDependencia'):
             json_map['obras'].append(obra)
 
         json_map['reporte_estado'] = []
@@ -410,6 +424,9 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         obras2015 = obras.filter(fechaInicio__year=2015)
         obras2015_proceso = obras2015.filter(tipoObra_id=2)
         the_list = []
+
+        # Grafico
+
         for obra in obras2015_proceso.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
                 numero_obras=Count('estado')):
             self.rename_estado(obra)
@@ -426,6 +443,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
         reporte['reporte2015']['obras_proyectadas']['total'] = obras2015_proyectadas.count()
 
+
+
         obras2015_concluidas = obras.filter(Q(fechaTermino__year=2015) & Q(tipoObra_id=3))
         the_list = []
         for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
@@ -434,6 +453,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte2015']['obras_concluidas']['obras'] = the_list
         reporte['reporte2015']['obras_concluidas']['total'] = obras2015_concluidas.count()
+
+        #Obras Concluidas, barra inferior
 
         obras2014 = obras.filter(Q(fechaTermino__year=2014) & Q(tipoObra_id=3))
         the_list = []
@@ -464,9 +485,11 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 class ReporteNoTrabajoEndpoint(ProtectedResourceView):
     def get(self, request):
         comp_date = datetime.now() - timedelta(15)
+        print "****"
         print comp_date
         dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
-            fecha_ultima_modificacion__lt=comp_date))
+            Q(obraoprograma='O') &
+            Q(fecha_ultima_modificacion__lt=comp_date)))
 
         return HttpResponse(json.dumps(dicts), 'application/json')
 

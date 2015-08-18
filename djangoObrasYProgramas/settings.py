@@ -121,6 +121,7 @@ USE_TZ = True
 
 SESSION_COOKIE_AGE = 35900
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+LOGIN_URL = '/admin/login/'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -142,8 +143,10 @@ STATICFILES_DIRS = (
 )
 
 # Email config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'edicomexsa@gmail.com'
 EMAIL_HOST_PASSWORD = 'Edicomex2015'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+

@@ -22,8 +22,8 @@ sys.path.append('/home/obrasapf/djangoObras')
 sys.path.append('/home/obrasapf/djangoObras/djangoObrasYProgramas')
 
 # Activate your virtual env
-# activate_env = os.path.expanduser("/home/obrasapf/djangoObras/venv/bin/activate_this.py")
-# execfile(activate_env, dict(__file__=activate_env))
+activate_env = os.path.expanduser("/home/obrasapf/djangoObras/venv/bin/activate_this.py")
+execfile(activate_env, dict(__file__=activate_env))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangoObrasYProgramas.settings")
 

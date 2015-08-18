@@ -13,6 +13,7 @@ var newToken
 
 var descripcionIniciadas = "Obras proyectadas cuya fecha de inicio ya venció, es decir; obras proyectadas que a la fecha actual ya deberían estar en proceso";
 var descripcionVencidas = "Obras en proceso cuya fecha de término ya venció, es decir; obras en proceso que a la fecha actual ya deberían estar concluidas";
+var descripcionDependencias = "Dependencias sin actividad alguna sobre sus obras en los 15 días anteriores a la fecha actual.";
 function valida_token(){
 var ajax_datatoken = {
       "access_token"  : 'O9BfPpYQuu6a5ar4rGTd2dRdaYimVa'
@@ -143,12 +144,12 @@ function obrasPorDependencia() {
       "access_token"  : newToken
     };
     $j.ajax({
-        url: '/obras/api/obras_por_dependencia',
+        url: '/obras/api/noTrabajo',
         type: 'get',
         data: ajax_data,
         success: function(data) {
             $j('#historico').val("SI");
-            tablaI(data,'Obras por Dependencia','');
+            tablaD(data,'Obras por Dependencia',descripcionDependencias);
             datosJson=data;
             $j('#load3').addClass("mfp-hide");
         },
@@ -167,7 +168,7 @@ function tablaI(Datos,titulo,descripcion){
     var sHtmlistado="";
 
 
-    var sHtml = '<table id="tablaIzquierda" class="table table-striped">'
+    var sHtml = '<table cellspacing="1"  id="tablaIzquierda">'
                 +' <colgroup>'
                 +' <col width="30%">'
                 +' <col width="40%">'
@@ -202,11 +203,97 @@ function tablaI(Datos,titulo,descripcion){
 
                     +'</tfoot>'
                     +'<tbody>';
+
     for(var i= 0;i<Datos.length;i++){
         sHtml +='<tr>'
                 +'<td><a href="/admin/obras/obra/' + Datos[i].id + '/?m=1">' + Datos[i].identificador_unico +'</a></td>'
                 +'<td>' + Datos[i].denominacion +'</td>'
                 +'<td>' + Datos[i].estado__nombreEstado +'</td>'
+                +'</tr>'
+    }
+
+        sHtml +='</tbody>'
+                +'</table>'
+                +'<script id="js" type="text/javascript">'
+                +'$ts(function() {'
+                +'    $ts("#tablaIzquierda").tablesorter({'
+                +'    theme: "blue",'
+                +'    showProcessing: true,'
+                +'    headerTemplate : "{content} {icon}",'
+                +'    widgets: [ "uitheme", "zebra", "pager", "scroller" ],'
+                +'    widgetOptions : {'
+                +'        scroller_height : 190,'
+                +'        scroller_upAfterSort: true,'
+                +'        scroller_jumpToHeader: true,'
+                +'        scroller_barWidth : null,'
+                +'          pager_selectors: {'
+                +'                container   : "#pagerI",'
+                +'                first       : "#firstI",'
+                +'                prev        : "#prevI",'
+                +'                next        : "#nextI",'
+                +'                last        : "#lastI",'
+                +'                gotoPage    : "#gotoPageI",'
+                +'                pageDisplay : "#pagedisplayI",'
+                +'                pageSize    : "#pagesizeI"'
+                +'        }'
+                +'    }'
+                +'});'
+                +'});'
+                +'</script>';
+
+    $j('#titulo').html(titulo);
+    $j('#descripcion').html(descripcion);
+    $j('#tabla').html(sHtml);
+
+
+}
+
+function volverHistorico() {
+    //var variable = (opener) ? opener.location.href : 'No disponible' ;
+    //document.write(variable);
+    var sHistorico = $j('#historico').val();
+    if (sHistorico.toString() =="SI") {
+        $.get("/obras/register-by-token", function (respu) {
+           newToken = respu.access_token;
+           verDatos()
+        });
+    }
+}
+
+function tablaD(Datos,titulo,descripcion){
+
+    var sHtml = '<table id="tablaIzquierda" class="table table-striped">'
+                +' <colgroup>'
+                +' <col width="50%">'
+                +' </colgroup> '
+                +'<thead>'
+                        +'<tr>'
+                            +'<th>Dependencia</th>'
+                        +'</tr>'
+                +'</thead>'
+                +'<tfoot>'
+                        +'<tr>'
+                            +'<th>Dependencia</th>'
+                        +'</tr>'
+
+                        +'<tr><td class="pager" id="pagerI" colspan="3">'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/first.png" class="first" id="firstI"/>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/prev.png" class="prev" id="prevI"/>'
+                        +'<span class="pagedisplay" id="pagedisplayI"></span>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/next.png" class="next" id="nextI"/>'
+                        +'<img src="../../static/assets/tablesorter/addons/pager/icons/last.png" class="last" id="lastI"/>'
+                        +'<select class="pagesize" id="pagesizeI">'
+                        +'<option selected="selected"  value="10">10</option>'
+                        +'    <option value="20">20</option>'
+                        +'    <option value="30">30</option>'
+                        +'    <option  value="40">40</option>'
+                        +'</select></td></tr>'
+
+                    +'</tfoot>'
+                    +'<tbody>';
+    for(var i= 0;i<Datos.length;i++){
+        sHtml +='<tr>'
+                +'<td>' + Datos[i].nombreDependencia +'</td>'
                 +'</tr>'
     }
 
@@ -245,16 +332,4 @@ function tablaI(Datos,titulo,descripcion){
     $j('#tabla').html(sHtml);
 
 
-}
-
-function volverHistorico() {
-    //var variable = (opener) ? opener.location.href : 'No disponible' ;
-    //document.write(variable);
-    var sHistorico = $j('#historico').val();
-    if (sHistorico.toString() =="SI") {
-        $.get("/obras/register-by-token", function (respu) {
-           newToken = respu.access_token;
-           verDatos()
-        });
-    }
 }

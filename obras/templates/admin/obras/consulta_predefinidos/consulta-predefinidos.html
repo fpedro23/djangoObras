@@ -40,15 +40,17 @@
     </script>
 
     <script type="text/javascript" src="{% static "assets/tablesorter/jquery-latest.min.js"%}"></script>
+    <script src="{% static "assets/tablesorter/js/prettify.js"%}"></script>
 
-
-    <link class="ui-theme" rel="stylesheet" href="{% static "assets/tablesorter/css/jquery-ui.min.css"%}">
+    <link class="ui-theme" rel="stylesheet" href="{% static "assets/tablesorter/css/jquery-ui.min.css"%}" >
     <link class="theme blue" rel="stylesheet" href="{% static "assets/tablesorter/themes/blue/theme.blue.css"%}">
 
+
+
     <script type="text/javascript" src="{% static "assets/tablesorter/jquery.tablesorter.js"%}"></script>
-    <script src="{% static "assets/tablesorter/jquery.tablesorter.widgets.js"%}"></script>
-	<script type="text/javascript" src="{% static "assets/tablesorter/widget-pager.js"%}"></script>
     <script src="{% static "assets/tablesorter/widget-scroller.js"%}"></script>
+	<script type="text/javascript" src="{% static "assets/tablesorter/widget-pager.js"%}"></script>
+
 
 
     <script id="js" type="text/javascript">
@@ -61,7 +63,7 @@
 		headerTemplate : '{content} {icon}',
 		widgets: [ 'uitheme', 'zebra', 'pager', 'scroller' ],
 		widgetOptions : {
-			scroller_height : 400,
+			scroller_height : 190,
 			// scroll tbody to top after sorting
 			scroller_upAfterSort: true,
 			// pop table header into view while scrolling up the page

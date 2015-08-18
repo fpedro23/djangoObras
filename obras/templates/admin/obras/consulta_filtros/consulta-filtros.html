@@ -9,9 +9,11 @@
     <link class="theme blue" rel="stylesheet" href="{% static "assets/tablesorter/themes/blue/theme.blue.css"%}">
 
     <script type="text/javascript" src="{% static "assets/tablesorter/jquery.tablesorter.js"%}"></script>
-    <script src="{% static "assets/tablesorter/jquery.tablesorter.widgets.js"%}"></script>
-	<script type="text/javascript" src="{% static "assets/tablesorter/widget-pager.js"%}"></script>
+
     <script src="{% static "assets/tablesorter/widget-scroller.js"%}"></script>
+	<script type="text/javascript" src="{% static "assets/tablesorter/widget-pager.js"%}"></script>
+
+
 
 
     <script id="js" type="text/javascript">
@@ -24,7 +26,7 @@
 		headerTemplate : '{content} {icon}',
 		widgets: [ 'uitheme', 'zebra', 'pager', 'scroller' ],
 		widgetOptions : {
-			scroller_height : 300,
+			scroller_height : 190,
 			// scroll tbody to top after sorting
 			scroller_upAfterSort: true,
 			// pop table header into view while scrolling up the page
@@ -514,39 +516,39 @@ function PDF () {
 
            <div class="row" style="padding-left: 20px;padding-right: 20px;">
                <div class="col-md-4" style="padding-left: 0px; padding-right: 0px; ">
-                    <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 205px; padding-top: 3px;">
-                          <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px; ">
+                    <div class="col-md-12-box" style="margin-right: 0px;margin-left: 0px; padding-left: 4px; padding-right: 4px;height: 205px; padding-top: 3px; ">
+                          <div class="panel panel-default panel-table" style="padding-right: 3px; padding-left: 3px; padding-bottom: 3px; padding-top: 0px; ">
                             <div class="panel-body" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                                <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 2px; padding-top: 2px ">
+                                <div class="tr" style="padding-right: 4px; padding-left: 4px; padding-bottom: 0px; padding-top: 0px ">
                                     <div class="td" ><h5>MOSTRAR GR&Aacute;FICA POR: </h5></div>
                                 </div>
                                 <div class="tr"  style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                                    <div class="row">
-                                        <div class="col-xs-10">
+                                    <div class="row" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                        <div class="col-xs-3">
                                            <p>Dependencia</p>
                                        </div>
-                                       <div class="col-xs-2">
+                                       <div class="col-xs-1">
                                            <article id="ver_grafica_dependencia">
                                                {% csrf_token %}
                                                 <input type="radio" name="graficaTipo" id="dependencia" value="Dependencia" checked/>
                                             </article>
                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-10">
+
+                                        <div class="col-xs-4">
                                            <p>SubDependencia</p>
                                        </div>
-                                       <div class="col-xs-2">
+                                       <div class="col-xs-1">
                                            <article id="ver_grafica_subdependencia">
                                                {% csrf_token %}
                                                 <input type="radio" name="graficaTipo" id="subdependencia" value="SubDependencia"/>
                                             </article>
                                        </div>
-                                    </div>
-                                    <div class="row"><div class="col-xs-10">
+                                        </div>
+                                    <div class="row" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
+                                        <div class="col-xs-3">
                                        <p>Estado</p>
                                        </div>
-                                       <div class="col-xs-2">
+                                       <div class="col-xs-1">
                                            <article id="ver_grafica_estado">
                                                {% csrf_token %}
                                                 <input type="radio" name="graficaTipo" id="estado" value="Estado"/>
@@ -564,7 +566,7 @@ function PDF () {
                                         <div class="td" ><h5>CONFIGURAR GR&Aacute;FICA </h5></div>
                                     </div>
                                     <div class="tr" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
-                                        <div class="row">
+                                        <div class="row" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                             <div class="col-xs-6">
                                                 <p>Datos a graficar</p>
                                             </div>
@@ -578,7 +580,7 @@ function PDF () {
                                                </article>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" style="padding-right: 3px; padding-left: 3px; padding-bottom: 0px; padding-top: 0px ">
                                             <div class="col-xs-6">
                                                 <p>Tipo de gr&aacute;fica</p>
                                             </div>
@@ -848,10 +850,7 @@ function PDF () {
                         </div>
                         <div class="row">
                              <div class="col-md-4" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
-                                  <article id="art_guardar">
-                                     {% csrf_token %}
-                                     <div class="guardarBTN" id="guardar" style="height: 30px"></div>
-                                  </article>
+
                              </div>
                              <div class="col-md-4" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                   <article id="art_limpiar">
@@ -1114,18 +1113,193 @@ function PDF () {
         <script src="../../static/assets/bootstrap/js/bootstrap-datepicker.js"></script>
            <script type="text/javascript">
             var $dp = jQuery.noConflict();
-            $dp('#fechaInicial1').datepicker({
-                autoclose:true
-            });
-               $dp('#fechaInicial2').datepicker({
-                autoclose:true
-            });
-               $dp('#fechaFinal1').datepicker({
-                autoclose:true
-            });
-               $dp('#fechaFinal2').datepicker({
-                autoclose:true
-            });
+
+                $dp('#fechaInicial1').datepicker({
+                           autoclose: true  ,
+                           setEndDate: $dp('#fechaInicial2').val()
+                           }).on('changeDate', function (selected) {
+                                 var startDate = new Date(selected.date.valueOf());
+                                 var endDate = $dp('#fechaInicial2').val();
+                                 var NDDate =   new Date($dp('#fechaInicial2').datepicker("getDate"));
+                                 if (endDate != "") {
+                                     if (startDate > NDDate) {
+                                         //alert("La fecha de Inicio debe ser anterior a la fecha de Término");
+                                         $j.magnificPopup.open({
+                                               items: {
+                                                   src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                         + '<div class="textoALERTA">'
+                                                         +  'La fecha de inicio debe ser anterior a la fecha final en este rango.'
+                                                         + '</div>'
+                                                         + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                         + '</div>'
+                                               },
+                                               type: 'inline',
+                                               preloader: true,
+                                               modal: true
+                                         });
+
+                                         $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                               e.preventDefault();
+                                               $j.magnificPopup.close();
+                                         });
+
+                                         $dp('#fechaInicial1').datepicker('setEndDate', endDate);
+                                         $dp('#fechaInicial1').SetDate(endDate);
+                                     }
+                                     else
+                                     {
+                                         $dp('#fechaInicial2').datepicker('setStartDate', startDate);
+                                     }
+                                 }
+                                 else
+                                 {
+                                     $dp('#fechaInicial2').datepicker('setStartDate', startDate);
+                                 }
+                           }).on('clearDate', function (selected) {
+                                $dp('#fechaInicial2').datepicker('setStartDate', null);
+                });
+
+
+$dp('#fechaInicial2').datepicker({
+                           autoclose: true          ,
+                           setStartDate: $dp('#fechaInicial1').val()
+                           }).on('changeDate', function (selected) {
+                               var endDate = new Date(selected.date.valueOf());
+                               var startDate = $dp('#fechaInicial1').val();
+                               var STDate =   new Date($dp('#fechaInicial1').datepicker("getDate"));
+
+                               if (startDate != "") {
+                                   if (STDate > endDate) {
+                                       //alert("La fecha de Término debe ser posterior a la fecha de Inicio");
+
+                                       $j.magnificPopup.open({
+                                               items: {
+                                                   src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                         + '<div class="textoALERTA">'
+                                                         +  'La fecha de final  debe ser posterior a la fecha de inicio en este rango.'
+                                                         + '</div>'
+                                                         + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                         + '</div>'
+                                               },
+                                               type: 'inline',
+                                               preloader: true,
+                                               modal: true
+                                           });
+
+                                           $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                               e.preventDefault();
+                                               $j.magnificPopup.close();
+                                           });
+
+                                       $dp('#fechaInicial2').datepicker('setStartDate', startDate);
+                                       $dp('#fechaInicial2').setDate(startDate);
+                                   }
+                                   else
+                                   {
+                                       $dp('#fechaInicial1').datepicker('setEndDate', endDate);
+                                   }
+                               }
+                               else
+                               {
+                                   $dp('#fechaInicial1').datepicker('setEndDate', endDate);
+                               }
+                           }).on('clearDate', function (selected) {
+                           $dp('#fechaInicial1').datepicker('setEndDate', null);
+                });
+
+
+$dp('#fechaFinal1').datepicker({
+                           autoclose: true  ,
+                           setEndDate: $dp('#fechaFinal2').val()
+                           }).on('changeDate', function (selected) {
+                                 var startDate = new Date(selected.date.valueOf());
+                                 var endDate = $dp('#fechaFinal2').val();
+                                 var NDDate =   new Date($dp('#fechaFinal2').datepicker("getDate"));
+                                 if (endDate != "") {
+                                     if (startDate > NDDate) {
+                                         //alert("La fecha de Inicio debe ser anterior a la fecha de Término");
+                                         $j.magnificPopup.open({
+                                               items: {
+                                                   src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                         + '<div class="textoALERTA">'
+                                                         +  'La fecha de inicio debe ser anterior a la fecha final en este rango.'
+                                                         + '</div>'
+                                                         + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                         + '</div>'
+                                               },
+                                               type: 'inline',
+                                               preloader: true,
+                                               modal: true
+                                         });
+
+                                         $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                               e.preventDefault();
+                                               $j.magnificPopup.close();
+                                         });
+
+                                         $dp('#fechaFinal1').datepicker('setEndDate', endDate);
+                                         $dp('#fechaFinal1').SetDate(endDate);
+                                     }
+                                     else
+                                     {
+                                         $dp('#fechaFinal2').datepicker('setStartDate', startDate);
+                                     }
+                                 }
+                                 else
+                                 {
+                                     $dp('#fechaFinal2').datepicker('setStartDate', startDate);
+                                 }
+                           }).on('clearDate', function (selected) {
+                                $dp('#fechaFinal2').datepicker('setStartDate', null);
+                });
+
+
+$dp('#fechaFinal2').datepicker({
+                           autoclose: true          ,
+                           setStartDate: $dp('#fechaFinal1').val()
+                           }).on('changeDate', function (selected) {
+                               var endDate = new Date(selected.date.valueOf());
+                               var startDate = $dp('#fechaFinal1').val();
+                               var STDate =   new Date($dp('#fechaFinal1').datepicker("getDate"));
+
+                               if (startDate != "") {
+                                   if (STDate > endDate) {
+                                       //alert("La fecha de Término debe ser posterior a la fecha de Inicio");
+
+                                       $j.magnificPopup.open({
+                                               items: {
+                                                   src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                         + '<div class="textoALERTA">'
+                                                         +  'La fecha de final  debe ser posterior a la fecha de inicio en este rango.'
+                                                         + '</div>'
+                                                         + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                         + '</div>'
+                                               },
+                                               type: 'inline',
+                                               preloader: true,
+                                               modal: true
+                                           });
+
+                                           $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                               e.preventDefault();
+                                               $j.magnificPopup.close();
+                                           });
+
+                                       $dp('#fechaFinal2').datepicker('setStartDate', startDate);
+                                       $dp('#fechaFinal2').setDate(startDate);
+                                   }
+                                   else
+                                   {
+                                       $dp('#fechaFinal1').datepicker('setEndDate', endDate);
+                                   }
+                               }
+                               else
+                               {
+                                   $dp('#fechaFinal1').datepicker('setEndDate', endDate);
+                               }
+                           }).on('clearDate', function (selected) {
+                           $dp('#fechaFinal1').datepicker('setEndDate', null);
+                });
             </script>
 
         <script src="../../static/assets/js/jquery.numeric.js"></script>
