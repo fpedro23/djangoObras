@@ -369,7 +369,7 @@ class Obra(models.Model):
     senalizacion = models.BooleanField(default=False, verbose_name='Señalización')
     susceptibleInauguracion = models.BooleanField(default=False)
     porcentajeAvance = models.DecimalField(max_digits=5, decimal_places=2)
-    observaciones = models.CharField(max_length=200)
+    observaciones = models.CharField(max_length=200, null=True, blank=True)
     fotoAntes = models.FileField(blank=True, null=True, upload_to=content_file_antes)
     fotoDurante = models.FileField(blank=True, null=True, upload_to=content_file_durante)
     fotoDespues = models.FileField(blank=True, null=True, upload_to=content_file_despues)
@@ -533,8 +533,7 @@ class Ubicacion(models.Model):
 class DetalleInversion(models.Model):
     obra = models.ForeignKey(Obra)
     tipoInversion = models.ForeignKey(TipoInversion,
-                                      null=True,
-                                      blank=True
+
                                       )
     monto = models.FloatField()
 
