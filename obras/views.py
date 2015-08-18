@@ -1045,9 +1045,9 @@ def balance_general_ppt(request):
     prs.slides[0].shapes[22].text= '$ {0:,.2f}'.format(total_invertido)
 
 
-    prs.save('obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
 
-    the_file = 'obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
