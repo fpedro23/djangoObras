@@ -7,20 +7,18 @@ from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
 from django.db.models import Count
 
-from obras.BuscarObras import BuscarObras,ListarObras
+from obras.BuscarObras import BuscarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador, \
     InstanciaEjecutora, get_subdependencias_as_list_flat
-from obras.views import get_array_or_none,get_string_or_none
-import xlsxwriter
+from obras.views import get_array_or_none
+
 try:
     import cStringIO as StringIO
 except ImportError:
     import StringIO
 from xlsxwriter.workbook import Workbook
 from django.core.servers.basehttp import FileWrapper
-import mimetypes
 from django.http import StreamingHttpResponse
-import os,io
 #from django_downloadview import VirtualDownloadView
 #from django_downloadview import VirtualFile
 
@@ -398,6 +396,14 @@ class ListarEndpoint(ProtectedResourceView):
         susceptible_inauguracion=request.GET.get("susceptible", None),
         subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
 
+        p_tipoobra=","
+        p_estados=","
+        p_clasificaciones=","
+        p_inversiones=","
+        p_inauguradores=","
+        p_impactos=","
+        p_instancia_ejecutora=","
+        p_subclasificacion=","
 
         arreglo_dependencias = []
         p_dependencias=""
@@ -424,7 +430,50 @@ class ListarEndpoint(ProtectedResourceView):
         if iddependencias[0] is not None:
             for dependencia in iddependencias[0]:
                 p_dependencias += str(dependencia) + ","
-        #p_dependencias="dependencia_id in (" + p_dependencias[:-1] + ")"
+
+        if idtipoobra[0] is not None:
+            p_tipoobra=""
+            for tipoobra in idtipoobra[0]:
+                p_tipoobra += str(tipoobra) + ","
+
+        if estados[0] is not None:
+            p_estados=""
+            for estado in estados[0]:
+                p_estados += str(estado) + ","
+
+        if clasificaciones[0] is not None:
+            p_clasificaciones=""
+            for clasificacion in clasificaciones[0]:
+                p_clasificaciones += str(clasificacion) + ","
+
+        if inversiones[0] is not None:
+            p_inversiones=""
+            for inversion in inversiones[0]:
+                p_inversiones += str(inversion) + ","
+
+        if inauguradores[0] is not None:
+            p_inauguradores=""
+            for inaugurador in inauguradores[0]:
+                p_inauguradores += str(inaugurador) + ","
+
+        if impactos[0] is not None:
+            p_impactos=""
+            for impacto in impactos[0]:
+                p_impactos += str(impacto) + ","
+
+
+        #inaugurada=request.GET.get('inaugurada', None),
+        #inversion_minima=request.GET.get('inversionMinima', None),
+        #inversion_maxima=request.GET.get('inversionMaxima', None),
+        #fecha_inicio_primera=request.GET.get('fechaInicio', None),
+        #fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+        #fecha_fin_primera=request.GET.get('fechaFin', None),
+        #fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+        #denominacion=request.GET.get('denominacion', None),
+
+
+
+
         results = Obra.searchList(p_dependencias[:-1])
 
         print results[0]
@@ -441,28 +490,44 @@ class ListarEndpoint(ProtectedResourceView):
            sheet.write(i, 0, obra[0])
            sheet.write(i, 1, obra[1])
            sheet.write(i, 2, obra[2])
-           sheet.write(i, 3, obra[4])
-           sheet.write(i, 4, obra[5])
-           sheet.write(i, 5, obra[6])
-           sheet.write(i, 6, obra[7])
-           sheet.write(i, 7, obra[8])
-           sheet.write(i, 8, obra[9])
-           sheet.write(i, 9, obra[10])
-           sheet.write(i, 10, obra[11])
-           sheet.write(i, 11, obra[12])
-           sheet.write(i, 12, obra[13])
-           sheet.write(i, 13, obra[14])
-           sheet.write(i, 14, obra[15])
-           sheet.write(i, 15, obra[16])
-           sheet.write(i, 16, obra[17])
-           sheet.write(i, 17, obra[18])
-           sheet.write(i, 18, obra[19])
-           sheet.write(i, 19, obra[20])
-           sheet.write(i, 20, obra[21])
-           sheet.write(i, 21, obra[22])
-           sheet.write(i, 23, obra[23])
-           sheet.write(i, 24, obra[24])
-           sheet.write(i, 25, obra[25])
+           sheet.write(i, 3, obra[3])
+           sheet.write(i, 4, obra[4])
+           sheet.write(i, 5, obra[5])
+           sheet.write(i, 6, obra[6])
+           sheet.write(i, 7, obra[7])
+           sheet.write(i, 8, obra[8])
+           sheet.write(i, 9, obra[9])
+
+           sheet.write(i, 10, "NO") #F
+           sheet.write(i, 11, "NO") #E
+           sheet.write(i, 12, "NO") #M
+           sheet.write(i, 13, "NO") #S
+           sheet.write(i, 14, "NO") #P
+           sheet.write(i, 15, "NO") #O
+           for inv in (obra[10].split(',')):
+               if inv[0] == "F": sheet.write(i, 10, "SI")
+               if inv[0] == "E": sheet.write(i, 11, "SI")
+               if inv[0] == "M": sheet.write(i, 12, "SI")
+               if inv[0] == "S": sheet.write(i, 13, "SI")
+               if inv[0] == "P": sheet.write(i, 14, "SI")
+               if inv[0] == "O": sheet.write(i, 15, "SI")
+
+
+           sheet.write(i, 16, obra[11])
+           sheet.write(i, 17, obra[12])
+           sheet.write(i, 18, obra[13])
+           sheet.write(i, 19, obra[14])
+           sheet.write(i, 20, obra[15])
+           sheet.write(i, 21, obra[16])
+           sheet.write(i, 22, obra[17])
+           sheet.write(i, 23, obra[18])
+           sheet.write(i, 24, obra[19])
+           sheet.write(i, 25, obra[20])
+           sheet.write(i, 26, obra[21])
+           sheet.write(i, 27, obra[22])
+           sheet.write(i, 28, obra[23])
+           sheet.write(i, 29, obra[24])
+           sheet.write(i, 30, obra[25])
 
            i+=1
         book.close()
