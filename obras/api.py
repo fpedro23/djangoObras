@@ -12,6 +12,7 @@ from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, 
     InstanciaEjecutora, get_subdependencias_as_list_flat
 from obras.views import get_array_or_none
 
+
 try:
     import cStringIO as StringIO
 except ImportError:
@@ -462,19 +463,35 @@ class ListarEndpoint(ProtectedResourceView):
                 p_impactos += str(impacto) + ","
 
 
-        #inaugurada=request.GET.get('inaugurada', None),
-        #inversion_minima=request.GET.get('inversionMinima', None),
-        #inversion_maxima=request.GET.get('inversionMaxima', None),
-        #fecha_inicio_primera=request.GET.get('fechaInicio', None),
-        #fecha_inicio_segunda=request.GET.get('fechaInicio', None),
-        #fecha_fin_primera=request.GET.get('fechaFin', None),
-        #fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
-        #denominacion=request.GET.get('denominacion', None),
+        if instancia_ejecutora[0] is not None:
+            p_instancia_ejecutora=""
+            for instancia in instancia_ejecutora[0]:
+                p_instancia_ejecutora += str(instancia) + ","
+
+        p_inaugurada=""
+        p_inversion_minima=0
+        p_inversion_maxima=999999999.99
+        p_fecha_inicio_primera=""
+        p_fecha_inicio_segunda=""
+        p_fecha_fin_primera=""
+        p_fecha_fin_segunda=""
+        p_denominacion=""
+
+        if inaugurada[0] is None: p_inaugurada=""
+        if inversion_minima[0] is None: p_inversion_minima=0
+        if inversion_maxima[0] is None: p_inversion_maxima=999999999.99
+        if fecha_inicio_primera[0] is None: p_fecha_inicio_primera="1900-01-01"
+        if fecha_inicio_segunda[0] is None: p_fecha_inicio_segunda = "2100-12-31"
+        if fecha_fin_primera[0] is None: p_fecha_fin_primera="1900-01-01"
+        if fecha_fin_segunda[0] is None: p_fecha_fin_segunda = "2100-12-31"
+        if denominacion[0] is None: p_denominacion = ""
 
 
 
 
-        results = Obra.searchList(p_dependencias[:-1])
+
+        results = Obra.searchList(p_tipoobra[:-1],p_dependencias[:-1],p_instancia_ejecutora[:-1],p_estados[:-1],p_inversion_minima,p_inversion_maxima,p_fecha_inicio_primera,p_fecha_inicio_segunda,p_fecha_fin_primera,p_fecha_fin_segunda,p_impactos[:-1],p_inauguradores[:-1],p_inversiones[:-1],p_clasificaciones[:-1],
+"","",p_denominacion)
 
         print results[0]
         #json_map = {}
@@ -484,7 +501,47 @@ class ListarEndpoint(ProtectedResourceView):
         output = StringIO.StringIO()
         book = Workbook(output)
         sheet = book.add_worksheet('test')
-        i=0
+
+        # Add a bold format to use to highlight cells.
+        bold = book.add_format({'bold': True})
+        #encabezados
+        sheet.write(0, 0,"Tipo de Obra",bold)
+        sheet.write(0, 1,"id Unico",bold)
+        sheet.write(0, 2,"Dependencia/Organismo",bold)
+        sheet.write(0, 3,"Estado",bold)
+        sheet.write(0, 4,"Denominacion",bold)
+        sheet.write(0, 5,"Descripcion",bold)
+        sheet.write(0, 6,"Municipio",bold)
+        sheet.write(0, 7,"Fecha Inicio",bold)
+        sheet.write(0, 8,"Fecha Termino",bold)
+        sheet.write(0, 9,"Avance Fisico %",bold)
+        sheet.write(0, 10,"F",bold)
+        sheet.write(0, 11,"E",bold)
+        sheet.write(0, 12,"M",bold)
+        sheet.write(0, 13,"S",bold)
+        sheet.write(0, 14,"P",bold)
+        sheet.write(0, 15,"O",bold)
+        sheet.write(0, 16,"Inversion Total",bold)
+        sheet.write(0, 17,"Tipo Moneda MDP/MDD",bold)
+        sheet.write(0, 18,"Poblacion Objetivo",bold)
+        sheet.write(0, 19,"Beneficiarios",bold)
+        sheet.write(0, 20,"Impacto",bold)
+        sheet.write(0, 21,"CG",bold)
+        sheet.write(0, 22,"PNG",bold)
+        sheet.write(0, 23,"PM",bold)
+        sheet.write(0, 24,"PNI",bold)
+        sheet.write(0, 25,"CNCH",bold)
+        sheet.write(0, 26,"OI",bold)
+        sheet.write(0, 27,"Senalizacion",bold)
+        sheet.write(0, 28,"Observaciones",bold)
+        sheet.write(0, 29,"Inaugurado por:",bold)
+        sheet.write(0, 30,"Susceptible de inaugurar",bold)
+        sheet.write(0, 31,"Foto Antes",bold)
+        sheet.write(0, 32,"Foto Durante",bold)
+        sheet.write(0, 33,"Foto Despues",bold)
+
+
+        i=1
         for obra in results:
            id_unico=obra[0]
            sheet.write(i, 0, obra[0])
@@ -526,17 +583,22 @@ class ListarEndpoint(ProtectedResourceView):
            sheet.write(i, 25, "NO") #CNCH
            sheet.write(i, 26, "NO") #OI
            for cla in (obra[16].split(',')):
-               if cla[0] == "CG":
-                   for subscla in (obra[17].split(',')):
-                        print subscla[0][:2]
-                        if subscla[0][:2] == "CG": sheet.write(i, 21, subscla[0])
-               if cla[0] == "PNG": sheet.write(i, 22, "SI")
-               if cla[0] == "PM": sheet.write(i, 23, "SI")
-               if cla[0] == "PNI":
-                   for subscla in (obra[17].split(',')):
-                        if subscla[0][:3] == "PNI": sheet.write(i, 24, subscla[0])
-               if cla[0] == "CNCH": sheet.write(i, 25, "SI")
-               if cla[0] == "OI": sheet.write(i, 26, "SI")
+               sCla = ''.join(cla)
+               if sCla == 'CG':
+                   if obra[17] is not None:
+                       for subscla in (obra[17].split(',')):
+                            sSubCla = ''.join(subscla)
+                            if sSubCla[:2] == 'CG': sheet.write(i, 21, sSubCla)
+               if sCla == "PNG": sheet.write(i, 22, "SI")
+               if sCla == "PM": sheet.write(i, 23, "SI")
+               if sCla == "PNI":
+                   print obra[17]
+                   if obra[17] is not None:
+                       for subscla in (obra[17].split(',')):
+                            sSubCla = ''.join(subscla)
+                            if sSubCla[:3] == "PNI": sheet.write(i, 24, sSubCla)
+               if sCla == "CNCH": sheet.write(i, 25, "SI")
+               if sCla == "OI": sheet.write(i, 26, "SI")
 
            sheet.write(i, 27, obra[18])
            sheet.write(i, 28, obra[19])
@@ -545,8 +607,6 @@ class ListarEndpoint(ProtectedResourceView):
            sheet.write(i, 31, obra[22])
            sheet.write(i, 32, obra[23])
            sheet.write(i, 33, obra[24])
-           sheet.write(i, 34, obra[25])
-           sheet.write(i, 35, obra[17])
 
 
            i+=1

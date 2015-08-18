@@ -231,7 +231,7 @@ function listarObras() {
     if(denominacion!=""){URL += "&denominacion=" + denominacion.toUpperCase();}
     if($j('#inauguradas').is(':checked')){URL += "&inaugurada =" +  $j('#inauguradas').is(':checked');}
 
-    alert(URL);
+
     location.href = URL
 }
 

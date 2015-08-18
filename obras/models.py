@@ -1,11 +1,8 @@
 # coding=utf-8
-import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 from smart_selects.db_fields import ChainedForeignKey
-from django.db.models.signals import pre_delete
-from django.dispatch.dispatcher import receiver
 from django.db import connection
 
 # TODO agregar nombres verbose a los modelos
@@ -493,12 +490,14 @@ class Obra(models.Model):
         return map
     # static method to perform a parameter
     @staticmethod
-    def searchList(identificador):
+    def searchList(p_tipoobra,p_dependencias,p_instancia_ejecutora,p_estados,inversion_minima,inversion_maxima,fecha_inicio_primera,fecha_inicio_segunda,fecha_fin_primera,fecha_fin_segunda,p_impactos,p_inauguradores,p_inversiones,p_clasificaciones,susceptible,inaugurada,denominacion):
+
         # create a cursor
         cur = connection.cursor()
         # execute the stored procedure passing in
         # A SOME parameters
-        cur.callproc('sp_listado', ('',identificador,'','',0,0,'2015-08-01','2015-08-01','2015-08-01','2015-08-01','','','','','','','','',0,))
+        # '',p_dependencias,'','',0,0,'2010-08-01','2011-08-01','2020-08-01','2021-08-01','','','','','','','',
+        cur.callproc('sp_listado', (p_tipoobra,p_dependencias,p_instancia_ejecutora,p_estados,inversion_minima,inversion_maxima,fecha_inicio_primera,fecha_inicio_segunda,fecha_fin_primera,fecha_fin_segunda,p_impactos,p_inauguradores,p_inversiones,p_clasificaciones,susceptible,inaugurada,denominacion,))
         # grab the results
         results = cur.fetchall()
         cur.close()
