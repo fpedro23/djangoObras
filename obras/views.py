@@ -26,6 +26,8 @@ import mimetypes
 from django.http import StreamingHttpResponse
 from pptx.util import Inches
 
+
+
 def get_user_for_token(token):
     if token:
         return AccessToken.objects.get(token=token).user
@@ -615,6 +617,11 @@ def get_array_or_none(the_string):
     else:
         return map(int, the_string.split(','))
 
+def get_string_or_none(the_string):
+    if the_string is None:
+        return None
+    else:
+        return the_string.split(',')
 
 def buscar_obras_web(request):
     #TODO cambiar los parametros 'None' por get del request
@@ -951,7 +958,7 @@ def balance_general_ppt(request):
 
 
 
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRINCIPAL_BALANCE_GENERAL.pptx')
+    prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
 
     # informacion para el 2013
     start_date = datetime.date(2012, 12, 01)
@@ -1038,9 +1045,9 @@ def balance_general_ppt(request):
     prs.slides[0].shapes[22].text= '$ {0:,.2f}'.format(total_invertido)
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
+    prs.save('obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
 
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
+    the_file = 'obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),

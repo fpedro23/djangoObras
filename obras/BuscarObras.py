@@ -82,6 +82,10 @@ class BuscarObras:
             if self.inversion_minima is not None and self.inversion_maxima is not None:
                 query = query & Q(inversionTotal__range=(self.inversion_minima, self.inversion_maxima))
 
+            if self.dependencias is not None:
+                query = query & Q(dependencia__id__in=self.dependencias)
+                query = query | Q(subdependencia__id__in=self.dependencias)
+
             if self.estados is not None:
                 query = query & Q(estado__id__in=self.estados)
 

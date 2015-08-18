@@ -234,6 +234,21 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
     cursor: pointer;
 }
 
+
+.listarBTN{
+	width: 90px;
+	height: 30px;
+	background-image: url(../img/bigBackground.fw.png);
+	background-position: -1046px -1861px;
+	position: relative;
+    display: inline-block;
+}
+
+.listarBTN:hover {
+    background-position: -1046px -1892px;
+    cursor: pointer;
+}
+
 .salirBTN{
 	width: 60px;
 	height: 30px;
