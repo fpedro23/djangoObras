@@ -958,7 +958,7 @@ def balance_general_ppt(request):
 
 
 
-    prs = Presentation('obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
 
     # informacion para el 2013
     start_date = datetime.date(2012, 12, 01)
