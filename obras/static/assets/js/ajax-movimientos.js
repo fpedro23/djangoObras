@@ -176,7 +176,6 @@ function setImage(){
                   $j("#id_inaugurador").removeAttr("disabled");
              }
 
-
          });
 
 
