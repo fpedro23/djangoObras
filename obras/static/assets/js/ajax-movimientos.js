@@ -282,6 +282,79 @@ function setImage(){
                     $j("#id_tipoObra").val('---------');
                 }
 
+
+                var VSDate = new Date($dp('#id_fechaInicio').datepicker("getDate"));
+                var VEDate = new Date($dp('#id_fechaTermino').datepicker("getDate"));
+                var VToday = new Date();
+                if(statusO == '1' && VSDate != ''){
+                    if (VSDate < VToday && VEDate > VToday){
+                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser en PROCESO  y el Avance mayor a 0'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                    }
+                }
+                if(statusO == '2' && VSDate != ''){
+                    if (VSDate > VToday){
+                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser PROYECTADA  y el Avance igual a 0'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                    }
+                }
+                if(statusO == '3' && VEDate != ''){
+                    if (VEDate > VToday){
+                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser en PROCESO  y el Avance mayor a 100'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                    }
+                }
          });
 
          $j('#id_porcentajeAvance').on('change',function (){
