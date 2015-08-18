@@ -282,12 +282,23 @@ function setImage(){
                     $j("#id_tipoObra").val('---------');
                 }
 
-
-                var VSDate = new Date($dp('#id_fechaInicio').datepicker("getDate"));
-                var VEDate = new Date($dp('#id_fechaTermino').datepicker("getDate"));
+                if ($j('#id_fechaInicio').val() != '') {
+                     var VSDate = new Date($dp('#id_fechaInicio').datepicker("getDate"));
+                }
+                else {
+                    var VSDate = "";
+                }
+                if ($j('#id_fechaTermino').val() != '') {
+                    var VEDate = new Date($dp('#id_fechaTermino').datepicker("getDate"));
+                }
+                else{
+                    var VEDate ="";
+                }
                 var VToday = new Date();
-                if(statusO == '1' && VSDate != ''){
-                    if (VSDate < VToday && VEDate > VToday){
+
+                if(statusO == '1'){
+
+                    if (VSDate !='' && VSDate < VToday){
                         $j('select#id_tipoObra').val('---------');
                                         $j.magnificPopup.open({
                                                 items: {
@@ -308,15 +319,34 @@ function setImage(){
                                                 $j.magnificPopup.close();
                                             });
                     }
-                }
-                if(statusO == '2' && VSDate != ''){
-                    if (VSDate > VToday){
+                    if (VSDate !='' && VEDate !='' && VSDate < VToday && VEDate > VToday){
                         $j('select#id_tipoObra').val('---------');
                                         $j.magnificPopup.open({
                                                 items: {
                                                     src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
                                                           + '<div class="textoALERTA">'
-                                                          +  'El Status de la obra debe ser PROYECTADA  y el Avance igual a 0'
+                                                          +  'El Status de la obra debe ser en PROCESO  y el Avance mayor a 0'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                    }
+                    if (VSDate !="" && VEDate !="" && VSDate < VToday && VEDate < VToday) {
+                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser en CONCLUIDA  y el Avance igual a 100'
                                                           + '</div>'
                                                           + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
                                                           + '</div>'
@@ -332,14 +362,60 @@ function setImage(){
                                             });
                     }
                 }
-                if(statusO == '3' && VEDate != ''){
-                    if (VEDate > VToday){
+                if(statusO == '2') {
+                    if (VSDate !="" && VSDate > VToday) {
+                        $j('select#id_tipoObra').val('---------');
+                        $j.magnificPopup.open({
+                            items: {
+                                src: '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                + '<div class="textoALERTA">'
+                                + 'El Status de la obra debe ser PROYECTADA  y el Avance igual a 0'
+                                + '</div>'
+                                + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                + '</div>'
+                            },
+                            type: 'inline',
+                            preloader: true,
+                            modal: true
+                        });
+
+                        $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                            e.preventDefault();
+                            $j.magnificPopup.close();
+                        });
+                    }
+
+
+                    if (VEDate !="" && VEDate < VToday){
                         $j('select#id_tipoObra').val('---------');
                                         $j.magnificPopup.open({
                                                 items: {
                                                     src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
                                                           + '<div class="textoALERTA">'
-                                                          +  'El Status de la obra debe ser en PROCESO  y el Avance mayor a 100'
+                                                          +  'El Status de la obra debe ser CONCLUIDA  y el Avance igual a 100'
+                                                          + '</div>'
+                                                          + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                                          + '</div>'
+                                                },
+                                                type: 'inline',
+                                                preloader: true,
+                                                modal: true
+                                            });
+
+                                            $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                                                e.preventDefault();
+                                                $j.magnificPopup.close();
+                                            });
+                    }
+                }
+                if(statusO == '3'){
+                    if (VEDate !="" && VEDate > VToday){
+                        $j('select#id_tipoObra').val('---------');
+                                        $j.magnificPopup.open({
+                                                items: {
+                                                    src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                                          + '<div class="textoALERTA">'
+                                                          +  'El Status de la obra debe ser en PROCESO  y el Avance mayor a 0'
                                                           + '</div>'
                                                           + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
                                                           + '</div>'
