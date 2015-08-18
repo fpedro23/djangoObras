@@ -401,7 +401,16 @@ a#add_id_tipoClasificacion.add-another {display:none;}
 
 .add-another {display:none;}
 
-input[type=text], input[type=number], input[type=email], input[type=password] {
+input[type=text], input[type=number] {
+    font-family: "soberana_sanslight";
+    font-size: 11px;
+    line-height: initial;
+    height: 17px;
+    width: 90%;
+    text-transform: uppercase;
+}
+
+input[type=email], input[type=password] {
     font-family: "soberana_sanslight";
     font-size: 11px;
     line-height: initial;
