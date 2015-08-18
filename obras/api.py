@@ -518,16 +518,36 @@ class ListarEndpoint(ProtectedResourceView):
            sheet.write(i, 18, obra[13])
            sheet.write(i, 19, obra[14])
            sheet.write(i, 20, obra[15])
-           sheet.write(i, 21, obra[16])
-           sheet.write(i, 22, obra[17])
-           sheet.write(i, 23, obra[18])
-           sheet.write(i, 24, obra[19])
-           sheet.write(i, 25, obra[20])
-           sheet.write(i, 26, obra[21])
-           sheet.write(i, 27, obra[22])
-           sheet.write(i, 28, obra[23])
-           sheet.write(i, 29, obra[24])
-           sheet.write(i, 30, obra[25])
+
+           sheet.write(i, 21, "NO") #CG
+           sheet.write(i, 22, "NO") #PNG
+           sheet.write(i, 23, "NO") #PM
+           sheet.write(i, 24, "NO") #PNI
+           sheet.write(i, 25, "NO") #CNCH
+           sheet.write(i, 26, "NO") #OI
+           for cla in (obra[16].split(',')):
+               if cla[0] == "CG":
+                   for subscla in (obra[17].split(',')):
+                        print subscla[0][:2]
+                        if subscla[0][:2] == "CG": sheet.write(i, 21, subscla[0])
+               if cla[0] == "PNG": sheet.write(i, 22, "SI")
+               if cla[0] == "PM": sheet.write(i, 23, "SI")
+               if cla[0] == "PNI":
+                   for subscla in (obra[17].split(',')):
+                        if subscla[0][:3] == "PNI": sheet.write(i, 24, subscla[0])
+               if cla[0] == "CNCH": sheet.write(i, 25, "SI")
+               if cla[0] == "OI": sheet.write(i, 26, "SI")
+
+           sheet.write(i, 27, obra[18])
+           sheet.write(i, 28, obra[19])
+           sheet.write(i, 29, obra[20])
+           sheet.write(i, 30, obra[21])
+           sheet.write(i, 31, obra[22])
+           sheet.write(i, 32, obra[23])
+           sheet.write(i, 33, obra[24])
+           sheet.write(i, 34, obra[25])
+           sheet.write(i, 35, obra[17])
+
 
            i+=1
         book.close()
