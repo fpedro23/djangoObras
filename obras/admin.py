@@ -150,12 +150,12 @@ class DependenciaAdmin(admin.ModelAdmin):
 
 class ClasificacionInLine(admin.StackedInline):
     model = TipoClasificacion
-    extra = 3
+    extra = 4
 
 
 class DocumentoFuenteInline(admin.TabularInline):
     model = DocumentoFuente
-    extra = 1
+    extra = 2
     form = DocumentoFuenteForm
 
 
@@ -334,7 +334,7 @@ class DetalleInversionInline(admin.TabularInline):
 class DetalleClasificacionInline(admin.TabularInline):
     form = DetalleClasificacionAddForm
     model = DetalleClasificacion
-    extra = 1
+    extra = 5
     can_delete = False
 
 
