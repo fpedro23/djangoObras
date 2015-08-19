@@ -155,12 +155,12 @@ function setImage(){
 
     $j(document).ready(function() {
          $j("input[type=text]").keyup(function () {
-             $j(this).val($(this).val().toUpperCase());
+             $j(this).val($j(this).val().toUpperCase());
 
          });
 
         $j("textarea").keyup(function () {
-             $j(this).val($(this).val().toUpperCase());
+             $j(this).val($j(this).val().toUpperCase());
 
          });
 
