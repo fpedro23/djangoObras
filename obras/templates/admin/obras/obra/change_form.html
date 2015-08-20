@@ -11,17 +11,7 @@
     <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.file-input.js' %}"></script>
      <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
     {{ media }}
-    <style>
-    input[type=text]{
-    font-family: "soberana_sanslight";
-    font-size: 11px;
-    line-height: initial;
-    height: 17px;
-    width: 90%;
-    text-transform: uppercase;
 
-}
-    </style>
     <script type="text/javascript">
 (
 
@@ -93,18 +83,23 @@ x++;
             $tt('#imgerr23').tooltip({html:true});$tt('#imgerr24').tooltip({html:true});$tt('#imgerr25').tooltip({html:true});$tt('#imgerr26').tooltip({html:true});
             $tt('#imgerr27').tooltip({html:true});$tt('#imgerr28').tooltip({html:true});$tt('#imgerr29').tooltip({html:true});$tt('#imgerr30').tooltip({html:true});
 
-            $tt('#id_detalleinversion_set-7-monto').on('change',calculaTotal);
-            $tt('#id_detalleinversion_set-6-monto').on('change',calculaTotal);
-            $tt('#id_detalleinversion_set-5-monto').on('change',calculaTotal);
-            $tt('#id_detalleinversion_set-4-monto').on('change',calculaTotal);
-            $tt('#id_detalleinversion_set-3-monto').on('change',calculaTotal);
-            $tt('#id_detalleinversion_set-2-monto').on('change',calculaTotal);
-            $tt('#id_detalleinversion_set-1-monto').on('change',calculaTotal);
-            $tt('#id_detalleinversion_set-0-monto').on('change',calculaTotal);
-            $tt('#id_detalleinversion_set-__prefix__-monto').on('change',calculaTotal);
+           $tt(document).on('change','#id_detalleinversion_set-0-monto',calculaTotal);
+           $tt(document).on('change','#id_detalleinversion_set-1-monto',calculaTotal);
+           $tt(document).on('change','#id_detalleinversion_set-2-monto',calculaTotal);
+           $tt(document).on('change','#id_detalleinversion_set-3-monto',calculaTotal);
+           $tt(document).on('change','#id_detalleinversion_set-4-monto',calculaTotal);
+           $tt(document).on('change','#id_detalleinversion_set-5-monto',calculaTotal);
+           $tt(document).on('change','#id_detalleinversion_set-6-monto',calculaTotal);
+           $tt(document).on('change','#id_detalleinversion_set-__prefix__-monto',calculaTotal);
+
             $tt('#id_inversionTotal').on('click',calculaTotal);
             $tt('#id_inversionTotal').on('change',calculaTotal);
 
+           $tt(document).on('click','a.inline-deletelink',calculaTotal);
+
+           $tt(document).on('keyup','input[type=text]',function(){
+               $j(this).val($j(this).val().toUpperCase());
+           });
     });
 
     function calculaTotal(){
