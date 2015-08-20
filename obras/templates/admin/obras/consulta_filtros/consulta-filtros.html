@@ -386,8 +386,10 @@ $pp(function () {
 <script>
 
 $( document ).ready(function() {
-  $('#cmd').on('click', PDF);
+  $('#cmd').on('click', PDF)
+  $("#ajaxProgress").hide();
 });
+
 
 function PDF () {
     var doc = new jsPDF();

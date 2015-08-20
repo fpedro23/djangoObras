@@ -207,6 +207,8 @@ function listarObras() {
 
     var URL="/obras/api/listar?access_token=" + newToken
 
+    ;
+
     if (fechaInicio1!=""){fechaInicio1 = myDateFormatter($dp('#fechaInicial1').datepicker("getDate"));}
     if (fechaInicio2!=""){ fechaInicio2 = myDateFormatter($dp('#fechaInicial2').datepicker("getDate"));}
     if (fechaFin1!=""){fechaFin1 = myDateFormatter($dp('#fechaFinal1').datepicker("getDate"));}
@@ -222,10 +224,10 @@ function listarObras() {
     if(arrayTipoInversion.toString()!=""){URL += "&tipoDeInversion=" + arrayTipoInversion.toString();}
     if(arrayInaugurador.toString()!=""){URL += "&inaugurador=" + arrayInaugurador.toString();}
     if(arrayImpacto.toString()!=""){URL += "&impacto=" + arrayImpacto.toString();}
-    if(fechaInicio1!=""){URL += "&fechaInicio=" + $j.date(fechaInicio1);}
-    if(fechaInicio2!=""){URL += "&fechaInicioSegunda=" + $j.date(fechaInicio2);}
-    if(fechaFin1!=""){URL += "&fechaFin=" + $j.date(fechaFin1);}
-    if(fechaFin2!=""){URL += "&fechaFinSegunda=" + $j.date(fechaFin2);}
+    if(fechaInicio1!=""){URL += "&fechaInicio=" + fechaInicio1;}
+    if(fechaInicio2!=""){URL += "&fechaInicioSegunda=" + fechaInicio2;}
+    if(fechaFin1!=""){URL += "&fechaFin=" + fechaFin1;}
+    if(fechaFin2!=""){URL += "&fechaFinSegunda=" + fechaFin2;}
     if(inversionInicial!=""){URL += "&inversionMinima=" + inversionInicial;}
     if(inversionFinal!=""){URL += "&inversionMaxima=" + inversionFinal;}
     if(denominacion!=""){URL += "&denominacion=" + denominacion.toUpperCase();}
@@ -233,6 +235,8 @@ function listarObras() {
 
 
     location.href = URL
+
+
 }
 
 
@@ -262,8 +266,6 @@ function verDatos() {
     if (fechaFin2!=""){fechaFin2 = myDateFormatter($dp('#fechaFinal2').datepicker("getDate"));}
 
 
-
-
     var ajax_data = {
       "access_token"  : newToken,
       "limiteMin":0,
@@ -278,10 +280,10 @@ function verDatos() {
     if(arrayTipoInversion.toString()!=""){ajax_data.tipoDeInversion=arrayTipoInversion.toString();}
     if(arrayInaugurador.toString()!=""){ajax_data.inaugurador=arrayInaugurador.toString();}
     if(arrayImpacto.toString()!=""){ajax_data.impacto=arrayImpacto.toString();}
-    if(fechaInicio1!=""){ajax_data.fechaInicio=$j.date(fechaInicio1);}
-    if(fechaInicio2!=""){ajax_data.fechaInicioSegunda=$j.date(fechaInicio2);}
-    if(fechaFin1!=""){ajax_data.fechaFin=$j.date(fechaFin1);}
-    if(fechaFin2!=""){ajax_data.fechaFinSegunda=$j.date(fechaFin2);}
+    if(fechaInicio1!=""){ajax_data.fechaInicio=fechaInicio1;}
+    if(fechaInicio2!=""){ajax_data.fechaInicioSegunda=fechaInicio2;}
+    if(fechaFin1!=""){ajax_data.fechaFin=fechaFin1;}
+    if(fechaFin2!=""){ajax_data.fechaFinSegunda=fechaFin2;}
     if(inversionInicial!=""){ajax_data.inversionMinima=inversionInicial;}
     if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
     if(denominacion!=""){ajax_data.denominacion=denominacion.toUpperCase();}
