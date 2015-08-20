@@ -3857,6 +3857,27 @@
       <column name="CURRENT_CONNECTIONS" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="TOTAL_CONNECTIONS" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
     </table>
+    <procedure name="sp_listado" schema="" catalog="dbobras" type="1">
+      <prototype>
+        <parameter name="inTipoObra" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="1"/>
+        <parameter name="inDependencia" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="2"/>
+        <parameter name="inInstanciaEjecutora" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="3"/>
+        <parameter name="inEstado" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="4"/>
+        <parameter name="inRangoInversionMin" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8" type="1" index="5"/>
+        <parameter name="inRangoInversionMax" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8" type="1" index="6"/>
+        <parameter name="inFechaInicio" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="7"/>
+        <parameter name="inFechaInicioSegunda" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="8"/>
+        <parameter name="inFechaTermino" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="9"/>
+        <parameter name="inFechaTerminoSegunda" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="10"/>
+        <parameter name="inImpacto" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="11"/>
+        <parameter name="inCargoInaugura" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="12"/>
+        <parameter name="inTipoInversion" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="13"/>
+        <parameter name="inTipoClasificacion" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="14"/>
+        <parameter name="inSusceptible" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="15"/>
+        <parameter name="inInaugurada" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="16"/>
+        <parameter name="inDenominacion" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="17"/>
+      </prototype>
+    </procedure>
     <procedure name="buscarObras" schema="" catalog="obrasyprogramas" type="1">
       <prototype>
         <parameter name="inTipoObra" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" type="1" index="1"/>
