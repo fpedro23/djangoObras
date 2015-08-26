@@ -407,7 +407,7 @@ input[type=text], input[type=number] {
     line-height: initial;
     height: 17px;
     width: 90%;
-    text-transform: uppercase;
+
 }
 
 input[type=email], input[type=password] {

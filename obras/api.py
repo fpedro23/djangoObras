@@ -479,12 +479,19 @@ class ListarEndpoint(ProtectedResourceView):
 
         if inaugurada[0] is None: p_inaugurada=""
         if inversion_minima[0] is None: p_inversion_minima=0
+        else: p_inversion_minima=inversion_minima[0]
         if inversion_maxima[0] is None: p_inversion_maxima=999999999.99
+        else: p_inversion_maxima= inversion_maxima[0]
         if fecha_inicio_primera[0] is None: p_fecha_inicio_primera="1900-01-01"
+        else: p_fecha_inicio_primera = fecha_inicio_primera[0]
         if fecha_inicio_segunda[0] is None: p_fecha_inicio_segunda = "2100-12-31"
+        else: p_fecha_inicio_segunda =fecha_inicio_segunda[0]
         if fecha_fin_primera[0] is None: p_fecha_fin_primera="1900-01-01"
+        else: p_fecha_fin_primera=fecha_fin_primera[0]
         if fecha_fin_segunda[0] is None: p_fecha_fin_segunda = "2100-12-31"
+        else: p_fecha_fin_segunda = fecha_fin_segunda[0]
         if denominacion[0] is None: p_denominacion = ""
+        else: p_denominacion = denominacion[0]
 
 
 
@@ -493,133 +500,134 @@ class ListarEndpoint(ProtectedResourceView):
         results = Obra.searchList(p_tipoobra[:-1],p_dependencias[:-1],p_instancia_ejecutora[:-1],p_estados[:-1],p_inversion_minima,p_inversion_maxima,p_fecha_inicio_primera,p_fecha_inicio_segunda,p_fecha_fin_primera,p_fecha_fin_segunda,p_impactos[:-1],p_inauguradores[:-1],p_inversiones[:-1],p_clasificaciones[:-1],
 "","",p_denominacion)
 
-        print results[0]
-        #json_map = {}
-        #json_map['obras'] = []
-
 
         output = StringIO.StringIO()
         book = Workbook(output)
-        sheet = book.add_worksheet('test')
+        sheet = book.add_worksheet('obras')
 
-        # Add a bold format to use to highlight cells.
-        bold = book.add_format({'bold': True})
-        #encabezados
-        sheet.write(0, 0,"Tipo de Obra",bold)
-        sheet.write(0, 1,"id Unico",bold)
-        sheet.write(0, 2,"Dependencia/Organismo",bold)
-        sheet.write(0, 3,"Estado",bold)
-        sheet.write(0, 4,"Denominacion",bold)
-        sheet.write(0, 5,"Descripcion",bold)
-        sheet.write(0, 6,"Municipio",bold)
-        sheet.write(0, 7,"Fecha Inicio",bold)
-        sheet.write(0, 8,"Fecha Termino",bold)
-        sheet.write(0, 9,"Avance Fisico %",bold)
-        sheet.write(0, 10,"F",bold)
-        sheet.write(0, 11,"E",bold)
-        sheet.write(0, 12,"M",bold)
-        sheet.write(0, 13,"S",bold)
-        sheet.write(0, 14,"P",bold)
-        sheet.write(0, 15,"O",bold)
-        sheet.write(0, 16,"Inversion Total",bold)
-        sheet.write(0, 17,"Tipo Moneda MDP/MDD",bold)
-        sheet.write(0, 18,"Poblacion Objetivo",bold)
-        sheet.write(0, 19,"Beneficiarios",bold)
-        sheet.write(0, 20,"Impacto",bold)
-        sheet.write(0, 21,"CG",bold)
-        sheet.write(0, 22,"PNG",bold)
-        sheet.write(0, 23,"PM",bold)
-        sheet.write(0, 24,"PNI",bold)
-        sheet.write(0, 25,"CNCH",bold)
-        sheet.write(0, 26,"OI",bold)
-        sheet.write(0, 27,"Senalizacion",bold)
-        sheet.write(0, 28,"Observaciones",bold)
-        sheet.write(0, 29,"Inaugurado por:",bold)
-        sheet.write(0, 30,"Susceptible de inaugurar",bold)
-        sheet.write(0, 31,"Foto Antes",bold)
-        sheet.write(0, 32,"Foto Durante",bold)
-        sheet.write(0, 33,"Foto Despues",bold)
-
-
-        i=1
-        for obra in results:
-           id_unico=obra[0]
-           sheet.write(i, 0, obra[0])
-           sheet.write(i, 1, obra[1])
-           sheet.write(i, 2, obra[2])
-           sheet.write(i, 3, obra[3])
-           sheet.write(i, 4, obra[4])
-           sheet.write(i, 5, obra[5])
-           sheet.write(i, 6, obra[6])
-           sheet.write(i, 7, obra[7])
-           sheet.write(i, 8, obra[8])
-           sheet.write(i, 9, obra[9])
-
-           sheet.write(i, 10, "NO") #F
-           sheet.write(i, 11, "NO") #E
-           sheet.write(i, 12, "NO") #M
-           sheet.write(i, 13, "NO") #S
-           sheet.write(i, 14, "NO") #P
-           sheet.write(i, 15, "NO") #O
-           for inv in (obra[10].split(',')):
-               if inv[0] == "F": sheet.write(i, 10, "SI")
-               if inv[0] == "E": sheet.write(i, 11, "SI")
-               if inv[0] == "M": sheet.write(i, 12, "SI")
-               if inv[0] == "S": sheet.write(i, 13, "SI")
-               if inv[0] == "P": sheet.write(i, 14, "SI")
-               if inv[0] == "O": sheet.write(i, 15, "SI")
+        if results:
+            # Add a bold format to use to highlight cells.
+            bold = book.add_format({'bold': True})
+            #encabezados
+            sheet.write(0, 0,"Tipo de Obra",bold)
+            sheet.write(0, 1,"id Unico",bold)
+            sheet.write(0, 2,"Dependencia/Organismo",bold)
+            sheet.write(0, 3,"Estado",bold)
+            sheet.write(0, 4,"Denominacion",bold)
+            sheet.write(0, 5,"Descripcion",bold)
+            sheet.write(0, 6,"Municipio",bold)
+            sheet.write(0, 7,"Fecha Inicio",bold)
+            sheet.write(0, 8,"Fecha Termino",bold)
+            sheet.write(0, 9,"Avance Fisico %",bold)
+            sheet.write(0, 10,"F",bold)
+            sheet.write(0, 11,"E",bold)
+            sheet.write(0, 12,"M",bold)
+            sheet.write(0, 13,"S",bold)
+            sheet.write(0, 14,"P",bold)
+            sheet.write(0, 15,"O",bold)
+            sheet.write(0, 16,"Inversion Total",bold)
+            sheet.write(0, 17,"Tipo Moneda MDP/MDD",bold)
+            sheet.write(0, 18,"Poblacion Objetivo",bold)
+            sheet.write(0, 19,"Beneficiarios",bold)
+            sheet.write(0, 20,"Impacto",bold)
+            sheet.write(0, 21,"CG",bold)
+            sheet.write(0, 22,"PNG",bold)
+            sheet.write(0, 23,"PM",bold)
+            sheet.write(0, 24,"PNI",bold)
+            sheet.write(0, 25,"CNCH",bold)
+            sheet.write(0, 26,"OI",bold)
+            sheet.write(0, 27,"Senalizacion",bold)
+            sheet.write(0, 28,"Observaciones",bold)
+            sheet.write(0, 29,"Inaugurado por:",bold)
+            sheet.write(0, 30,"Susceptible de inaugurar",bold)
+            sheet.write(0, 31,"Foto Antes",bold)
+            sheet.write(0, 32,"Foto Durante",bold)
+            sheet.write(0, 33,"Foto Despues",bold)
 
 
-           sheet.write(i, 16, obra[11])
-           sheet.write(i, 17, obra[12])
-           sheet.write(i, 18, obra[13])
-           sheet.write(i, 19, obra[14])
-           sheet.write(i, 20, obra[15])
+            i=1
+            for obra in results:
+               id_unico=obra[0]
+               sheet.write(i, 0, obra[0])
+               sheet.write(i, 1, obra[1])
+               sheet.write(i, 2, obra[2])
+               sheet.write(i, 3, obra[3])
+               sheet.write(i, 4, obra[4])
+               sheet.write(i, 5, obra[5])
+               sheet.write(i, 6, obra[6])
+               sheet.write(i, 7, obra[7])
+               sheet.write(i, 8, obra[8])
+               sheet.write(i, 9, obra[9])
 
-           sheet.write(i, 21, "NO") #CG
-           sheet.write(i, 22, "NO") #PNG
-           sheet.write(i, 23, "NO") #PM
-           sheet.write(i, 24, "NO") #PNI
-           sheet.write(i, 25, "NO") #CNCH
-           sheet.write(i, 26, "NO") #OI
-           for cla in (obra[16].split(',')):
-               sCla = ''.join(cla)
-               if sCla == 'CG':
-                   if obra[17] is not None:
-                       for subscla in (obra[17].split(',')):
-                            sSubCla = ''.join(subscla)
-                            if sSubCla[:2] == 'CG': sheet.write(i, 21, sSubCla)
-               if sCla == "PNG": sheet.write(i, 22, "SI")
-               if sCla == "PM": sheet.write(i, 23, "SI")
-               if sCla == "PNI":
-                   print obra[17]
-                   if obra[17] is not None:
-                       for subscla in (obra[17].split(',')):
-                            sSubCla = ''.join(subscla)
-                            if sSubCla[:3] == "PNI": sheet.write(i, 24, sSubCla)
-               if sCla == "CNCH": sheet.write(i, 25, "SI")
-               if sCla == "OI": sheet.write(i, 26, "SI")
-
-           sheet.write(i, 27, obra[18])
-           sheet.write(i, 28, obra[19])
-           sheet.write(i, 29, obra[20])
-           sheet.write(i, 30, obra[21])
-           sheet.write(i, 31, obra[22])
-           sheet.write(i, 32, obra[23])
-           sheet.write(i, 33, obra[24])
+               sheet.write(i, 10, "NO") #F
+               sheet.write(i, 11, "NO") #E
+               sheet.write(i, 12, "NO") #M
+               sheet.write(i, 13, "NO") #S
+               sheet.write(i, 14, "NO") #P
+               sheet.write(i, 15, "NO") #O
+               for inv in (obra[10].split(',')):
+                   if inv[0] == "F": sheet.write(i, 10, "SI")
+                   if inv[0] == "E": sheet.write(i, 11, "SI")
+                   if inv[0] == "M": sheet.write(i, 12, "SI")
+                   if inv[0] == "S": sheet.write(i, 13, "SI")
+                   if inv[0] == "P": sheet.write(i, 14, "SI")
+                   if inv[0] == "O": sheet.write(i, 15, "SI")
 
 
-           i+=1
-        book.close()
+               sheet.write(i, 16, obra[11])
+               sheet.write(i, 17, obra[12])
+               sheet.write(i, 18, obra[13])
+               sheet.write(i, 19, obra[14])
+               sheet.write(i, 20, obra[15])
 
-        # construct response
+               sheet.write(i, 21, "NO") #CG
+               sheet.write(i, 22, "NO") #PNG
+               sheet.write(i, 23, "NO") #PM
+               sheet.write(i, 24, "NO") #PNI
+               sheet.write(i, 25, "NO") #CNCH
+               sheet.write(i, 26, "NO") #OI
+               if obra[16] is not None:
+                   for cla in (obra[16].split(',')):
+                       sCla = ''.join(cla)
+                       if sCla == 'CG':
+                           if obra[17] is not None:
+                               for subscla in (obra[17].split(',')):
+                                    sSubCla = ''.join(subscla)
+                                    if sSubCla[:2] == 'CG': sheet.write(i, 21, sSubCla)
+                       if sCla == "PNG": sheet.write(i, 22, "SI")
+                       if sCla == "PM": sheet.write(i, 23, "SI")
+                       if sCla == "PNI":
+                           sheet.write(i, 24, "SI")
+                           if obra[17] is not None:
+                               for subscla in (obra[17].split(',')):
+                                    sSubCla = ''.join(subscla)
+                                    if sSubCla[:3] == "PNI": sheet.write(i, 24, sSubCla)
+                       if sCla == "CNCH": sheet.write(i, 25, "SI")
+                       if sCla == "OI": sheet.write(i, 26, "SI")
 
-        #output.seek(0)
-        #response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-        #response['Content-Disposition'] = "attachment; filename=test.xlsx"
+               sheet.write(i, 27, obra[18])
+               sheet.write(i, 28, obra[19])
+               sheet.write(i, 29, obra[20])
+               sheet.write(i, 30, obra[21])
+               sheet.write(i, 31, obra[22])
+               sheet.write(i, 32, obra[23])
+               sheet.write(i, 33, obra[24])
+
+
+               i+=1
+            book.close()
+
+            # construct response
+
+            #output.seek(0)
+            #response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            #response['Content-Disposition'] = "attachment; filename=test.xlsx"
+        else:
+            sheet.write(0, 0,"Los filtros seleccionados no arrojaron informacion alguna sobre las obras, cambie los filtros para una nueva consulta.")
+            book.close()
 
         response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename="devices.xlsx"'
+        response['Content-Disposition'] = 'attachment; filename="listado_obras.xlsx"'
         response['Content-Length'] = output.tell()
 
         output.seek(0)
