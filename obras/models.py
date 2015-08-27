@@ -127,6 +127,12 @@ class Estado(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+class Municipio (models.Model):
+    nombreMunicipio = models.CharField(max_length=200)
+    latitud = models.FloatField()
+    longitud = models.FloatField()
+    estado = models.ForeignKey(Estado, null=False, blank=False)
+
 
 @python_2_unicode_compatible
 class Impacto(models.Model):
@@ -383,6 +389,7 @@ class Obra(models.Model):
     latitud = models.FloatField(null=True, blank=True)
     longitud = models.FloatField(null=True, blank=True)
     id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200, null=True, blank=True)
+    municipio = models.ForeignKey(Municipio, null=True)
 
 
     def __str__(self):  # __unicode__ on Python 2
