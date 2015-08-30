@@ -39,6 +39,9 @@ class HoraUltimaActualizacion(ProtectedResourceView):
             content_type__id__exact=ContentType.objects.get_for_model(Obra).id
         ).order_by('action_time').last().action_time
 
+        if date is None:
+            date = datetime.now()
+
         json_response['dia'] = date.day
         json_response['mes'] = date.month
         json_response['ano'] = date.year
