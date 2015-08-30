@@ -43,7 +43,7 @@ class HoraUltimaActualizacion(ProtectedResourceView):
         json_response['mes'] = date.month
         json_response['ano'] = date.year
 
-        time = date.time
+        time = date.time()
         json_response['hora'] = time.hour
         json_response['minuto'] = time.minute
         json_response['segundo'] = time.second
