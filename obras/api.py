@@ -733,23 +733,26 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         for obra in obras_totales_proceso.values('latitud', 'longitud', 'estado__nombreEstado'):
             self.rename_estado(obra)
             the_list.append(obra)
+        reporte['reporte_total']['obras_proceso']['obras'] = the_list
+        reporte['reporte_total']['obras_proceso']['total'] = obras_totales_proceso.count()
 
         obras_totales_proyectadas = obras.filter(tipoObra_id=1)
         the_list = []
         for obra in obras_totales_proyectadas.values('latitud', 'longitud', 'estado__nombreEstado'):
             self.rename_estado(obra)
             the_list.append(obra)
+        reporte['reporte_total']['obras_proyectadas']['obras'] = the_list
+        reporte['reporte_total']['obras_proyectadas']['total'] = obras_totales_proyectadas.count()
 
         obras_totales_concluidas = obras.filter(tipoObra_id=3)
         the_list = []
         for obra in obras_totales_concluidas.values('latitud', 'longitud', 'estado__nombreEstado'):
             self.rename_estado(obra)
             the_list.append(obra)
+        reporte['reporte_total']['obras_concluidas']['obras'] = the_list
+        reporte['reporte_total']['obras_concluidas']['total'] = obras_totales_concluidas.count()
 
-        reporte['reporte_total']['obras_proceso'] = obras_totales_proceso
-        reporte['reporte_total']['obras_proyectadas'] = obras_totales_proyectadas
-        reporte['reporte_total']['obras_concluidas'] = obras_totales_concluidas
-
+        # Reportes anuales 2012-2015
         obras2015 = obras.filter(fechaInicio__year=2015)
         obras2015_proceso = obras2015.filter(tipoObra_id=2)
         the_list = []
