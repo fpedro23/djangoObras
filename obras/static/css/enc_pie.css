@@ -187,13 +187,13 @@ body {
 /*DIV  HEADER que contiene el logotipo que va montado en el encabezado*/
 #logoHEADER
 {
-	width: 222px;
-	height: 61px;
+	width: 197px;
+	height: 60px;
 	position: absolute;
 	top: 10px;
 	left: 50px;
 	background-image: url(../img/bigBackground.fw.png);
-	background-position: 0px -90px;
+	background-position: 0px -93px;
     cursor: pointer;
 }
 
@@ -204,19 +204,11 @@ body {
 	position: absolute;
 	top: 16px;
 	left: 625px;
+    font-family: 'soberana_titularregular';
+    font-size:13px;
+    text-align: right;
 }
 /*Cierre del DIV HEADER*/
-
-/*DIV que contiene el GRADIENTE donde se montarán las opciones de la barra de menú*/
-.gradiente {
-  position:relative;
-  width: 1024px;
-  height: 40px;
-  margin:auto;
-  background-image:url(../img/001_gradienteMenu.fw.png);
-
-}
-/*cierre del DIV GRADIENTE*/
 
 
 /*DIV BODY que contiene todos los elementos según la página donde este el usuario, su contenido varía de acuerdo con la sección de la página donde el usuario se encuentre*/
@@ -266,10 +258,10 @@ body {
 }
 
 #logoFOOT{
-   width: 116px;
-   height: 33px;
+   width: 97px;
+   height: 29px;
    background-image: url(../img/bigBackground.fw.png);
-   background-position: 0px -151px;
+   background-position: 0px -155px;
    position: absolute;
    left: 470px;
    top: 45px;
@@ -313,14 +305,14 @@ body {
 .gradiente {
   position:relative;
   width: 1024px;
-  height: 40px;
+  height: 30px;
   margin:auto;
   background-image:url(../img/001_gradienteMenu.fw.png);
 }
 
 .MOVIMIENTOS{
 	width: 250px;
-	height:40px;
+	height:30px;
 	position:absolute;
 	left:0px;
 	background-image:url(../img/mov_N.fw.png);
@@ -332,23 +324,23 @@ body {
 }
 
 .pto01{
-	width:14px;
-	height: 40px;
+	width:13px;
+	height: 30px;
 	position:absolute;
 	left:0px;
 }
 
 .pto001{
-	width:14px;
-	height: 40px;
+	width:13px;
+	height: 30px;
 	position:absolute;
-	left:233px;
-	background:url(../img/vi__eta_.png) 0px 18px no-repeat;
+	left:213px;
+	background:url(../img/vi__eta_.png) 0px 14px no-repeat;
 }
 
 .CONSULTAS{
 	width: 250px;
-	height:40px;
+	height:30px;
 	position:absolute;
 	left:257px;
 	background-image:url(../img/cons_N.fw.png);
@@ -360,23 +352,23 @@ body {
 }
 
 .pto02{
-	width:14px;
-	height: 40px;
+	width:13px;
+	height: 30px;
 	position:absolute;
 	left:0px;
 }
 
 .pto002{
-	width:14px;
-	height: 40px;
+	width:13px;
+	height: 30px;
 	position:absolute;
-	left:473px;
-	background:url(../img/vi__eta_.png) 0px 18px no-repeat;
+	left:455px;
+	background:url(../img/vi__eta_.png) 0px 14px no-repeat;
 }
 
 .CATALOGOS{
 	width: 250px;
-	height:40px;
+	height:30px;
 	position:absolute;
 	left:513px;
 	background-image:url(../img/cat_N.fw.png);
@@ -388,23 +380,23 @@ body {
 }
 
 .pto03{
-	width:14px;
-	height: 40px;
+	width:13px;
+	height: 30px;
 	position:absolute;
 	left:0px;
 }
 
 .pto003{
-	width:14px;
-	height: 40px;
+	width:13px;
+	height: 30px;
 	position:absolute;
-	left:733px;
-	background:url(../img/vi__eta_.png) 0px 18px no-repeat;
+	left:713px;
+	background:url(../img/vi__eta_.png) 0px 14px no-repeat;
 }
 
 .USUARIOS{
 	width: 250px;
-	height:40px;
+	height:30px;
 	position:absolute;
 	left:769px;
 	background-image:url(../img/usu_N.fw.png);
@@ -416,18 +408,18 @@ body {
 }
 
 .pto04{
-	width:14px;
-	height: 40px;
+	width:13px;
+	height: 30px;
 	position:absolute;
 	left:0px;
 }
 
 .pto004{
-	width:14px;
-	height: 40px;
+	width:13px;
+	height: 30px;
 	position:absolute;
-	left:973px;
-	background:url(../img/vi__eta_.png) 0px 18px no-repeat;
+	left:955px;
+	background:url(../img/vi__eta_.png) 0px 14px no-repeat;
 }
 
 /*cierre del DIV GRADIENTE*/

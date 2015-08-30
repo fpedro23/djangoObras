@@ -164,7 +164,11 @@ function setImage(){
 
          });
 
-
+        $j("#id_totalBeneficiarios").on('input',function(){
+            if( $j(this).val().length>9) {
+                 $j(this).val($j(this).val().slice(0,9));
+            }
+        });
 
          $j("input[name=inaugurada]").click(function () {
             var inauguradaOPC  = $j('input:radio[name=inaugurada]:checked').val();
@@ -409,14 +413,12 @@ function setImage(){
          $j('#id_porcentajeAvance').on('change',function (){
                 var avanceO = $j(this).val();
                 var statusO = $j('select#id_tipoObra').val();
-
-                if (statusO == "1" && avanceO > 0) {
-                    //alert('Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.');
-                    $j.magnificPopup.open({
+                if (avanceO > 100) {
+                     $j.magnificPopup.open({
                         items: {
                             src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
                                   + '<div class="textoALERTA">'
-                                  + 'Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.'
+                                  + 'El porcentaje de Avance debe estar entre 0 y 100. Favor de verificar.'
                                   + '</div>'
                                   + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
                                   + '</div>'
@@ -433,55 +435,611 @@ function setImage(){
 
                     $j("#id_porcentajeAvance").val('0');
                 }
-                else if (statusO == "2" && (avanceO == 0 || avanceO == 100))
-                {
-                    //alert('Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.');
-                    $j.magnificPopup.open({
-                        items: {
-                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
-                                  + '<div class="textoALERTA">'
-                                  + 'Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.'
-                                  + '</div>'
-                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
-                                  + '</div>'
-                        },
-                        type: 'inline',
-                        preloader: true,
-                        modal: true
-                    });
+                else {
+                    if (statusO == "1" && avanceO > 0) {
+                        //alert('Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.');
+                        $j.magnificPopup.open({
+                            items: {
+                                src: '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                + '<div class="textoALERTA">'
+                                + 'Si el Status de Obra es PROYECTADA, el porcentaje de Avance debe ser igual a 0. Favor de verificar el Status.'
+                                + '</div>'
+                                + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                + '</div>'
+                            },
+                            type: 'inline',
+                            preloader: true,
+                            modal: true
+                        });
 
-                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
-                        e.preventDefault();
-                        $j.magnificPopup.close();
-                    });
+                        $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                            e.preventDefault();
+                            $j.magnificPopup.close();
+                        });
 
-                    $j("#id_porcentajeAvance").val('0');
+                        $j("#id_porcentajeAvance").val('0');
+                    }
+                    else if (statusO == "2" && (avanceO == 0 || avanceO == 100)) {
+                        //alert('Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.');
+                        $j.magnificPopup.open({
+                            items: {
+                                src: '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                + '<div class="textoALERTA">'
+                                + 'Si el Status de Obra es en PROCESO, el porcentaje de Avance debe ser mayor a 0 y menor a 100. Favor de verificar el Status.'
+                                + '</div>'
+                                + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                + '</div>'
+                            },
+                            type: 'inline',
+                            preloader: true,
+                            modal: true
+                        });
+
+                        $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                            e.preventDefault();
+                            $j.magnificPopup.close();
+                        });
+
+                        $j("#id_porcentajeAvance").val('0');
+                    }
+                    else if (statusO == "3" && avanceO < 100) {
+                        //alert('Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.');
+                        $j.magnificPopup.open({
+                            items: {
+                                src: '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                + '<div class="textoALERTA">'
+                                + 'Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.'
+                                + '</div>'
+                                + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                + '</div>'
+                            },
+                            type: 'inline',
+                            preloader: true,
+                            modal: true
+                        });
+
+                        $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                            e.preventDefault();
+                            $j.magnificPopup.close();
+                        });
+
+                        $j("#id_porcentajeAvance").val('100');
+                    }
                 }
-                else if (statusO == "3" && avanceO <100)
-                {
-                    //alert('Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.');
-                    $j.magnificPopup.open({
-                        items: {
-                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
-                                  + '<div class="textoALERTA">'
-                                  + 'Si el Status de Obra es CONCLUIDA, el porcentaje de Avance debe ser igual a 100. Favor de verificar el Status.'
-                                  + '</div>'
-                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
-                                  + '</div>'
-                        },
-                        type: 'inline',
-                        preloader: true,
-                        modal: true
-                    });
-
-                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
-                        e.preventDefault();
-                        $j.magnificPopup.close();
-                    });
-
-                    $j("#id_porcentajeAvance").val('100');
-                }
-
          });
 
+        $j("select#id_detalleclasificacion_set-0-tipoClasificacion").on("change",function(){
+           var sCla = $j(this).val();
+
+            if (sCla=='6'){
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").val('---------');
+            }
+            else if(sCla=='4' || sCla=='3' || sCla=='2'){
+
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='4']").hide();
+            }
+
+            else{
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+            }
+        });
+
+        $j("select#id_detalleclasificacion_set-1-tipoClasificacion").on("change",function(){
+            var sCla = $j(this).val();
+            if (sCla=='6'){
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled','disabled');
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").val('---------');
+            }
+            else if(sCla=='4' || sCla=='3' || sCla=='2'){
+
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='4']").hide();
+            }
+
+            else{
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled',false);
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+            }
+        });
+
+        $j("select#id_detalleclasificacion_set-2-tipoClasificacion").on("change",function() {
+            var sCla = $j(this).val();
+            if (sCla == '6') {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").val('---------');
+            }
+            else if (sCla == '4' || sCla == '3' || sCla == '2') {
+
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='4']").hide();
+            }
+
+            else {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+            }
+        });
+
+        $j("select#id_detalleclasificacion_set-3-tipoClasificacion").on("change",function() {
+            var sCla = $j(this).val();
+            if (sCla == '6') {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").val('---------');
+            }
+            else if (sCla == '4' || sCla == '3' || sCla == '2') {
+
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='4']").hide();
+            }
+
+            else {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+            }
+        });
+
+        $j("select#id_detalleclasificacion_set-4-tipoClasificacion").on("change",function() {
+            var sCla = $j(this).val();
+            if (sCla == '6') {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").val('---------');
+            }
+            else if (sCla == '4' || sCla == '3' || sCla == '2') {
+
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='4']").hide();
+            }
+
+            else {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+            }
+        });
+        $j("select#id_detalleclasificacion_set-5-tipoClasificacion").on("change",function() {
+            var sCla = $j(this).val();
+            if (sCla == '6') {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").val('---------');
+            }
+            else if (sCla == '4' || sCla == '3' || sCla == '2') {
+
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='4']").hide();
+            }
+
+            else {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+            }
+        });
+        $j("select#id_detalleclasificacion_set-6-tipoClasificacion").on("change",function() {
+            var sCla = $j(this).val();
+            if (sCla == '6') {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled', 'disabled');
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").val('---------');
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").val('---------');
+            }
+            else if (sCla == '4' || sCla == '3' || sCla == '2') {
+
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='4']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='2']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='3']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='4']").hide();
+            }
+
+            else {
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").attr('disabled', false);
+                $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+                $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + sCla + "']").hide();
+            }
+        });
+
+
+         $j("tr.add-row").on("click",function() {
+
+                $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+
+                $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+
+             $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+             $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+             $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+             $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+                $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+         });
+
+        quitarepetido();
     });
+
+function quitarepetido(){
+      $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-0-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+
+      $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-1-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+
+      $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-2-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+
+      $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-3-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+
+      $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-4-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+
+      $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-5-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-6-tipoInversion").val() + "']").hide();
+
+      $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-1-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-2-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-3-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-4-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-5-tipoInversion").val() + "']").hide();
+      $("select#id_detalleinversion_set-6-tipoInversion").find("option[value='" + $("select#id_detalleinversion_set-0-tipoInversion").val() + "']").hide();
+
+
+     $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-1-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-2-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-3-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-4-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-5-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-0-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-6-tipoClasificacion").val() + "']").hide();
+
+      $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-0-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-2-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-3-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-4-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-5-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-1-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-6-tipoClasificacion").val() + "']").hide();
+
+      $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-1-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-0-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-3-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-4-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-5-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-2-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-6-tipoClasificacion").val() + "']").hide();
+
+      $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-1-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-2-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-0-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-4-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-5-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-3-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-6-tipoClasificacion").val() + "']").hide();
+
+      $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-1-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-2-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-3-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-0-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-5-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-4-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-6-tipoClasificacion").val() + "']").hide();
+
+      $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-1-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-2-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-3-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-4-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-0-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-5-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-6-tipoClasificacion").val() + "']").hide();
+
+      $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-1-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-2-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-3-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-4-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-5-tipoClasificacion").val() + "']").hide();
+      $("select#id_detalleclasificacion_set-6-tipoClasificacion").find("option[value='" + $("select#id_detalleclasificacion_set-0-tipoClasificacion").val() + "']").hide();
+};
+
+
