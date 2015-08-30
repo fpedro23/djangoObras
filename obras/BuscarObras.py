@@ -29,9 +29,11 @@ class BuscarObras:
             id_obra,
             susceptible_inauguracion,
             subclasificacion,
+            municipios
     ):
         self.clasificaciones = clasificaciones
         self.estados = estados
+        self.municipios = municipios
         self.inaugurada = inaugurada
         self.susceptible_inauguracion = susceptible_inauguracion
         self.impactos = impactos
@@ -88,6 +90,9 @@ class BuscarObras:
 
             if self.estados is not None:
                 query = query & Q(estado__id__in=self.estados)
+
+            if self.municipios is not None:
+                query = query & Q(municipio__id__in=self.municipios)
 
             if self.clasificaciones is not None:
                 query = query & Q(detalleclasificacion__tipoClasificacion__id__in=self.clasificaciones)
