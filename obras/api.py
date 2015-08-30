@@ -177,11 +177,11 @@ class MunicipiosForEstadosEndpoint(ProtectedResourceView):
         estado_ids = get_array_or_none(request.GET.get('estados'))
         all_estados = False
 
-        if estado_ids == None:
+        if estado_ids is None:
             all_estados = True
         else:
-            for id in estado_ids:
-                if id == 33 or id == 34:
+            for estado_id in estado_ids:
+                if estado_id == 33 or estado_id == 34:
                     all_estados = True
                     break
 
@@ -194,7 +194,7 @@ class MunicipiosForEstadosEndpoint(ProtectedResourceView):
         for municipio in municipios.values('id', 'nombreMunicipio'):
             the_list.append(municipio)
 
-        return HttpResponse(json.dumps(the_list))
+        return HttpResponse(json.dumps(the_list), 'application/json')
 
 
 class DependenciasTreeEndpoint(ProtectedResourceView):
