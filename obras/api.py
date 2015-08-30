@@ -177,8 +177,8 @@ class MunicipiosForEstadoEndpoint(ProtectedResourceView):
         estado_id = request.GET.get('estado', None)
         if estado_id is not None:
             estado = Estado.objects.get(estado_id)
-        if estado is not None:
-            municipios = Municipio.objects.filter(estado=estado)
+            if estado is not None:
+                municipios = Municipio.objects.filter(estado=estado)
         else:
             municipios = Municipio.objects.all()
 
