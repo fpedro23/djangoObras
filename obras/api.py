@@ -53,6 +53,7 @@ class HoraUltimaActualizacion(ProtectedResourceView):
         json_response['minuto'] = time.minute
         json_response['segundo'] = time.second
 
+        return HttpResponse(json.dumps(json_response), 'application/json')
 
 class HoraEndpoint(ProtectedResourceView):
     def get(self, request):
