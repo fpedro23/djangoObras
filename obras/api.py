@@ -1,5 +1,7 @@
 import json
 from datetime import *
+from django.contrib.admin.models import LogEntry, ADDITION
+from django.contrib.contenttypes.models import ContentType
 
 from django.db.models import Q
 from django.http import HttpResponse
@@ -20,14 +22,31 @@ except ImportError:
 from xlsxwriter.workbook import Workbook
 from django.core.servers.basehttp import FileWrapper
 from django.http import StreamingHttpResponse
-#from django_downloadview import VirtualDownloadView
-#from django_downloadview import VirtualFile
+
 
 def get_usuario_for_token(token):
     if token:
         return AccessToken.objects.get(token=token).user.usuario
     else:
         return None
+
+
+class HoraUltimaActualizacion(ProtectedResourceView):
+    def get(self, request):
+        json_response = {}
+        date = LogEntry.objects.filter(
+            action_flag=ADDITION,
+            content_type__id__exact=ContentType.objects.get_for_model(Obra).id
+        ).order_by('action_time').last().action_time
+
+        json_response['dia'] = date.day
+        json_response['mes'] = date.month
+        json_response['ano'] = date.year
+
+        time = date.time
+        json_response['hora'] = time.hour
+        json_response['minuto'] = time.minute
+        json_response['segundo'] = time.second
 
 
 class HoraEndpoint(ProtectedResourceView):
@@ -78,7 +97,6 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
         return HttpResponse(json_ans, 'application/json')
 
 
-
 class ObrasVencidasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
@@ -121,13 +139,13 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(obraoprograma='O')
             )
-            )
+                        )
 
         elif token_model.user.usuario.rol == 'AD':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
                 Q(dependienteDe__in=token_model.user.usuario.dependencia.all()))
-        )
+                        )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.subdependencia.all()))
@@ -285,7 +303,7 @@ class BuscadorEndpoint(ProtectedResourceView):
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             buscador.dependencias = None
 
-        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
+        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is None:
 
             for dependencia in user.usuario.dependencia.all():
                 arreglo_dependencias.append(dependencia.id)
@@ -295,7 +313,7 @@ class BuscadorEndpoint(ProtectedResourceView):
 
             buscador.dependencias = arreglo_dependencias
 
-        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
+        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia')) is None:
             for subdependencia in user.usuario.subdependencia.all():
                 arreglo_dependencias.append(subdependencia.id)
 
@@ -331,7 +349,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             else:
                 map['sumatotal'] = float(reporteSub['sumatotal'])
             json_map['reporte_subdependencia'].append(map)
-        #json_map['obras'] = []
+        # json_map['obras'] = []
         #for obra in resultados['obras']:
         #    json_map['obras'].append(obra.to_serializable_dict())
 
@@ -369,49 +387,47 @@ class BuscadorEndpoint(ProtectedResourceView):
         return HttpResponse(json.dumps(json_map), 'application/json')
 
 
-
 class ListarEndpoint(ProtectedResourceView):
     def get(self, request):
 
         user = AccessToken.objects.get(token=request.GET.get('access_token')).user
 
+        idtipoobra = get_array_or_none(request.GET.get('tipoDeObra')),
+        iddependencias = get_array_or_none(request.GET.get('dependencia')),
+        estados = get_array_or_none(request.GET.get('estado')),
+        clasificaciones = get_array_or_none(request.GET.get('clasificacion')),
+        inversiones = get_array_or_none(request.GET.get('tipoDeInversion')),
+        inauguradores = get_array_or_none(request.GET.get('inaugurador')),
+        impactos = get_array_or_none(request.GET.get('impacto')),
+        inaugurada = request.GET.get('inaugurada', None),
+        inversion_minima = request.GET.get('inversionMinima', None),
+        inversion_maxima = request.GET.get('inversionMaxima', None),
+        fecha_inicio_primera = request.GET.get('fechaInicio', None),
+        fecha_inicio_segunda = request.GET.get('fechaInicio', None),
+        fecha_fin_primera = request.GET.get('fechaFin', None),
+        fecha_fin_segunda = request.GET.get('fechaFinSegunda', None),
+        denominacion = request.GET.get('denominacion', None),
+        instancia_ejecutora = get_array_or_none(request.GET.get('instanciaEjecutora')),
+        busqueda_rapida = request.GET.get("busquedaRapida", None),
+        id_obra = request.GET.get("idObra", None),
+        susceptible_inauguracion = request.GET.get("susceptible", None),
+        subclasificacion = get_array_or_none(request.GET.get('subclasificacion')),
 
-        idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
-        iddependencias=get_array_or_none(request.GET.get('dependencia')),
-        estados=get_array_or_none(request.GET.get('estado')),
-        clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
-        inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
-        inauguradores=get_array_or_none(request.GET.get('inaugurador')),
-        impactos=get_array_or_none(request.GET.get('impacto')),
-        inaugurada=request.GET.get('inaugurada', None),
-        inversion_minima=request.GET.get('inversionMinima', None),
-        inversion_maxima=request.GET.get('inversionMaxima', None),
-        fecha_inicio_primera=request.GET.get('fechaInicio', None),
-        fecha_inicio_segunda=request.GET.get('fechaInicio', None),
-        fecha_fin_primera=request.GET.get('fechaFin', None),
-        fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
-        denominacion=request.GET.get('denominacion', None),
-        instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
-        busqueda_rapida=request.GET.get("busquedaRapida", None),
-        id_obra=request.GET.get("idObra", None),
-        susceptible_inauguracion=request.GET.get("susceptible", None),
-        subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
-
-        p_tipoobra=","
-        p_estados=","
-        p_clasificaciones=","
-        p_inversiones=","
-        p_inauguradores=","
-        p_impactos=","
-        p_instancia_ejecutora=","
-        p_subclasificacion=","
+        p_tipoobra = ","
+        p_estados = ","
+        p_clasificaciones = ","
+        p_inversiones = ","
+        p_inauguradores = ","
+        p_impactos = ","
+        p_instancia_ejecutora = ","
+        p_subclasificacion = ","
 
         arreglo_dependencias = []
-        p_dependencias=""
+        p_dependencias = ""
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
 
-        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
+        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is None:
 
             for dependencia in user.usuario.dependencia.all():
                 arreglo_dependencias.append(dependencia.id)
@@ -421,85 +437,95 @@ class ListarEndpoint(ProtectedResourceView):
 
             iddependencias = arreglo_dependencias
 
-        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
+        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia')) is None:
             for subdependencia in user.usuario.subdependencia.all():
                 arreglo_dependencias.append(subdependencia.id)
 
             iddependencias = arreglo_dependencias
-
 
         if iddependencias[0] is not None:
             for dependencia in iddependencias[0]:
                 p_dependencias += str(dependencia) + ","
 
         if idtipoobra[0] is not None:
-            p_tipoobra=""
+            p_tipoobra = ""
             for tipoobra in idtipoobra[0]:
                 p_tipoobra += str(tipoobra) + ","
 
         if estados[0] is not None:
-            p_estados=""
+            p_estados = ""
             for estado in estados[0]:
                 p_estados += str(estado) + ","
 
         if clasificaciones[0] is not None:
-            p_clasificaciones=""
+            p_clasificaciones = ""
             for clasificacion in clasificaciones[0]:
                 p_clasificaciones += str(clasificacion) + ","
 
         if inversiones[0] is not None:
-            p_inversiones=""
+            p_inversiones = ""
             for inversion in inversiones[0]:
                 p_inversiones += str(inversion) + ","
 
         if inauguradores[0] is not None:
-            p_inauguradores=""
+            p_inauguradores = ""
             for inaugurador in inauguradores[0]:
                 p_inauguradores += str(inaugurador) + ","
 
         if impactos[0] is not None:
-            p_impactos=""
+            p_impactos = ""
             for impacto in impactos[0]:
                 p_impactos += str(impacto) + ","
 
-
         if instancia_ejecutora[0] is not None:
-            p_instancia_ejecutora=""
+            p_instancia_ejecutora = ""
             for instancia in instancia_ejecutora[0]:
                 p_instancia_ejecutora += str(instancia) + ","
 
-        p_inaugurada=""
-        p_inversion_minima=0
-        p_inversion_maxima=999999999.99
-        p_fecha_inicio_primera=""
-        p_fecha_inicio_segunda=""
-        p_fecha_fin_primera=""
-        p_fecha_fin_segunda=""
-        p_denominacion=""
+        p_inaugurada = ""
+        p_inversion_minima = 0
+        p_inversion_maxima = 999999999.99
+        p_fecha_inicio_primera = ""
+        p_fecha_inicio_segunda = ""
+        p_fecha_fin_primera = ""
+        p_fecha_fin_segunda = ""
+        p_denominacion = ""
 
-        if inaugurada[0] is None: p_inaugurada=""
-        if inversion_minima[0] is None: p_inversion_minima=0
-        else: p_inversion_minima=inversion_minima[0]
-        if inversion_maxima[0] is None: p_inversion_maxima=999999999.99
-        else: p_inversion_maxima= inversion_maxima[0]
-        if fecha_inicio_primera[0] is None: p_fecha_inicio_primera="1900-01-01"
-        else: p_fecha_inicio_primera = fecha_inicio_primera[0]
-        if fecha_inicio_segunda[0] is None: p_fecha_inicio_segunda = "2100-12-31"
-        else: p_fecha_inicio_segunda =fecha_inicio_segunda[0]
-        if fecha_fin_primera[0] is None: p_fecha_fin_primera="1900-01-01"
-        else: p_fecha_fin_primera=fecha_fin_primera[0]
-        if fecha_fin_segunda[0] is None: p_fecha_fin_segunda = "2100-12-31"
-        else: p_fecha_fin_segunda = fecha_fin_segunda[0]
-        if denominacion[0] is None: p_denominacion = ""
-        else: p_denominacion = denominacion[0]
+        if inaugurada[0] is None: p_inaugurada = ""
+        if inversion_minima[0] is None:
+            p_inversion_minima = 0
+        else:
+            p_inversion_minima = inversion_minima[0]
+        if inversion_maxima[0] is None:
+            p_inversion_maxima = 999999999.99
+        else:
+            p_inversion_maxima = inversion_maxima[0]
+        if fecha_inicio_primera[0] is None:
+            p_fecha_inicio_primera = "1900-01-01"
+        else:
+            p_fecha_inicio_primera = fecha_inicio_primera[0]
+        if fecha_inicio_segunda[0] is None:
+            p_fecha_inicio_segunda = "2100-12-31"
+        else:
+            p_fecha_inicio_segunda = fecha_inicio_segunda[0]
+        if fecha_fin_primera[0] is None:
+            p_fecha_fin_primera = "1900-01-01"
+        else:
+            p_fecha_fin_primera = fecha_fin_primera[0]
+        if fecha_fin_segunda[0] is None:
+            p_fecha_fin_segunda = "2100-12-31"
+        else:
+            p_fecha_fin_segunda = fecha_fin_segunda[0]
+        if denominacion[0] is None:
+            p_denominacion = ""
+        else:
+            p_denominacion = denominacion[0]
 
-
-
-
-
-        results = Obra.searchList(p_tipoobra[:-1],p_dependencias[:-1],p_instancia_ejecutora[:-1],p_estados[:-1],p_inversion_minima,p_inversion_maxima,p_fecha_inicio_primera,p_fecha_inicio_segunda,p_fecha_fin_primera,p_fecha_fin_segunda,p_impactos[:-1],p_inauguradores[:-1],p_inversiones[:-1],p_clasificaciones[:-1],
-"","",p_denominacion)
-
+        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_instancia_ejecutora[:-1], p_estados[:-1],
+                                  p_inversion_minima, p_inversion_maxima, p_fecha_inicio_primera,
+                                  p_fecha_inicio_segunda, p_fecha_fin_primera, p_fecha_fin_segunda, p_impactos[:-1],
+                                  p_inauguradores[:-1], p_inversiones[:-1], p_clasificaciones[:-1],
+                                  "", "", p_denominacion)
 
         output = StringIO.StringIO()
         book = Workbook(output)
@@ -508,113 +534,110 @@ class ListarEndpoint(ProtectedResourceView):
         if results:
             # Add a bold format to use to highlight cells.
             bold = book.add_format({'bold': True})
-            #encabezados
-            sheet.write(0, 0,"Tipo de Obra",bold)
-            sheet.write(0, 1,"id Unico",bold)
-            sheet.write(0, 2,"Dependencia/Organismo",bold)
-            sheet.write(0, 3,"Estado",bold)
-            sheet.write(0, 4,"Denominacion",bold)
-            sheet.write(0, 5,"Descripcion",bold)
-            sheet.write(0, 6,"Municipio",bold)
-            sheet.write(0, 7,"Fecha Inicio",bold)
-            sheet.write(0, 8,"Fecha Termino",bold)
-            sheet.write(0, 9,"Avance Fisico %",bold)
-            sheet.write(0, 10,"F",bold)
-            sheet.write(0, 11,"E",bold)
-            sheet.write(0, 12,"M",bold)
-            sheet.write(0, 13,"S",bold)
-            sheet.write(0, 14,"P",bold)
-            sheet.write(0, 15,"O",bold)
-            sheet.write(0, 16,"Inversion Total",bold)
-            sheet.write(0, 17,"Tipo Moneda MDP/MDD",bold)
-            sheet.write(0, 18,"Poblacion Objetivo",bold)
-            sheet.write(0, 19,"Beneficiarios",bold)
-            sheet.write(0, 20,"Impacto",bold)
-            sheet.write(0, 21,"CG",bold)
-            sheet.write(0, 22,"PNG",bold)
-            sheet.write(0, 23,"PM",bold)
-            sheet.write(0, 24,"PNI",bold)
-            sheet.write(0, 25,"CNCH",bold)
-            sheet.write(0, 26,"OI",bold)
-            sheet.write(0, 27,"Senalizacion",bold)
-            sheet.write(0, 28,"Observaciones",bold)
-            sheet.write(0, 29,"Inaugurado por:",bold)
-            sheet.write(0, 30,"Susceptible de inaugurar",bold)
-            sheet.write(0, 31,"Foto Antes",bold)
-            sheet.write(0, 32,"Foto Durante",bold)
-            sheet.write(0, 33,"Foto Despues",bold)
+            # encabezados
+            sheet.write(0, 0, "Tipo de Obra", bold)
+            sheet.write(0, 1, "id Unico", bold)
+            sheet.write(0, 2, "Dependencia/Organismo", bold)
+            sheet.write(0, 3, "Estado", bold)
+            sheet.write(0, 4, "Denominacion", bold)
+            sheet.write(0, 5, "Descripcion", bold)
+            sheet.write(0, 6, "Municipio", bold)
+            sheet.write(0, 7, "Fecha Inicio", bold)
+            sheet.write(0, 8, "Fecha Termino", bold)
+            sheet.write(0, 9, "Avance Fisico %", bold)
+            sheet.write(0, 10, "F", bold)
+            sheet.write(0, 11, "E", bold)
+            sheet.write(0, 12, "M", bold)
+            sheet.write(0, 13, "S", bold)
+            sheet.write(0, 14, "P", bold)
+            sheet.write(0, 15, "O", bold)
+            sheet.write(0, 16, "Inversion Total", bold)
+            sheet.write(0, 17, "Tipo Moneda MDP/MDD", bold)
+            sheet.write(0, 18, "Poblacion Objetivo", bold)
+            sheet.write(0, 19, "Beneficiarios", bold)
+            sheet.write(0, 20, "Impacto", bold)
+            sheet.write(0, 21, "CG", bold)
+            sheet.write(0, 22, "PNG", bold)
+            sheet.write(0, 23, "PM", bold)
+            sheet.write(0, 24, "PNI", bold)
+            sheet.write(0, 25, "CNCH", bold)
+            sheet.write(0, 26, "OI", bold)
+            sheet.write(0, 27, "Senalizacion", bold)
+            sheet.write(0, 28, "Observaciones", bold)
+            sheet.write(0, 29, "Inaugurado por:", bold)
+            sheet.write(0, 30, "Susceptible de inaugurar", bold)
+            sheet.write(0, 31, "Foto Antes", bold)
+            sheet.write(0, 32, "Foto Durante", bold)
+            sheet.write(0, 33, "Foto Despues", bold)
 
-
-            i=1
+            i = 1
             for obra in results:
-               id_unico=obra[0]
-               sheet.write(i, 0, obra[0])
-               sheet.write(i, 1, obra[1])
-               sheet.write(i, 2, obra[2])
-               sheet.write(i, 3, obra[3])
-               sheet.write(i, 4, obra[4])
-               sheet.write(i, 5, obra[5])
-               sheet.write(i, 6, obra[6])
-               sheet.write(i, 7, obra[7])
-               sheet.write(i, 8, obra[8])
-               sheet.write(i, 9, obra[9])
+                id_unico = obra[0]
+                sheet.write(i, 0, obra[0])
+                sheet.write(i, 1, obra[1])
+                sheet.write(i, 2, obra[2])
+                sheet.write(i, 3, obra[3])
+                sheet.write(i, 4, obra[4])
+                sheet.write(i, 5, obra[5])
+                sheet.write(i, 6, obra[6])
+                sheet.write(i, 7, obra[7])
+                sheet.write(i, 8, obra[8])
+                sheet.write(i, 9, obra[9])
 
-               sheet.write(i, 10, "NO") #F
-               sheet.write(i, 11, "NO") #E
-               sheet.write(i, 12, "NO") #M
-               sheet.write(i, 13, "NO") #S
-               sheet.write(i, 14, "NO") #P
-               sheet.write(i, 15, "NO") #O
-               for inv in (obra[10].split(',')):
-                   if inv[0] == "F": sheet.write(i, 10, "SI")
-                   if inv[0] == "E": sheet.write(i, 11, "SI")
-                   if inv[0] == "M": sheet.write(i, 12, "SI")
-                   if inv[0] == "S": sheet.write(i, 13, "SI")
-                   if inv[0] == "P": sheet.write(i, 14, "SI")
-                   if inv[0] == "O": sheet.write(i, 15, "SI")
+                sheet.write(i, 10, "NO")  #F
+                sheet.write(i, 11, "NO")  #E
+                sheet.write(i, 12, "NO")  #M
+                sheet.write(i, 13, "NO")  #S
+                sheet.write(i, 14, "NO")  #P
+                sheet.write(i, 15, "NO")  #O
+                for inv in (obra[10].split(',')):
+                    if inv[0] == "F": sheet.write(i, 10, "SI")
+                    if inv[0] == "E": sheet.write(i, 11, "SI")
+                    if inv[0] == "M": sheet.write(i, 12, "SI")
+                    if inv[0] == "S": sheet.write(i, 13, "SI")
+                    if inv[0] == "P": sheet.write(i, 14, "SI")
+                    if inv[0] == "O": sheet.write(i, 15, "SI")
 
+                sheet.write(i, 16, obra[11])
+                sheet.write(i, 17, obra[12])
+                sheet.write(i, 18, obra[13])
+                sheet.write(i, 19, obra[14])
+                sheet.write(i, 20, obra[15])
 
-               sheet.write(i, 16, obra[11])
-               sheet.write(i, 17, obra[12])
-               sheet.write(i, 18, obra[13])
-               sheet.write(i, 19, obra[14])
-               sheet.write(i, 20, obra[15])
-
-               sheet.write(i, 21, "NO") #CG
-               sheet.write(i, 22, "NO") #PNG
-               sheet.write(i, 23, "NO") #PM
-               sheet.write(i, 24, "NO") #PNI
-               sheet.write(i, 25, "NO") #CNCH
-               sheet.write(i, 26, "NO") #OI
-               if obra[16] is not None:
-                   for cla in (obra[16].split(',')):
-                       sCla = ''.join(cla)
-                       if sCla == 'CG':
-                           if obra[17] is not None:
-                               for subscla in (obra[17].split(',')):
+                sheet.write(i, 21, "NO")  #CG
+                sheet.write(i, 22, "NO")  #PNG
+                sheet.write(i, 23, "NO")  #PM
+                sheet.write(i, 24, "NO")  #PNI
+                sheet.write(i, 25, "NO")  #CNCH
+                sheet.write(i, 26, "NO")  #OI
+                if obra[16] is not None:
+                    for cla in (obra[16].split(',')):
+                        sCla = ''.join(cla)
+                        if sCla == 'CG':
+                            if obra[17] is not None:
+                                for subscla in (obra[17].split(',')):
                                     sSubCla = ''.join(subscla)
                                     if sSubCla[:2] == 'CG': sheet.write(i, 21, sSubCla)
-                       if sCla == "PNG": sheet.write(i, 22, "SI")
-                       if sCla == "PM": sheet.write(i, 23, "SI")
-                       if sCla == "PNI":
-                           sheet.write(i, 24, "SI")
-                           if obra[17] is not None:
-                               for subscla in (obra[17].split(',')):
+                        if sCla == "PNG": sheet.write(i, 22, "SI")
+                        if sCla == "PM": sheet.write(i, 23, "SI")
+                        if sCla == "PNI":
+                            sheet.write(i, 24, "SI")
+                            if obra[17] is not None:
+                                for subscla in (obra[17].split(',')):
                                     sSubCla = ''.join(subscla)
                                     if sSubCla[:3] == "PNI": sheet.write(i, 24, sSubCla)
-                       if sCla == "CNCH": sheet.write(i, 25, "SI")
-                       if sCla == "OI": sheet.write(i, 26, "SI")
+                        if sCla == "CNCH": sheet.write(i, 25, "SI")
+                        if sCla == "OI": sheet.write(i, 26, "SI")
 
-               sheet.write(i, 27, obra[18])
-               sheet.write(i, 28, obra[19])
-               sheet.write(i, 29, obra[20])
-               sheet.write(i, 30, obra[21])
-               sheet.write(i, 31, obra[22])
-               sheet.write(i, 32, obra[23])
-               sheet.write(i, 33, obra[24])
+                sheet.write(i, 27, obra[18])
+                sheet.write(i, 28, obra[19])
+                sheet.write(i, 29, obra[20])
+                sheet.write(i, 30, obra[21])
+                sheet.write(i, 31, obra[22])
+                sheet.write(i, 32, obra[23])
+                sheet.write(i, 33, obra[24])
 
-
-               i+=1
+                i += 1
             book.close()
 
             # construct response
@@ -623,25 +646,22 @@ class ListarEndpoint(ProtectedResourceView):
             #response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             #response['Content-Disposition'] = "attachment; filename=test.xlsx"
         else:
-            sheet.write(0, 0,"Los filtros seleccionados no arrojaron informacion alguna sobre las obras, cambie los filtros para una nueva consulta.")
+            sheet.write(0, 0,
+                        "Los filtros seleccionados no arrojaron informacion alguna sobre las obras, cambie los filtros para una nueva consulta.")
             book.close()
 
-        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response = StreamingHttpResponse(FileWrapper(output),
+                                         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename="listado_obras.xlsx"'
         response['Content-Length'] = output.tell()
 
         output.seek(0)
 
-
-
-
-
         return response
 
 
 
-        #return HttpResponse(json.dumps(json_map), 'application/json')
-
+        # return HttpResponse(json.dumps(json_map), 'application/json')
 
 
 class InauguradorEndpoint(ProtectedResourceView):
@@ -688,29 +708,51 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 
         if dependencias and dependencias.count() > 0:
             if get_usuario_for_token(request.GET.get('access_token')).rol == 'US':
-               obras = Obra.objects.filter(
-                   Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
-               )
+                obras = Obra.objects.filter(
+                    Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+                )
             else:
                 obras = Obra.objects.filter(
-                   Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
-                   Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
+                    Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
+                    Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
                 )
         else:
             obras = Obra.objects.all()
 
         reporte = {
+            'reporte_total': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2014': {'obras_concluidas': {}},
             'reporte2013': {'obras_concluidas': {}},
             'reporte2012': {'obras_concluidas': {}},
         }
 
+        # Grafico, obras totales
+        obras_totales_proceso = obras.filter(tipoObra_id=2)
+        the_list = []
+        for obra in obras_totales_proceso.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
+            the_list.append(obra)
+
+        obras_totales_proyectadas = obras.filter(tipoObra_id=1)
+        the_list = []
+        for obra in obras_totales_proyectadas.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
+            the_list.append(obra)
+
+        obras_totales_concluidas = obras.filter(tipoObra_id=3)
+        the_list = []
+        for obra in obras_totales_concluidas.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
+            the_list.append(obra)
+
+        reporte['reporte_total']['obras_proceso'] = obras_totales_proceso
+        reporte['reporte_total']['obras_proyectadas'] = obras_totales_proyectadas
+        reporte['reporte_total']['obras_concluidas'] = obras_totales_concluidas
+
         obras2015 = obras.filter(fechaInicio__year=2015)
         obras2015_proceso = obras2015.filter(tipoObra_id=2)
         the_list = []
-
-        # Grafico
 
         for obra in obras2015_proceso.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
                 numero_obras=Count('estado')):
@@ -728,8 +770,6 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2015']['obras_proyectadas']['obras'] = the_list
         reporte['reporte2015']['obras_proyectadas']['total'] = obras2015_proyectadas.count()
 
-
-
         obras2015_concluidas = obras.filter(Q(fechaTermino__year=2015) & Q(tipoObra_id=3))
         the_list = []
         for obra in obras2015_concluidas.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
@@ -739,7 +779,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2015']['obras_concluidas']['obras'] = the_list
         reporte['reporte2015']['obras_concluidas']['total'] = obras2015_concluidas.count()
 
-        #Obras Concluidas, barra inferior
+        # Obras Concluidas, barra inferior
 
         obras2014 = obras.filter(Q(fechaTermino__year=2014) & Q(tipoObra_id=3))
         the_list = []
@@ -780,25 +820,26 @@ class ReporteNoTrabajoEndpoint(ProtectedResourceView):
 
 
 class ReporteObrasPorAutorizar(ProtectedResourceView):
-
     def get(self, request):
         dependencias = get_usuario_for_token(request.GET.get('access_token')).dependencia.all()
         subdependencias = get_usuario_for_token(request.GET.get('access_token')).subdependencia.all()
 
         if dependencias and dependencias.count() > 0:
             if get_usuario_for_token(request.GET.get('access_token')).rol == 'US':
-               obras = Obra.objects.filter(
-                   Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
-               )
+                obras = Obra.objects.filter(
+                    Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+                )
             else:
                 obras = Obra.objects.filter(
-                   Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
-                   Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
+                    Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
+                    Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
                 )
         else:
             obras = Obra.objects.all()
 
-        obras = obras.filter(autorizada=False).values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion', 'latitud', 'longitud', 'dependencia__imagenDependencia')
+        obras = obras.filter(autorizada=False).values('id', 'identificador_unico', 'estado__nombreEstado',
+                                                      'denominacion', 'latitud', 'longitud',
+                                                      'dependencia__imagenDependencia')
 
         the_list = []
         for obra in obras:
