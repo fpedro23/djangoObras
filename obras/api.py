@@ -34,12 +34,14 @@ def get_usuario_for_token(token):
 class HoraUltimaActualizacion(ProtectedResourceView):
     def get(self, request):
         json_response = {}
-        date = LogEntry.objects.filter(
+        action = LogEntry.objects.filter(
             action_flag=ADDITION,
             content_type__id__exact=ContentType.objects.get_for_model(Obra).id
-        ).order_by('action_time').last().action_time
+        ).order_by('action_time').last()
 
-        if date is None:
+        if action is not None:
+            date = action.action_time
+        else:
             date = datetime.now()
 
         json_response['dia'] = date.day
