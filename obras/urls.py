@@ -31,7 +31,7 @@ urlpatterns = patterns('',
                        url(r'^api/obras_vencidas', api.ObrasVencidasEndpoint.as_view()),
                        url(r'^api/obras_por_dependencia', api.ObrasForDependenciaEndpoint.as_view()),
                        url(r'^api/hora_ultima_actualizacion', api.HoraUltimaActualizacion.as_view()),
-                       url(r'^api/municipios_por_estado', api.MunicipiosForEstadoEndpoint.as_view()),
+                       url(r'^api/municipios_por_estado', api.MunicipiosForEstadosEndpoint.as_view()),
 
 
                        # Mappings Busqueda

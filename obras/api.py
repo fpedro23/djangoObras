@@ -172,17 +172,29 @@ class EstadosEndpoint(ProtectedResourceView):
                             'application/json')
 
 
-class MunicipiosForEstadoEndpoint(ProtectedResourceView):
+class MunicipiosForEstadosEndpoint(ProtectedResourceView):
     def get(self, request):
-        estado_id = request.GET.get('estado', None)
-        if estado_id is not None:
-            estado = Estado.objects.get(estado_id)
-            if estado is not None:
-                municipios = Municipio.objects.filter(estado=estado)
-        else:
-            municipios = Municipio.objects.all()
+        estado_ids = get_array_or_none(request.GET.get('estados'))
+        all_estados = False
 
-        return HttpResponse(json.dumps(map(lambda municipio: municipio.to_serializable_dict(), municipios)))
+        if estado_ids == None:
+            all_estados = True
+        else:
+            for id in estado_ids:
+                if id == 33 or id == 34:
+                    all_estados = True
+                    break
+
+        if all_estados:
+            municipios = Municipio.objects.all()
+        else:
+            municipios = Municipio.objects.filter(estado_id__in=estado_ids)
+
+        the_list = []
+        for municipio in municipios.values('id', 'nombreMunicipio'):
+            the_list.append(municipio)
+
+        return HttpResponse(json.dumps(the_list))
 
 
 class DependenciasTreeEndpoint(ProtectedResourceView):
