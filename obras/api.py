@@ -11,7 +11,7 @@ from django.db.models import Count
 
 from obras.BuscarObras import BuscarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador, \
-    InstanciaEjecutora, get_subdependencias_as_list_flat
+    InstanciaEjecutora, get_subdependencias_as_list_flat, Municipio
 from obras.views import get_array_or_none
 
 
@@ -170,6 +170,19 @@ class EstadosEndpoint(ProtectedResourceView):
     def get(self, request):
         return HttpResponse(json.dumps(map(lambda estado: estado.to_serializable_dict(), Estado.objects.all())),
                             'application/json')
+
+
+class MunicipiosForEstadoEndpoint(ProtectedResourceView):
+    def get(self, request):
+        estado_id = request.GET.get('estado', None)
+        if estado_id is not None:
+            estado = Estado.objects.get(estado_id)
+        if estado is not None:
+            municipios = Municipio.objects.filter(estado=estado)
+        else:
+            municipios = Municipio.objects.all()
+
+        return HttpResponse(json.dumps(map(lambda municipio: municipio.to_serializable_dict(), municipios)))
 
 
 class DependenciasTreeEndpoint(ProtectedResourceView):

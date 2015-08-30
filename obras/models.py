@@ -133,6 +133,12 @@ class Municipio (models.Model):
     longitud = models.FloatField()
     estado = models.ForeignKey(Estado, null=False, blank=False)
 
+    def to_serializable_dict(self):
+        ans = model_to_dict(self)
+        ans['id'] = str(self.id)
+        ans['estado'] = self.estado.nombreEstado
+        return ans
+
     def __str__(self):
         return self.nombreMunicipio
 
