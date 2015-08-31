@@ -347,6 +347,7 @@ class BuscadorEndpoint(ProtectedResourceView):
         buscador = BuscarObras(
             idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
             iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            subdependencias=get_array_or_none(request.GET.get('subdependencias')),
             estados=get_array_or_none(request.GET.get('estado')),
             clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
             inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
@@ -370,27 +371,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             municipios=get_array_or_none(request.GET.get('municipios')),
         )
 
-        arreglo_dependencias = []
-
-        if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
-            buscador.dependencias = None
-
-        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is None:
-
-            for dependencia in user.usuario.dependencia.all():
-                arreglo_dependencias.append(dependencia.id)
-
-            for subdependencia in user.usuario.subdependencia.all():
-                arreglo_dependencias.append(subdependencia.id)
-
-            buscador.dependencias = arreglo_dependencias
-
-        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia')) is None:
-            for subdependencia in user.usuario.subdependencia.all():
-                arreglo_dependencias.append(subdependencia.id)
-
-            buscador.dependencias = arreglo_dependencias
-
+        buscador.filtrar_dependencias(user)
         resultados = buscador.buscar()
 
         json_map = {}
@@ -486,30 +467,10 @@ class PptxEndpoint(ProtectedResourceView):
             id_obra=request.GET.get("idObra", None),
             susceptible_inauguracion=request.GET.get("susceptible", None),
             subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
-            municipios=get_array_or_none(request.GET.get('municipios')),
+            municipios=get_array_or_none(request.GET.get('municipios'))
         )
 
-        arreglo_dependencias = []
-
-        if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
-            buscador.dependencias = None
-
-        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
-
-            for dependencia in user.usuario.dependencia.all():
-                arreglo_dependencias.append(dependencia.id)
-
-            for subdependencia in user.usuario.subdependencia.all():
-                arreglo_dependencias.append(subdependencia.id)
-
-            buscador.dependencias = arreglo_dependencias
-
-        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
-            for subdependencia in user.usuario.subdependencia.all():
-                arreglo_dependencias.append(subdependencia.id)
-
-            buscador.dependencias = arreglo_dependencias
-
+        buscador.filtrar_dependencias(user)
         resultados = buscador.buscar()
 
         json_map = {}

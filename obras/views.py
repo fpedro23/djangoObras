@@ -646,30 +646,7 @@ def buscar_obras_web(request):
             municipios=get_array_or_none(request.GET.get('municipios', None))
     )
 
-    user = request.user
-
-    arreglo_dependencias = []
-
-    if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
-        buscador.dependencias = None
-
-    elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
-
-        for dependencia in user.usuario.dependencia.all():
-            arreglo_dependencias.append(dependencia.id)
-
-        for subdependencia in user.usuario.subdependencia.all():
-            arreglo_dependencias.append(subdependencia.id)
-
-        buscador.dependencias = arreglo_dependencias
-
-    elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
-        for subdependencia in user.usuario.subdependencia.all():
-            arreglo_dependencias.append(subdependencia.id)
-
-        buscador.dependencias = arreglo_dependencias
-
-
+    buscador.filtrar_dependencias(request.user)
     resultados = buscador.buscar()
 
     template = loader.get_template('admin/obras/consulta_filtros/consulta-filtros.html')
