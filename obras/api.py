@@ -353,7 +353,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             id_obra=request.GET.get("idObra", None),
             susceptible_inauguracion=request.GET.get("susceptible", None),
             subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
-
+            municipios=get_array_or_none(request.GET.get('msMunicipios')),
         )
 
         arreglo_dependencias = []
