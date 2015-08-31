@@ -368,11 +368,11 @@ class ObrasAdmin(admin.ModelAdmin):
             obj.autorizada = False
 
         if change:
-            success_message = 'La obra \"%s\" se ha modificado exitosamente.' % obj.denominacion
+            success_message = 'La obra \"%s\" se ha modificado exitosamente.' % obj.__str__()
 
             self.message_user(request, success_message, level=messages.SUCCESS)
         else:
-            success_message = 'La obra \"%s\" con el ID: \"%s\" se ha creado exitosamente.' % (obj.denominacion, obj.identificador_unico)
+            success_message = 'La obra \"%s\" se ha creado exitosamente.' % obj.__str__()
 
             self.message_user(request, success_message, level=messages.SUCCESS)
 
