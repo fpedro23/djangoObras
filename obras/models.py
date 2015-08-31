@@ -126,6 +126,7 @@ class Estado(models.Model):
         ans['id'] = str(self.id)
         return ans
 
+
 class Municipio (models.Model):
     nombreMunicipio = models.CharField(max_length=200)
     latitud = models.FloatField()
@@ -394,16 +395,18 @@ class Obra(models.Model):
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True, verbose_name='Fecha de Modificación')
     inaugurada = models.NullBooleanField(choices=BOOL_CHOICES)
     poblacionObjetivo = models.CharField(max_length=200)
+
     municipio = ChainedForeignKey(Municipio,
                                   chained_field='estado',
-                                  chained_model_field='estado'
-    )
+                                  chained_model_field='estado',
+                                  )
+
+
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=False, default=1)
     autorizada = models.BooleanField(default=False)
     latitud = models.FloatField(null=True, blank=True)
     longitud = models.FloatField(null=True, blank=True)
     id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200, null=True, blank=True)
-    municipio = models.ForeignKey(Municipio, null=True)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.identificador_unico + " " + self.denominacion[0:30]
