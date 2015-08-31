@@ -67,11 +67,10 @@ class Dependencia(models.Model):
         else:
             ans['dependienteDe'] = str(self.dependienteDe.id)
 
-        # We KNOW that this entry must be a FileField value
-        # (therefore, calling its name attribute is safe),
-        # so we need to mame it JSON serializable (Django objects
-        # are not by default and its built-in serializer sucks),
-        # namely, we only need the path
+        if self.fecha_ultima_modificacion is None:
+            ans['fecha_ultima_modificacion'] = None
+        else:
+            ans['fecha_ultima_modificacion'] = self.fecha_ultima_modificacion.__str__()
 
         return ans
 
