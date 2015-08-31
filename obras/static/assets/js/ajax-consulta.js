@@ -429,6 +429,76 @@ function subDependenciasMS(datos){
     //$l('#msSubDependencias').append(sHtml);
 }
 
+$l(function(){
+    $l('#msEstados').bind('change', function() {
+        cargaMunicipios();
+    });
+});
+function cargaMunicipios() {
+
+    var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
+
+    var ajax_data = {
+      "access_token"  : newToken
+    };
+
+    if(arrayEstados.toString()!=""){ajax_data.estados=arrayEstados.toString();}
+
+    $j.ajax({
+        url: '/obras/api/municipios_por_estado',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+            municipiosMS(data);
+
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
+}
+
+function subDependenciasMS(datos){
+    var sHtml='<select id="msSubDependencias" multiple="multiple" style="width: 100%;height: auto;">';
+    for(var i= 0;i<datos.length;i++) {
+
+        sHtml= sHtml +'<option value='+ datos[i].id +'>' + datos[i].nombreDependencia +'</option>';
+    }
+    sHtml= sHtml +'</select>';
+
+    $j('#divSubDep').html(sHtml);
+
+    $l("#msSubDependencias").multiselect({
+        header: true,
+        checkAllText: 'Marcar todas', uncheckAllText: 'Desmarcar todas',
+        noneSelectedText: 'Sub Dependencias',
+        selectedText: '# Sub Depen...'
+    });
+
+    //$l('#msSubDependencias').append(sHtml);
+}
+
+function municipiosMS(datos){
+    var sHtml='<select id="msMunicipios" multiple="multiple" style="width: 100%;height: auto;">';
+
+    for(var i= 0;i<datos.length;i++) {
+
+        sHtml= sHtml +'<option value='+ datos[i].id +'>' + datos[i].nombreMunicipio +'</option>';
+    }
+    sHtml= sHtml +'</select>';
+    alert(sHtml);
+    $j('#divMunicipios').html(sHtml);
+
+    $l("#msMunicipios").multiselect({
+        header: true,
+        checkAllText: 'Marcar todos', uncheckAllText: 'Desmarcar todos',
+        noneSelectedText: 'Municipios',
+        selectedText: '# Municipios'
+    });
+
+    //$l('#msSubDependencias').append(sHtml);
+}
+
 function regresa(){
     $pp('#pagina').show();
     $pp('#div-grafica').removeClass("mfp-show");
