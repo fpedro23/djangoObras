@@ -72,7 +72,7 @@ class BuscarObras:
             if user.usuario.rol == "SA":
                 if self.dependencias is None:
                     dependencias = []
-                    for dependencia in Dependencia.objects.filter(dependendienteDe=None):
+                    for dependencia in Dependencia.objects.filter(dependienteDe=None):
                         dependencias.append(dependencia.id)
                         self.dependencias = dependencias
             # Los usuarios AD deben filtrar por sus propias dependencias y
