@@ -33,6 +33,7 @@ def get_usuario_for_token(token):
 
 class HoraUltimaActualizacion(ProtectedResourceView):
     def get(self, request):
+        # Cmabio de prueba
         json_response = {}
         action = LogEntry.objects.filter(
             action_flag=ADDITION,
