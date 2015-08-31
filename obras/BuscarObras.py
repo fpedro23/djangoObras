@@ -9,6 +9,7 @@ class BuscarObras:
             self,
             idtipoobra,
             iddependencias,
+            subdependencias,
             estados,
             clasificaciones,
             inversiones,
@@ -39,6 +40,7 @@ class BuscarObras:
         self.impactos = impactos
         self.idTipoObra = idtipoobra
         self.dependencias = iddependencias
+        self.subdependencias = subdependencias
         self.inversiones = inversiones
         self.inauguradores = inauguradores
         self.inversion_minima = inversion_minima
@@ -61,7 +63,11 @@ class BuscarObras:
     def buscar(self):
 
         if self.dependencias is not None:
-            query = Q(dependencia__id__in=self.dependencias) | Q(subdependencia__id__in=self.dependencias)
+            query = Q(dependencia__id__in=self.dependencias)
+            if self.subdependencias is not None:
+                query = query & Q(subdependencia__id__in=self.subdependencias)
+        elif self.dependencias is not None:
+            query = Q(subdependencia__id__in=self.subdependencias)
         else:
             query = Q()
 
