@@ -9,31 +9,6 @@
 
   });
 
-$ts(function() {
-       $ts('#result_liist').tablesorter({
-	theme: 'blue',
-	// widthFixed: true, // <- now automatically set by the scroller widget
-	showProcessing: true,
-	headerTemplate : '{content} {icon}',
-	widgets: [ 'uitheme', 'zebra', 'pager', 'scroller' ],
-	widgetOptions : {
-		scroller_height : 300,
-		// scroll tbody to top after sorting
-		scroller_upAfterSort: true,
-		// pop table header into view while scrolling up the page
-		scroller_jumpToHeader: true,
-		// In tablesorter v2.19.0 the scroll bar width is auto-detected
-		// add a value here to override the auto-detected setting
-		scroller_barWidth : null
-		// scroll_idPrefix was removed in v2.18.0
-		// scroller_idPrefix : 's_'
-
-
-	}
-
-   });
-
-});
 </script>
 
 

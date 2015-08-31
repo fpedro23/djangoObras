@@ -49,6 +49,7 @@
 
 <link rel="stylesheet" href="{% static "assets/Popup/site.css"%}">
 
+
     {% block extrahead %}{% endblock %}
 
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
@@ -262,8 +263,52 @@
         <br class="clear" />
 
     <!-- END Content -->
-    <div class="FUA">
-        	Fecha de última actualización: {% now "l d \d\e F \d\e\l Y, H:i." %}
+    <script>
+        var $j = jQuery.noConflict();
+        $j(document).on('ready', last_act_data);
+        function last_act_data() {
+             $j.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if(settings.type == "POST"){
+                        xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
+                    }
+                    if(settings.type == "GET"){
+                        xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
+                    }
+                }
+            });
+
+                ActFecUltAct();
+
+        }
+
+        function ActFecUltAct(){
+
+             $j.get("/obras/register-by-token", function(respu) {
+                var ajax_data = {
+                    "access_token": respu.access_token
+                };
+                $j.ajax({
+                    url: '/obras/api/hora_ultima_actualizacion',
+                    type: 'get',
+                    data: ajax_data,
+                    success: function(data) {
+                        sHtml= 'Fecha de última actualización: ' + data.dia +'-' + data.mes + "-" + data.ano + ', ' + data.hora + ':' + data.minuto + ':' + data.segundo + '.'
+                        $j('#FUA').html(sHtml);
+
+                        },
+                    error: function(data) {
+                            console.log(data.status+"err");
+                             sHtml= 'Fecha de última actualización: '
+                             $j('#FUA').html(sHtml);
+                        }
+                    });
+             });
+        }
+    </script>
+
+    <div class="FUA" id="FUA">
+{% if not user.is_active %} {% now "l d \d\e F \d\e\l Y, H:i." %} {% endif %}
         </div>
 
 </div>
