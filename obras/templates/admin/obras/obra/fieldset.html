@@ -72,9 +72,18 @@
 
                 <table width="100%" border="0px" cellpadding="0px" cellspacing="2px" >
                    <tr>
-                      <td width="40%" class="texto">ID Único:<input type="hidden" id="idobraUNICO" value="{% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}"></td>
-                      <td width="60%" class="texto">{% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}<label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label></td>
-                  </tr>
+                      <td width="40%" class="texto">
+                          {% if change %}
+                              ID Único:<input type="hidden" id="idobraUNICO" value="{% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}">
+                          {% endif %}
+                      </td>
+                      <td width="60%" class="texto">
+                          {% if change %}
+                              {% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}<label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label>
+                          {% endif %}
+                      </td>
+
+                   </tr>
 
          {% endif %}
 
@@ -102,7 +111,7 @@
           {% endif %}
          {% if field.field.name == "dependencia" %}
                   <tr>
-                      <td class="texto">  <label class="required" for="id_dependencia">Dependencia:</label></td>
+                      <td class="texto">  <label class="required" for="id_dependencia">Dependencia/Organismo:</label></td>
                       {% csrf_token %}
                       <td class="texto"> {{ field.field }}
                            {% if field.errors %}
@@ -212,7 +221,7 @@
                              <img id="imgerr12" data-toggle="tooltip" data-placement="right"  title="{% for error in field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">
                            {% endif %}
                   </td>
-                  <td width="2%" class="texto" </td>
+                  <td width="2%" class="texto"> </td>
               </tr>
 
        {% endif %}
@@ -424,7 +433,7 @@
 
           {% if field.field.name == "inaugurador" %}
             <tr>
-               <td class="texto" width="40%">  <label class="required" for="id_inaugurador">Inaugurador:</label></td>
+               <td class="texto" width="40%">  <label class="required" for="id_inaugurador">Inaugurado por:</label></td>
                <td class="texto" width="60%">{{ field.field }}
                   {% if field.errors %}
                              <img id="imgerr23" data-toggle="tooltip" data-placement="left"  title="{% for error in field.field.field.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="15px" height="15px">

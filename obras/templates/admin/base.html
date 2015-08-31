@@ -65,7 +65,7 @@
     </div>
 
     <div id="encabezado01">
-    REGISTRO, CONTROL Y SEGUIMIENTO DE OBRAS
+    CONTROL Y SEGUIMIENTO DE OBRAS{% if user.is_active %} - {% else %}<br><br>{% endif %}COSEO
     </div>
 
     {% if user.is_active and user.is_staff %}

@@ -11,6 +11,15 @@
     <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.file-input.js' %}"></script>
      <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
     {{ media }}
+<script>
+function elimCancelada() {
+        {% if not change %}
+            var x = document.getElementById("id_tipoObra");
+            x.remove(4);
+        {% endif %}
+
+}
+</script>
 
     <script type="text/javascript">
 (
@@ -50,7 +59,10 @@ x++;
 
 
 }
+
+
     $(document).ready(function($) {
+        elimCancelada();
 
 
         $("tr input.action-select").actions();
@@ -70,6 +82,7 @@ x++;
             //$(".imprimirBTN").hide();
 
         }
+
 
 
             $tt('#imgerr1').tooltip({html:true});$tt('#imgerr2').tooltip({html:true});$tt('#imgerr3').tooltip({html:true});
@@ -193,9 +206,9 @@ x++;
 
   <div id="welcome">
 
-           <span id="walta" hidden="true">Alta de Obra</span>
+           <span id="walta" hidden="true">Registro de Obra</span>
 
-            <span id="wmod" hidden="true">Modificar Obra</span>
+            <span id="wmod" hidden="true">Modificación de Obra</span>
 
 
 
