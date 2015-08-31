@@ -14,6 +14,10 @@ from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, 
     InstanciaEjecutora, get_subdependencias_as_list_flat, Municipio
 from obras.views import get_array_or_none
 
+from pptx import Presentation
+from pptx.util import Inches
+from pptx.util import Pt
+
 
 try:
     import cStringIO as StringIO
@@ -245,6 +249,28 @@ class SubependenciasFlatEndpoint(ProtectedResourceView):
 
         return HttpResponse(json.dumps(ans), 'application/json')
 
+class Subdependencias_forId_Endpoint(ProtectedResourceView):
+    def get(self, request):
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
+        iddependencias=get_array_or_none(request.GET.get('dependencia'))
+        ans = []
+        if iddependencias is not None:
+            if usuario.rol == 'SA':
+                dependencias = Dependencia.objects.filter(
+                    Q(id__in=iddependencias)
+                )
+            else:
+                dependencias = usuario.dependencia.filter(
+                    Q(id__in=iddependencias)
+                )
+
+            ansD = map(lambda dependencia: dependencia.to_serializable_dict(), dependencias)
+            for dependencia in dependencias:
+                subdeps = Dependencia.objects.filter(dependienteDe__id=dependencia.id)
+                if subdeps:
+                    ans=map(lambda dep: dep.to_serializable_dict(), subdeps)
+
+        return HttpResponse(json.dumps(ans), 'application/json')
 
 class ClasificacionEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -418,6 +444,110 @@ class BuscadorEndpoint(ProtectedResourceView):
 
         return HttpResponse(json.dumps(json_map), 'application/json')
 
+class PptxEndpoint(ProtectedResourceView):
+    def get(self, request):
+
+        user = AccessToken.objects.get(token=request.GET.get('access_token')).user
+
+        buscador = BuscarObras(
+            idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+            iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            estados=get_array_or_none(request.GET.get('estado')),
+            clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
+            inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
+            inauguradores=get_array_or_none(request.GET.get('inaugurador')),
+            impactos=get_array_or_none(request.GET.get('impacto')),
+            inaugurada=request.GET.get('inaugurada', None),
+            inversion_minima=request.GET.get('inversionMinima', None),
+            inversion_maxima=request.GET.get('inversionMaxima', None),
+            fecha_inicio_primera=request.GET.get('fechaInicio', None),
+            fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+            fecha_fin_primera=request.GET.get('fechaFin', None),
+            fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+            denominacion=request.GET.get('denominacion', None),
+            instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
+            limite_min=request.GET.get("limiteMin"),
+            limite_max=request.GET.get("limiteMax"),
+            busqueda_rapida=request.GET.get("busquedaRapida", None),
+            id_obra=request.GET.get("idObra", None),
+            susceptible_inauguracion=request.GET.get("susceptible", None),
+            subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
+
+        )
+
+        arreglo_dependencias = []
+
+        if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
+            buscador.dependencias = None
+
+        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia'))is None:
+
+            for dependencia in user.usuario.dependencia.all():
+                arreglo_dependencias.append(dependencia.id)
+
+            for subdependencia in user.usuario.subdependencia.all():
+                arreglo_dependencias.append(subdependencia.id)
+
+            buscador.dependencias = arreglo_dependencias
+
+        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia'))is None:
+            for subdependencia in user.usuario.subdependencia.all():
+                arreglo_dependencias.append(subdependencia.id)
+
+            buscador.dependencias = arreglo_dependencias
+
+        resultados = buscador.buscar()
+
+        json_map = {}
+
+
+        json_map['obras'] = []
+        for obra in resultados['obras'].values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion',
+                                               'latitud', 'longitud', 'dependencia__imagenDependencia'):
+            json_map['obras'].append(obra)
+
+        output = StringIO.StringIO()
+        prs = Presentation()
+        slide = prs.slides.add_slide(prs.slide_layouts[5])
+        shapes = slide.shapes
+        shapes.title.text = 'Resultados'
+
+        rows = resultados['reporte_general']['obras_totales']+1
+        cols = 3
+        left = Inches(0.921)
+        top = Inches(1.0)
+        width = Inches(6.0)
+        height = Inches(0.8)
+
+        table = shapes.add_table(rows, cols, left, top, width, height).table
+        # set column widths
+        table.columns[0].width = Inches(2.0)
+        table.columns[1].width = Inches(2.0)
+        table.columns[2].width = Inches(4.0)
+
+        # write column headings
+        table.cell(0, 0).text = 'Identificador'
+        table.cell(0, 1).text = 'Estado'
+        table.cell(0, 2).text = 'Denominacion'
+
+        # write body cells
+        i=1
+        for obra in json_map['obras']:
+            table.cell(i, 0).text = obra['identificador_unico']
+            table.cell(i, 1).text = obra['estado__nombreEstado']
+            table.cell(i, 2).text = obra['denominacion']
+            i+=1
+
+
+
+        prs.save(output)
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response['Content-Disposition'] = 'attachment; filename="resultado_obras.pptx"'
+        response['Content-Length'] = output.tell()
+
+        output.seek(0)
+
+        return response
 
 class ListarEndpoint(ProtectedResourceView):
     def get(self, request):
