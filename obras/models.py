@@ -406,9 +406,8 @@ class Obra(models.Model):
     id_Dependencia = models.CharField(verbose_name='Identificador Interno', max_length=200, null=True, blank=True)
     municipio = models.ForeignKey(Municipio, null=True)
 
-
     def __str__(self):  # __unicode__ on Python 2
-        return self.denominacion
+        return self.identificador_unico + " " + self.denominacion[0:30]
 
     def to_serializable_dict(self):
         map = {}
