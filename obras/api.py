@@ -3,7 +3,7 @@ from datetime import *
 from django.contrib.admin.models import LogEntry, ADDITION
 from django.contrib.contenttypes.models import ContentType
 
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.http import HttpResponse
 from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
@@ -872,6 +872,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_proceso']['obras'] = the_list
         reporte['reporte_total']['obras_proceso']['total'] = obras_totales_proceso.count()
+        reporte['reporte_total']['obras_proceso']['inversion_total'] = obras_totales_proceso.aggregate(Sum('inversionTotal'))
 
         obras_totales_proyectadas = obras.filter(tipoObra_id=1)
         the_list = []
@@ -880,6 +881,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_proyectadas']['obras'] = the_list
         reporte['reporte_total']['obras_proyectadas']['total'] = obras_totales_proyectadas.count()
+        reporte['reporte_total']['obras_proyectadas']['inversion_total'] = obras_totales_proyectadas.aggregate(Sum('inversionTotal'))
 
         obras_totales_concluidas = obras.filter(tipoObra_id=3)
         the_list = []
@@ -888,6 +890,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_concluidas']['obras'] = the_list
         reporte['reporte_total']['obras_concluidas']['total'] = obras_totales_concluidas.count()
+        reporte['reporte_total']['obras_concluidas']['inversion_total'] = obras_totales_concluidas.aggregate(Sum('inversionTotal'))
 
         # Reportes anuales 2012-2015
         obras2015 = obras.filter(fechaInicio__year=2015)
