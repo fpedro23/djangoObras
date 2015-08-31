@@ -384,7 +384,7 @@ class Obra(models.Model):
     fechaInicio = models.DateField(verbose_name="Fecha de Inicio")
     fechaTermino = models.DateField(verbose_name="Fecha de Término")
     inversionTotal = models.FloatField()
-    totalBeneficiarios = models.FloatField()
+    totalBeneficiarios = models.IntegerField()
     senalizacion = models.BooleanField(default=False, verbose_name='Señalización')
     susceptibleInauguracion = models.BooleanField(default=False)
     porcentajeAvance = models.DecimalField(max_digits=5, decimal_places=2)
