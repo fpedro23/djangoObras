@@ -507,7 +507,7 @@ class Obra(models.Model):
             map['fotoDespues'] = self.fotoDespues.name
         map['inaugurada'] = self.inaugurada
         map['poblacionObjetivo'] = self.poblacionObjetivo
-        map['municipio'] = self.municipio
+        map['municipio'] = self.municipio.nombreMunicipio
         if self.tipoMoneda is None:
             map['tipoMoneda'] = None
         else:
