@@ -60,11 +60,13 @@ function main_consulta() {
     $j('#ver_grafica_datos #datosGrafica').on('change', graficas);
     $j('#art_limpiar #limpiar').on('click', limpia);
     $j('#listado #listar').on('click', listarObras)
+    $j('#ver_datos #enviaPPT2').on('click', PptxObras)
 
     $j('#regresaGraficas #regresarBTN').on('click', regresa)
     $j('#openWin').on('click', openWin)
     $j('#enviaPDF').on('click', demoFromHTML)
     $j('#enviaPDF2').on('click', demoFromHTML2)
+    
 
 
     volverHistorico();
@@ -74,6 +76,8 @@ function main_consulta() {
 
 
 }
+
+
 
 function volverHistorico() {
     //var variable = (opener) ? opener.location.href : 'No disponible' ;
@@ -239,6 +243,57 @@ function listarObras() {
 
 }
 
+function PptxObras() {
+    var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
+    var fechaInicio1 = $l("#fechaInicial1").val();
+    var fechaInicio2 = $l("#fechaInicial2").val();
+    var fechaFin1 = $l("#fechaFinal1").val();
+    var fechaFin2 = $l("#fechaFinal2").val();
+    var inversionInicial = $l("#inversionInicial").val();
+    var inversionFinal = $l("#inversionFinal").val();
+    var denominacion = $l("#denominacion").val();
+
+    var URL="/obras/api/PptxVista?access_token=" + newToken
+
+    ;
+
+    if (fechaInicio1!=""){fechaInicio1 = myDateFormatter($dp('#fechaInicial1').datepicker("getDate"));}
+    if (fechaInicio2!=""){ fechaInicio2 = myDateFormatter($dp('#fechaInicial2').datepicker("getDate"));}
+    if (fechaFin1!=""){fechaFin1 = myDateFormatter($dp('#fechaFinal1').datepicker("getDate"));}
+    if (fechaFin2!=""){fechaFin2 = myDateFormatter($dp('#fechaFinal2').datepicker("getDate"));}
+
+
+
+    if(arrayDependencias.toString()!=""){URL += "&dependencia=" + arrayDependencias.toString();}
+    if(arrayEstatusObra.toString()!=""){URL += "&tipoDeObra=" + arrayEstatusObra.toString();}
+    if(arrayInstanciaEjecutora.toString()!=""){URL += "&instanciaEjecutora=" + arrayInstanciaEjecutora.toString();}
+    if(arrayEstados.toString()!=""){URL += "&estado=" + arrayEstados.toString();}
+    if(arrayClasificacion.toString()!=""){URL += "&clasificacion=" + arrayClasificacion.toString();}
+    if(arrayTipoInversion.toString()!=""){URL += "&tipoDeInversion=" + arrayTipoInversion.toString();}
+    if(arrayInaugurador.toString()!=""){URL += "&inaugurador=" + arrayInaugurador.toString();}
+    if(arrayImpacto.toString()!=""){URL += "&impacto=" + arrayImpacto.toString();}
+    if(fechaInicio1!=""){URL += "&fechaInicio=" + fechaInicio1;}
+    if(fechaInicio2!=""){URL += "&fechaInicioSegunda=" + fechaInicio2;}
+    if(fechaFin1!=""){URL += "&fechaFin=" + fechaFin1;}
+    if(fechaFin2!=""){URL += "&fechaFinSegunda=" + fechaFin2;}
+    if(inversionInicial!=""){URL += "&inversionMinima=" + inversionInicial;}
+    if(inversionFinal!=""){URL += "&inversionMaxima=" + inversionFinal;}
+    if(denominacion!=""){URL += "&denominacion=" + denominacion.toUpperCase();}
+    if($j('#inauguradas').is(':checked')){URL += "&inaugurada =" +  $j('#inauguradas').is(':checked');}
+
+
+    location.href = URL
+
+
+}
 
 
 
@@ -323,6 +378,55 @@ function verDatos() {
             $j("#ajaxProgress").hide();
         }
     });
+}
+
+$l(function(){
+    $l('#msDependencias').bind('change', function() {
+        cargaSubDependencias();
+    });
+});
+function cargaSubDependencias() {
+
+    var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+
+    var ajax_data = {
+      "access_token"  : newToken
+    };
+
+    if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
+
+    $j.ajax({
+        url: '/obras/api/subdependencias',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+            subDependenciasMS(data);
+
+        },
+        error: function(data) {
+            alert('error!!! ' + data.status);
+        }
+    });
+}
+
+function subDependenciasMS(datos){
+    var sHtml='<select id="msSubDependencias" multiple="multiple" style="width: 100%;height: auto;">';
+    for(var i= 0;i<datos.length;i++) {
+
+        sHtml= sHtml +'<option value='+ datos[i].id +'>' + datos[i].nombreDependencia +'</option>';
+    }
+    sHtml= sHtml +'</select>';
+
+    $j('#divSubDep').html(sHtml);
+
+    $l("#msSubDependencias").multiselect({
+        header: true,
+        checkAllText: 'Marcar todas', uncheckAllText: 'Desmarcar todas',
+        noneSelectedText: 'Sub Dependencias',
+        selectedText: '# Sub Depen...'
+    });
+
+    //$l('#msSubDependencias').append(sHtml);
 }
 
 function regresa(){

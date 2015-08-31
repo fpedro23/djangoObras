@@ -76,12 +76,28 @@
             selectedText: '# Dependencias'
         });
         // off
+        $l("#msSubDependencias").multiselect({
+            header: true,
+            checkAllText: 'Marcar todas',
+            uncheckAllText: 'Desmarcar todas',
+            noneSelectedText: 'Sub Dependencias',
+            selectedText: '# Sub Dependencias'
+        });
+        // off
         $l("#msEstados").multiselect({
             header: true,
             checkAllText: 'Marcar todos',
             uncheckAllText: 'Desmarcar todos',
             noneSelectedText: 'Estados',
             selectedText: '# Estados'
+        });
+        // off
+        $l("#msMunicipios").multiselect({
+            header: true,
+            checkAllText: 'Marcar todos',
+            uncheckAllText: 'Desmarcar todos',
+            noneSelectedText: 'Municipios',
+            selectedText: '# Municipios'
         });
         // off
         $l("#msTipoInversion").multiselect({
@@ -112,8 +128,8 @@
             header: true,
             checkAllText: 'Marcar todos',
             uncheckAllText: 'Desmarcar todos',
-            noneSelectedText: 'Inaugurador',
-            selectedText: '# Inauguradores'
+            noneSelectedText: 'Inaugurado Por',
+            selectedText: '# Inaugurado Por'
         });
         $l("#msInauguracion").multiselect({
             header: true,
@@ -504,7 +520,8 @@ et$(function() {
                         <div class="col-md-4" >
                             <article id="ver_datos">
                                 {% csrf_token %}
-                                <div class="ppt"  id="enviaPPT2" onClick ="$pp('#tabla-exporta2').show();$pp('#tablaExporta2').tableExport({type:'powerpoint',escape:'false'}); $pp('#tabla-exporta2').hide();"></div>
+                                <!--<div class="ppt"  id="enviaPPT2" onClick ="$pp('#tabla-exporta2').show();$pp('#tablaExporta2').tableExport({type:'powerpoint',escape:'false'}); $pp('#tabla-exporta2').hide();"></div>-->
+                                <div class="ppt"  id="enviaPPT2"></div>
 
                             </article>
                         </div>
@@ -777,7 +794,7 @@ et$(function() {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+                                        <div class="col-md-10"  style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                             <select id="msDependencias" multiple="multiple" style="width: 100%;height: auto;">
                                                 {% for dep in dependencias %}
                                                      <option value={{dep.id}}>{{dep.nombreDependencia}}</option>
@@ -786,14 +803,14 @@ et$(function() {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
-                                            <select id="msEstados" multiple="multiple"  style="width: 100%;height: auto;">
-                                                {% for obj in estados %}
-                                                     <option value={{obj.id}}>{{obj.nombreEstado}}</option>
-                                                {% endfor %}
+                                        <div class="col-md-10" id="divSubDep" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+                                            <select id="msSubDependencias" multiple="multiple" style="width: 100%;height: auto;">
+
                                             </select>
                                         </div>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -805,6 +822,26 @@ et$(function() {
                                 <div class="panel panel-default panel-table">
                                     <div class="panel-body" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
                                         <div class="tr">
+
+
+                                            <div class="row">
+                                                <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+                                                    <select id="msEstados" multiple="multiple"  style="width: 100%;height: auto;">
+                                                        {% for obj in estados %}
+                                                             <option value={{obj.id}}>{{obj.nombreEstado}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+                                                    <select id="msMunicipios" multiple="multiple"  style="width: 100%;height: auto;">
+                                                        {% for obj in estados %}
+                                                             <option value={{obj.id}}>{{obj.nombreEstado}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
 
@@ -824,15 +861,6 @@ et$(function() {
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
-                                                    <select id="msInaugurador" multiple="multiple" style="width: 100%;height: auto;">
-                                                        {% for obj in inaugurador %}
-                                                             <option value={{obj.id}}>{{obj.nombreCargoInaugura}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
 
                                         </div>
                                     </div>
@@ -842,20 +870,21 @@ et$(function() {
                                 <div class="panel panel-default panel-table">
                                     <div class="panel-body" style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px; padding-top: 4px ">
                                         <div class="tr">
+                                            <div class="row">
+                                                <div class="col-md-10" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
+                                                    <select id="msInaugurador" multiple="multiple" style="width: 100%;height: auto;">
+                                                        {% for obj in inaugurador %}
+                                                             <option value={{obj.id}}>{{obj.nombreCargoInaugura}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="row" >
                                                 <div class="col-md-9" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
                                                     <span class="input-label">Inauguradas</span>
                                                 </div>
                                                 <div class="col-md-2" style=" padding-bottom: 0px; padding-top: 0px ">
                                                     <input type="checkbox" id="inauguradas" value="option1">
-                                                </div>
-                                            </div>
-                                            <div class="row" >
-                                                <div class="col-md-9" style="padding-right: 4px; padding-left: 15px; padding-bottom: 0px; padding-top: 0px ">
-                                                    <span class="input-label">Sin Inauguraci&oacute;n</span>
-                                                </div>
-                                                <div class="col-md-2" style=" padding-bottom: 0px; padding-top: 0px ">
-                                                    <input type="checkbox" id="sinInauguracion" value="option2">
                                                 </div>
                                             </div>
                                             <div class="row" >
