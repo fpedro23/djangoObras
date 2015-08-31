@@ -349,7 +349,7 @@ class Obra(models.Model):
                                        )
 
     estado = models.ForeignKey(Estado)
-    impacto = models.ForeignKey(Impacto)
+    impacto = models.ForeignKey(Impacto, blank=True, null=True)
     instanciaEjecutora = models.ForeignKey(InstanciaEjecutora, blank=True, null=True)
     registroHacendario = models.CharField(max_length=200, blank=True, null=True)
     montoRegistroHacendario = models.FloatField(verbose_name="Recursos Federales Autorizados", blank=True, null=True)
