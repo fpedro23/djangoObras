@@ -10,6 +10,5 @@
 mod_wsgi-2.7/
 venv/
 obras/media
-static/
 __pycache__/
 local_settings.py
