@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/master_ari_2708.iml" filepath="$PROJECT_DIR$/.idea/master_ari_2708.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/djangoObras.iml" filepath="$PROJECT_DIR$/.idea/djangoObras.iml" />
     </modules>
   </component>
 </project>
