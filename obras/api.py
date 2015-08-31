@@ -49,15 +49,29 @@ class HoraUltimaActualizacion(ProtectedResourceView):
         else:
             date = datetime.now()
 
-        json_response['dia'] = date.day
-        json_response['mes'] = date.month
+        if date.day >= 10:
+            json_response['dia'] = "0" + str(date.day)
+        else:
+            json_response['dia'] = date.day
+        if date.month >= 10:
+            json_response['mes'] = date.month
+        else:
+            json_response['mes'] = "0" + str(date.month)
         json_response['ano'] = date.year
 
         time = date.time()
-        json_response['hora'] = time.hour
-        json_response['minuto'] = time.minute
-        json_response['segundo'] = time.second
-
+        if time.hour >= 10:
+            json_response['hora'] = time.hour
+        else:
+            json_response['hora'] = "0" + str(time.hour)
+        if time.minute >= 10:
+            json_response['minuto'] = time.minute
+        else:
+            json_response['minuto'] = "0" + str(time.minute)
+        if time.second >= 10:
+            json_response['segundo'] = time.second
+        else:
+            json_response['segundo'] = "0" + str(time.second)
         return HttpResponse(json.dumps(json_response), 'application/json')
 
 class HoraEndpoint(ProtectedResourceView):
@@ -353,7 +367,7 @@ class BuscadorEndpoint(ProtectedResourceView):
             id_obra=request.GET.get("idObra", None),
             susceptible_inauguracion=request.GET.get("susceptible", None),
             subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
-            municipios=get_array_or_none(request.GET.get('municipios'))
+            municipios=get_array_or_none(request.GET.get('municipios')),
         )
 
         arreglo_dependencias = []
@@ -472,7 +486,7 @@ class PptxEndpoint(ProtectedResourceView):
             id_obra=request.GET.get("idObra", None),
             susceptible_inauguracion=request.GET.get("susceptible", None),
             subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
-
+            municipios=get_array_or_none(request.GET.get('municipios')),
         )
 
         arreglo_dependencias = []

@@ -643,7 +643,7 @@ def buscar_obras_web(request):
             fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
             denominacion=request.GET.get('denominacion', None),
             instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
-            municipios=get_array_or_none(request.GET.get('municipio', None))
+            municipios=get_array_or_none(request.GET.get('municipios', None))
     )
 
     user = request.user
