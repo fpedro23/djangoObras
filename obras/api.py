@@ -872,7 +872,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_proceso']['obras'] = the_list
         reporte['reporte_total']['obras_proceso']['total'] = obras_totales_proceso.count()
-        reporte['reporte_total']['obras_proceso']['inversion_total'] = obras_totales_proceso.aggregate(Sum('inversionTotal'))
+        reporte['reporte_total']['obras_proceso']['inversion_total'] = obras_totales_proceso.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         obras_totales_proyectadas = obras.filter(tipoObra_id=1)
         the_list = []
@@ -881,7 +881,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_proyectadas']['obras'] = the_list
         reporte['reporte_total']['obras_proyectadas']['total'] = obras_totales_proyectadas.count()
-        reporte['reporte_total']['obras_proyectadas']['inversion_total'] = obras_totales_proyectadas.aggregate(Sum('inversionTotal'))
+        reporte['reporte_total']['obras_proyectadas']['inversion_total'] = obras_totales_proyectadas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         obras_totales_concluidas = obras.filter(tipoObra_id=3)
         the_list = []
@@ -890,7 +890,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_concluidas']['obras'] = the_list
         reporte['reporte_total']['obras_concluidas']['total'] = obras_totales_concluidas.count()
-        reporte['reporte_total']['obras_concluidas']['inversion_total'] = obras_totales_concluidas.aggregate(Sum('inversionTotal'))
+        reporte['reporte_total']['obras_concluidas']['inversion_total'] = obras_totales_concluidas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         # Reportes anuales 2012-2015
         obras2015 = obras.filter(fechaInicio__year=2015)
