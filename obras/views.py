@@ -880,9 +880,11 @@ def fichaTecnica(request):
         else:
             prs.slides[0].shapes[40].text = "Si"
 
-        prs.slides[0].shapes[41].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[41].text = json_map['obras'][0]['inaugurador']['nombreCargoInaugura']
-
+        try:
+            prs.slides[0].shapes[41].text_frame.paragraphs[0].font.size = Pt(8)
+            prs.slides[0].shapes[41].text = json_map['obras'][0]['inaugurador']['nombreCargoInaugura']
+        except Exception as e:
+            prs.slides[0].shapes[41].text = ""
         #logo dependencia
         top = Inches(1)
         left = Inches(0.4)
