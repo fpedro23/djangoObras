@@ -18,7 +18,6 @@ from pptx import Presentation
 from pptx.util import Inches
 from pptx.util import Pt
 
-
 try:
     import cStringIO as StringIO
 except ImportError:
@@ -39,13 +38,10 @@ class HoraUltimaActualizacion(ProtectedResourceView):
     def get(self, request):
         # Cmabio de prueba
         json_response = {}
-        action = LogEntry.objects.filter(
-            action_flag=ADDITION,
-            content_type__id__exact=ContentType.objects.get_for_model(Obra).id
-        ).order_by('action_time').last()
+        dependencia = Dependencia.objects.all().order_by('fecha_ultima_modificacion').last()
 
-        if action is not None:
-            date = action.action_time
+        if dependencia is not None:
+            date = dependencia.fecha_ultima_modificacion
         else:
             date = datetime.now()
 
