@@ -13,6 +13,7 @@ from obras.BuscarObras import BuscarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador, \
     InstanciaEjecutora, get_subdependencias_as_list_flat, Municipio
 from obras.views import get_array_or_none
+import pytz
 
 from pptx import Presentation
 from pptx.util import Inches
@@ -27,6 +28,12 @@ from django.core.servers.basehttp import FileWrapper
 from django.http import StreamingHttpResponse
 
 
+def from_utc_to_local(utc_dt):
+    local_tz = pytz.timezone('America/Mexico_City')
+    local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
+    return local_tz.normalize(local_dt)
+
+
 def get_usuario_for_token(token):
     if token:
         return AccessToken.objects.get(token=token).user.usuario
@@ -36,12 +43,11 @@ def get_usuario_for_token(token):
 
 class HoraUltimaActualizacion(ProtectedResourceView):
     def get(self, request):
-        # Cmabio de prueba
         json_response = {}
         dependencia = Dependencia.objects.all().order_by('fecha_ultima_modificacion').last()
 
         if dependencia is not None:
-            date = dependencia.fecha_ultima_modificacion
+            date = from_utc_to_local(dependencia.fecha_ultima_modificacion)
         else:
             date = datetime.now()
 
