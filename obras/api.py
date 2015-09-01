@@ -404,9 +404,6 @@ class BuscadorEndpoint(ProtectedResourceView):
             else:
                 map['sumatotal'] = float(reporteSub['sumatotal'])
             json_map['reporte_subdependencia'].append(map)
-        # json_map['obras'] = []
-        #for obra in resultados['obras']:
-        #    json_map['obras'].append(obra.to_serializable_dict())
 
         json_map['obras'] = []
         for obra in resultados['obras'].values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion',

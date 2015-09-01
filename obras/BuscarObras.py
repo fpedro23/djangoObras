@@ -63,32 +63,17 @@ class BuscarObras:
     # Este metodo asignara los parametros de dependencia y subdependencia
     # de acuerdo al tipo de usuario que realiza la busqueda
     # Si estos parametros ya estan definidos o el usuario es None,
-    #  este metodo no hara nada
+    # este metodo no hara nada
     def filtrar_dependencias(self, user):
         if user is not None:
-            # Los usuarios SA no tienen restricciones asi que el simplemente dejar
-            # los parametros como llegaron (ya sean vacios o no) es lo correcto
-            # Solo hace falta filtrar las dependencias de primer nivel
-            if user.usuario.rol == "SA":
-                if self.dependencias is None:
-                    dependencias = []
-                    for dependencia in Dependencia.objects.filter(dependienteDe=None):
-                        dependencias.append(dependencia.id)
-                        self.dependencias = dependencias
             # Los usuarios AD deben filtrar por sus propias dependencias y
             # subdependencias
-            elif user.usuario.rol == "AD":
+            if user.usuario.rol == "AD":
                 if self.dependencias is None:
                     dependencias = []
                     for dependencia in user.usuario.dependencia.all():
                         dependencias.append(dependencia.id)
                     self.dependencias = dependencias
-
-                if self.subdependencias is None:
-                    subdependencias = []
-                    for subdependencia in user.usuario.subdependencia.all():
-                        subdependencias.append(subdependencia)
-                    self.subdependencias = subdependencias
             # Los usuarios US deben filtrar por las subdependencias que le corresponden
             # Tambien por la dependencia (solo una) que corresponde pero el filtrar por
             # subdependencias implicitamente filtra por dependencias
@@ -103,9 +88,9 @@ class BuscarObras:
 
         query = Q()
         if self.dependencias is not None:
-            query = query & Q(dependencia__id__in=self.dependencias)
+            query = query | Q(dependencia_id__in=self.dependencias)
         if self.subdependencias is not None:
-            query = query & Q(subdependencia__id__in=self.subdependencias)
+            query = query | Q(subdependencia_id__in=self.subdependencias)
 
         if self.id_obra is not None:
             query = query & Q(identificador_unico=self.id_obra)
