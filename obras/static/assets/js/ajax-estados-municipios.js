@@ -4,7 +4,8 @@
 var $j = jQuery.noConflict();
 
 $j(document).on('ready', function() {
-    clearMunicipios();
+    if ($('#id_municipio').find('option:selected').val() == null)
+        clearMunicipios();
     $('#id_estado').on('change', function() {
         var option = $(this).find('option:selected');
 
