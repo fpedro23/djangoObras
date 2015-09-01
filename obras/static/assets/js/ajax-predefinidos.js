@@ -264,16 +264,19 @@ function tablaD(Datos,titulo,descripcion){
 
     var sHtml = '<table id="tablaIzquierda" class="table table-striped">'
                 +' <colgroup>'
-                +' <col width="50%">'
+                +' <col width="30%">'
+                +' <col width="70%">'
                 +' </colgroup> '
                 +'<thead>'
                         +'<tr>'
                             +'<th>Dependencia</th>'
+                            +'<th>Fecha de última Modificación</th>'
                         +'</tr>'
                 +'</thead>'
                 +'<tfoot>'
                         +'<tr>'
                             +'<th>Dependencia</th>'
+                            +'<th>Fecha de última Modificación</th>'
                         +'</tr>'
 
                         +'<tr><td class="pager" id="pagerI" colspan="3">'
@@ -294,6 +297,7 @@ function tablaD(Datos,titulo,descripcion){
     for(var i= 0;i<Datos.length;i++){
         sHtml +='<tr>'
                 +'<td>' + Datos[i].nombreDependencia +'</td>'
+                +'<td>' + myDateFormatter(Datos[i].fecha_ultima_modificacion) +'</td>'
                 +'</tr>'
     }
 
@@ -333,3 +337,20 @@ function tablaD(Datos,titulo,descripcion){
 
 
 }
+
+function myDateFormatter (dateObject) {
+        var d = new Date(dateObject);
+        var day = d.getDate();
+        var month = d.getMonth()+1;
+        var year = d.getFullYear()
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        //var fecha =year + "-" + month + "-" + day;
+        var fecha =day + "-" + month + "-" + year;
+
+        return fecha;
+    };
