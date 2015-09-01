@@ -53,7 +53,7 @@ function verDatos() {
                 var map = new google.maps.Map(document.getElementById('mapa'),
                                             mapOptions)
                 var lugares =  new Array();
-                lugares=puntosMapa(data);
+                lugares=puntosMapaTotales(data);
                 setMarkers(map,lugares);
                 google.maps.event.addDomListener(window, 'load', initialize);
                 // mapa
@@ -248,32 +248,14 @@ function puntosMapaTotales(Datos) {
   var arregloSimple=new Array();
   var arregloDoble=new Array();
     var arregloObjeto = new Object();
-    for(var i= 0;i<Datos.reporte2015.obras_concluidas.obras.length;i++){
+    for(var i= 0;i<Datos.reporte_mapa.obras_mapa.obras.length;i++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].estado + ", obras Concluidas : " + Datos.reporte2015.obras_concluidas.obras[i].numero_obras);
-        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].latitud);
-        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].longitud);
+        arregloSimple.push(Datos.reporte_mapa.obras_mapa.obras[i].estado + ", " + Datos.reporte_mapa.obras_mapa.obras[i].numero_obras + " Obras, " + formato_numero(Datos.reporte_mapa.obras_mapa.obras[i].totalinvertido,2,'.',',') + " MDP.");
+        arregloSimple.push(Datos.reporte_mapa.obras_mapa.obras[i].latitud);
+        arregloSimple.push(Datos.reporte_mapa.obras_mapa.obras[i].longitud);
         arregloSimple.push(i);
         arregloDoble.push(arregloSimple);
     }
-
-    for(var j= 0;j<Datos.reporte2015.obras_proceso.obras.length;j++){
-        var arregloSimple=new Array();
-        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].estado + ", obras en Proceso  : " + Datos.reporte2015.obras_proceso.obras[j].numero_obras);
-        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].latitud);
-        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].longitud);
-        arregloSimple.push(j+i);
-        arregloDoble.push(arregloSimple);
-    }
-    for(var k= 0;k<Datos.reporte2015.obras_proyectadas.obras.length;k++){
-        var arregloSimple=new Array();
-        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].estado + ", obras Proyectadas : " + Datos.reporte2015.obras_proyectadas.obras[k].numero_obras);
-        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].latitud);
-        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].longitud);
-        arregloSimple.push(k+j);
-        arregloDoble.push(arregloSimple);
-    }
-
     arregloObjeto = arregloDoble;
     return arregloObjeto;
 }

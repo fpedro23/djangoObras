@@ -61,6 +61,7 @@ function main_consulta() {
     $j('#art_limpiar #limpiar').on('click', limpia);
     $j('#listado #listar').on('click', listarObras)
     $j('#ver_datos #enviaPPT2').on('click', PptxObras)
+    $j('#ver_datos #enviaPPT').on('click', PptxObrasReporte)
 
     $j('#regresaGraficas #regresarBTN').on('click', regresa)
     $j('#openWin').on('click', openWin)
@@ -251,6 +252,8 @@ function listarObras() {
 }
 
 function PptxObras() {
+    var tipoReporte = $j('input:radio[name=tipoReporte]:checked').val();
+
     var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
@@ -282,6 +285,10 @@ function PptxObras() {
 
 
     if(arrayDependencias.toString()!=""){URL += "&dependencia=" + arrayDependencias.toString();}
+
+    if(arraySubDependencias.toString()!=""){URL += "&subdependencias=" + arraySubDependencias.toString();}
+    if(arrayMunicipios.toString()!=""){URL += "&municipios=" + arrayMunicipios.toString();}
+
     if(arrayEstatusObra.toString()!=""){URL += "&tipoDeObra=" + arrayEstatusObra.toString();}
     if(arrayInstanciaEjecutora.toString()!=""){URL += "&instanciaEjecutora=" + arrayInstanciaEjecutora.toString();}
     if(arrayEstados.toString()!=""){URL += "&estado=" + arrayEstados.toString();}
@@ -304,6 +311,63 @@ function PptxObras() {
 
 }
 
+function PptxObrasReporte() {
+    var tipoReporte = $j('input:radio[name=tipoReporte]:checked').val();
+
+    var arrayTipoInversion = $l("#msTipoInversion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arraySubDependencias = $l("#msSubDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayMunicipios = $l("#msMunicipios").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayInaugurador = $l("#msInaugurador").multiselect("getChecked").map(function(){return this.value;}).get();
+    var fechaInicio1 = $l("#fechaInicial1").val();
+    var fechaInicio2 = $l("#fechaInicial2").val();
+    var fechaFin1 = $l("#fechaFinal1").val();
+    var fechaFin2 = $l("#fechaFinal2").val();
+    var inversionInicial = $l("#inversionInicial").val();
+    var inversionFinal = $l("#inversionFinal").val();
+    var denominacion = $l("#denominacion").val();
+
+    var URL="/obras/api/ReportePP?access_token=" + newToken;
+
+    if (fechaInicio1!=""){fechaInicio1 = myDateFormatter($dp('#fechaInicial1').datepicker("getDate"));}
+    if (fechaInicio2!=""){ fechaInicio2 = myDateFormatter($dp('#fechaInicial2').datepicker("getDate"));}
+    if (fechaFin1!=""){fechaFin1 = myDateFormatter($dp('#fechaFinal1').datepicker("getDate"));}
+    if (fechaFin2!=""){fechaFin2 = myDateFormatter($dp('#fechaFinal2').datepicker("getDate"));}
+
+    URL += "&tipoReporte=" + tipoReporte.toString();
+
+    if(arrayDependencias.toString()!=""){URL += "&dependencia=" + arrayDependencias.toString();}
+
+    if(arraySubDependencias.toString()!=""){URL += "&subdependencias=" + arraySubDependencias.toString();}
+    if(arrayMunicipios.toString()!=""){URL += "&municipios=" + arrayMunicipios.toString();}
+
+    if(arrayEstatusObra.toString()!=""){URL += "&tipoDeObra=" + arrayEstatusObra.toString();}
+    if(arrayInstanciaEjecutora.toString()!=""){URL += "&instanciaEjecutora=" + arrayInstanciaEjecutora.toString();}
+    if(arrayEstados.toString()!=""){URL += "&estado=" + arrayEstados.toString();}
+    if(arrayClasificacion.toString()!=""){URL += "&clasificacion=" + arrayClasificacion.toString();}
+    if(arrayTipoInversion.toString()!=""){URL += "&tipoDeInversion=" + arrayTipoInversion.toString();}
+    if(arrayInaugurador.toString()!=""){URL += "&inaugurador=" + arrayInaugurador.toString();}
+    if(arrayImpacto.toString()!=""){URL += "&impacto=" + arrayImpacto.toString();}
+    if(fechaInicio1!=""){URL += "&fechaInicio=" + fechaInicio1;}
+    if(fechaInicio2!=""){URL += "&fechaInicioSegunda=" + fechaInicio2;}
+    if(fechaFin1!=""){URL += "&fechaFin=" + fechaFin1;}
+    if(fechaFin2!=""){URL += "&fechaFinSegunda=" + fechaFin2;}
+    if(inversionInicial!=""){URL += "&inversionMinima=" + inversionInicial;}
+    if(inversionFinal!=""){URL += "&inversionMaxima=" + inversionFinal;}
+    if(denominacion!=""){URL += "&denominacion=" + denominacion.toUpperCase();}
+    if($j('#inauguradas').is(':checked')){URL += "&inaugurada =" +  $j('#inauguradas').is(':checked');}
+
+
+    location.href = URL
+
+
+}
 
 
 function verDatos() {
@@ -391,6 +455,21 @@ function verDatos() {
             $j("#ajaxProgress").hide();
         }
     });
+}
+
+function ponerMapa(){
+
+    var mapOptions = {
+                zoom: 4,
+                center: new google.maps.LatLng(22.6526121, -100.1780452),
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+    }
+    var map = new google.maps.Map(document.getElementById('map-canvas'),
+                                        mapOptions)
+    var lugares =  new Array();
+    lugares=puntosMapa(data);
+    setMarkers(map,lugares);
+    google.maps.event.addDomListener(window, 'load', initialize);
 }
 
 $l(function(){
@@ -1433,7 +1512,21 @@ function puntosMapa(Datos) {
     return arregloObjeto;
 }
 
-
+function puntosMapaObra(Datos) {
+  var arregloSimple=new Array();
+  var arregloDoble=new Array();
+    var arregloObjeto = new Object();
+    for(var i= 0;i<Datos.reporte_estado.length;i++){
+        var arregloSimple=new Array();
+        arregloSimple.push(Datos.reporte_estado[i].estado.nombreEstado + ", número de obras: " + Datos.reporte_estado[i].numeroObras);
+        arregloSimple.push(Datos.reporte_estado[i].estado.latitud);
+        arregloSimple.push(Datos.reporte_estado[i].estado.longitud);
+        arregloSimple.push(i);
+        arregloDoble.push(arregloSimple);
+    }
+    arregloObjeto = arregloDoble;
+    return arregloObjeto;
+}
 function setMarkers(mapa, lugares) {
   var infowindow = new google.maps.InfoWindow();
   for (var i = 0; i < lugares.length; i++) {
