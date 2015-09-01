@@ -399,6 +399,8 @@ class Obra(models.Model):
     municipio = ChainedForeignKey(Municipio,
                                   chained_field='estado',
                                   chained_model_field='estado',
+                                  blank=True,
+                                  null=True,
                                   )
 
 
