@@ -70,7 +70,8 @@ function main_consulta() {
 
 
     volverHistorico();
-
+    //cargaMunicipios();
+    //cargaSubDependencias();
 
 
 
@@ -196,6 +197,8 @@ function listarObras() {
     var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arraySubDependencias = $l("#msSubDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayMunicipios = $l("#msMunicipios").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
@@ -221,6 +224,10 @@ function listarObras() {
 
 
     if(arrayDependencias.toString()!=""){URL += "&dependencia=" + arrayDependencias.toString();}
+
+    if(arraySubDependencias.toString()!=""){URL += "&subdependencias=" + arraySubDependencias.toString();}
+    if(arrayMunicipios.toString()!=""){URL += "&municipios=" + arrayMunicipios.toString();}
+
     if(arrayEstatusObra.toString()!=""){URL += "&tipoDeObra=" + arrayEstatusObra.toString();}
     if(arrayInstanciaEjecutora.toString()!=""){URL += "&instanciaEjecutora=" + arrayInstanciaEjecutora.toString();}
     if(arrayEstados.toString()!=""){URL += "&estado=" + arrayEstados.toString();}
@@ -248,6 +255,8 @@ function PptxObras() {
     var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arraySubDependencias = $l("#msSubDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayMunicipios = $l("#msMunicipios").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
@@ -302,6 +311,8 @@ function verDatos() {
     var arrayEstatusObra = $l("#msEstatusObra").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayInstanciaEjecutora = $l("#msInstanciaEjecutora").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayDependencias = $l("#msDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arraySubDependencias = $l("#msSubDependencias").multiselect("getChecked").map(function(){return this.value;}).get();
+    var arrayMunicipios = $l("#msMunicipios").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayEstados = $l("#msEstados").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayClasificacion = $l("#msClasificacion").multiselect("getChecked").map(function(){return this.value;}).get();
     var arrayImpacto = $l("#msImpacto").multiselect("getChecked").map(function(){return this.value;}).get();
@@ -328,6 +339,8 @@ function verDatos() {
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
+    if(arraySubDependencias.toString()!=""){ajax_data.subdependencias=arraySubDependencias.toString();}
+    if(arrayMunicipios.toString()!=""){ajax_data.municipios=arrayMunicipios.toString();}
     if(arrayEstatusObra.toString()!=""){ajax_data.tipoDeObra=arrayEstatusObra.toString();}
     if(arrayInstanciaEjecutora.toString()!=""){ajax_data.instanciaEjecutora=arrayInstanciaEjecutora.toString();}
     if(arrayEstados.toString()!=""){ajax_data.estado=arrayEstados.toString();}
@@ -395,18 +408,20 @@ function cargaSubDependencias() {
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
 
-    $j.ajax({
-        url: '/obras/api/subdependencias',
-        type: 'get',
-        data: ajax_data,
-        success: function(data) {
-            subDependenciasMS(data);
+    if(arrayDependencias.toString()!=""){
+        $j.ajax({
+            url: '/obras/api/subdependencias',
+            type: 'get',
+            data: ajax_data,
+            success: function(data) {
+                subDependenciasMS(data);
 
-        },
-        error: function(data) {
-            alert('error!!! ' + data.status);
-        }
-    });
+            },
+            error: function(data) {
+                alert('error!!! ' + data.status);
+            }
+        });
+    }
 }
 
 function subDependenciasMS(datos){
@@ -444,18 +459,20 @@ function cargaMunicipios() {
 
     if(arrayEstados.toString()!=""){ajax_data.estados=arrayEstados.toString();}
 
-    $j.ajax({
-        url: '/obras/api/municipios_por_estado',
-        type: 'get',
-        data: ajax_data,
-        success: function(data) {
-            municipiosMS(data);
+    if(arrayEstados.toString()!="") {
+        $j.ajax({
+            url: '/obras/api/municipios_por_estado',
+            type: 'get',
+            data: ajax_data,
+            success: function (data) {
+                municipiosMS(data);
 
-        },
-        error: function(data) {
-            alert('error!!! ' + data.status);
-        }
-    });
+            },
+            error: function (data) {
+                alert('error!!! ' + data.status);
+            }
+        });
+    }
 }
 
 function subDependenciasMS(datos){
@@ -486,7 +503,7 @@ function municipiosMS(datos){
         sHtml= sHtml +'<option value='+ datos[i].id +'>' + datos[i].nombreMunicipio +'</option>';
     }
     sHtml= sHtml +'</select>';
-    alert(sHtml);
+
     $j('#divMunicipios').html(sHtml);
 
     $l("#msMunicipios").multiselect({

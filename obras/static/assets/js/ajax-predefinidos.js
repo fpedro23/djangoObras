@@ -11,9 +11,9 @@ $j(document).on('ready', main_consulta);
 var datosJson
 var newToken
 
-var descripcionIniciadas = "Obras proyectadas cuya fecha de inicio ya venció, es decir; obras proyectadas que a la fecha actual ya deberían estar en proceso";
-var descripcionVencidas = "Obras en proceso cuya fecha de término ya venció, es decir; obras en proceso que a la fecha actual ya deberían estar concluidas";
-var descripcionDependencias = "Dependencias sin actividad alguna sobre sus obras en los 15 días anteriores a la fecha actual.";
+var descripcionIniciadas = "Obras proyectadas que a la fecha deberían estar en proceso";
+var descripcionVencidas = "Obras en proceso que a la fecha deberían estar concluidas";
+var descripcionDependencias = "Dependencias sin actividad en los últimos 15 días.";
 function valida_token(){
 var ajax_datatoken = {
       "access_token"  : 'O9BfPpYQuu6a5ar4rGTd2dRdaYimVa'

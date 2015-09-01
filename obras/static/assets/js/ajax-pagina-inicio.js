@@ -79,7 +79,7 @@ function datosConcluidas() {
 
 function graficas(){
 
-    titulo="Número de obras año 2015";
+    titulo="Total de obras";
 
 
     Highcharts.setOptions({
@@ -112,15 +112,19 @@ function arregloDataGrafica(Datos) {
 
             var arregloSimple=new Array();
             arregloSimple.push("Obras Concluidas");
-            arregloSimple.push(Datos.reporte2015.obras_concluidas.total);
+            arregloSimple.push(Datos.reporte_total.obras_concluidas.total);
+            arregloSimple.push(Datos.reporte_total.obras_concluidas.inversion_total);
+
             arregloDoble.push(arregloSimple);
             var arregloSimple2=new Array();
             arregloSimple2.push("Obras en Proceso");
-            arregloSimple2.push(Datos.reporte2015.obras_proceso.total);
+            arregloSimple2.push(Datos.reporte_total.obras_proceso.total);
+            arregloSimple2.push(Datos.reporte_total.obras_proceso.inversion_total);
             arregloDoble.push(arregloSimple2);
             var arregloSimple3=new Array();
             arregloSimple3.push("Obras Proyectadas");
-            arregloSimple3.push(Datos.reporte2015.obras_proyectadas.total);
+            arregloSimple3.push(Datos.reporte_total.obras_proyectadas.total);
+            arregloSimple3.push(Datos.reporte_total.obras_proyectadas.inversion_total)
             arregloDoble.push(arregloSimple3);
 
 
@@ -131,7 +135,7 @@ function arregloDataGrafica(Datos) {
 
 function pieGrafica(datas,titulo,dona,nombreData) {
 
-
+    var myComments=["First input","second comment","another comment","last comment"]
     $j('#containerGrafica').highcharts({
         chart: {
             type: 'pie',
@@ -145,7 +149,8 @@ function pieGrafica(datas,titulo,dona,nombreData) {
             },
             style: {
                  color: '#FFFFFF',
-                 font: 'bold 12px "Trebuchet MS", Verdana, sans-serif'
+                 fontFamily: 'soberana_sanslight',
+                 fontSize: '15px'
             }
         },
         title: {
@@ -159,16 +164,23 @@ function pieGrafica(datas,titulo,dona,nombreData) {
             enabled: false
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            style: { fontFamily: 'soberana_sanslight', fontSize: '15px' },
+            pointFormat: 'Número de obras: <b>{point.y}</b><br>Porcentaje del Total: <b>{point.percentage:.2f}%</b>'
+
+            //    var comment = myComments[serieI];
+
+
         },
         plotOptions: {
             pie: {
+                style: { fontFamily: 'soberana_sanslight',color: 'white' ,fontSize: '12px' },
                 innerSize: dona,
                 allowPointSelect: true,
                 cursor: 'pointer',
                 depth: 35,
                 dataLabels: {
                     enabled: true,
+                    style: { fontFamily: 'soberana_sanslight',color: 'white' ,fontSize: '12px' },
                     format: '{point.name}'
                 }
             }
@@ -199,6 +211,40 @@ $j.date = function(dateObject) {
 };
 
 function puntosMapa(Datos) {
+  var arregloSimple=new Array();
+  var arregloDoble=new Array();
+    var arregloObjeto = new Object();
+    for(var i= 0;i<Datos.reporte2015.obras_concluidas.obras.length;i++){
+        var arregloSimple=new Array();
+        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].estado + ", obras Concluidas : " + Datos.reporte2015.obras_concluidas.obras[i].numero_obras);
+        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].latitud);
+        arregloSimple.push(Datos.reporte2015.obras_concluidas.obras[i].longitud);
+        arregloSimple.push(i);
+        arregloDoble.push(arregloSimple);
+    }
+
+    for(var j= 0;j<Datos.reporte2015.obras_proceso.obras.length;j++){
+        var arregloSimple=new Array();
+        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].estado + ", obras en Proceso  : " + Datos.reporte2015.obras_proceso.obras[j].numero_obras);
+        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].latitud);
+        arregloSimple.push(Datos.reporte2015.obras_proceso.obras[j].longitud);
+        arregloSimple.push(j+i);
+        arregloDoble.push(arregloSimple);
+    }
+    for(var k= 0;k<Datos.reporte2015.obras_proyectadas.obras.length;k++){
+        var arregloSimple=new Array();
+        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].estado + ", obras Proyectadas : " + Datos.reporte2015.obras_proyectadas.obras[k].numero_obras);
+        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].latitud);
+        arregloSimple.push(Datos.reporte2015.obras_proyectadas.obras[k].longitud);
+        arregloSimple.push(k+j);
+        arregloDoble.push(arregloSimple);
+    }
+
+    arregloObjeto = arregloDoble;
+    return arregloObjeto;
+}
+
+function puntosMapaTotales(Datos) {
   var arregloSimple=new Array();
   var arregloDoble=new Array();
     var arregloObjeto = new Object();

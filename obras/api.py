@@ -3,7 +3,7 @@ from datetime import *
 from django.contrib.admin.models import LogEntry, ADDITION
 from django.contrib.contenttypes.models import ContentType
 
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.http import HttpResponse
 from oauth2_provider.models import AccessToken
 from oauth2_provider.views import ProtectedResourceView
@@ -531,6 +531,8 @@ class ListarEndpoint(ProtectedResourceView):
 
         idtipoobra = get_array_or_none(request.GET.get('tipoDeObra')),
         iddependencias = get_array_or_none(request.GET.get('dependencia')),
+        idsubdependencias = get_array_or_none(request.GET.get('subdependencias')),
+        idmunicipios = get_array_or_none(request.GET.get('muicipios')),
         estados = get_array_or_none(request.GET.get('estado')),
         clasificaciones = get_array_or_none(request.GET.get('clasificacion')),
         inversiones = get_array_or_none(request.GET.get('tipoDeInversion')),
@@ -561,6 +563,9 @@ class ListarEndpoint(ProtectedResourceView):
 
         arreglo_dependencias = []
         p_dependencias = ""
+        p_subdependencias = ","
+        p_municipios = ","
+
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
 
@@ -583,6 +588,14 @@ class ListarEndpoint(ProtectedResourceView):
         if iddependencias[0] is not None:
             for dependencia in iddependencias[0]:
                 p_dependencias += str(dependencia) + ","
+
+        if idsubdependencias[0] is not None:
+            for subdependencia in idsubdependencias[0]:
+                p_subdependencias += str(subdependencia) + ","
+
+        if idmunicipios[0] is not None:
+            for municipio in idmunicipios[0]:
+                p_municipios += str(municipio) + ","
 
         if idtipoobra[0] is not None:
             p_tipoobra = ""
@@ -658,7 +671,7 @@ class ListarEndpoint(ProtectedResourceView):
         else:
             p_denominacion = denominacion[0]
 
-        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_instancia_ejecutora[:-1], p_estados[:-1],
+        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_subdependencias[:-1], p_municipios[:-1], p_instancia_ejecutora[:-1], p_estados[:-1],
                                   p_inversion_minima, p_inversion_maxima, p_fecha_inicio_primera,
                                   p_fecha_inicio_segunda, p_fecha_fin_primera, p_fecha_fin_segunda, p_impactos[:-1],
                                   p_inauguradores[:-1], p_inversiones[:-1], p_clasificaciones[:-1],
@@ -857,12 +870,22 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             obras = Obra.objects.all()
 
         reporte = {
+            'reporte_mapa': {'obras_mapa': {}},
             'reporte_total': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2014': {'obras_concluidas': {}},
             'reporte2013': {'obras_concluidas': {}},
             'reporte2012': {'obras_concluidas': {}},
         }
+
+        obras_mapa = obras.exclude(tipoObra_id=4)
+        the_list = []
+        for obra in obras_mapa.values('latitud', 'longitud', 'estado__nombreEstado').distinct():
+            self.rename_estado(obra)
+            the_list.append(obra)
+        reporte['reporte_mapa']['obras_mapa']['obras'] = the_list
+        reporte['reporte_mapa']['obras_mapa']['total'] = obras_mapa.count()
+        reporte['reporte_mapa']['obras_mapa']['inversion_total'] = obras_mapa.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         # Grafico, obras totales
         obras_totales_proceso = obras.filter(tipoObra_id=2)
@@ -872,6 +895,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_proceso']['obras'] = the_list
         reporte['reporte_total']['obras_proceso']['total'] = obras_totales_proceso.count()
+        reporte['reporte_total']['obras_proceso']['inversion_total'] = obras_totales_proceso.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         obras_totales_proyectadas = obras.filter(tipoObra_id=1)
         the_list = []
@@ -880,6 +904,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_proyectadas']['obras'] = the_list
         reporte['reporte_total']['obras_proyectadas']['total'] = obras_totales_proyectadas.count()
+        reporte['reporte_total']['obras_proyectadas']['inversion_total'] = obras_totales_proyectadas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         obras_totales_concluidas = obras.filter(tipoObra_id=3)
         the_list = []
@@ -888,6 +913,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_concluidas']['obras'] = the_list
         reporte['reporte_total']['obras_concluidas']['total'] = obras_totales_concluidas.count()
+        reporte['reporte_total']['obras_concluidas']['inversion_total'] = obras_totales_concluidas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         # Reportes anuales 2012-2015
         obras2015 = obras.filter(fechaInicio__year=2015)
