@@ -516,14 +516,14 @@ class Obra(models.Model):
         return map
     # static method to perform a parameter
     @staticmethod
-    def searchList(p_tipoobra,p_dependencias,p_instancia_ejecutora,p_estados,inversion_minima,inversion_maxima,fecha_inicio_primera,fecha_inicio_segunda,fecha_fin_primera,fecha_fin_segunda,p_impactos,p_inauguradores,p_inversiones,p_clasificaciones,susceptible,inaugurada,denominacion):
+    def searchList(p_tipoobra,p_dependencias,p_subdependencias,p_municipios,p_instancia_ejecutora,p_estados,inversion_minima,inversion_maxima,fecha_inicio_primera,fecha_inicio_segunda,fecha_fin_primera,fecha_fin_segunda,p_impactos,p_inauguradores,p_inversiones,p_clasificaciones,susceptible,inaugurada,denominacion):
 
         # create a cursor
         cur = connection.cursor()
         # execute the stored procedure passing in
         # A SOME parameters
         # '',p_dependencias,'','',0,0,'2010-08-01','2011-08-01','2020-08-01','2021-08-01','','','','','','','',
-        cur.callproc('sp_listado', (p_tipoobra,p_dependencias,p_instancia_ejecutora,p_estados,inversion_minima,inversion_maxima,fecha_inicio_primera,fecha_inicio_segunda,fecha_fin_primera,fecha_fin_segunda,p_impactos,p_inauguradores,p_inversiones,p_clasificaciones,susceptible,inaugurada,denominacion,))
+        cur.callproc('sp_listado', (p_tipoobra,p_dependencias,p_subdependencias,p_municipios,p_instancia_ejecutora,p_estados,inversion_minima,inversion_maxima,fecha_inicio_primera,fecha_inicio_segunda,fecha_fin_primera,fecha_fin_segunda,p_impactos,p_inauguradores,p_inversiones,p_clasificaciones,susceptible,inaugurada,denominacion,))
         # grab the results
         results = cur.fetchall()
         cur.close()
