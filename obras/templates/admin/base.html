@@ -1,9 +1,9 @@
-{% load admin_static %}{% load firstof from future %}<!DOCTYPE html>
+{% load admin_static %}{% load firstof from future %} <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"es" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
  <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="/home/obrasapf/djangoObras/obras/media/icono_OBRAS.ico" type="image/x-icon" rel="shortcut icon" />
+<link href="{{ STATIC_ROOT }}icono_OBRAS.ico" type="image/x-icon" rel="shortcut icon" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">

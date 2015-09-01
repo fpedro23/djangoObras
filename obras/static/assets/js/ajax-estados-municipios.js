@@ -45,6 +45,7 @@ function getMunicipiosForEstado(estadoId) {
 
 function populateMunicpiosSelect(municipios) {
     clearMunicipios();
+     $j('#id_municipio').append('<option value>---------</option>');
     for (var i = 0; i < municipios.length; i++) {
         $j('#id_municipio').append(
             '<option value="'+municipios[i].id+'">' +
