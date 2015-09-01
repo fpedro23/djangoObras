@@ -441,6 +441,11 @@ class Obra(models.Model):
             map['instanciaEjecutora'] = self.instanciaEjecutora.to_serializable_dict()
         else:
             map['instanciaEjecutora'] = None
+        if self.municipio:
+            map['municipio'] = self.municipio.nombreMunicipio
+        else:
+            map['municipio'] = None
+
 
         map['tipoInversion'] = []
         if self.tipoInversion:
@@ -509,7 +514,7 @@ class Obra(models.Model):
             map['fotoDespues'] = self.fotoDespues.name
         map['inaugurada'] = self.inaugurada
         map['poblacionObjetivo'] = self.poblacionObjetivo
-        map['municipio'] = self.municipio.nombreMunicipio
+
         if self.tipoMoneda is None:
             map['tipoMoneda'] = None
         else:
