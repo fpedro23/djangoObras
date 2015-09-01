@@ -13,11 +13,11 @@ from obras.BuscarObras import BuscarObras
 from obras.models import Obra, Estado, Dependencia, Impacto, TipoClasificacion, TipoInversion, TipoObra, Inaugurador, \
     InstanciaEjecutora, get_subdependencias_as_list_flat, Municipio
 from obras.views import get_array_or_none
+import pytz
 
 from pptx import Presentation
 from pptx.util import Inches
 from pptx.util import Pt
-
 
 try:
     import cStringIO as StringIO
@@ -26,6 +26,12 @@ except ImportError:
 from xlsxwriter.workbook import Workbook
 from django.core.servers.basehttp import FileWrapper
 from django.http import StreamingHttpResponse
+
+
+def from_utc_to_local(utc_dt):
+    local_tz = pytz.timezone('America/Mexico_City')
+    local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
+    return local_tz.normalize(local_dt)
 
 
 def get_usuario_for_token(token):
@@ -37,39 +43,35 @@ def get_usuario_for_token(token):
 
 class HoraUltimaActualizacion(ProtectedResourceView):
     def get(self, request):
-        # Cmabio de prueba
         json_response = {}
-        action = LogEntry.objects.filter(
-            action_flag=ADDITION,
-            content_type__id__exact=ContentType.objects.get_for_model(Obra).id
-        ).order_by('action_time').last()
+        dependencia = Dependencia.objects.all().order_by('fecha_ultima_modificacion').last()
 
-        if action is not None:
-            date = action.action_time
+        if dependencia is not None:
+            date = from_utc_to_local(dependencia.fecha_ultima_modificacion)
         else:
             date = datetime.now()
 
         if date.day >= 10:
-            json_response['dia'] = "0" + str(date.day)
+            json_response['dia'] = str(date.day)
         else:
-            json_response['dia'] = date.day
+            json_response['dia'] = "0" + str(date.day)
         if date.month >= 10:
-            json_response['mes'] = date.month
+            json_response['mes'] = str(date.month)
         else:
             json_response['mes'] = "0" + str(date.month)
-        json_response['ano'] = date.year
+        json_response['ano'] = str(date.year)
 
         time = date.time()
         if time.hour >= 10:
-            json_response['hora'] = time.hour
+            json_response['hora'] = str(time.hour)
         else:
             json_response['hora'] = "0" + str(time.hour)
         if time.minute >= 10:
-            json_response['minuto'] = time.minute
+            json_response['minuto'] = str(time.minute)
         else:
             json_response['minuto'] = "0" + str(time.minute)
         if time.second >= 10:
-            json_response['segundo'] = time.second
+            json_response['segundo'] = str(time.second)
         else:
             json_response['segundo'] = "0" + str(time.second)
         return HttpResponse(json.dumps(json_response), 'application/json')
@@ -402,9 +404,6 @@ class BuscadorEndpoint(ProtectedResourceView):
             else:
                 map['sumatotal'] = float(reporteSub['sumatotal'])
             json_map['reporte_subdependencia'].append(map)
-        # json_map['obras'] = []
-        #for obra in resultados['obras']:
-        #    json_map['obras'].append(obra.to_serializable_dict())
 
         json_map['obras'] = []
         for obra in resultados['obras'].values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion',

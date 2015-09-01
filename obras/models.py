@@ -396,13 +396,13 @@ class Obra(models.Model):
     inaugurada = models.BooleanField(choices=BOOL_CHOICES)
     poblacionObjetivo = models.CharField(max_length=200)
 
-    municipio = ChainedForeignKey(Municipio,
-                                  chained_field='estado',
-                                  chained_model_field='estado',
-                                  blank=True,
-                                  null=True,
-                                  )
-
+    # municipio = ChainedForeignKey(Municipio,
+    #                               chained_field='estado',
+    #                               chained_model_field='estado',
+    #                               blank=True,
+    #                               null=True,
+    #                               )
+    municipio = models.ForeignKey(Municipio, blank=True, null=True)
 
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=False, default=1)
     autorizada = models.BooleanField(default=False)
