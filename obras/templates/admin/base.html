@@ -295,40 +295,40 @@
                     data: ajax_data,
                     success: function(data) {
                         switch (data.mes){
-                              case 01: mes='Enero';
+                              case "01": mes='Enero';
                                 break;
-                             case 02: mes='Febrero';
+                             case "02": mes='Febrero';
                                 break;
-                             case 03: mes='Marzo';
+                             case "03": mes='Marzo';
                                 break;
-                             case 04: mes='Abril';
+                             case "04": mes='Abril';
                                 break;
-                             case 05: mes='Mayo';
+                             case "05": mes='Mayo';
                                 break;
-                             case 06: mes='Junio';
+                             case "06": mes='Junio';
                                 break;
-                             case 07: mes='Julio';
+                             case "07": mes='Julio';
                                 break;
-                             case 08: mes='Agosto';
+                             case "08": mes='Agosto';
                                 break;
-                             case 09: mes='Septiembre';
+                             case "09": mes='Septiembre';
                                 break;
-                             case 10: mes='Octubre';
+                             case "10": mes='Octubre';
                                 break;
-                             case 11: mes='Noviembre';
+                             case "11": mes='Noviembre';
                                 break;
-                             case 12: mes='Diciembre';
+                             case "12": mes='Diciembre';
                                 break;
                         }
 
 
-                        sHtml= 'Fecha de última actualización: ' + data.dia + ' de ' + mes + " del   " + data.ano + ', ' + data.hora + ':' + data.minuto + ':' + data.segundo + '.'
+                        sHtml= 'Fecha de última actualización: ' + data.dia + ' de ' + mes + " del   " + data.ano + ', ' + data.hora + ':' + data.minuto + ':' + data.segundo + '.';
                         $ff('#FUA').html(sHtml);
 
                         },
                     error: function(data) {
                             console.log(data.status+"err");
-                             sHtml= 'Fecha de última actualización: '
+                             sHtml= 'Fecha de última actualización: ';
                              $ff('#FUA').html(sHtml);
                         }
                     });
