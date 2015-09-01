@@ -753,7 +753,12 @@ def fichaTecnica(request):
         prs.slides[0].shapes[11].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[11].text = json_map['obras'][0]['estado']['nombreEstado']
         prs.slides[0].shapes[12].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[12].text = json_map['obras'][0]['municipio']
+        try:
+            prs.slides[0].shapes[12].text = json_map['obras'][0]['municipio']
+        except Exception as e:
+            print e
+            prs.slides[0].shapes[12].text = ""
+
         prs.slides[0].shapes[13].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[13].text = json_map['obras'][0]['fechaInicio']
         prs.slides[0].shapes[14].text_frame.paragraphs[0].font.size = Pt(8)
@@ -810,7 +815,13 @@ def fichaTecnica(request):
         prs.slides[0].shapes[27].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[27].text = json_map['obras'][0]['poblacionObjetivo']
         prs.slides[0].shapes[28].text_frame.paragraphs[0].font.size = Pt(8)
-        prs.slides[0].shapes[28].text = json_map['obras'][0]['impacto']['nombreImpacto']
+
+        try:
+            prs.slides[0].shapes[28].text = json_map['obras'][0]['impacto']['nombreImpacto']
+        except Exception as e:
+            print e
+            prs.slides[0].shapes[28].text = ""
+
         prs.slides[0].shapes[29].text_frame.paragraphs[0].font.size = Pt(8)
         if json_map['obras'][0]['senalizacion']=="false":
             prs.slides[0].shapes[29].text = "No"
