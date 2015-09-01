@@ -79,17 +79,36 @@ class HoraUltimaActualizacion(ProtectedResourceView):
 class HoraEndpoint(ProtectedResourceView):
     def get(self, request):
         json_response = {}
-        date = datetime.now()
+        dependencia = Dependencia.objects.all().order_by('fecha_ultima_modificacion').last()
+
+        if dependencia is not None:
+            date = from_utc_to_local(dependencia.fecha_ultima_modificacion)
+        else:
+            date = datetime.now()
+
+        if date.day >= 10:
+            json_response['dia'] = str(date.day)
+        else:
+            json_response['dia'] = "0" + str(date.day)
+        if date.month >= 10:
+            json_response['mes'] = str(date.month)
+        else:
+            json_response['mes'] = "0" + str(date.month)
+        json_response['ano'] = str(date.year)
+
         time = date.time()
-
-        json_response['dia'] = date.day
-        json_response['mes'] = date.month
-        json_response['ano'] = date.year
-
-        json_response['hora'] = time.hour
-        json_response['minuto'] = time.minute
-        json_response['segundo'] = time.second
-
+        if time.hour >= 10:
+            json_response['hora'] = str(time.hour)
+        else:
+            json_response['hora'] = "0" + str(time.hour)
+        if time.minute >= 10:
+            json_response['minuto'] = str(time.minute)
+        else:
+            json_response['minuto'] = "0" + str(time.minute)
+        if time.second >= 10:
+            json_response['segundo'] = str(time.second)
+        else:
+            json_response['segundo'] = "0" + str(time.second)
         return HttpResponse(json.dumps(json_response), 'application/json')
 
 
