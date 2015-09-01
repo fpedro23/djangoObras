@@ -67,6 +67,10 @@ function main_consulta() {
     $j('#openWin').on('click', openWin)
     $j('#enviaPDF').on('click', demoFromHTML)
     $j('#enviaPDF2').on('click', demoFromHTML2)
+
+    $j('#mapaEstado').on('click', ponerMapaEstado)
+    $j('#mapaObra').on('click', ponerMapaObra)
+
     
 
 
@@ -399,7 +403,7 @@ function verDatos() {
     var ajax_data = {
       "access_token"  : newToken,
       "limiteMin":0,
-      "limiteMax":1000
+      "limiteMax":2000
     };
 
     if(arrayDependencias.toString()!=""){ajax_data.dependencia=arrayDependencias.toString();}
@@ -457,7 +461,7 @@ function verDatos() {
     });
 }
 
-function ponerMapa(){
+function ponerMapaEstado(){
 
     var mapOptions = {
                 zoom: 4,
@@ -467,7 +471,22 @@ function ponerMapa(){
     var map = new google.maps.Map(document.getElementById('map-canvas'),
                                         mapOptions)
     var lugares =  new Array();
-    lugares=puntosMapa(data);
+    lugares=puntosMapa(datosJson);
+    setMarkers(map,lugares);
+    google.maps.event.addDomListener(window, 'load', initialize);
+}
+
+function ponerMapaObra(){
+
+    var mapOptions = {
+                zoom: 4,
+                center: new google.maps.LatLng(22.6526121, -100.1780452),
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+    }
+    var map = new google.maps.Map(document.getElementById('map-canvas'),
+                                        mapOptions)
+    var lugares =  new Array();
+    lugares=puntosMapaObra(datosJson);
     setMarkers(map,lugares);
     google.maps.event.addDomListener(window, 'load', initialize);
 }
@@ -1516,11 +1535,11 @@ function puntosMapaObra(Datos) {
   var arregloSimple=new Array();
   var arregloDoble=new Array();
     var arregloObjeto = new Object();
-    for(var i= 0;i<Datos.reporte_estado.length;i++){
+    for(var i= 0;i<Datos.obras.length;i++){
         var arregloSimple=new Array();
-        arregloSimple.push(Datos.reporte_estado[i].estado.nombreEstado + ", número de obras: " + Datos.reporte_estado[i].numeroObras);
-        arregloSimple.push(Datos.reporte_estado[i].estado.latitud);
-        arregloSimple.push(Datos.reporte_estado[i].estado.longitud);
+        arregloSimple.push(Datos.obras[i].identificador_unico+ ", " + Datos.obras[i].estado__nombreEstado);
+        arregloSimple.push(Datos.obras[i].latitud);
+        arregloSimple.push(Datos.obras[i].longitud);
         arregloSimple.push(i);
         arregloDoble.push(arregloSimple);
     }
