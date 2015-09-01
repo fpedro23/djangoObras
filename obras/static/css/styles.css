@@ -206,6 +206,33 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
     cursor: pointer;
 }
 
+.obraBTN{
+	width: 61px;
+	height: 20px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -1063px -1926px;
+	position: relative;
+    display: inline-block;
+}
+
+.obraBTN:hover{
+	background-position: -1063px -1950px;
+    cursor: pointer;
+}
+.estadoBTN{
+	width: 60px;
+	height: 20px;
+	background-image: url(../img-botones/bigBackground.fw.png);
+	background-position: -998px -1926px;
+	position: relative;
+
+}
+
+.estadoBTN:hover{
+	background-position: -998px -1950px;
+    cursor: pointer;
+}
+
 .limpiarBTN{
 	width: 85px;
 	height: 30px;
