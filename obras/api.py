@@ -447,6 +447,7 @@ class PptxEndpoint(ProtectedResourceView):
         buscador = BuscarObras(
             idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
             iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            subdependencias=get_array_or_none(request.GET.get('subdependencias')),
             estados=get_array_or_none(request.GET.get('estado')),
             clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
             inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
@@ -490,7 +491,7 @@ class PptxEndpoint(ProtectedResourceView):
         rows = resultados['reporte_general']['obras_totales']+1
         cols = 3
         left = Inches(0.921)
-        top = Inches(1.0)
+        top = Inches(1.2)
         width = Inches(6.0)
         height = Inches(0.8)
 
@@ -524,6 +525,194 @@ class PptxEndpoint(ProtectedResourceView):
 
         return response
 
+class PptxReporteEndpoint(ProtectedResourceView):
+    def get(self, request):
+
+        user = AccessToken.objects.get(token=request.GET.get('access_token')).user
+        tipoReporte = request.GET.get("tipoReporte", None)
+        buscador = BuscarObras(
+            idtipoobra=get_array_or_none(request.GET.get('tipoDeObra')),
+            iddependencias=get_array_or_none(request.GET.get('dependencia')),
+            subdependencias=get_array_or_none(request.GET.get('subdependencias')),
+            estados=get_array_or_none(request.GET.get('estado')),
+            clasificaciones=get_array_or_none(request.GET.get('clasificacion')),
+            inversiones=get_array_or_none(request.GET.get('tipoDeInversion')),
+            inauguradores=get_array_or_none(request.GET.get('inaugurador')),
+            impactos=get_array_or_none(request.GET.get('impacto')),
+            inaugurada=request.GET.get('inaugurada', None),
+            inversion_minima=request.GET.get('inversionMinima', None),
+            inversion_maxima=request.GET.get('inversionMaxima', None),
+            fecha_inicio_primera=request.GET.get('fechaInicio', None),
+            fecha_inicio_segunda=request.GET.get('fechaInicio', None),
+            fecha_fin_primera=request.GET.get('fechaFin', None),
+            fecha_fin_segunda=request.GET.get('fechaFinSegunda', None),
+            denominacion=request.GET.get('denominacion', None),
+            instancia_ejecutora=get_array_or_none(request.GET.get('instanciaEjecutora')),
+            limite_min=request.GET.get("limiteMin"),
+            limite_max=request.GET.get("limiteMax"),
+            busqueda_rapida=request.GET.get("busquedaRapida", None),
+            id_obra=request.GET.get("idObra", None),
+            susceptible_inauguracion=request.GET.get("susceptible", None),
+            subclasificacion=get_array_or_none(request.GET.get('subclasificacion')),
+            municipios=get_array_or_none(request.GET.get('municipios'))
+        )
+
+        buscador.filtrar_dependencias(user)
+        resultados = buscador.buscar()
+
+        json_map = {}
+
+
+        json_map['reporte_dependencia'] = []
+        for reporte in resultados['reporte_dependencia']:
+            map = {}
+            map['dependencia'] = Dependencia.objects.get(
+                nombreDependencia=reporte['dependencia__nombreDependencia']).to_serializable_dict()
+            map['numero_obras'] = reporte['numero_obras']
+            if reporte['sumatotal'] is None:
+                map['sumatotal'] = 0
+            else:
+                map['sumatotal'] = float(reporte['sumatotal'])
+            json_map['reporte_dependencia'].append(map)
+
+        json_map['reporte_subdependencia'] = []
+        for reporteSub in resultados['reporte_subdependencia']:
+            map = {}
+            if reporteSub['subdependencia__nombreDependencia'] is not None:
+                map['subdependencia'] = Dependencia.objects.get(
+                    nombreDependencia=reporteSub['subdependencia__nombreDependencia']).to_serializable_dict()
+            else:
+                map['subdependencia'] = Dependencia.objects.get(
+                    nombreDependencia=reporteSub['dependencia__nombreDependencia']).to_serializable_dict()
+            map['numero_obras'] = reporteSub['numero_obras']
+            if reporteSub['sumatotal'] is None:
+                map['sumatotal'] = 0
+            else:
+                map['sumatotal'] = float(reporteSub['sumatotal'])
+            json_map['reporte_subdependencia'].append(map)
+
+        json_map['reporte_estado'] = []
+        for reporte_estado in resultados['reporte_estado']:
+            map = {}
+            if reporte_estado['sumatotal'] is None:
+                map['sumatotal'] = 0.0
+
+            else:
+                map['sumatotal'] = float(reporte_estado['sumatotal'])
+            map['estado'] = Estado.objects.get(
+                nombreEstado=reporte_estado['estado__nombreEstado']).to_serializable_dict()
+            map['numeroObras'] = reporte_estado['numero_obras']
+
+            json_map['reporte_estado'].append(map)
+
+        json_map['reporte_general'] = []
+        map = {}
+        total = resultados['reporte_general']['total_invertido']['inversionTotal__sum']
+        if total is None:
+            total = 0.0
+        else:
+            total = float(total)
+        map['total_invertido'] = total
+
+        map['obras_totales'] = resultados['reporte_general']['obras_totales']
+        json_map['reporte_general'].append(map)
+
+        output = StringIO.StringIO()
+        prs = Presentation()
+        slide = prs.slides.add_slide(prs.slide_layouts[5])
+        shapes = slide.shapes
+        shapes.title.text = 'Reporte'
+
+        if tipoReporte=='Dependencia':
+            rows = 17
+            cols = 3
+            left = Inches(0.921)
+            top = Inches(1.2)
+            width = Inches(6.0)
+            height = Inches(0.8)
+
+            table = shapes.add_table(rows, cols, left, top, width, height).table
+            # set column widths
+            table.columns[0].width = Inches(3.0)
+            table.columns[1].width = Inches(2.0)
+            table.columns[2].width = Inches(2.0)
+
+            # write column headings
+            table.cell(0, 0).text = 'TipoInversion'
+            table.cell(0, 1).text = 'No. de Obras '
+            table.cell(0, 2).text = 'Monto'
+
+            # write body cells
+            i=1
+            for obra in json_map['reporte_dependencia']:
+                table.cell(i, 0).text = obra['dependencia']['nombreDependencia']
+                table.cell(i, 1).text = str(obra['numero_obras'])
+                table.cell(i, 2).text = str(obra['sumatotal'])
+                i+=1
+        if tipoReporte=='Subdependencia':
+            rows = 17
+            cols = 3
+            left = Inches(0.921)
+            top = Inches(1.2)
+            width = Inches(6.0)
+            height = Inches(0.8)
+
+            table = shapes.add_table(rows, cols, left, top, width, height).table
+            # set column widths
+            table.columns[0].width = Inches(3.0)
+            table.columns[1].width = Inches(2.0)
+            table.columns[2].width = Inches(2.0)
+
+            # write column headings
+            table.cell(0, 0).text = 'TipoInversion'
+            table.cell(0, 1).text = 'No. de Obras '
+            table.cell(0, 2).text = 'Monto'
+
+            # write body cells
+            i=1
+            for obra in json_map['reporte_subdependencia']:
+                table.cell(i, 0).text = obra['subdependencia']['nombreDependencia']
+                table.cell(i, 1).text = str(obra['numero_obras'])
+                table.cell(i, 2).text = str(obra['sumatotal'])
+                i+=1
+
+        if tipoReporte=='Estado':
+            rows = 35
+            cols = 3
+            left = Inches(0.921)
+            top = Inches(1.2)
+            width = Inches(6.0)
+            height = Inches(0.8)
+
+            table = shapes.add_table(rows, cols, left, top, width, height).table
+            # set column widths
+            table.columns[0].width = Inches(3.0)
+            table.columns[1].width = Inches(2.0)
+            table.columns[2].width = Inches(2.0)
+
+            # write column headings
+            table.cell(0, 0).text = 'TipoInversion'
+            table.cell(0, 1).text = 'No. de Obras '
+            table.cell(0, 2).text = 'Monto'
+
+            # write body cells
+            i=1
+            for obra in json_map['reporte_estado']:
+                table.cell(i, 0).text = obra['estado']['nombreEstado']
+                table.cell(i, 1).text = str(obra['numeroObras'])
+                table.cell(i, 2).text = str(obra['sumatotal'])
+                i+=1
+
+        prs.save(output)
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response['Content-Disposition'] = 'attachment; filename="resultado_obras.pptx"'
+        response['Content-Length'] = output.tell()
+
+        output.seek(0)
+
+        return response
+
+
 class ListarEndpoint(ProtectedResourceView):
     def get(self, request):
 
@@ -531,6 +720,8 @@ class ListarEndpoint(ProtectedResourceView):
 
         idtipoobra = get_array_or_none(request.GET.get('tipoDeObra')),
         iddependencias = get_array_or_none(request.GET.get('dependencia')),
+        idsubdependencias = get_array_or_none(request.GET.get('subdependencias')),
+        idmunicipios = get_array_or_none(request.GET.get('muicipios')),
         estados = get_array_or_none(request.GET.get('estado')),
         clasificaciones = get_array_or_none(request.GET.get('clasificacion')),
         inversiones = get_array_or_none(request.GET.get('tipoDeInversion')),
@@ -561,6 +752,9 @@ class ListarEndpoint(ProtectedResourceView):
 
         arreglo_dependencias = []
         p_dependencias = ""
+        p_subdependencias = ","
+        p_municipios = ","
+
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
 
@@ -583,6 +777,14 @@ class ListarEndpoint(ProtectedResourceView):
         if iddependencias[0] is not None:
             for dependencia in iddependencias[0]:
                 p_dependencias += str(dependencia) + ","
+
+        if idsubdependencias[0] is not None:
+            for subdependencia in idsubdependencias[0]:
+                p_subdependencias += str(subdependencia) + ","
+
+        if idmunicipios[0] is not None:
+            for municipio in idmunicipios[0]:
+                p_municipios += str(municipio) + ","
 
         if idtipoobra[0] is not None:
             p_tipoobra = ""
@@ -658,7 +860,7 @@ class ListarEndpoint(ProtectedResourceView):
         else:
             p_denominacion = denominacion[0]
 
-        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_instancia_ejecutora[:-1], p_estados[:-1],
+        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_subdependencias[:-1], p_municipios[:-1], p_instancia_ejecutora[:-1], p_estados[:-1],
                                   p_inversion_minima, p_inversion_maxima, p_fecha_inicio_primera,
                                   p_fecha_inicio_segunda, p_fecha_fin_primera, p_fecha_fin_segunda, p_impactos[:-1],
                                   p_inauguradores[:-1], p_inversiones[:-1], p_clasificaciones[:-1],
@@ -857,12 +1059,24 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             obras = Obra.objects.all()
 
         reporte = {
+            'reporte_mapa': {'obras_mapa': {}},
             'reporte_total': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2014': {'obras_concluidas': {}},
             'reporte2013': {'obras_concluidas': {}},
             'reporte2012': {'obras_concluidas': {}},
         }
+
+        obras_mapa = obras.exclude(tipoObra_id=4)
+        the_list = []
+        reporte_estado = obras.values('latitud', 'longitud','estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(
+            totalinvertido=Sum('inversionTotal'))
+        for obra in reporte_estado:
+            self.rename_estado(obra)
+            the_list.append(obra)
+        reporte['reporte_mapa']['obras_mapa']['obras'] = the_list
+        reporte['reporte_mapa']['obras_mapa']['total'] = obras_mapa.count()
+        reporte['reporte_mapa']['obras_mapa']['inversion_total'] = obras_mapa.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         # Grafico, obras totales
         obras_totales_proceso = obras.filter(tipoObra_id=2)

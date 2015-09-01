@@ -89,7 +89,7 @@ class AddObraForm(forms.ModelForm):
 
 
         widgets = {'tipoMoneda': forms.RadioSelect(renderer=HorizRadioRenderer),
-                   'inaugurada': forms.RadioSelect(renderer=HorizRadioRenderer),
+                   'inaugurada': forms.RadioSelect(),
                    'descripcion': forms.Textarea,
                    'observaciones': forms.Textarea,
                    'tipoClasificacion': forms.CheckboxSelectMultiple,

@@ -75,11 +75,15 @@
                       <td width="40%" class="texto">
                           {% if change %}
                               ID Único:<input type="hidden" id="idobraUNICO" value="{% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}">
+                          {% else %}
+                             &nbsp;
                           {% endif %}
                       </td>
                       <td width="60%" class="texto">
                           {% if change %}
                               {% if field.contents  != "(Nada)"  %} {{ field.contents }}{% endif %}<label id="id_identificador_unico" name="identificador_unico" >{{ field.field.value|default_if_none:"" }}</label>
+                          {% else %}
+                             &nbsp;
                           {% endif %}
                       </td>
 

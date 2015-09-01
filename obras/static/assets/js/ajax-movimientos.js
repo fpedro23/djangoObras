@@ -122,13 +122,13 @@ function setImage(){
                 type: 'get',
                 data: ajax_data,
                 success: function(data) {
-                    sHtml= '<img src="' + data[0].dependencia.imagenDependencia.toString() +'" >'
+                    sHtml= '<img src="' + data[0].dependencia.imagenDependencia.toString() +'" width="210px" height="85px">'
                     $j('#logoDEP').html(sHtml);
 
                 },
                 error: function(data) {
-                    // alert('Error ' + data.status);
-                         $j.magnificPopup.open({
+                     console.log('Error ' + data.status);
+                    /*     $j.magnificPopup.open({
                         items: {
                             src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
                                   + '<div class="textoALERTA">'
@@ -145,7 +145,7 @@ function setImage(){
                     $j(document).on('click', '.popup-modal-dismiss', function (e) {
                         e.preventDefault();
                         $j.magnificPopup.close();
-                    });
+                    });*/
                 }
             });
         }

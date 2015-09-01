@@ -79,7 +79,7 @@ function datosConcluidas() {
 
 function graficas(){
 
-    titulo="Número de obras año 2015";
+    titulo="Total de obras";
 
 
     Highcharts.setOptions({
