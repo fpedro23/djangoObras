@@ -288,6 +288,7 @@
                 var ajax_data = {
                     "access_token": respu.access_token
                 };
+                 var mes ='';
                 $j.ajax({
                     url: '/obras/api/hora_ultima_actualizacion',
                     type: 'get',
@@ -321,7 +322,7 @@
                         }
 
 
-                        sHtml= 'Fecha de última actualización: ' + data.dia + ' de ' + mes + " del " + data.ano + ', ' + data.hora + ':' + data.minuto + ':' + data.segundo + '.'
+                        sHtml= 'Fecha de última actualización: ' + data.dia + ' de ' + mes + " del   " + data.ano + ', ' + data.hora + ':' + data.minuto + ':' + data.segundo + '.'
                         $j('#FUA').html(sHtml);
 
                         },
