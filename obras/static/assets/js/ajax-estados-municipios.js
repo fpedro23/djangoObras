@@ -4,17 +4,17 @@
 var $j = jQuery.noConflict();
 
 $j(document).on('ready', function() {
-    if ($('#id_municipio').find('option:selected').val() == null)
+    if ($('#id_municipio').find('option:selected').val() == "")
         clearMunicipios();
     $('#id_estado').on('change', function() {
         var option = $(this).find('option:selected');
 
         if (option != null) {
-            var estadoId = parseInt(option.val());
-            if (isNaN(estadoId))
+            var estadoId = option.val();
+            if (estadoId == "")
                 clearMunicipios();
             else
-                getMunicipiosForEstado(estadoId);
+                getMunicipiosForEstado(parseInt(estadoId));
         }
     });
 });
