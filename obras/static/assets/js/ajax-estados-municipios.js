@@ -4,6 +4,7 @@
 var $j = jQuery.noConflict();
 
 $j(document).on('ready', function() {
+    clearMunicipios();
     $('#id_estado').on('change', function() {
         var option = $(this).find('option:selected');
 
@@ -45,7 +46,6 @@ function getMunicipiosForEstado(estadoId) {
 
 function populateMunicpiosSelect(municipios) {
     clearMunicipios();
-     $j('#id_municipio').append('<option value>---------</option>');
     for (var i = 0; i < municipios.length; i++) {
         $j('#id_municipio').append(
             '<option value="'+municipios[i].id+'">' +
@@ -56,5 +56,7 @@ function populateMunicpiosSelect(municipios) {
 }
 
 function clearMunicipios() {
-    $j('#id_municipio').empty();
+    $j('#id_municipio')
+        .empty()
+        .append('<option value>---------</option>');
 }
