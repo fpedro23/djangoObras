@@ -304,7 +304,7 @@ class InstanciaEjecutora(models.Model):
         return ans
 
 
-BOOL_CHOICES = ((True, 'Sí'), (False, 'No'), (None, 'Sin inauguración'))
+BOOL_CHOICES = ((True, 'Sí'), (False, 'No'))
 
 
 def content_file_antes(instance, filename):
@@ -393,7 +393,7 @@ class Obra(models.Model):
     fotoDurante = models.FileField(blank=True, null=True, upload_to=content_file_durante)
     fotoDespues = models.FileField(blank=True, null=True, upload_to=content_file_despues)
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True, verbose_name='Fecha de Modificación')
-    inaugurada = models.NullBooleanField(choices=BOOL_CHOICES)
+    inaugurada = models.BooleanField(choices=BOOL_CHOICES)
     poblacionObjetivo = models.CharField(max_length=200)
 
     municipio = ChainedForeignKey(Municipio,
