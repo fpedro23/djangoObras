@@ -122,7 +122,7 @@ function setImage(){
                 type: 'get',
                 data: ajax_data,
                 success: function(data) {
-                    sHtml= '<img src="' + data[0].dependencia.imagenDependencia.toString() +'" width="220px" height="85px">'
+                    sHtml= '<img src="' + data[0].dependencia.imagenDependencia.toString() +'" width="210px" height="85px">'
                     $j('#logoDEP').html(sHtml);
 
                 },
