@@ -13,7 +13,6 @@ $j(document).on('ready', function() {
         if (estadoId != "") {
             getMunicipiosForEstado(estadoId, function (ans) {
                 populateMunicpiosSelect(ans);
-                alert(municipioId);
                 $('#id_municipio').val(municipioId);
             });
         }
