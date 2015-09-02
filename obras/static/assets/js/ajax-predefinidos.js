@@ -68,8 +68,12 @@ function main_consulta() {
 function PptxReporte() {
     var URLiniciadas="/obras/api/PptxIniciadas?access_token=" + newToken;
     var URLvencidas="/obras/api/PptxVencidas?access_token=" + newToken;
+    var URLbitacora="/obras/api/PptxBitacora?access_token=" + newToken;
+
     if (cualPpxt==1) {location.href = URLiniciadas;}
     if (cualPpxt==2) {location.href = URLvencidas;}
+    if (cualPpxt==3) {location.href = URLbitacora;}
+
 
 }
 

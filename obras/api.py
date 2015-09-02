@@ -115,7 +115,7 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
         prs = Presentation()
         slide = prs.slides.add_slide(prs.slide_layouts[5])
         shapes = slide.shapes
-        shapes.title.text = 'Resultados'
+        shapes.title.text = 'Obras Iniciadas'
         rows = 100
         cols = 3
         left = Inches(0.921)
@@ -199,7 +199,7 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
         prs = Presentation()
         slide = prs.slides.add_slide(prs.slide_layouts[5])
         shapes = slide.shapes
-        shapes.title.text = 'Resultados'
+        shapes.title.text = 'Obras Vencidas'
         rows = 100
         cols = 3
         left = Inches(0.921)
@@ -253,13 +253,67 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
 
         prs.save(output)
         response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
-        response['Content-Disposition'] = 'attachment; filename="ObrasIniciadas.pptx"'
+        response['Content-Disposition'] = 'attachment; filename="ObrasVencidas.pptx"'
         response['Content-Length'] = output.tell()
 
         output.seek(0)
 
         return response
 
+class ReporteNoTrabajoPptxEndpoint(ProtectedResourceView):
+    def get(self, request):
+        comp_date = datetime.now() - timedelta(15)
+        print "****"
+        print comp_date
+
+        dependencias = Dependencia.objects.filter(
+            Q(obraoprograma='O') &
+            Q(fecha_ultima_modificacion__lt=comp_date))
+
+        contador=1
+        json_map = {}
+        json_map['obras'] = []
+        for obra in dependencias.values('nombreDependencia', 'fecha_ultima_modificacion'):
+            contador=contador+1
+            json_map['obras'].append(obra)
+
+        output = StringIO.StringIO()
+        prs = Presentation()
+        slide = prs.slides.add_slide(prs.slide_layouts[5])
+        shapes = slide.shapes
+        shapes.title.text = 'Bitacora por Dependencias'
+        rows = 17
+        cols = 2
+        left = Inches(0.921)
+        top = Inches(1.2)
+        width = Inches(6.0)
+        height = Inches(0.8)
+        table = shapes.add_table(rows, cols, left, top, width, height).table
+        # set column widths
+        table.columns[0].width = Inches(2.0)
+        table.columns[1].width = Inches(2.0)
+        indice=1
+
+        #write column headings
+        table.cell(0, 0).text = 'Dependencia'
+        table.cell(0, 1).text = 'Fecha ultima modificacion'
+
+        for obra in json_map['obras']:
+
+            # write body cells
+            table.cell(indice, 0).text = obra['nombreDependencia']
+            table.cell(indice, 1).text = str(obra['fecha_ultima_modificacion'])
+
+            indice+=1
+
+        prs.save(output)
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response['Content-Disposition'] = 'attachment; filename="BitacoraDependencias.pptx"'
+        response['Content-Length'] = output.tell()
+
+        output.seek(0)
+
+        return response
 
 class ObrasIniciadasEndpoint(ProtectedResourceView):
     def get(self, request):
