@@ -37,6 +37,7 @@ urlpatterns = patterns(
     url(r'^obras/usuarios$', 'obras.views.usuarios', name='usuarios'),
     url(r'^obras/consulta_filtros', 'obras.views.consulta_web', name='consulta_filtros'),
     url(r'^obras/consulta_predefinidos', 'obras.views.reportes_predefinidos', name='consulta_predefinidos'),
-
+    url(r'^icono_OBRAS.ico/$', lambda x: HttpResponseRedirect(settings.STATIC_URL+'icono_OBRAS.ico')), #google chrome favicon fix
 
 )
+
