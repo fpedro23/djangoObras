@@ -14,7 +14,7 @@ $j(document).on('ready', function() {
             getMunicipiosForEstado(estadoId, function (ans) {
                 populateMunicpiosSelect(ans);
                 alert(municipioId);
-                $('#id_municipio').select(municipioId);
+                $('#id_municipio').val(municipioId);
             });
         }
     }
