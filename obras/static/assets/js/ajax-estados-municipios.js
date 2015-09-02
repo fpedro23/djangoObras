@@ -27,6 +27,7 @@ $j(document).on('ready', function() {
                 type: 'get',
                 data: ajaxData,
                 success: function(ans) {
+                    alert("Sí lo estoy haciendo chucha " + municipioId);
                     populateMunicpiosSelect(ans);
                     $('#id_municipio').select(municipioId);
                 }
