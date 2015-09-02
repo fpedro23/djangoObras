@@ -8,31 +8,16 @@ $j(document).on('ready', function() {
         clearMunicipios();
     }
     else {
-        var municipioId = $('#id_municipio').find('option:selected').val()
-
-        $j.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if(settings.type == "POST")
-                    xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
-                if(settings.type == "GET")
-                    xhr.setRequestHeader("X-CSRFToken", $j('[name="csrfmiddlewaretoken"]').val());
-            }
-        });
-
-        $.get('/obras/register-by-token', function(ans) {
-            var ajaxData = { access_token: ans.access_token, estados: estadoId };
-
-            $j.ajax({
-                url: '/obras/api/municipios_por_estado',
-                type: 'get',
-                data: ajaxData,
-                success: function(ans) {
-                    alert("Sí lo estoy haciendo chucha " + municipioId);
-                    populateMunicpiosSelect(ans);
-                    $('#id_municipio').select(municipioId);
-                }
+        var estadoId = $('#id_estado').find('option:selected').val();
+        var municipioId = $('#id_municipio').find('option:selected').val();
+        if (estadoId != "") {
+            alert("lo voy a hacer");
+            getMunicipiosForEstado(estadoId, function (ans) {
+                alert("Chch " + ans);
+                populateMunicpiosSelect(ans);
+                $('#id_municipio').select(municipioId);
             });
-        });
+        }
     }
     $('#id_estado').on('change', function() {
         var option = $(this).find('option:selected');
@@ -42,12 +27,14 @@ $j(document).on('ready', function() {
             if (estadoId == "")
                 clearMunicipios();
             else
-                getMunicipiosForEstado(parseInt(estadoId));
+                getMunicipiosForEstado(parseInt(estadoId), function(ans) {
+                populateMunicpiosSelect(ans);
+            });
         }
     });
 });
 
-function getMunicipiosForEstado(estadoId) {
+function getMunicipiosForEstado(estadoId, onSuccess) {
     $j.ajaxSetup(
         {
             beforeSend: function(xhr, settings) {
@@ -66,9 +53,7 @@ function getMunicipiosForEstado(estadoId) {
             url: '/obras/api/municipios_por_estado',
             type: 'get',
             data: ajaxData,
-            success: function(ans) {
-                populateMunicpiosSelect(ans);
-            }
+            success: onSuccess
         });
     });
 }
