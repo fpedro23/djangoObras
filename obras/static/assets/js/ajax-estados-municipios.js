@@ -11,10 +11,9 @@ $j(document).on('ready', function() {
         var estadoId = $('#id_estado').find('option:selected').val();
         var municipioId = $('#id_municipio').find('option:selected').val();
         if (estadoId != "") {
-            alert("lo voy a hacer");
             getMunicipiosForEstado(estadoId, function (ans) {
-                alert("Chch " + ans);
                 populateMunicpiosSelect(ans);
+                alert(municipioId);
                 $('#id_municipio').select(municipioId);
             });
         }
