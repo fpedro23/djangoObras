@@ -290,18 +290,18 @@
 
 
 <script>
-var $pop = jQuery.noConflict();
+var $pp = jQuery.noConflict();
 
-$pop( document ).ready(function() {
-  $pop('#div-grafica').addClass("mfp-hide");
+$pp( document ).ready(function() {
+  $pp('#div-grafica').addClass("mfp-hide");
 });
 
-$pop('#tabla-exporta').hide();
-$pop('#tabla-exporta2').hide();
+$pp('#tabla-exporta').hide();
+$pp('#tabla-exporta2').hide();
 
 
-$pop(function () {
-	  $pop('.popup-modal').magnificPopup({
+$pp(function () {
+	  $pp('.popup-modal').magnificPopup({
 	    type: 'inline',
 	    preloader: true,
 	    modal: true,
@@ -314,11 +314,11 @@ $pop(function () {
 		removalDelay: 300,
 		mainClass: 'my-mfp-zoom-in'
 	  });
-	  $pop(document).on('click', '.popup-modal-dismiss', function (e) {
+	  $pp(document).on('click', '.popup-modal-dismiss', function (e) {
 	    e.preventDefault();
-	    $pop.magnificPopup.close();
+	    $pp.magnificPopup.close();
 	  });
-      $pop('.popup-exporta').magnificPopup({
+      $pp('.popup-exporta').magnificPopup({
 	    type: 'inline',
 	    preloader: false,
 	    modal: true,
@@ -331,11 +331,11 @@ $pop(function () {
 		removalDelay: 300,
 		mainClass: 'my-mfp-zoom-in'
 	  });
-	  $pop(document).on('click', '.popup-exporta-dismiss', function (e) {
+	  $pp(document).on('click', '.popup-exporta-dismiss', function (e) {
 	    e.preventDefault();
-	    $pop.magnificPopup.close();
+	    $pp.magnificPopup.close();
 	  });
-      $pop('#container2').highcharts({
+    pp('#container2').highcharts({
         chart: {
             type: 'column',
             margin: 75,

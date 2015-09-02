@@ -112,6 +112,230 @@ class HoraEndpoint(ProtectedResourceView):
         return HttpResponse(json.dumps(json_response), 'application/json')
 
 
+class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
+    def get(self, request):
+
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
+
+        query = Q(fechaInicio__lte=datetime.now().date()) & Q(tipoObra_id=1)
+        if not (usuario.rol == 'SA'):
+            subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
+            query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
+        obras = Obra.objects.filter(query)
+
+        contador=1
+        json_map = {}
+        json_map['obras'] = []
+        for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
+            contador=contador+1
+            json_map['obras'].append(obra)
+
+
+
+        output = StringIO.StringIO()
+        prs = Presentation()
+        slide = prs.slides.add_slide(prs.slide_layouts[5])
+        shapes = slide.shapes
+        shapes.title.text = 'Obras Iniciadas'
+        rows = 100
+        cols = 3
+        left = Inches(0.921)
+        top = Inches(1.2)
+        width = Inches(6.0)
+        height = Inches(0.8)
+        table = shapes.add_table(rows, cols, left, top, width, height).table
+        # set column widths
+        table.columns[0].width = Inches(2.0)
+        table.columns[1].width = Inches(2.0)
+        table.columns[2].width = Inches(4.0)
+        indice=1
+
+        for obra in json_map['obras']:
+            if indice == 100:
+                indice=1
+                slide = prs.slides.add_slide(prs.slide_layouts[5])
+                shapes = slide.shapes
+                shapes.title.text = 'Resultados'
+
+                rows = 100
+                cols = 3
+                left = Inches(0.921)
+                top = Inches(1.2)
+                width = Inches(6.0)
+                height = Inches(0.8)
+
+                table = shapes.add_table(rows, cols, left, top, width, height).table
+                # set column widths
+                table.columns[0].width = Inches(2.0)
+                table.columns[1].width = Inches(2.0)
+                table.columns[2].width = Inches(4.0)
+
+            # write column headings
+            table.cell(0, 0).text = 'Identificador'
+            table.cell(0, 1).text = 'Estado'
+            table.cell(0, 2).text = 'Denominacion'
+
+            # write body cells
+            table.cell(indice, 0).text = obra['identificador_unico']
+            table.cell(indice, 1).text = obra['estado__nombreEstado']
+            table.cell(indice, 2).text = obra['denominacion']
+            indice+=1
+            #for obra in json_map['obras']:
+            #    table.cell(i, 0).text = obra['identificador_unico']
+            #    table.cell(i, 1).text = obra['estado__nombreEstado']
+            #    table.cell(i, 2).text = obra['denominacion']
+            #    i+=1
+
+
+
+        prs.save(output)
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response['Content-Disposition'] = 'attachment; filename="ObrasIniciadas.pptx"'
+        response['Content-Length'] = output.tell()
+
+        output.seek(0)
+
+        return response
+
+class ObrasVencidasPptxEndpoint(ProtectedResourceView):
+    def get(self, request):
+        usuario = get_usuario_for_token(request.GET.get('access_token'))
+
+        query = Q(fechaTermino__lte=datetime.now().date()) & Q(tipoObra_id=2)
+        if not usuario.rol == 'SA':
+            subdependencias = get_subdependencias_as_list_flat(usuario.dependencia.all())
+            query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
+        obras = Obra.objects.filter(query)
+
+        contador=1
+        json_map = {}
+        json_map['obras'] = []
+        for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
+            contador=contador+1
+            json_map['obras'].append(obra)
+
+
+
+        output = StringIO.StringIO()
+        prs = Presentation()
+        slide = prs.slides.add_slide(prs.slide_layouts[5])
+        shapes = slide.shapes
+        shapes.title.text = 'Obras Vencidas'
+        rows = 100
+        cols = 3
+        left = Inches(0.921)
+        top = Inches(1.2)
+        width = Inches(6.0)
+        height = Inches(0.8)
+        table = shapes.add_table(rows, cols, left, top, width, height).table
+        # set column widths
+        table.columns[0].width = Inches(2.0)
+        table.columns[1].width = Inches(2.0)
+        table.columns[2].width = Inches(4.0)
+        indice=1
+
+        for obra in json_map['obras']:
+            if indice == 100:
+                indice=1
+                slide = prs.slides.add_slide(prs.slide_layouts[5])
+                shapes = slide.shapes
+                shapes.title.text = 'Resultados'
+
+                rows = 100
+                cols = 3
+                left = Inches(0.921)
+                top = Inches(1.2)
+                width = Inches(6.0)
+                height = Inches(0.8)
+
+                table = shapes.add_table(rows, cols, left, top, width, height).table
+                # set column widths
+                table.columns[0].width = Inches(2.0)
+                table.columns[1].width = Inches(2.0)
+                table.columns[2].width = Inches(4.0)
+
+            # write column headings
+            table.cell(0, 0).text = 'Identificador'
+            table.cell(0, 1).text = 'Estado'
+            table.cell(0, 2).text = 'Denominacion'
+
+            # write body cells
+            table.cell(indice, 0).text = obra['identificador_unico']
+            table.cell(indice, 1).text = obra['estado__nombreEstado']
+            table.cell(indice, 2).text = obra['denominacion']
+            indice+=1
+            #for obra in json_map['obras']:
+            #    table.cell(i, 0).text = obra['identificador_unico']
+            #    table.cell(i, 1).text = obra['estado__nombreEstado']
+            #    table.cell(i, 2).text = obra['denominacion']
+            #    i+=1
+
+
+
+        prs.save(output)
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response['Content-Disposition'] = 'attachment; filename="ObrasVencidas.pptx"'
+        response['Content-Length'] = output.tell()
+
+        output.seek(0)
+
+        return response
+
+class ReporteNoTrabajoPptxEndpoint(ProtectedResourceView):
+    def get(self, request):
+        comp_date = datetime.now() - timedelta(15)
+        print "****"
+        print comp_date
+
+        dependencias = Dependencia.objects.filter(
+            Q(obraoprograma='O') &
+            Q(fecha_ultima_modificacion__lt=comp_date))
+
+        contador=1
+        json_map = {}
+        json_map['obras'] = []
+        for obra in dependencias.values('nombreDependencia', 'fecha_ultima_modificacion'):
+            contador=contador+1
+            json_map['obras'].append(obra)
+
+        output = StringIO.StringIO()
+        prs = Presentation()
+        slide = prs.slides.add_slide(prs.slide_layouts[5])
+        shapes = slide.shapes
+        shapes.title.text = 'Bitacora por Dependencias'
+        rows = 17
+        cols = 2
+        left = Inches(0.921)
+        top = Inches(1.2)
+        width = Inches(6.0)
+        height = Inches(0.8)
+        table = shapes.add_table(rows, cols, left, top, width, height).table
+        # set column widths
+        table.columns[0].width = Inches(2.0)
+        table.columns[1].width = Inches(2.0)
+        indice=1
+
+        #write column headings
+        table.cell(0, 0).text = 'Dependencia'
+        table.cell(0, 1).text = 'Fecha ultima modificacion'
+
+        for obra in json_map['obras']:
+
+            # write body cells
+            table.cell(indice, 0).text = obra['nombreDependencia']
+            table.cell(indice, 1).text = str(obra['fecha_ultima_modificacion'])
+
+            indice+=1
+
+        prs.save(output)
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response['Content-Disposition'] = 'attachment; filename="BitacoraDependencias.pptx"'
+        response['Content-Length'] = output.tell()
+
+        output.seek(0)
+
+        return response
+
 class ObrasIniciadasEndpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
@@ -141,7 +365,6 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
         json_ans += ']'
 
         return HttpResponse(json_ans, 'application/json')
-
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
     def get(self, request):
