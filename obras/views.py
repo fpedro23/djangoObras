@@ -500,17 +500,24 @@ def consulta_web(request):
     print request.user.usuario.rol
 
     if request.user.usuario.rol == 'SA':
-        dependencias = Dependencia.objects.exclude(obraoprograma='P')
+        dependencias = Dependencia.objects.filter(
+            Q(obraoprograma='O') &
+            Q(dependienteDe__isnull=True)
+        )
+        print dependencias
 
     elif request.user.usuario.rol == 'AD':
         dependencias = Dependencia.objects.filter(
             Q(id__in=request.user.usuario.dependencia.all()) |
             Q(dependienteDe__id__in=request.user.usuario.dependencia.all())
+            & Q(dependienteDe__isnull=True)
         )
 
     elif request.user.usuario.rol == 'US':
         dependencias = Dependencia.objects.filter(
-            Q(id__in=request.user.usuario.subdependencia.all())
+                Q(id__in=request.user.usuario.subdependencia.all() &
+                Q(dependienteDe__isnull=True)
+            )
         )
 
     #templates = loader.get_template('consultas/busqueda_general.html')

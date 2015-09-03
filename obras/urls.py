@@ -10,6 +10,7 @@ urlpatterns = patterns('',
                        # Mappings Catalogos
                        url(r'^api/estados', api.EstadosEndpoint.as_view()),
                        url(r'^api/dependencias', api.DependenciasEndpoint.as_view()),
+                       url(r'^api/subdependenciasiPad', api.SubDependenciasiPadEndpoint.as_view()),
                        url(r'^api/subdependencias', api.Subdependencias_forId_Endpoint.as_view()),
                        url(r'^api/impactos', api.ImpactosEndpoint.as_view()),
                        url(r'^api/inauguradores', api.InauguradorEndpoint.as_view()),

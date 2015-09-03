@@ -399,6 +399,32 @@ class ObrasForDependenciaEndpoint(ProtectedResourceView):
         return HttpResponse(json.dumps(the_list), 'application/json')
 
 
+class SubDependenciasiPadEndpoint(ProtectedResourceView):
+    def get(self, request):
+        token = request.GET.get('access_token')
+        token_model = AccessToken.objects.get(token=token)
+
+        if token_model.user.usuario.rol == 'SA':
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+                Q(obraoprograma='O') & Q(dependienteDe__isnull=False)
+            )
+                        )
+
+        elif token_model.user.usuario.rol == 'AD':
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+                Q(id__in=token_model.user.usuario.dependencia.all()) |
+                Q(dependienteDe__in=token_model.user.usuario.dependencia.all()))
+                & Q(dependienteDe__isnull=False)
+                )
+        else:
+            dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
+                Q(id__in=token_model.user.usuario.subdependencia.all()))
+                & Q(dependienteDe__isnull=False)
+                        )
+
+        return HttpResponse(json.dumps(dicts), 'application/json')
+
+
 class DependenciasEndpoint(ProtectedResourceView):
     def get(self, request):
         token = request.GET.get('access_token')
@@ -407,6 +433,8 @@ class DependenciasEndpoint(ProtectedResourceView):
         if token_model.user.usuario.rol == 'SA':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(obraoprograma='O')
+                & Q(dependienteDe__isnull=True)
+
             )
                         )
 
@@ -414,10 +442,14 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
                 Q(dependienteDe__in=token_model.user.usuario.dependencia.all()))
+                & Q(dependienteDe__isnull=True)
+
                         )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.subdependencia.all()))
+                & Q(dependienteDe__isnull=True)
+
                         )
 
         return HttpResponse(json.dumps(dicts), 'application/json')
