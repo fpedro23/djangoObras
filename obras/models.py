@@ -334,8 +334,6 @@ class Obra(models.Model):
     identificador_unico = models.SlugField(unique=True, null=True, verbose_name='Identificador Único')
     tipoObra = models.ForeignKey(TipoObra, verbose_name='Tipo de Obra')
     dependencia = models.ForeignKey(Dependencia, related_name='%(class)s_dependencia',
-                                    null=True,
-                                    blank=True,
                                     limit_choices_to={
                                         'dependienteDe': None,
                                         'obraoprograma': 'O',

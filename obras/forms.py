@@ -101,8 +101,12 @@ class AddObraForm(forms.ModelForm):
 
     def save(self, commit=True):
         instance = super(AddObraForm, self).save(commit=False)
-        instance.dependencia.fecha_ultima_modificacion = datetime.now()
-        instance.dependencia.save()
+        try:
+            instance.dependencia.fecha_ultima_modificacion = datetime.now()
+            instance.dependencia.save()
+        except Exception as e:
+            print e
+
 
         if instance.id and not instance.autorizada:
             obra = Obra.objects.get(id=instance.id)
@@ -122,15 +126,20 @@ class AddObraForm(forms.ModelForm):
 
         if instance.identificador_unico is None:
 
-            last_number = Obra.objects.filter(dependencia__id=instance.dependencia.id).values('identificador_unico').order_by('-identificador_unico')[0]
+            lista = Obra.objects.filter(dependencia__id=instance.dependencia.id).values('identificador_unico').order_by('-identificador_unico')
 
-            numero = int(last_number.get('identificador_unico').split('_')[2]) + 1
-
-            print numero
-
-            string_id = '%s_%s_%.5d' % ('OB', instance.dependencia.nombreDependencia, numero)
-            string_id.upper()
-            instance.identificador_unico = string_id
+            if lista.count() > 0:
+                last_number = lista[0]
+                numero = int(last_number.get('identificador_unico').split('_')[2]) + 1
+                print numero
+                string_id = '%s_%s_%.5d' % ('OB', instance.dependencia.nombreDependencia.upper(), numero)
+                string_id.upper()
+                instance.identificador_unico = string_id
+            else:
+                numero = 1
+                string_id = '%s_%s_%.5d' % ('OB', instance.dependencia.nombreDependencia.upper(), numero)
+                string_id.upper()
+                instance.identificador_unico = string_id
 
 
         # print(instance.identificador_unico)

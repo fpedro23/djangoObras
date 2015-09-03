@@ -4,6 +4,15 @@ from django.db.models import Count, Sum
 from obras.models import *
 
 
+
+class ObraReducida:
+    def __init__(self, denominacion, inversionTotal, latitud, longitud):
+        self.denominacion = denominacion
+        self.inversionTotal = inversionTotal
+        self.latitud = latitud
+        self.longitud = longitud
+
+
 class BuscarObras:
     def __init__(
             self,
@@ -172,6 +181,18 @@ class BuscarObras:
             sumatotal=Sum('inversionTotal'))
         reporte_estado = reporte_estado.order_by('estado__nombreEstado')
 
+        #Reporte Obras
+
+        # for obra in Obra.objects.filter(query):
+        #     obra_reducida = ObraReducida(denominacion=obra.denominacion,
+        #                                  inversionTotal=obra.inversionTotal,
+        #                                  latitud=obra.latitud,
+        #                                  longitud=obra.longitud,
+        #                                  )
+        #     geolocalizacion_obras.append(obra_reducida)
+
+        geolocalizacion_obras = Obra.objects.filter(query)
+
         reporte_general = {
             'obras_totales': obras_totales,
             'total_invertido': total_invertido,
@@ -183,6 +204,7 @@ class BuscarObras:
             'reporte_dependencia': reporte_dependencia,
             'reporte_estado': reporte_estado,
             'reporte_subdependencia': reporte_subdependencia,
+            'geolocalizacion_obras': geolocalizacion_obras,
         }
 
         return reportes
