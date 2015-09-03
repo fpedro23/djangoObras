@@ -1427,3 +1427,200 @@ class ReporteObrasPorAutorizar(ProtectedResourceView):
 
         return HttpResponse(json.dumps(the_list), 'application/json')
 
+
+class ReporteImagenesEndpoint(ProtectedResourceView):
+    def rename_estado(self, obra):
+        obra['estado'] = obra['estado__nombreEstado']
+        del obra['estado__nombreEstado']
+
+    def get(self, request):
+        obras = Obra.objects.all().exclude(tipoObra_id=4)
+
+        reporte = {
+            'reporte_total': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
+        }
+
+
+        prs = Presentation('obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
+
+
+        # Datos diapositiva 1
+        obras_totales_proceso = obras.filter(tipoObra_id=2)
+        obras_total_proceso = obras_totales_proceso.count()
+        inversion_total_proceso = obras_totales_proceso.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+
+        obras_totales_proyectadas = obras.filter(tipoObra_id=1)
+        obras_total_proyectadas = obras_totales_proyectadas.count()
+        inversion_total_proyectadas = obras_totales_proyectadas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+
+        obras_totales_concluidas = obras.filter(tipoObra_id=3)
+        obras_total_concluidas = obras_totales_concluidas.count()
+        inversion_total_concluidas = obras_totales_concluidas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+
+        obras_Total = obras_total_proceso+obras_total_proyectadas+obras_total_concluidas
+        inversion_total = inversion_total_proceso+inversion_total_proyectadas+inversion_total_concluidas
+
+        prs.slides[0].shapes[13].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[13].text= '{0:,}'.format(obras_total_concluidas)
+
+        prs.slides[0].shapes[14].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[14].text= '{0:,}'.format(obras_total_proceso)
+
+        prs.slides[0].shapes[15].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[15].text= '{0:,}'.format(obras_total_proyectadas)
+
+        prs.slides[0].shapes[11].text_frame.paragraphs[0].font.size = Pt(12)
+        prs.slides[0].shapes[11].text= '{0:,}'.format(obras_Total)
+        prs.slides[0].shapes[12].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[12].text= '{0:,.2f}'.format(inversion_total)
+
+        # datos para la diapositiva 2
+
+        #Reporte Dependencia
+        reporte_dependencia = obras.values('dependencia__id','dependencia__nombreDependencia','dependencia__orden_secretaria').annotate(
+            numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_dependencia = reporte_dependencia.order_by('dependencia__orden_secretaria')
+
+        json_map_dep = {}
+        json_map_dep['reporte_dependencia'] = []
+        for obra in reporte_dependencia:
+            map = {}
+            map['dependencia'] = obra['dependencia__nombreDependencia']
+            map['numero_obras'] = obra['numero_obras']
+            map['id'] = obra['dependencia__id']
+            json_map_dep['reporte_dependencia'].append(map)
+
+        i=20
+        for obra in json_map_dep['reporte_dependencia']:
+            prs.slides[1].shapes[i].text_frame.paragraphs[0].font.size = Pt(8)
+            prs.slides[1].shapes[i].text= obra['dependencia'] + '  ' +str('{0:,}'.format(obra['numero_obras']))
+            i+=1
+
+        # Datos para la diapositiva 3
+        #Reporte Estado
+        reporte_estado = obras.exclude(estado_id= 33).exclude(estado_id= 34).values('estado__nombreEstado','estado__id').annotate(
+            numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
+
+        reporte_estado = reporte_estado.order_by('estado__id')
+        json_map_edo = {}
+        json_map_edo['reporte_estado'] = []
+        for obra in reporte_estado:
+            map = {}
+            map['id'] = obra['estado__id']
+            map['estado'] = obra['estado__nombreEstado']
+            map['numero_obras'] = obra['numero_obras']
+            map['total_invertido'] = obra['sumatotal']
+            json_map_edo['reporte_estado'].append(map)
+
+
+        # Datos para las diapositivas 4 a 18
+        islide=3
+        for obra in json_map_dep['reporte_dependencia']:
+            dependencia_PPC = obras.filter(Q(dependencia_id=obra['id'])).values('dependencia__nombreDependencia','tipoObra_id').annotate(
+                numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+            dependencia_PPC = dependencia_PPC.order_by('tipoObra_id').reverse()
+
+            json_map_depPPC = {}
+            json_map_depPPC['reporte_dependencia_PPC'] = []
+            for obra in dependencia_PPC:
+                map = {}
+                map['dependencia'] = obra['dependencia__nombreDependencia']
+                map['tipo_obra'] = obra['tipoObra_id']
+                map['numero_obras'] = obra['numero_obras']
+                map['total_invertido'] = obra['sumatotal']
+                json_map_depPPC['reporte_dependencia_PPC'].append(map)
+
+
+            total_obras=0
+            total_invertido=0
+            for obra in json_map_depPPC['reporte_dependencia_PPC']:
+                if obra['tipo_obra'] == 3:
+                    prs.slides[islide].shapes[14].text_frame.paragraphs[0].font.size = Pt(12)
+                    prs.slides[islide].shapes[14].text= str('{0:,}'.format(obra['numero_obras'])) + ' obras'
+                    prs.slides[islide].shapes[17].text_frame.paragraphs[0].font.size = Pt(8)
+                    prs.slides[islide].shapes[17].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras+=obra['numero_obras']
+                    total_invertido+=obra['total_invertido']
+
+                if obra['tipo_obra'] == 2:
+                    prs.slides[islide].shapes[15].text_frame.paragraphs[0].font.size = Pt(12)
+                    prs.slides[islide].shapes[15].text= str('{0:,}'.format(obra['numero_obras'])) + ' obras'
+                    prs.slides[islide].shapes[18].text_frame.paragraphs[0].font.size = Pt(8)
+                    prs.slides[islide].shapes[18].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras+=obra['numero_obras']
+                    total_invertido+=obra['total_invertido']
+
+                if obra['tipo_obra'] == 1:
+                    prs.slides[islide].shapes[16].text_frame.paragraphs[0].font.size = Pt(12)
+                    prs.slides[islide].shapes[16].text= str('{0:,}'.format(obra['numero_obras'])) + ' obras'
+                    prs.slides[islide].shapes[19].text_frame.paragraphs[0].font.size = Pt(8)
+                    prs.slides[islide].shapes[19].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras+=obra['numero_obras']
+                    total_invertido+=obra['total_invertido']
+
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(12)
+            prs.slides[islide].shapes[12].text= str('{0:,}'.format(total_obras)) + ' obras'
+            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.size = Pt(8)
+            prs.slides[islide].shapes[13].text= str('{0:,.2f}'.format(total_invertido)) + ' MDP'
+
+            islide+=1
+            total_obras=0
+            total_invertido=0
+
+        # Datos para las diapositivas de la 19 a la 50
+        islide=18
+        for estado in json_map_edo['reporte_estado']:
+            obras = Obra.objects.filter(Q(estado_id=estado['id']))\
+                    .values('dependencia__nombreDependencia','dependencia__id').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+            obrasMaximas = obras.order_by('numero_obras').reverse()[:2]
+
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(12)
+            prs.slides[islide].shapes[11].text= str('{0:,}'.format(estado['numero_obras'])) + ' obras'
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(8)
+            prs.slides[islide].shapes[12].text= str('{0:,.2f}'.format(estado['total_invertido'])) + ' MDP'
+
+            i=13
+            j=15
+            k=19
+            for obra in obrasMaximas:
+                obraMax = Obra.objects.filter(Q(estado_id=estado['id']) & Q(dependencia_id=obra['dependencia__id']))\
+                    .values('tipoObra_id').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+                obraMax = obraMax.order_by('tipoObra_id').reverse()
+                prs.slides[islide].shapes[i].text_frame.paragraphs[0].font.size = Pt(10)
+                prs.slides[islide].shapes[i].text= obra['dependencia__nombreDependencia']
+
+                prs.slides[islide].shapes[j].text_frame.paragraphs[0].font.size = Pt(12)
+                prs.slides[islide].shapes[j].text= '{0:,}'.format(obra['numero_obras'])
+                j+=1
+                prs.slides[islide].shapes[j].text_frame.paragraphs[0].font.size = Pt(8)
+                prs.slides[islide].shapes[j].text= str('{0:,.2f}'.format(obra['sumatotal'])) + ' MDP'
+                j+=1
+                i+=1
+
+
+                for tipo in obraMax:
+                    if tipo['tipoObra_id'] == 3:
+                        prs.slides[islide].shapes[k].text_frame.paragraphs[0].font.size = Pt(12)
+                        prs.slides[islide].shapes[k].text= str('{0:,}'.format(tipo['numero_obras']))
+
+                    if tipo['tipoObra_id'] == 2:
+                        prs.slides[islide].shapes[k+1].text_frame.paragraphs[0].font.size = Pt(12)
+                        prs.slides[islide].shapes[k+1].text= str('{0:,}'.format(tipo['numero_obras']))
+
+                    if tipo['tipoObra_id'] == 1:
+                        prs.slides[islide].shapes[k+2].text_frame.paragraphs[0].font.size = Pt(12)
+                        prs.slides[islide].shapes[k+2].text= str('{0:,}'.format(tipo['numero_obras']))
+
+                k=22
+
+            islide+=1
+
+        output = StringIO.StringIO()
+        prs.save(output)
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response['Content-Disposition'] = 'attachment; filename="presentacionObrasAPF.pptx"'
+        response['Content-Length'] = output.tell()
+
+        output.seek(0)
+
+        return response

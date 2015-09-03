@@ -58,6 +58,7 @@ function main_consulta() {
     $j('#obrasIniciadas').on('click', obrasIniciadas)
     $j('#obrasVencidas').on('click', obrasVencidas)
     $j('#obrasPorDependencia').on('click', obrasPorDependencia)
+    $j('#prsentacionAPF').on('click', prsentacionAPF)
     $j('#enviaPDF2').on('click', demoFromHTML2)
     $j('#ver_datos #enviaPPT2').on('click', PptxReporte)
 
@@ -144,6 +145,13 @@ function verDatos() {
     });
 }
 
+
+function prsentacionAPF() {
+
+    var URL="/obras/api/PptxObrasImages?access_token=" + newToken;
+    location.href = URL;
+
+}
 
 function obrasIniciadas() {
     $j('#load1').removeClass("mfp-hide");
