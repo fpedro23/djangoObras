@@ -1441,7 +1441,7 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
         }
 
 
-        prs = Presentation('obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
+        prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
 
 
         # Datos diapositiva 1
