@@ -117,7 +117,7 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
         slide = prs.slides.add_slide(prs.slide_layouts[5])
         shapes = slide.shapes
         shapes.title.text = 'Obras Iniciadas'
-        rows = 100
+        rows = 20
         cols = 3
         left = Inches(0.921)
         top = Inches(1.2)
@@ -131,13 +131,13 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
         indice=1
 
         for obra in json_map['obras']:
-            if indice == 100:
+            if indice == 20:
                 indice=1
                 slide = prs.slides.add_slide(prs.slide_layouts[5])
                 shapes = slide.shapes
                 shapes.title.text = 'Resultados'
 
-                rows = 100
+                rows = 20
                 cols = 3
                 left = Inches(0.921)
                 top = Inches(1.2)
@@ -145,10 +145,25 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
                 height = Inches(0.8)
 
                 table = shapes.add_table(rows, cols, left, top, width, height).table
+
                 # set column widths
                 table.columns[0].width = Inches(2.0)
                 table.columns[1].width = Inches(2.0)
                 table.columns[2].width = Inches(4.0)
+
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+            for x in range(0,3):
+                cell = table.rows[indice].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(8)
+                paragraph.font.name = 'Arial'
+                paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
 
             # write column headings
             table.cell(0, 0).text = 'Identificador'
@@ -201,7 +216,7 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
         slide = prs.slides.add_slide(prs.slide_layouts[5])
         shapes = slide.shapes
         shapes.title.text = 'Obras Vencidas'
-        rows = 100
+        rows = 20
         cols = 3
         left = Inches(0.921)
         top = Inches(1.2)
@@ -215,13 +230,13 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
         indice=1
 
         for obra in json_map['obras']:
-            if indice == 100:
+            if indice == 20:
                 indice=1
                 slide = prs.slides.add_slide(prs.slide_layouts[5])
                 shapes = slide.shapes
                 shapes.title.text = 'Resultados'
 
-                rows = 100
+                rows = 20
                 cols = 3
                 left = Inches(0.921)
                 top = Inches(1.2)
@@ -233,6 +248,20 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
                 table.columns[0].width = Inches(2.0)
                 table.columns[1].width = Inches(2.0)
                 table.columns[2].width = Inches(4.0)
+
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+            for x in range(0,3):
+                cell = table.rows[indice].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(8)
+                paragraph.font.name = 'Arial'
+                paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
 
             # write column headings
             table.cell(0, 0).text = 'Identificador'
@@ -295,12 +324,24 @@ class ReporteNoTrabajoPptxEndpoint(ProtectedResourceView):
         table.columns[1].width = Inches(2.0)
         indice=1
 
+        for x in range(0,2):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
         #write column headings
         table.cell(0, 0).text = 'Dependencia'
         table.cell(0, 1).text = 'Fecha ultima modificacion'
 
         for obra in json_map['obras']:
-
+            for x in range(0,2):
+                cell = table.rows[indice].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(8)
+                paragraph.font.name = 'Arial'
+                paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
             # write body cells
             table.cell(indice, 0).text = obra['nombreDependencia']
             table.cell(indice, 1).text = str(obra['fecha_ultima_modificacion'])
@@ -712,7 +753,11 @@ class PptxEndpoint(ProtectedResourceView):
         shapes = slide.shapes
         shapes.title.text = 'Resultados'
 
-        rows = resultados['reporte_general']['obras_totales']+1
+        renglones = resultados['reporte_general']['obras_totales']+1
+        if renglones<22:
+            rows = renglones
+        else:
+            rows = 22
         cols = 3
         left = Inches(0.921)
         top = Inches(1.2)
@@ -720,6 +765,7 @@ class PptxEndpoint(ProtectedResourceView):
         height = Inches(0.8)
 
         table = shapes.add_table(rows, cols, left, top, width, height).table
+
         # set column widths
         table.columns[0].width = Inches(2.0)
         table.columns[1].width = Inches(2.0)
@@ -731,14 +777,52 @@ class PptxEndpoint(ProtectedResourceView):
         table.cell(0, 2).text = 'Denominacion'
 
         # write body cells
-        i=1
+        indice=1
         for obra in json_map['obras']:
-            table.cell(i, 0).text = obra['identificador_unico']
-            table.cell(i, 1).text = obra['estado__nombreEstado']
-            table.cell(i, 2).text = obra['denominacion']
-            i+=1
 
+            if indice == 22:
+                indice=1
+                slide = prs.slides.add_slide(prs.slide_layouts[5])
+                shapes = slide.shapes
+                shapes.title.text = 'Resultados'
 
+                rows = 22
+                cols = 3
+                left = Inches(0.921)
+                top = Inches(1.2)
+                width = Inches(6.0)
+                height = Inches(0.8)
+
+                table = shapes.add_table(rows, cols, left, top, width, height).table
+                # set column widths
+                table.columns[0].width = Inches(2.0)
+                table.columns[1].width = Inches(2.0)
+                table.columns[2].width = Inches(4.0)
+
+            # write column headings
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+            for x in range(0,3):
+                cell = table.rows[indice].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(8)
+                paragraph.font.name = 'Arial'
+                paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
+
+            table.cell(0, 0).text = 'Identificador'
+            table.cell(0, 1).text = 'Estado'
+            table.cell(0, 2).text = 'Denominacion'
+
+            # write body cells
+            table.cell(indice, 0).text = obra['identificador_unico']
+            table.cell(indice, 1).text = obra['estado__nombreEstado']
+            table.cell(indice, 2).text = obra['denominacion']
+            indice+=1
 
         prs.save(output)
         response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
@@ -848,6 +932,8 @@ class PptxReporteEndpoint(ProtectedResourceView):
         shapes.title.text = 'Reporte'
 
         if tipoReporte=='Dependencia':
+
+
             rows = 17
             cols = 3
             left = Inches(0.921)
@@ -861,6 +947,13 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
             # write column headings
             table.cell(0, 0).text = 'TipoInversion'
             table.cell(0, 1).text = 'No. de Obras '
@@ -869,10 +962,18 @@ class PptxReporteEndpoint(ProtectedResourceView):
             # write body cells
             i=1
             for obra in json_map['reporte_dependencia']:
+                for x in range(0,3):
+                    cell = table.rows[i].cells[x]
+                    paragraph = cell.textframe.paragraphs[0]
+                    paragraph.font.size = Pt(8)
+                    paragraph.font.name = 'Arial'
+                    paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
+
                 table.cell(i, 0).text = obra['dependencia']['nombreDependencia']
                 table.cell(i, 1).text = str(obra['numero_obras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
                 i+=1
+
         if tipoReporte=='Subdependencia':
             rows = 17
             cols = 3
@@ -887,6 +988,13 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
             # write column headings
             table.cell(0, 0).text = 'TipoInversion'
             table.cell(0, 1).text = 'No. de Obras '
@@ -895,6 +1003,12 @@ class PptxReporteEndpoint(ProtectedResourceView):
             # write body cells
             i=1
             for obra in json_map['reporte_subdependencia']:
+                for x in range(0,3):
+                    cell = table.rows[i].cells[x]
+                    paragraph = cell.textframe.paragraphs[0]
+                    paragraph.font.size = Pt(8)
+                    paragraph.font.name = 'Arial'
+                    paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
                 table.cell(i, 0).text = obra['subdependencia']['nombreDependencia']
                 table.cell(i, 1).text = str(obra['numero_obras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
@@ -914,6 +1028,13 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
             # write column headings
             table.cell(0, 0).text = 'TipoInversion'
             table.cell(0, 1).text = 'No. de Obras '
@@ -922,6 +1043,12 @@ class PptxReporteEndpoint(ProtectedResourceView):
             # write body cells
             i=1
             for obra in json_map['reporte_estado']:
+                for x in range(0,3):
+                    cell = table.rows[i].cells[x]
+                    paragraph = cell.textframe.paragraphs[0]
+                    paragraph.font.size = Pt(8)
+                    paragraph.font.name = 'Arial'
+                    paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
                 table.cell(i, 0).text = obra['estado']['nombreEstado']
                 table.cell(i, 1).text = str(obra['numeroObras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
