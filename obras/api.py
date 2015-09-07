@@ -598,7 +598,8 @@ class Subdependencias_forId_Endpoint(ProtectedResourceView):
 
             ansD = map(lambda dependencia: dependencia.to_serializable_dict(), dependencias)
             for dependencia in dependencias:
-                subdeps = Dependencia.objects.filter(dependienteDe__id=dependencia.id)
+                # subdeps = Dependencia.objects.filter(dependienteDe__id=dependencia.id)
+                subdeps = Dependencia.objects.filter(dependienteDe__id__in=iddependencias)
                 if subdeps:
                     ans=map(lambda dep: dep.to_serializable_dict(), subdeps)
 
