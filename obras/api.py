@@ -18,6 +18,7 @@ import pytz
 from pptx import Presentation
 from pptx.util import Inches
 from pptx.util import Pt
+from pptx.dml.color import RGBColor
 
 try:
     import cStringIO as StringIO
@@ -137,7 +138,7 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
         slide = prs.slides.add_slide(prs.slide_layouts[5])
         shapes = slide.shapes
         shapes.title.text = 'Obras Iniciadas'
-        rows = 100
+        rows = 20
         cols = 3
         left = Inches(0.921)
         top = Inches(1.2)
@@ -151,13 +152,13 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
         indice=1
 
         for obra in json_map['obras']:
-            if indice == 100:
+            if indice == 20:
                 indice=1
                 slide = prs.slides.add_slide(prs.slide_layouts[5])
                 shapes = slide.shapes
                 shapes.title.text = 'Resultados'
 
-                rows = 100
+                rows = 20
                 cols = 3
                 left = Inches(0.921)
                 top = Inches(1.2)
@@ -165,10 +166,25 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
                 height = Inches(0.8)
 
                 table = shapes.add_table(rows, cols, left, top, width, height).table
+
                 # set column widths
                 table.columns[0].width = Inches(2.0)
                 table.columns[1].width = Inches(2.0)
                 table.columns[2].width = Inches(4.0)
+
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+            for x in range(0,3):
+                cell = table.rows[indice].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(8)
+                paragraph.font.name = 'Arial'
+                paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
 
             # write column headings
             table.cell(0, 0).text = 'Identificador'
@@ -221,7 +237,7 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
         slide = prs.slides.add_slide(prs.slide_layouts[5])
         shapes = slide.shapes
         shapes.title.text = 'Obras Vencidas'
-        rows = 100
+        rows = 20
         cols = 3
         left = Inches(0.921)
         top = Inches(1.2)
@@ -235,13 +251,13 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
         indice=1
 
         for obra in json_map['obras']:
-            if indice == 100:
+            if indice == 20:
                 indice=1
                 slide = prs.slides.add_slide(prs.slide_layouts[5])
                 shapes = slide.shapes
                 shapes.title.text = 'Resultados'
 
-                rows = 100
+                rows = 20
                 cols = 3
                 left = Inches(0.921)
                 top = Inches(1.2)
@@ -253,6 +269,20 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
                 table.columns[0].width = Inches(2.0)
                 table.columns[1].width = Inches(2.0)
                 table.columns[2].width = Inches(4.0)
+
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+            for x in range(0,3):
+                cell = table.rows[indice].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(8)
+                paragraph.font.name = 'Arial'
+                paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
 
             # write column headings
             table.cell(0, 0).text = 'Identificador'
@@ -315,12 +345,24 @@ class ReporteNoTrabajoPptxEndpoint(ProtectedResourceView):
         table.columns[1].width = Inches(2.0)
         indice=1
 
+        for x in range(0,2):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
         #write column headings
         table.cell(0, 0).text = 'Dependencia'
         table.cell(0, 1).text = 'Fecha ultima modificacion'
 
         for obra in json_map['obras']:
-
+            for x in range(0,2):
+                cell = table.rows[indice].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(8)
+                paragraph.font.name = 'Arial'
+                paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
             # write body cells
             table.cell(indice, 0).text = obra['nombreDependencia']
             table.cell(indice, 1).text = str(obra['fecha_ultima_modificacion'])
@@ -765,7 +807,11 @@ class PptxEndpoint(ProtectedResourceView):
         shapes = slide.shapes
         shapes.title.text = 'Resultados'
 
-        rows = resultados['reporte_general']['obras_totales']+1
+        renglones = resultados['reporte_general']['obras_totales']+1
+        if renglones<22:
+            rows = renglones
+        else:
+            rows = 22
         cols = 3
         left = Inches(0.921)
         top = Inches(1.2)
@@ -773,6 +819,7 @@ class PptxEndpoint(ProtectedResourceView):
         height = Inches(0.8)
 
         table = shapes.add_table(rows, cols, left, top, width, height).table
+
         # set column widths
         table.columns[0].width = Inches(2.0)
         table.columns[1].width = Inches(2.0)
@@ -784,14 +831,52 @@ class PptxEndpoint(ProtectedResourceView):
         table.cell(0, 2).text = 'Denominacion'
 
         # write body cells
-        i=1
+        indice=1
         for obra in json_map['obras']:
-            table.cell(i, 0).text = obra['identificador_unico']
-            table.cell(i, 1).text = obra['estado__nombreEstado']
-            table.cell(i, 2).text = obra['denominacion']
-            i+=1
 
+            if indice == 22:
+                indice=1
+                slide = prs.slides.add_slide(prs.slide_layouts[5])
+                shapes = slide.shapes
+                shapes.title.text = 'Resultados'
 
+                rows = 22
+                cols = 3
+                left = Inches(0.921)
+                top = Inches(1.2)
+                width = Inches(6.0)
+                height = Inches(0.8)
+
+                table = shapes.add_table(rows, cols, left, top, width, height).table
+                # set column widths
+                table.columns[0].width = Inches(2.0)
+                table.columns[1].width = Inches(2.0)
+                table.columns[2].width = Inches(4.0)
+
+            # write column headings
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+            for x in range(0,3):
+                cell = table.rows[indice].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(8)
+                paragraph.font.name = 'Arial'
+                paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
+
+            table.cell(0, 0).text = 'Identificador'
+            table.cell(0, 1).text = 'Estado'
+            table.cell(0, 2).text = 'Denominacion'
+
+            # write body cells
+            table.cell(indice, 0).text = obra['identificador_unico']
+            table.cell(indice, 1).text = obra['estado__nombreEstado']
+            table.cell(indice, 2).text = obra['denominacion']
+            indice+=1
 
         prs.save(output)
         response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
@@ -901,6 +986,8 @@ class PptxReporteEndpoint(ProtectedResourceView):
         shapes.title.text = 'Reporte'
 
         if tipoReporte=='Dependencia':
+
+
             rows = 17
             cols = 3
             left = Inches(0.921)
@@ -914,6 +1001,13 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
             # write column headings
             table.cell(0, 0).text = 'TipoInversion'
             table.cell(0, 1).text = 'No. de Obras '
@@ -922,10 +1016,18 @@ class PptxReporteEndpoint(ProtectedResourceView):
             # write body cells
             i=1
             for obra in json_map['reporte_dependencia']:
+                for x in range(0,3):
+                    cell = table.rows[i].cells[x]
+                    paragraph = cell.textframe.paragraphs[0]
+                    paragraph.font.size = Pt(8)
+                    paragraph.font.name = 'Arial'
+                    paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
+
                 table.cell(i, 0).text = obra['dependencia']['nombreDependencia']
                 table.cell(i, 1).text = str(obra['numero_obras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
                 i+=1
+
         if tipoReporte=='Subdependencia':
             rows = 17
             cols = 3
@@ -940,6 +1042,13 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
             # write column headings
             table.cell(0, 0).text = 'TipoInversion'
             table.cell(0, 1).text = 'No. de Obras '
@@ -948,6 +1057,12 @@ class PptxReporteEndpoint(ProtectedResourceView):
             # write body cells
             i=1
             for obra in json_map['reporte_subdependencia']:
+                for x in range(0,3):
+                    cell = table.rows[i].cells[x]
+                    paragraph = cell.textframe.paragraphs[0]
+                    paragraph.font.size = Pt(8)
+                    paragraph.font.name = 'Arial'
+                    paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
                 table.cell(i, 0).text = obra['subdependencia']['nombreDependencia']
                 table.cell(i, 1).text = str(obra['numero_obras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
@@ -967,6 +1082,13 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
+            for x in range(0,3):
+                cell = table.rows[0].cells[x]
+                paragraph = cell.textframe.paragraphs[0]
+                paragraph.font.size = Pt(12)
+                paragraph.font.name = 'Arial Black'
+                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
             # write column headings
             table.cell(0, 0).text = 'TipoInversion'
             table.cell(0, 1).text = 'No. de Obras '
@@ -975,6 +1097,12 @@ class PptxReporteEndpoint(ProtectedResourceView):
             # write body cells
             i=1
             for obra in json_map['reporte_estado']:
+                for x in range(0,3):
+                    cell = table.rows[i].cells[x]
+                    paragraph = cell.textframe.paragraphs[0]
+                    paragraph.font.size = Pt(8)
+                    paragraph.font.name = 'Arial'
+                    paragraph.font.color.rgb = RGBColor(0x0B, 0x0B, 0x0B)
                 table.cell(i, 0).text = obra['estado']['nombreEstado']
                 table.cell(i, 1).text = str(obra['numeroObras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
@@ -1481,3 +1609,271 @@ class ReporteObrasPorAutorizar(ProtectedResourceView):
 
         return HttpResponse(json.dumps(the_list), 'application/json')
 
+
+class ReporteImagenesEndpoint(ProtectedResourceView):
+    def rename_estado(self, obra):
+        obra['estado'] = obra['estado__nombreEstado']
+        del obra['estado__nombreEstado']
+
+    def get(self, request):
+        obras = Obra.objects.all().exclude(tipoObra_id=4)
+
+        reporte = {
+            'reporte_total': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
+        }
+
+
+        prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
+
+
+        # Datos diapositiva 1
+        obras_totales_proceso = obras.filter(tipoObra_id=2)
+        obras_total_proceso = obras_totales_proceso.count()
+        inversion_total_proceso = obras_totales_proceso.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+
+        obras_totales_proyectadas = obras.filter(tipoObra_id=1)
+        obras_total_proyectadas = obras_totales_proyectadas.count()
+        inversion_total_proyectadas = obras_totales_proyectadas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+
+        obras_totales_concluidas = obras.filter(tipoObra_id=3)
+        obras_total_concluidas = obras_totales_concluidas.count()
+        inversion_total_concluidas = obras_totales_concluidas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+
+        obras_Total = obras_total_proceso+obras_total_proyectadas+obras_total_concluidas
+        inversion_total = inversion_total_proceso+inversion_total_proyectadas+inversion_total_concluidas
+
+        prs.slides[0].shapes[13].text_frame.paragraphs[0].font.size = Pt(16)
+        prs.slides[0].shapes[13].text_frame.paragraphs[0].font.name = 'Arial Black'
+        prs.slides[0].shapes[13].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        prs.slides[0].shapes[13].text= '{0:,}'.format(obras_total_concluidas)
+
+        prs.slides[0].shapes[14].text_frame.paragraphs[0].font.size = Pt(16)
+        prs.slides[0].shapes[14].text_frame.paragraphs[0].font.name = 'Arial Black'
+        prs.slides[0].shapes[14].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        prs.slides[0].shapes[14].text= '{0:,}'.format(obras_total_proceso)
+
+        prs.slides[0].shapes[15].text_frame.paragraphs[0].font.size = Pt(16)
+        prs.slides[0].shapes[15].text_frame.paragraphs[0].font.name = 'Arial Black'
+        prs.slides[0].shapes[15].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        prs.slides[0].shapes[15].text= '{0:,}'.format(obras_total_proyectadas)
+
+        prs.slides[0].shapes[11].text_frame.paragraphs[0].font.size = Pt(20)
+        prs.slides[0].shapes[11].text_frame.paragraphs[0].font.name = 'Arial Black'
+        prs.slides[0].shapes[11].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x40, 0x40, 0x40)
+        prs.slides[0].shapes[11].text= '{0:,}'.format(obras_Total)
+        prs.slides[0].shapes[12].text_frame.paragraphs[0].font.size = Pt(7)
+        prs.slides[0].shapes[12].text_frame.paragraphs[0].font.name = 'Arial Black'
+        prs.slides[0].shapes[12].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x40, 0x40, 0x40)
+        prs.slides[0].shapes[12].text= '{0:,.2f}'.format(inversion_total)
+
+        # datos para la diapositiva 2
+
+        #Reporte Dependencia
+        reporte_dependencia = obras.values('dependencia__id','dependencia__nombreDependencia','dependencia__orden_secretaria').annotate(
+            numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+        reporte_dependencia = reporte_dependencia.order_by('dependencia__orden_secretaria')
+
+        json_map_dep = {}
+        json_map_dep['reporte_dependencia'] = []
+        for obra in reporte_dependencia:
+            map = {}
+            map['dependencia'] = obra['dependencia__nombreDependencia']
+            map['numero_obras'] = obra['numero_obras']
+            map['id'] = obra['dependencia__id']
+            json_map_dep['reporte_dependencia'].append(map)
+
+        for x in range(20,35):
+            prs.slides[1].shapes[x].text_frame.paragraphs[0].font.size = Pt(10)
+            prs.slides[1].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Black'
+
+        for x in range(20,24):
+            prs.slides[1].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+        for x in range(24,26):
+            prs.slides[1].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
+        prs.slides[1].shapes[26].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xCC, 0xCC, 0x00)
+        prs.slides[1].shapes[27].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
+        prs.slides[1].shapes[28].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xCC, 0xCC, 0x00)
+        for x in range(29,31):
+            prs.slides[1].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
+        prs.slides[1].shapes[31].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        prs.slides[1].shapes[32].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xCC, 0xCC, 0x00)
+        prs.slides[1].shapes[33].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        prs.slides[1].shapes[34].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
+
+
+
+        i=20
+        for obra in json_map_dep['reporte_dependencia']:
+            prs.slides[1].shapes[i].text= obra['dependencia'] + '  ' +str('{0:,}'.format(obra['numero_obras']))
+            i+=1
+
+        # Datos para la diapositiva 3
+        #Reporte Estado
+        reporte_estado = obras.exclude(estado_id= 33).exclude(estado_id= 34).values('estado__nombreEstado','estado__id').annotate(
+            numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
+
+        reporte_estado = reporte_estado.order_by('estado__id')
+        json_map_edo = {}
+        json_map_edo['reporte_estado'] = []
+        for obra in reporte_estado:
+            map = {}
+            map['id'] = obra['estado__id']
+            map['estado'] = obra['estado__nombreEstado']
+            map['numero_obras'] = obra['numero_obras']
+            map['total_invertido'] = obra['sumatotal']
+            json_map_edo['reporte_estado'].append(map)
+
+        for x in range(7,39):
+            prs.slides[2].shapes[x].text_frame.paragraphs[0].font.size = Pt(9)
+            prs.slides[2].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Black'
+            prs.slides[2].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+        i=7
+        for obra in json_map_edo['reporte_estado']:
+            prs.slides[2].shapes[i].text= str('{0:,}'.format(obra['numero_obras']))
+            i+=1
+
+
+        # Datos para las diapositivas 4 a 18
+        islide=3
+        for obra in json_map_dep['reporte_dependencia']:
+            dependencia_PPC = obras.filter(Q(dependencia_id=obra['id'])).values('dependencia__nombreDependencia','tipoObra_id').annotate(
+                numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+            dependencia_PPC = dependencia_PPC.order_by('tipoObra_id').reverse()
+
+            json_map_depPPC = {}
+            json_map_depPPC['reporte_dependencia_PPC'] = []
+            for obra in dependencia_PPC:
+                map = {}
+                map['dependencia'] = obra['dependencia__nombreDependencia']
+                map['tipo_obra'] = obra['tipoObra_id']
+                map['numero_obras'] = obra['numero_obras']
+                map['total_invertido'] = obra['sumatotal']
+                json_map_depPPC['reporte_dependencia_PPC'].append(map)
+
+
+            total_obras=0
+            total_invertido=0
+            for obra in json_map_depPPC['reporte_dependencia_PPC']:
+
+                for x in range(14,20):
+                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.bold = True
+                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+                if obra['tipo_obra'] == 3:
+                    prs.slides[islide].shapes[14].text_frame.paragraphs[0].font.size = Pt(24)
+                    prs.slides[islide].shapes[14].text= str('{0:,}'.format(obra['numero_obras']))
+                    prs.slides[islide].shapes[17].text_frame.paragraphs[0].font.size = Pt(10)
+                    prs.slides[islide].shapes[17].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras+=obra['numero_obras']
+                    total_invertido+=obra['total_invertido']
+
+                if obra['tipo_obra'] == 2:
+                    prs.slides[islide].shapes[15].text_frame.paragraphs[0].font.size = Pt(24)
+                    prs.slides[islide].shapes[15].text= str('{0:,}'.format(obra['numero_obras']))
+                    prs.slides[islide].shapes[18].text_frame.paragraphs[0].font.size = Pt(10)
+                    prs.slides[islide].shapes[18].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras+=obra['numero_obras']
+                    total_invertido+=obra['total_invertido']
+
+                if obra['tipo_obra'] == 1:
+                    prs.slides[islide].shapes[16].text_frame.paragraphs[0].font.size = Pt(24)
+                    prs.slides[islide].shapes[16].text= str('{0:,}'.format(obra['numero_obras']))
+                    prs.slides[islide].shapes[19].text_frame.paragraphs[0].font.size = Pt(10)
+                    prs.slides[islide].shapes[19].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras+=obra['numero_obras']
+                    total_invertido+=obra['total_invertido']
+
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(20)
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.bold = True
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
+            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.size = Pt(10)
+            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.bold = True
+            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
+
+            prs.slides[islide].shapes[12].text= str('{0:,}'.format(total_obras)) + ' obras'
+            prs.slides[islide].shapes[13].text= str('{0:,.2f}'.format(total_invertido)) + ' MDP'
+
+            islide+=1
+            total_obras=0
+            total_invertido=0
+
+        # Datos para las diapositivas de la 19 a la 50
+        islide=18
+        for estado in json_map_edo['reporte_estado']:
+            obras = Obra.objects.filter(Q(estado_id=estado['id']))\
+                    .values('dependencia__nombreDependencia','dependencia__id').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+            obrasMaximas = obras.order_by('numero_obras').reverse()[:2]
+
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(24)
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(10)
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
+
+            for x in range(13,26):
+                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.bold = True
+                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+
+
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(36)
+            prs.slides[islide].shapes[11].text= str('{0:,}'.format(estado['numero_obras'])) + ' obras'
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(12)
+            prs.slides[islide].shapes[12].text= str('{0:,.2f}'.format(estado['total_invertido'])) + ' MDP'
+
+            i=13
+            j=15
+            k=19
+            for obra in obrasMaximas:
+                obraMax = Obra.objects.filter(Q(estado_id=estado['id']) & Q(dependencia_id=obra['dependencia__id']))\
+                    .values('tipoObra_id').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+                obraMax = obraMax.order_by('tipoObra_id').reverse()
+                prs.slides[islide].shapes[i].text_frame.paragraphs[0].font.size = Pt(14)
+                prs.slides[islide].shapes[i].text= obra['dependencia__nombreDependencia']
+
+                prs.slides[islide].shapes[j].text_frame.paragraphs[0].font.size = Pt(28)
+                prs.slides[islide].shapes[j].text= '{0:,}'.format(obra['numero_obras'])
+                j+=1
+                prs.slides[islide].shapes[j].text_frame.paragraphs[0].font.size = Pt(10)
+                prs.slides[islide].shapes[j].text= str('{0:,.2f}'.format(obra['sumatotal'])) + ' MDP'
+                j+=1
+                i+=1
+
+
+                prs.slides[islide].shapes[k].text_frame.paragraphs[0].font.size = Pt(18)
+                prs.slides[islide].shapes[k+1].text_frame.paragraphs[0].font.size = Pt(18)
+                prs.slides[islide].shapes[k+2].text_frame.paragraphs[0].font.size = Pt(18)
+                prs.slides[islide].shapes[k].text= str('{0:,}'.format(0))
+                prs.slides[islide].shapes[k+1].text= str('{0:,}'.format(0))
+                prs.slides[islide].shapes[k+2].text= str('{0:,}'.format(0))
+
+                for tipo in obraMax:
+
+                    if tipo['tipoObra_id'] == 3:
+                        prs.slides[islide].shapes[k].text= str('{0:,}'.format(tipo['numero_obras']))
+
+                    if tipo['tipoObra_id'] == 2:
+                        prs.slides[islide].shapes[k+1].text= str('{0:,}'.format(tipo['numero_obras']))
+
+                    if tipo['tipoObra_id'] == 1:
+                        prs.slides[islide].shapes[k+2].text= str('{0:,}'.format(tipo['numero_obras']))
+
+                k=22
+
+            islide+=1
+
+        output = StringIO.StringIO()
+        prs.save(output)
+        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response['Content-Disposition'] = 'attachment; filename="presentacionObrasAPF.pptx"'
+        response['Content-Length'] = output.tell()
+
+        output.seek(0)
+
+        return response
