@@ -69,29 +69,45 @@ class BuscarObras:
 
         self.busqueda_rapida = busqueda_rapida
 
+    def filtrar_dependencias(self, user):
+        if user is not None:
+            dependencias = user.usuario.dependencia.all()
+            subdependencias = user.usuario.subdependencia.all()
+
+            if user.usuario.rol != "SA":
+                if self.dependencias is None or self.dependencias.count() == 0:
+                    self.dependencias = get_subdependencias_as_list_flat(dependencias)
+                if self.subdependencias is None or self.subdependencias.count() == 0:
+                    self.subdependencias = get_subdependencias_as_list_flat(subdependencias)
+            else:
+                if self.dependencias is None or self.dependencias.count() == 0:
+                    self.dependencias = None
+                if self.subdependencias is None or self.subdependencias.count() == 0:
+                    self.subdependencias = None
+
     # Este metodo asignara los parametros de dependencia y subdependencia
     # de acuerdo al tipo de usuario que realiza la busqueda
     # Si estos parametros ya estan definidos o el usuario es None,
     # este metodo no hara nada
-    def filtrar_dependencias(self, user):
-        if user is not None:
-            # Los usuarios AD deben filtrar por sus propias dependencias y
-            # subdependencias
-            if user.usuario.rol == "AD":
-                if self.dependencias is None:
-                    dependencias = []
-                    for dependencia in user.usuario.dependencia.all():
-                        dependencias.append(dependencia.id)
-                    self.dependencias = dependencias
-            # Los usuarios US deben filtrar por las subdependencias que le corresponden
-            # Tambien por la dependencia (solo una) que corresponde pero el filtrar por
-            # subdependencias implicitamente filtra por dependencias
-            elif user.usuario.rol == "US":
-                if self.subdependencias is None:
-                    subdependencias = []
-                    for subdependencia in user.usuario.subdependencia.all():
-                        subdependencias.append(subdependencia.id)
-                    self.subdependencias = subdependencias
+    # def filtrar_dependencias(self, user):
+    #     if user is not None:
+    #         # Los usuarios AD deben filtrar por sus propias dependencias y
+    #         # subdependencias
+    #         if user.usuario.rol == "AD":
+    #             if self.dependencias is None:
+    #                 dependencias = []
+    #                 for dependencia in user.usuario.dependencia.all():
+    #                     dependencias.append(dependencia.id)
+    #                 self.dependencias = dependencias
+    #         # Los usuarios US deben filtrar por las subdependencias que le corresponden
+    #         # Tambien por la dependencia (solo una) que corresponde pero el filtrar por
+    #         # subdependencias implicitamente filtra por dependencias
+    #         elif user.usuario.rol == "US":
+    #             if self.subdependencias is None:
+    #                 subdependencias = []
+    #                 for subdependencia in user.usuario.subdependencia.all():
+    #                     subdependencias.append(subdependencia.id)
+    #                 self.subdependencias = subdependencias
 
     def buscar(self):
 

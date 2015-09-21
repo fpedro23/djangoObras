@@ -622,6 +622,8 @@ class DetalleClasificacion(models.Model):
 
 
 def get_subdependencias_as_list_flat(deps):
+    if deps is None or deps.count() == 0:
+        return None
     ans = []
     for dependencia in deps:
         ans.append(dependencia)

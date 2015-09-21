@@ -720,7 +720,6 @@ def ajax_prueba(request):
 
 def fichaTecnica(request):
         prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/FichaTecnicaObras.pptx')
-        #prs = Presentation('obras/static/ppt/FichaTecnicaObras.pptx')
         usuario = request.user.usuario
         buscador = BuscaObra(
             identificador_unico=request.GET.get('identificador_unico', None)

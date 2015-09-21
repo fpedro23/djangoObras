@@ -1452,16 +1452,10 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         subdependencias = get_usuario_for_token(request.GET.get('access_token')).subdependencia.all()
 
         if dependencias and dependencias.count() > 0:
-            if get_usuario_for_token(request.GET.get('access_token')).rol == 'US':
-                obras = Obra.objects.filter(
-                    Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
-                    Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
-                )
-            else:
-                obras = Obra.objects.filter(
-                    Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
-                    Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
-                )
+            obras = Obra.objects.filter(
+                Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) |
+                Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias))
+            )
         else:
             obras = Obra.objects.all()
 

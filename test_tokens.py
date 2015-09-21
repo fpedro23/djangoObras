@@ -1,13 +1,15 @@
 import requests
 
-SECRET = 'ijtUJ22aI8z4BrUVmRpVFqGkIJOzTemb4F6lsJG5J8ngqsrgT9kjx0g0sOHr97DZgGiteDs4sB6XBA1OEBYbMF32FYmDIECGrvP7wPeVmH3KOAQBWu7ELbL0XNApTLrO'
+SECRET = 'Ito4EuoY5hhWuOynPlOxJkgiAguO2tHpFsIZHgkh6HMjN4gHLsOdbOmHxMitMAdJs9FoJS5lK9DiVIiurS6CeocgCVgKHR6JEBt69HY1nsWXaE1bFA7ZpjNQLbrhlgpf'
 payload = {
     'grant_type': 'password',
     'username': 'capusu',
     'password': 'capusu',
-    'client_id': 'DHDX7hqj3O4LkNVnt9ks7T13SNlcwiPo7yYMsDw6',
+    'client_id': 'nJKmO290WGy5TY4GAmxK23cg8mgTDaYf9bgfE5Mx',
     'client_secret': SECRET,
     'scope': 'write read'
 }
 # print requests.post('http://edicomex.com.mx:7500/o/token/', payload).text
 print requests.post('https://obrasapf.mx/o/token/', payload).text
+# capusu w4zqhagAAmc4ipkY5XTIZMIvvF4vH3
+# ags 1IPGDU8ZCDdaqku7XG1VdHsrxvgsNN
