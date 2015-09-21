@@ -91,5 +91,5 @@ function populateMunicpiosSelect(municipios) {
 function clearMunicipios() {
     $j('#id_municipio')
         .empty()
-        .append('<option value="" selected="selected">---------</option>');
+        .append('<option value>---------</option>');
 }
