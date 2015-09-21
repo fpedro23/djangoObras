@@ -1,4 +1,5 @@
 import requests
+import django.db.backends.mysql.base
 
 SECRET = 'Ito4EuoY5hhWuOynPlOxJkgiAguO2tHpFsIZHgkh6HMjN4gHLsOdbOmHxMitMAdJs9FoJS5lK9DiVIiurS6CeocgCVgKHR6JEBt69HY1nsWXaE1bFA7ZpjNQLbrhlgpf'
 payload = {
