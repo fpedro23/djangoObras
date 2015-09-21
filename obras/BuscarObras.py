@@ -76,9 +76,17 @@ class BuscarObras:
 
             if user.usuario.rol != "SA":
                 if self.dependencias is None or self.dependencias.count() == 0:
-                    self.dependencias = get_subdependencias_as_list_flat(dependencias)
+                    dependencias = get_subdependencias_as_list_flat(dependencias)
+                    if dependencias and dependencias.count() > 0:
+                        self.dependencias = []
+                        for dependencia in dependencias:
+                            self.dependencias.append(dependencia.id)
                 if self.subdependencias is None or self.subdependencias.count() == 0:
-                    self.subdependencias = get_subdependencias_as_list_flat(subdependencias)
+                    subdependencias = get_subdependencias_as_list_flat(subdependencias)
+                    if subdependencias and subdependencias.count() > 0:
+                        self.subdependencias = []
+                        for subdependencia in subdependencias:
+                            self.subdependencias.append(subdependencia.id)
             else:
                 if self.dependencias is None or self.dependencias.count() == 0:
                     self.dependencias = None
