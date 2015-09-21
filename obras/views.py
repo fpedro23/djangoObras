@@ -505,7 +505,7 @@ def consulta_web(request):
             Q(dependienteDe__isnull=True)
         )
         subdependencias = Dependencia.objects.filter(
-            Q(obraprograma='O') &
+            Q(obraoprograma='O') &
             Q(dependienteDe__isnull=False)
         )
     else:
