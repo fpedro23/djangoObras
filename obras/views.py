@@ -504,17 +504,23 @@ def consulta_web(request):
             Q(obraoprograma='O') &
             Q(dependienteDe__isnull=True)
         )
+        subdependencias = Dependencia.objects.filter(
+            Q(obraprograma='O') &
+            Q(depndienteDe__isnull=False)
+        )
     else:
         dependencias = Dependencia.objects.filter(
             Q(id__in=request.user.usuario.dependencia.all())
             & Q(dependienteDe__isnull=True)
         )
+        subdependencias = Dependencia.objects.filter(Q(dependienteDe__in=dependencias))
 
     #templates = loader.get_template('consultas/busqueda_general.html')
     template = loader.get_template('admin/obras/consulta_filtros/consulta-filtros.html')
     context = RequestContext(request, {
         'estatusObra': TipoObra.objects.all(),
         'dependencias': dependencias,
+        'subdependencias': subdependencias,
         'estados': Estado.objects.all(),
         'tipo_inversiones': TipoInversion.objects.all(),
         'impactos': Impacto.objects.all(),
