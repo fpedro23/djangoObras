@@ -123,7 +123,7 @@ class BuscarObras:
         if self.dependencias is not None:
             query = query | Q(dependencia_id__in=self.dependencias)
         if self.subdependencias is not None:
-            query = query | Q(subdependencia_id__in=self.subdependencias)
+            query = query & Q(subdependencia_id__in=self.subdependencias)
 
         if self.id_obra is not None:
             query = query & Q(identificador_unico=self.id_obra)

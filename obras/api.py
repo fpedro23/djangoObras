@@ -591,11 +591,14 @@ class Subdependencias_forId_Endpoint(ProtectedResourceView):
                     Q(id__in=iddependencias)
                 )
 
-            subdependencias = Dependencia.objects.filter(dependienteDe__in=dependencias)
+            subdependencias = Dependencia.objects.filter(dependienteDe__in=dependencias).all()
             if subdependencias is not None and subdependencias.count() > 0:
-                ans = map(lambda dep: dep.to_serializable_dict, subdependencias)
+                ans = map(lambda dep: dep.to_serializable_dict(), subdependencias)
         else:
-            ans = map(lambda dep: dep.to_serializable_dict(), usuario.subdependencia.all())
+            if usuario.rol == 'SA':
+                ans = map(lambda dep: dep.to_serializable_dict(), Dependencia.objects.filter(dependienteDe__isnull=False).all())
+            else:
+                ans = map(lambda dep: dep.to_serializable_dict(), usuario.subdependencia.all())
 
         return HttpResponse(json.dumps(ans), 'application/json')
 
