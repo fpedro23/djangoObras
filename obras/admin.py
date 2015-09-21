@@ -309,6 +309,40 @@ class EstadoListFilter(SimpleListFilter):
         if self.value():
             return queryset.filter(estado__id=self.value())
 
+class MunicipioListFilter(SimpleListFilter):
+    # USAGE
+    # In your admin class, pass three filter class as tuple for the list_filter attribute:
+    #
+    # list_filter = (CategoryListFilter,)
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'Municipio'
+
+    parameter_name = 'municipio'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+
+        list_tuple = []
+        for municipio in Municipio.objects.all():
+            list_tuple.append((municipio.id, municipio.nombreMunicipio))
+        return list_tuple
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+
+        if self.value():
+            return queryset.filter(municipio__id=self.value())
 
 def make_authorized(obrasadmin, request, queryset):
     queryset.update(autorizada=True)
@@ -357,7 +391,7 @@ class ObrasAdmin(admin.ModelAdmin):
     )
     ordering = ['identificador_unico']
 
-    list_filter = [DependenciaListFilter, 'autorizada', SubDependenciaListFilter, EstadoListFilter, ]
+    list_filter = [DependenciaListFilter, 'autorizada', SubDependenciaListFilter, EstadoListFilter, MunicipioListFilter,]
     readonly_fields = ('identificador_unico',)
     actions = [make_authorized, make_unauthorized]
 
