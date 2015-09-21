@@ -94,6 +94,30 @@ DATABASES = {
         'PORT': '',
     }
 }
+IGNORE_MYSQL_WARNINGS = True
+if IGNORE_MYSQL_WARNINGS:
+    _GOT_FIRST_REQUEST = False
+    def on_first_request(signal, sender):
+        global _GOT_FIRST_REQUEST
+        if not _GOT_FIRST_REQUEST:
+            _GOT_FIRST_REQUEST = True
+
+            from django.db.backends.mysql.base import CursorWrapper
+            import MySQLdb as Database
+
+            def _ignore_warnings(fn):
+                def _execute(*args, **kwargs):
+                    try:
+                        return fn(*args, **kwargs)
+                    except Database.Warning as e:
+                        return None
+                return _execute
+
+            CursorWrapper.execute = _ignore_warnings(CursorWrapper.execute)
+            CursorWrapper.executemany = _ignore_warnings(CursorWrapper.executemany)
+
+    from django.core.signals import request_started
+    request_started.connect(on_first_request)
 
 # DATABASES = {
 #     'default': {

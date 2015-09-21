@@ -1,17 +1,9 @@
 from django import forms
-from django.contrib.admin.models import LogEntry, ADDITION
-from django.contrib.contenttypes.models import ContentType
-from django.core.mail import send_mail
-from obras.models import Obra, Dependencia
-from obras.models import Obra, DetalleInversion
 from obras.models import Obra, DetalleInversion, DetalleClasificacion, DocumentoFuente
-import itertools
 from datetime import datetime
 from django.utils.safestring import mark_safe
 import os
 from django.conf import settings
-from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import CreateView
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
@@ -107,23 +99,6 @@ class AddObraForm(forms.ModelForm):
         except Exception as e:
             print e
 
-
-        if instance.id and not instance.autorizada:
-            obra = Obra.objects.get(id=instance.id)
-            try:
-                contactos = LogEntry.objects.filter(
-                    object_id=obra.id,
-                    action_flag=ADDITION,
-                    content_type__id__exact=ContentType.objects.get_for_model(Obra).id
-                ).order_by('action_time').last().user.usuario.dependencia.get_contactos()
-
-                # for contacto in contactos:
-                #     send_mail('Cambios obra %s no autorizados' % obra.identificador_unico,
-                #           'Los cambios a a la obra %s no fueron autorizados' % obra.identificador_unico,
-                #           'edicomexsa@gmail.com', [contacto.user.email])
-            except Exception as e:
-                print e
-
         if instance.identificador_unico is None:
 
             lista = Obra.objects.filter(dependencia__id=instance.dependencia.id).values('identificador_unico').order_by('-identificador_unico')
@@ -140,9 +115,6 @@ class AddObraForm(forms.ModelForm):
                 string_id = '%s_%s_%.5d' % ('OB', instance.dependencia.nombreDependencia.upper(), numero)
                 string_id.upper()
                 instance.identificador_unico = string_id
-
-
-        # print(instance.identificador_unico)
 
         # http://stackoverflow.com/questions/1355150/django-when-saving-how-can-you-check-if-a-field-has-changed
         if instance.id is not None: #Revisa si existe ese objeto
