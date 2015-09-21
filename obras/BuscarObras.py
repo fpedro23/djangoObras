@@ -91,7 +91,7 @@ class BuscarObras:
                     subdependencias = []
                     for subdependencia in user.usuario.subdependencia.all():
                         subdependencias.append(subdependencia.id)
-                    self.subdependencias = subdependencia
+                    self.subdependencias = subdependencias
 
     def buscar(self):
 
