@@ -88,9 +88,9 @@ class BuscarObras:
                         for subdependencia in subdependencias:
                             self.subdependencias.append(subdependencia.id)
             else:
-                if self.dependencias is None or self.dependencias.count() == 0:
+                if self.dependencias is None or len(dependencias) == 0:
                     self.dependencias = None
-                if self.subdependencias is None or self.subdependencias.count() == 0:
+                if self.subdependencias is None or len(subdependencias) == 0:
                     self.subdependencias = None
 
     # Este metodo asignara los parametros de dependencia y subdependencia

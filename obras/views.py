@@ -504,17 +504,10 @@ def consulta_web(request):
             Q(obraoprograma='O') &
             Q(dependienteDe__isnull=True)
         )
-    elif request.user.usuario.rol == 'AD':
+    else:
         dependencias = Dependencia.objects.filter(
             Q(id__in=request.user.usuario.dependencia.all())
-            | Q(dependienteDe__id__in=request.user.usuario.dependencia.all())
             & Q(dependienteDe__isnull=True)
-        )
-
-    elif request.user.usuario.rol == 'US':
-        dependencias = Dependencia.objects.filter(
-                Q(id__in=request.user.usuario.subdependencia.all())
-                & Q(dependienteDe__isnull=True)
         )
 
     #templates = loader.get_template('consultas/busqueda_general.html')

@@ -476,23 +476,18 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(obraoprograma='O')
                 & Q(dependienteDe__isnull=True)
-
-            )
-                        )
-
+        ))
         elif token_model.user.usuario.rol == 'AD':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
-                Q(dependienteDe__in=token_model.user.usuario.dependencia.all()))
+                Q(dependienteDe__in=token_model.user.usuario.dependencia.all())
                 & Q(dependienteDe__isnull=True)
-
-                        )
+        ))
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
-                Q(id__in=token_model.user.usuario.subdependencia.all()))
+                Q(id__in=token_model.user.usuario.subdependencia.all())
                 & Q(dependienteDe__isnull=True)
-
-                        )
+        ))
 
         return HttpResponse(json.dumps(dicts), 'application/json')
 
@@ -596,12 +591,12 @@ class Subdependencias_forId_Endpoint(ProtectedResourceView):
                     Q(id__in=iddependencias)
                 )
 
-            ansD = map(lambda dependencia: dependencia.to_serializable_dict(), dependencias)
             for dependencia in dependencias:
-                # subdeps = Dependencia.objects.filter(dependienteDe__id=dependencia.id)
                 subdeps = Dependencia.objects.filter(dependienteDe__id__in=iddependencias)
                 if subdeps:
-                    ans=map(lambda dep: dep.to_serializable_dict(), subdeps)
+                    ans = map(lambda dep: dep.to_serializable_dict(), subdeps)
+        else:
+            ans = map(lambda dep: dep.to_serializable_dict(), usuario.subdependencia.all())
 
         return HttpResponse(json.dumps(ans), 'application/json')
 
