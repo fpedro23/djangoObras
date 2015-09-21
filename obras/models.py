@@ -393,14 +393,7 @@ class Obra(models.Model):
     fechaModificacion = models.DateTimeField(auto_now=True, auto_now_add=True, verbose_name='Fecha de Modificación')
     inaugurada = models.BooleanField(choices=BOOL_CHOICES, blank=False, null=False, default=False)
     poblacionObjetivo = models.CharField(max_length=200)
-
-    # municipio = ChainedForeignKey(Municipio,
-    #                               chained_field='estado',
-    #                               chained_model_field='estado',
-    #                               blank=True,
-    #                               null=True,
-    #                               )
-    municipio = models.ForeignKey(Municipio, blank=True, null=True)
+    municipio = models.ForeignKey(Municipio)
 
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=False, default=1)
     autorizada = models.BooleanField(default=False)
