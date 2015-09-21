@@ -8,12 +8,13 @@ var $j = jQuery.noConflict();
 
 $j(document).on('ready', main_consulta);
 
-var datosJson
-var newToken
+var datosJson;
+var newToken;
+var cualPpxt = 0;
 
-var descripcionIniciadas = "Obras proyectadas cuya fecha de inicio ya venció, es decir; obras proyectadas que a la fecha actual ya deberían estar en proceso";
-var descripcionVencidas = "Obras en proceso cuya fecha de término ya venció, es decir; obras en proceso que a la fecha actual ya deberían estar concluidas";
-var descripcionDependencias = "Dependencias sin actividad alguna sobre sus obras en los 15 días anteriores a la fecha actual.";
+var descripcionIniciadas = "Obras proyectadas que a la fecha deberían estar en proceso";
+var descripcionVencidas = "Obras en proceso que a la fecha deberían estar concluidas";
+var descripcionDependencias = "Dependencias sin actividad en los últimos 15 días.";
 function valida_token(){
 var ajax_datatoken = {
       "access_token"  : 'O9BfPpYQuu6a5ar4rGTd2dRdaYimVa'
@@ -57,14 +58,73 @@ function main_consulta() {
     $j('#obrasIniciadas').on('click', obrasIniciadas)
     $j('#obrasVencidas').on('click', obrasVencidas)
     $j('#obrasPorDependencia').on('click', obrasPorDependencia)
+    $j('#prsentacionAPF').on('click', prsentacionAPF)
+    $j('#enviaPDF2').on('click', demoFromHTML2)
+    $j('#ver_datos #enviaPPT2').on('click', PptxReporte)
 
 
 }
 
 
+function PptxReporte() {
+    var URLiniciadas="/obras/api/PptxIniciadas?access_token=" + newToken;
+    var URLvencidas="/obras/api/PptxVencidas?access_token=" + newToken;
+    var URLbitacora="/obras/api/PptxBitacora?access_token=" + newToken;
+
+    if (cualPpxt==1) {location.href = URLiniciadas;}
+    if (cualPpxt==2) {location.href = URLvencidas;}
+    if (cualPpxt==3) {location.href = URLbitacora;}
+
+
+}
+
+function demoFromHTML2() {
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    // source can be HTML-formatted string, or a reference
+    // to an actual DOM element from which the text will be scraped.
+    $pop('#tabla-exporta').show()
+
+    source = $pop('#tabla-exporta')[0];
+    // we support special element handlers. Register them with jQuery-style
+    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+    // There is no support for any other type of selectors
+    // (class, of compound) at this time.
+    specialElementHandlers = {
+        // element with id of "bypass" - jQuery style selector
+        '#bypassme': function (element, renderer) {
+            // true = "handled elsewhere, bypass text extraction"
+            return true
+        }
+    };
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
+    // all coords and widths are in jsPDF instance's declared units
+    // 'inches' in this case
+    pdf.fromHTML(
+    source, // HTML string or DOM elem ref.
+    margins.left, // x coord
+    margins.top, { // y coord
+        'width': margins.width, // max width of content on PDF
+        'elementHandlers': specialElementHandlers
+    },
+
+    function (dispose) {
+        // dispose: object with X, Y of the last line add to the PDF
+        //          this allow the insertion of new lines after html
+        pdf.save('DocumentoObras.pdf');
+    }, margins);
+
+    $pop('#tabla-exporta').hide();
+}
+
 function verDatos() {
     $j('#load3').removeClass("mfp-hide");
     $j('#load3').addClass("mfp-show");
+    cualPpxt=4;
     var ajax_data = {
       "access_token"  : newToken
     };
@@ -86,10 +146,17 @@ function verDatos() {
 }
 
 
+function prsentacionAPF() {
+
+    var URL="/obras/api/PptxObrasImages?access_token=" + newToken;
+    location.href = URL;
+
+}
+
 function obrasIniciadas() {
     $j('#load1').removeClass("mfp-hide");
     $j('#load1').addClass("mfp-show");
-
+    cualPpxt=1;
     var ajax_data = {
       "access_token"  : newToken
     };
@@ -114,6 +181,7 @@ function obrasIniciadas() {
 function obrasVencidas() {
     $j('#load2').removeClass("mfp-hide");
     $j('#load2').addClass("mfp-show");
+    cualPpxt=2;
     var ajax_data = {
       "access_token"  : newToken
     };
@@ -140,6 +208,7 @@ function obrasVencidas() {
 function obrasPorDependencia() {
     $j('#load3').removeClass("mfp-hide");
     $j('#load3').addClass("mfp-show");
+    cualPpxt=3;
     var ajax_data = {
       "access_token"  : newToken
     };
@@ -166,6 +235,20 @@ function tablaI(Datos,titulo,descripcion){
     var sHtmlExporta="";
     var sHtmlShorter="";
     var sHtmlistado="";
+    sHtmlExporta= '<table id="tablaExporta" class="table2excel">'
+                +' <colgroup>'
+                +' <col width="30%">'
+                +' <col width="40%">'
+                +' <col width="30%">'
+                +' </colgroup> '
+                +'<thead>'
+                        +'<tr>'
+                            +'<th>Id</th>'
+                            +'<th>Denominaci&oacute;n</th>'
+                            +'<th>Estado</th>'
+                        +'</tr>'
+                +'</thead>'
+                +'<tbody>';
 
 
     var sHtml = '<table cellspacing="1"  id="tablaIzquierda">'
@@ -210,6 +293,11 @@ function tablaI(Datos,titulo,descripcion){
                 +'<td>' + Datos[i].denominacion +'</td>'
                 +'<td>' + Datos[i].estado__nombreEstado +'</td>'
                 +'</tr>'
+        sHtmlExporta += '<tr>'
+                +'<td><a href="/admin/obras/obra/' + Datos[i].id + '/?m=1">' + Datos[i].identificador_unico +'</a></td>'
+                +'<td>' + Datos[i].denominacion +'</td>'
+                +'<td>' + Datos[i].estado__nombreEstado +'</td>'
+                +'</tr>'
     }
 
         sHtml +='</tbody>'
@@ -240,9 +328,12 @@ function tablaI(Datos,titulo,descripcion){
                 +'});'
                 +'});'
                 +'</script>';
-
+    sHtmlExporta +='</tbody>'
+                +'</table>';
+    $j('#tabla-exporta').hide();
     $j('#titulo').html(titulo);
     $j('#descripcion').html(descripcion);
+    $j('#tabla-exporta').html(sHtmlExporta);
     $j('#tabla').html(sHtml);
 
 
@@ -261,19 +352,35 @@ function volverHistorico() {
 }
 
 function tablaD(Datos,titulo,descripcion){
-
-    var sHtml = '<table id="tablaIzquierda" class="table table-striped">'
+    var sHtmlExporta= '<table id="tablaExporta" class="table2excel">'
                 +' <colgroup>'
-                +' <col width="50%">'
+                +' <col width="30%">'
+                +' <col width="40%">'
                 +' </colgroup> '
                 +'<thead>'
                         +'<tr>'
                             +'<th>Dependencia</th>'
+                            +'<th>Fecha de última Modificación</th>'
+
+                        +'</tr>'
+                +'</thead>'
+                +'<tbody>';
+
+    var sHtml = '<table id="tablaIzquierda" class="table table-striped">'
+                +' <colgroup>'
+                +' <col width="30%">'
+                +' <col width="70%">'
+                +' </colgroup> '
+                +'<thead>'
+                        +'<tr>'
+                            +'<th>Dependencia</th>'
+                            +'<th>Fecha de última Modificación</th>'
                         +'</tr>'
                 +'</thead>'
                 +'<tfoot>'
                         +'<tr>'
                             +'<th>Dependencia</th>'
+                            +'<th>Fecha de última Modificación</th>'
                         +'</tr>'
 
                         +'<tr><td class="pager" id="pagerI" colspan="3">'
@@ -294,6 +401,11 @@ function tablaD(Datos,titulo,descripcion){
     for(var i= 0;i<Datos.length;i++){
         sHtml +='<tr>'
                 +'<td>' + Datos[i].nombreDependencia +'</td>'
+                +'<td>' + myDateFormatter(Datos[i].fecha_ultima_modificacion) +'</td>'
+                +'</tr>'
+        sHtmlExporta += '<tr>'
+                +'<td>' + Datos[i].nombreDependencia +'</td>'
+                +'<td>' + myDateFormatter(Datos[i].fecha_ultima_modificacion) +'</td>'
                 +'</tr>'
     }
 
@@ -327,9 +439,29 @@ function tablaD(Datos,titulo,descripcion){
                 +'</script>'
                 +'</tbody>'
                 +'</table>';
+    sHtmlExporta +='</tbody>'
+                +'</table>';
+    $j('#tabla-exporta').hide();
     $j('#titulo').html(titulo);
     $j('#descripcion').html(descripcion);
     $j('#tabla').html(sHtml);
-
+    $j('#tabla-exporta').html(sHtmlExporta);
 
 }
+
+function myDateFormatter (dateObject) {
+        var d = new Date(dateObject);
+        var day = d.getDate();
+        var month = d.getMonth()+1;
+        var year = d.getFullYear()
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        //var fecha =year + "-" + month + "-" + day;
+        var fecha =day + "-" + month + "-" + year;
+
+        return fecha;
+    };

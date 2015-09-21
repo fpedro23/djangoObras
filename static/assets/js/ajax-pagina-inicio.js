@@ -53,7 +53,7 @@ function verDatos() {
                 var map = new google.maps.Map(document.getElementById('mapa'),
                                             mapOptions)
                 var lugares =  new Array();
-                lugares=puntosMapa(data);
+                lugares=puntosMapaTotales(data);
                 setMarkers(map,lugares);
                 google.maps.event.addDomListener(window, 'load', initialize);
                 // mapa
@@ -112,15 +112,19 @@ function arregloDataGrafica(Datos) {
 
             var arregloSimple=new Array();
             arregloSimple.push("Obras Concluidas");
-            arregloSimple.push(Datos.reporte2015.obras_concluidas.total);
+            arregloSimple.push(Datos.reporte_total.obras_concluidas.total);
+            arregloSimple.push(Datos.reporte_total.obras_concluidas.inversion_total);
+
             arregloDoble.push(arregloSimple);
             var arregloSimple2=new Array();
             arregloSimple2.push("Obras en Proceso");
-            arregloSimple2.push(Datos.reporte2015.obras_proceso.total);
+            arregloSimple2.push(Datos.reporte_total.obras_proceso.total);
+            arregloSimple2.push(Datos.reporte_total.obras_proceso.inversion_total);
             arregloDoble.push(arregloSimple2);
             var arregloSimple3=new Array();
             arregloSimple3.push("Obras Proyectadas");
-            arregloSimple3.push(Datos.reporte2015.obras_proyectadas.total);
+            arregloSimple3.push(Datos.reporte_total.obras_proyectadas.total);
+            arregloSimple3.push(Datos.reporte_total.obras_proyectadas.inversion_total)
             arregloDoble.push(arregloSimple3);
 
 
@@ -131,7 +135,7 @@ function arregloDataGrafica(Datos) {
 
 function pieGrafica(datas,titulo,dona,nombreData) {
 
-
+    var myComments=["First input","second comment","another comment","last comment"]
     $j('#containerGrafica').highcharts({
         chart: {
             type: 'pie',
@@ -145,7 +149,8 @@ function pieGrafica(datas,titulo,dona,nombreData) {
             },
             style: {
                  color: '#FFFFFF',
-                 font: 'bold 12px "Trebuchet MS", Verdana, sans-serif'
+                 fontFamily: 'soberana_sanslight',
+                 fontSize: '15px'
             }
         },
         title: {
@@ -159,16 +164,23 @@ function pieGrafica(datas,titulo,dona,nombreData) {
             enabled: false
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            style: { fontFamily: 'soberana_sanslight', fontSize: '15px' },
+            pointFormat: 'Número de obras: <b>{point.y}</b><br>Porcentaje del Total: <b>{point.percentage:.2f}%</b>'
+
+            //    var comment = myComments[serieI];
+
+
         },
         plotOptions: {
             pie: {
+                style: { fontFamily: 'soberana_sanslight',color: 'white' ,fontSize: '12px' },
                 innerSize: dona,
                 allowPointSelect: true,
                 cursor: 'pointer',
                 depth: 35,
                 dataLabels: {
                     enabled: true,
+                    style: { fontFamily: 'soberana_sanslight',color: 'white' ,fontSize: '12px' },
                     format: '{point.name}'
                 }
             }
@@ -228,6 +240,22 @@ function puntosMapa(Datos) {
         arregloDoble.push(arregloSimple);
     }
 
+    arregloObjeto = arregloDoble;
+    return arregloObjeto;
+}
+
+function puntosMapaTotales(Datos) {
+  var arregloSimple=new Array();
+  var arregloDoble=new Array();
+    var arregloObjeto = new Object();
+    for(var i= 0;i<Datos.reporte_mapa.obras_mapa.obras.length;i++){
+        var arregloSimple=new Array();
+        arregloSimple.push(Datos.reporte_mapa.obras_mapa.obras[i].estado + ", " + Datos.reporte_mapa.obras_mapa.obras[i].numero_obras + " Obras, " + formato_numero(Datos.reporte_mapa.obras_mapa.obras[i].totalinvertido,2,'.',',') + " MDP.");
+        arregloSimple.push(Datos.reporte_mapa.obras_mapa.obras[i].latitud);
+        arregloSimple.push(Datos.reporte_mapa.obras_mapa.obras[i].longitud);
+        arregloSimple.push(i);
+        arregloDoble.push(arregloSimple);
+    }
     arregloObjeto = arregloDoble;
     return arregloObjeto;
 }

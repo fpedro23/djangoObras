@@ -400,7 +400,7 @@ class Obra(models.Model):
     #                               blank=True,
     #                               null=True,
     #                               )
-    municipio = models.ForeignKey(Municipio, blank=True, null=True)
+    municipio = models.ForeignKey(Municipio)
 
     tipoMoneda = models.ForeignKey(TipoMoneda, blank=False, default=1)
     autorizada = models.BooleanField(default=False)
@@ -622,8 +622,8 @@ class DetalleClasificacion(models.Model):
 
 
 def get_subdependencias_as_list_flat(deps):
-    if deps is None or deps.count() == 0:
-        return None
+    #if deps is None or deps.count() == 0:
+    #    return None
     ans = []
     for dependencia in deps:
         ans.append(dependencia)
