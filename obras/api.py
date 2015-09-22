@@ -1154,10 +1154,12 @@ class ListarEndpoint(ProtectedResourceView):
         p_subclasificacion = ","
 
         arreglo_dependencias = []
+        arreglo_subdependencias = []
         p_dependencias = ""
         p_subdependencias = ","
         p_municipios = ","
-        bandera_depsub=0
+        bandera_AD=0
+        bandera_US=0
 
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
@@ -1171,17 +1173,21 @@ class ListarEndpoint(ProtectedResourceView):
                 arreglo_dependencias.append(subdependencia.id)
 
             iddependencias = arreglo_dependencias
-            bandera_depsub = 1
+            bandera_AD = 1
 
-        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia')) is None:
+        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('subdependencias')) is None:
             for subdependencia in user.usuario.subdependencia.all():
-                arreglo_dependencias.append(subdependencia.id)
+                arreglo_subdependencias.append(subdependencia.id)
 
-            idsubdependencias = arreglo_dependencias
-            bandera_depsub = 1
+            idsubdependencias = arreglo_subdependencias
+            bandera_US = 1
+
+
+
+
 
         if iddependencias[0] is not None:
-            if bandera_depsub == 1:
+            if bandera_AD == 1:
                 for dependencia in iddependencias:
                     p_dependencias += str(dependencia) + ","
             else:
@@ -1189,7 +1195,7 @@ class ListarEndpoint(ProtectedResourceView):
                     p_dependencias += str(dependencia) + ","
 
         if idsubdependencias[0] is not None:
-            if bandera_depsub == 1:
+            if bandera_US == 1:
                 for subdependencia in idsubdependencias:
                     p_subdependencias += str(subdependencia) + ","
             else:
