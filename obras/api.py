@@ -1157,11 +1157,12 @@ class ListarEndpoint(ProtectedResourceView):
         p_dependencias = ""
         p_subdependencias = ","
         p_municipios = ","
+        bandera_depsub=0
 
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
 
-        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is None:
+        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is  None:
 
             for dependencia in user.usuario.dependencia.all():
                 arreglo_dependencias.append(dependencia.id)
@@ -1170,20 +1171,30 @@ class ListarEndpoint(ProtectedResourceView):
                 arreglo_dependencias.append(subdependencia.id)
 
             iddependencias = arreglo_dependencias
+            bandera_depsub = 1
 
         elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia')) is None:
             for subdependencia in user.usuario.subdependencia.all():
                 arreglo_dependencias.append(subdependencia.id)
 
-            iddependencias = arreglo_dependencias
+            idsubdependencias = arreglo_dependencias
+            bandera_depsub = 1
 
         if iddependencias[0] is not None:
-            for dependencia in iddependencias[0]:
-                p_dependencias += str(dependencia) + ","
+            if bandera_depsub == 1:
+                for dependencia in iddependencias:
+                    p_dependencias += str(dependencia) + ","
+            else:
+                for dependencia in iddependencias[0]:
+                    p_dependencias += str(dependencia) + ","
 
         if idsubdependencias[0] is not None:
-            for subdependencia in idsubdependencias[0]:
-                p_subdependencias += str(subdependencia) + ","
+            if bandera_depsub == 1:
+                for subdependencia in idsubdependencias:
+                    p_subdependencias += str(subdependencia) + ","
+            else:
+                for subdependencia in idsubdependencias[0]:
+                    p_subdependencias += str(subdependencia) + ","
 
         if idmunicipios[0] is not None:
             for municipio in idmunicipios[0]:
