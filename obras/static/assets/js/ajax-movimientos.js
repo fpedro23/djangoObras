@@ -38,6 +38,7 @@ function main_consulta() {
 		}
 	});
 
+    $j('#historialICO').on('click', verHistoria);
 	$j('#buscarICO').on('click', verDatos);
     $j('#id_dependencia').on('change', setImage);
     $j('#imprimirBTN').on('click', imprimeFicha);
@@ -86,6 +87,56 @@ function verDatos() {
                             src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
                                   + '<div class="textoALERTA">'
                                   + 'No existen registros con el ID Único: ' + idUnico
+                                  + '</div>'
+                                  + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                  + '</div>'
+                        },
+                        type: 'inline',
+                        preloader: true,
+                        modal: true
+                    });
+
+                    $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                        e.preventDefault();
+                        $j.magnificPopup.close();
+                    });
+            }
+
+        },
+        error: function(data) {
+            alert('error!! ' + data.status);
+        }
+    });
+}
+
+function verHistoria() {
+    var idUnicoH = $j("#idobraUNICO").val();
+    var idUnicoHist = idUnicoH.trim();
+
+    var ajax_data = {
+      "access_token"  : newToken
+    };
+
+
+    if(idUnicoHist.toString()!=""){ajax_data.identificador_unico=idUnicoHist.toString();}
+
+
+    $j.ajax({
+        url: '/obras/api/id_unico',
+        type: 'get',
+        data: ajax_data,
+        success: function(data) {
+
+
+            if (data.id!=null){location.href='/admin/obras/obra/'+data.id+'/history';
+            }
+            else {
+                //alert('No existen registros con el ID Único ' + idUnico);
+                    $j.magnificPopup.open({
+                        items: {
+                            src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                  + '<div class="textoALERTA">'
+                                  + 'No existe historial del ID Único: ' + idUnicoHist
                                   + '</div>'
                                   + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
                                   + '</div>'

@@ -71,6 +71,7 @@ x++;
             $("#wmod").show();
             $("#buscar").show();
             $("#buscarICO").show();
+             $("#historialICO").show();
             $(".imprimirBTN").show();
 
         }
@@ -79,6 +80,7 @@ x++;
             $("#wmod").hide();
              $("#buscar").hide();
             $("#buscarICO").hide();
+            $("#historialICO").hide();
             //$(".imprimirBTN").hide();
 
         }
@@ -222,7 +224,7 @@ x++;
   <div id="buscarICO" hidden="true">
   </div>
 
-   <div class="historialBTN" onclick="location.href='/admin/obras/obra/'"></div>
+   <div  id=historialICO class="historialBTN" hidden="true"></div>
    <div class="imprimirBTN" id="imprimirBTN" ></div>
 
         {% block object-tools %}
