@@ -27,7 +27,7 @@ class UsuarioInline(admin.StackedInline):
         if db_field.name == "dependencia":
             if request.user.usuario.rol == 'SA':
                 kwargs["queryset"] = Dependencia.objects.all()
-            if request.user.usuario.rol == 'AD':
+            if request.user.usuario.rol == 'AD' or request.user.usuario.rol == 'FU':
                 kwargs["queryset"] = Dependencia.objects.filter(
                     Q(id__in=arreglo_dependencias) |
                     Q(dependienteDe__id__in=arreglo_dependencias))
@@ -79,6 +79,11 @@ class UserAdmin(UserAdmin):
             g.user_set.add(usuario)
             print 'Definir permisos para usuario'
 
+        elif usuario.usuario.rol == 'FU':
+            g = Group.objects.get(name='funcionario')
+            g.user_set.add(usuario)
+            print 'Definir permisos para funcionario'
+
         super(UserAdmin, self).save_model(request, obj, form, change)
 
 
@@ -106,7 +111,7 @@ class UserAdmin(UserAdmin):
         if request.user.usuario.rol == 'SA':
             print 'Query Set Superadmin'
             return qs
-        elif request.user.usuario.rol == 'AD':
+        elif request.user.usuario.rol == 'AD' or request.user.usuario.rol == 'FU':
             print 'Query Set Administrador dependenciasub'
             print arreglo_dependencias
             return qs.filter(
@@ -128,7 +133,7 @@ class DependenciaAdmin(admin.ModelAdmin):
         qs = super(DependenciaAdmin, self).queryset(request)
         if request.user.usuario.rol == 'SA':  # Secretaria tecnica
             return qs
-        if request.user.usuario.rol == 'AD':  # Dependencia
+        if request.user.usuario.rol == 'AD' or request.user.usuario.rol == 'FU':  # Dependencia
             return qs.filter(
                 Q(id=request.user.usuario.dependencia.id) |
                 Q(dependienteDe__id=request.user.usuario.dependencia.id)
@@ -141,7 +146,7 @@ class DependenciaAdmin(admin.ModelAdmin):
             if request.user.usuario.rol == 'SA':
                 kwargs["queryset"] = Dependencia.objects.filter(dependienteDe=None)
                 return super(DependenciaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-            elif request.user.usuario.rol == 'AD':
+            elif request.user.usuario.rol == 'AD' or request.user.usuario.rol == 'FU':
                 kwargs["queryset"] = Dependencia.objects.filter(
                     Q(id=request.user.usuario.dependencia.id)
                 )
@@ -188,7 +193,7 @@ class DependenciaListFilter(SimpleListFilter):
                 Q(dependienteDe__isnull=True)
             )
 
-        elif request.user.usuario.rol == 'AD':  # Dependencia
+        elif request.user.usuario.rol == 'AD' or request.user.usuario.rol == 'FU':  # Dependencia
             dependencias = Dependencia.objects.filter(
                 Q(id__in=arreglo_dependencias) &
                 Q(obraoprograma='O')
@@ -244,7 +249,7 @@ class SubDependenciaListFilter(SimpleListFilter):
                 Q(dependienteDe__isnull=False)
             )
 
-        elif request.user.usuario.rol == 'AD':  # Dependencia
+        elif request.user.usuario.rol == 'AD' or request.user.usuario.rol == 'FU':  # Dependencia
             dependencias = Dependencia.objects.filter(
                 Q(dependienteDe__id__in=arreglo_dependencias) &
                 Q(obraoprograma='O')
@@ -493,7 +498,7 @@ class ObrasAdmin(admin.ModelAdmin):
         if db_field.name == "dependencia":
             if request.user.usuario.rol == 'SA':
                 kwargs["queryset"] = Dependencia.objects.all()
-            elif request.user.usuario.rol == 'AD':
+            elif request.user.usuario.rol == 'AD' or request.user.usuario.rol == 'FU':
                 arreglo_dependencias = []
 
                 for dependencia in request.user.usuario.dependencia.all():
@@ -530,7 +535,7 @@ class ObrasAdmin(admin.ModelAdmin):
             print 'Query Set Superadmin'
             return qs
 
-        elif request.user.usuario.rol == 'AD':
+        elif request.user.usuario.rol == 'AD' or request.user.usuario.rol == 'FU':
             print 'Query Set Administrador dependencia'
             a = request.user.usuario.dependencia.all()
 

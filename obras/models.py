@@ -271,8 +271,11 @@ class Usuario(models.Model):
     SUPERADMIN = 'SA'
     ADMIN = 'AD'
     USER = 'US'
+    FUNC = 'FU'
+
     ROLES_CHOICES = (
         (SUPERADMIN, 'Administrador General'),
+        (FUNC, 'Funcionario de Dependencia'),
         (ADMIN, 'Administrador de Dependencia'),
         (USER, 'Usuario de Dependencia'),
     )

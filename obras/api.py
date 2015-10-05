@@ -77,6 +77,7 @@ class HoraUltimaActualizacion(ProtectedResourceView):
             json_response['segundo'] = "0" + str(time.second)
         return HttpResponse(json.dumps(json_response), 'application/json')
 
+
 class HoraEndpoint(ProtectedResourceView):
     def get(self, request):
         json_response = {}
@@ -124,14 +125,12 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
             query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
         obras = Obra.objects.filter(query)
 
-        contador=1
+        contador = 1
         json_map = {}
         json_map['obras'] = []
         for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
-            contador=contador+1
+            contador = contador + 1
             json_map['obras'].append(obra)
-
-
 
         output = StringIO.StringIO()
         prs = Presentation()
@@ -149,11 +148,11 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
         table.columns[0].width = Inches(2.0)
         table.columns[1].width = Inches(2.0)
         table.columns[2].width = Inches(4.0)
-        indice=1
+        indice = 1
 
         for obra in json_map['obras']:
             if indice == 20:
-                indice=1
+                indice = 1
                 slide = prs.slides.add_slide(prs.slide_layouts[5])
                 shapes = slide.shapes
                 shapes.title.text = 'Resultados'
@@ -172,14 +171,14 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
                 table.columns[1].width = Inches(2.0)
                 table.columns[2].width = Inches(4.0)
 
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[0].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(12)
                 paragraph.font.name = 'Arial Black'
                 paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[indice].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(8)
@@ -195,23 +194,23 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
             table.cell(indice, 0).text = obra['identificador_unico']
             table.cell(indice, 1).text = obra['estado__nombreEstado']
             table.cell(indice, 2).text = obra['denominacion']
-            indice+=1
-            #for obra in json_map['obras']:
+            indice += 1
+            # for obra in json_map['obras']:
             #    table.cell(i, 0).text = obra['identificador_unico']
             #    table.cell(i, 1).text = obra['estado__nombreEstado']
             #    table.cell(i, 2).text = obra['denominacion']
             #    i+=1
 
-
-
         prs.save(output)
-        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response = StreamingHttpResponse(FileWrapper(output),
+                                         content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
         response['Content-Disposition'] = 'attachment; filename="ObrasIniciadas.pptx"'
         response['Content-Length'] = output.tell()
 
         output.seek(0)
 
         return response
+
 
 class ObrasVencidasPptxEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -223,14 +222,12 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
             query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
         obras = Obra.objects.filter(query)
 
-        contador=1
+        contador = 1
         json_map = {}
         json_map['obras'] = []
         for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
-            contador=contador+1
+            contador = contador + 1
             json_map['obras'].append(obra)
-
-
 
         output = StringIO.StringIO()
         prs = Presentation()
@@ -248,11 +245,11 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
         table.columns[0].width = Inches(2.0)
         table.columns[1].width = Inches(2.0)
         table.columns[2].width = Inches(4.0)
-        indice=1
+        indice = 1
 
         for obra in json_map['obras']:
             if indice == 20:
-                indice=1
+                indice = 1
                 slide = prs.slides.add_slide(prs.slide_layouts[5])
                 shapes = slide.shapes
                 shapes.title.text = 'Resultados'
@@ -270,14 +267,14 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
                 table.columns[1].width = Inches(2.0)
                 table.columns[2].width = Inches(4.0)
 
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[0].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(12)
                 paragraph.font.name = 'Arial Black'
                 paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[indice].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(8)
@@ -293,23 +290,23 @@ class ObrasVencidasPptxEndpoint(ProtectedResourceView):
             table.cell(indice, 0).text = obra['identificador_unico']
             table.cell(indice, 1).text = obra['estado__nombreEstado']
             table.cell(indice, 2).text = obra['denominacion']
-            indice+=1
-            #for obra in json_map['obras']:
+            indice += 1
+            # for obra in json_map['obras']:
             #    table.cell(i, 0).text = obra['identificador_unico']
             #    table.cell(i, 1).text = obra['estado__nombreEstado']
             #    table.cell(i, 2).text = obra['denominacion']
             #    i+=1
 
-
-
         prs.save(output)
-        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response = StreamingHttpResponse(FileWrapper(output),
+                                         content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
         response['Content-Disposition'] = 'attachment; filename="ObrasVencidas.pptx"'
         response['Content-Length'] = output.tell()
 
         output.seek(0)
 
         return response
+
 
 class ReporteNoTrabajoPptxEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -321,11 +318,11 @@ class ReporteNoTrabajoPptxEndpoint(ProtectedResourceView):
             Q(obraoprograma='O') &
             Q(fecha_ultima_modificacion__lt=comp_date))
 
-        contador=1
+        contador = 1
         json_map = {}
         json_map['obras'] = []
         for obra in dependencias.values('nombreDependencia', 'fecha_ultima_modificacion'):
-            contador=contador+1
+            contador = contador + 1
             json_map['obras'].append(obra)
 
         output = StringIO.StringIO()
@@ -343,21 +340,21 @@ class ReporteNoTrabajoPptxEndpoint(ProtectedResourceView):
         # set column widths
         table.columns[0].width = Inches(2.0)
         table.columns[1].width = Inches(2.0)
-        indice=1
+        indice = 1
 
-        for x in range(0,2):
-                cell = table.rows[0].cells[x]
-                paragraph = cell.textframe.paragraphs[0]
-                paragraph.font.size = Pt(12)
-                paragraph.font.name = 'Arial Black'
-                paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        for x in range(0, 2):
+            cell = table.rows[0].cells[x]
+            paragraph = cell.textframe.paragraphs[0]
+            paragraph.font.size = Pt(12)
+            paragraph.font.name = 'Arial Black'
+            paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-        #write column headings
+        # write column headings
         table.cell(0, 0).text = 'Dependencia'
         table.cell(0, 1).text = 'Fecha ultima modificacion'
 
         for obra in json_map['obras']:
-            for x in range(0,2):
+            for x in range(0, 2):
                 cell = table.rows[indice].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(8)
@@ -367,16 +364,18 @@ class ReporteNoTrabajoPptxEndpoint(ProtectedResourceView):
             table.cell(indice, 0).text = obra['nombreDependencia']
             table.cell(indice, 1).text = str(obra['fecha_ultima_modificacion'])
 
-            indice+=1
+            indice += 1
 
         prs.save(output)
-        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response = StreamingHttpResponse(FileWrapper(output),
+                                         content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
         response['Content-Disposition'] = 'attachment; filename="BitacoraDependencias.pptx"'
         response['Content-Length'] = output.tell()
 
         output.seek(0)
 
         return response
+
 
 class ObrasIniciadasEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -407,6 +406,7 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
         json_ans += ']'
 
         return HttpResponse(json_ans, 'application/json')
+
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -452,16 +452,16 @@ class SubDependenciasiPadEndpoint(ProtectedResourceView):
             )
                         )
 
-        elif token_model.user.usuario.rol == 'AD':
+        elif token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
                 Q(dependienteDe__in=token_model.user.usuario.dependencia.all()))
-                & Q(dependienteDe__isnull=False)
-                )
+                        & Q(dependienteDe__isnull=False)
+                        )
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.subdependencia.all()))
-                & Q(dependienteDe__isnull=False)
+                        & Q(dependienteDe__isnull=False)
                         )
 
         return HttpResponse(json.dumps(dicts), 'application/json')
@@ -476,18 +476,18 @@ class DependenciasEndpoint(ProtectedResourceView):
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(obraoprograma='O')
                 & Q(dependienteDe__isnull=True)
-        ))
-        elif token_model.user.usuario.rol == 'AD':
+            ))
+        elif token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
                 Q(dependienteDe__in=token_model.user.usuario.dependencia.all())
                 & Q(dependienteDe__isnull=True)
-        ))
+            ))
         else:
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.subdependencia.all())
                 & Q(dependienteDe__isnull=True)
-        ))
+            ))
 
         return HttpResponse(json.dumps(dicts), 'application/json')
 
@@ -576,10 +576,11 @@ class SubependenciasFlatEndpoint(ProtectedResourceView):
 
         return HttpResponse(json.dumps(ans), 'application/json')
 
+
 class Subdependencias_forId_Endpoint(ProtectedResourceView):
     def get(self, request):
         usuario = get_usuario_for_token(request.GET.get('access_token'))
-        iddependencias=get_array_or_none(request.GET.get('dependencia'))
+        iddependencias = get_array_or_none(request.GET.get('dependencia'))
         ans = []
         if iddependencias is not None:
             if usuario.rol == 'SA':
@@ -596,11 +597,13 @@ class Subdependencias_forId_Endpoint(ProtectedResourceView):
                 ans = map(lambda dep: dep.to_serializable_dict(), subdependencias)
         else:
             if usuario.rol == 'SA':
-                ans = map(lambda dep: dep.to_serializable_dict(), Dependencia.objects.filter(dependienteDe__isnull=False).all())
+                ans = map(lambda dep: dep.to_serializable_dict(),
+                          Dependencia.objects.filter(dependienteDe__isnull=False).all())
             else:
                 ans = map(lambda dep: dep.to_serializable_dict(), usuario.subdependencia.all())
 
         return HttpResponse(json.dumps(ans), 'application/json')
+
 
 class ClasificacionEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -725,7 +728,8 @@ class BuscadorEndpoint(ProtectedResourceView):
             json_map['obras'].append(obra)
 
         json_map['geolocalizacion_obras'] = []
-        for obra in resultados['geolocalizacion_obras'].values('identificador_unico','denominacion', 'inversionTotal', 'latitud', 'longitud'):
+        for obra in resultados['geolocalizacion_obras'].values('identificador_unico', 'denominacion', 'inversionTotal',
+                                                               'latitud', 'longitud'):
             json_map['geolocalizacion_obras'].append(obra)
 
         json_map['reporte_estado'] = []
@@ -755,6 +759,7 @@ class BuscadorEndpoint(ProtectedResourceView):
         json_map['reporte_general'].append(map)
 
         return HttpResponse(json.dumps(json_map), 'application/json')
+
 
 class PptxEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -793,7 +798,6 @@ class PptxEndpoint(ProtectedResourceView):
 
         json_map = {}
 
-
         json_map['obras'] = []
         for obra in resultados['obras'].values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion',
                                                'latitud', 'longitud', 'dependencia__imagenDependencia'):
@@ -805,8 +809,8 @@ class PptxEndpoint(ProtectedResourceView):
         shapes = slide.shapes
         shapes.title.text = 'Resultados'
 
-        renglones = resultados['reporte_general']['obras_totales']+1
-        if renglones<22:
+        renglones = resultados['reporte_general']['obras_totales'] + 1
+        if renglones < 22:
             rows = renglones
         else:
             rows = 22
@@ -829,11 +833,11 @@ class PptxEndpoint(ProtectedResourceView):
         table.cell(0, 2).text = 'Denominacion'
 
         # write body cells
-        indice=1
+        indice = 1
         for obra in json_map['obras']:
 
             if indice == 22:
-                indice=1
+                indice = 1
                 slide = prs.slides.add_slide(prs.slide_layouts[5])
                 shapes = slide.shapes
                 shapes.title.text = 'Resultados'
@@ -852,14 +856,14 @@ class PptxEndpoint(ProtectedResourceView):
                 table.columns[2].width = Inches(4.0)
 
             # write column headings
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[0].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(12)
                 paragraph.font.name = 'Arial Black'
                 paragraph.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[indice].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(8)
@@ -874,16 +878,18 @@ class PptxEndpoint(ProtectedResourceView):
             table.cell(indice, 0).text = obra['identificador_unico']
             table.cell(indice, 1).text = obra['estado__nombreEstado']
             table.cell(indice, 2).text = obra['denominacion']
-            indice+=1
+            indice += 1
 
         prs.save(output)
-        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response = StreamingHttpResponse(FileWrapper(output),
+                                         content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
         response['Content-Disposition'] = 'attachment; filename="resultado_obras.pptx"'
         response['Content-Length'] = output.tell()
 
         output.seek(0)
 
         return response
+
 
 class PptxReporteEndpoint(ProtectedResourceView):
     def get(self, request):
@@ -921,7 +927,6 @@ class PptxReporteEndpoint(ProtectedResourceView):
         resultados = buscador.buscar()
 
         json_map = {}
-
 
         json_map['reporte_dependencia'] = []
         for reporte in resultados['reporte_dependencia']:
@@ -983,7 +988,7 @@ class PptxReporteEndpoint(ProtectedResourceView):
         shapes = slide.shapes
         shapes.title.text = 'Reporte'
 
-        if tipoReporte=='Dependencia':
+        if tipoReporte == 'Dependencia':
 
 
             rows = 17
@@ -999,7 +1004,7 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[0].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(12)
@@ -1012,9 +1017,9 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.cell(0, 2).text = 'Monto'
 
             # write body cells
-            i=1
+            i = 1
             for obra in json_map['reporte_dependencia']:
-                for x in range(0,3):
+                for x in range(0, 3):
                     cell = table.rows[i].cells[x]
                     paragraph = cell.textframe.paragraphs[0]
                     paragraph.font.size = Pt(8)
@@ -1024,9 +1029,9 @@ class PptxReporteEndpoint(ProtectedResourceView):
                 table.cell(i, 0).text = obra['dependencia']['nombreDependencia']
                 table.cell(i, 1).text = str(obra['numero_obras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
-                i+=1
+                i += 1
 
-        if tipoReporte=='Subdependencia':
+        if tipoReporte == 'Subdependencia':
             rows = 17
             cols = 3
             left = Inches(0.921)
@@ -1040,7 +1045,7 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[0].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(12)
@@ -1053,9 +1058,9 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.cell(0, 2).text = 'Monto'
 
             # write body cells
-            i=1
+            i = 1
             for obra in json_map['reporte_subdependencia']:
-                for x in range(0,3):
+                for x in range(0, 3):
                     cell = table.rows[i].cells[x]
                     paragraph = cell.textframe.paragraphs[0]
                     paragraph.font.size = Pt(8)
@@ -1064,9 +1069,9 @@ class PptxReporteEndpoint(ProtectedResourceView):
                 table.cell(i, 0).text = obra['subdependencia']['nombreDependencia']
                 table.cell(i, 1).text = str(obra['numero_obras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
-                i+=1
+                i += 1
 
-        if tipoReporte=='Estado':
+        if tipoReporte == 'Estado':
             rows = 35
             cols = 3
             left = Inches(0.921)
@@ -1080,7 +1085,7 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.columns[1].width = Inches(2.0)
             table.columns[2].width = Inches(2.0)
 
-            for x in range(0,3):
+            for x in range(0, 3):
                 cell = table.rows[0].cells[x]
                 paragraph = cell.textframe.paragraphs[0]
                 paragraph.font.size = Pt(12)
@@ -1093,9 +1098,9 @@ class PptxReporteEndpoint(ProtectedResourceView):
             table.cell(0, 2).text = 'Monto'
 
             # write body cells
-            i=1
+            i = 1
             for obra in json_map['reporte_estado']:
-                for x in range(0,3):
+                for x in range(0, 3):
                     cell = table.rows[i].cells[x]
                     paragraph = cell.textframe.paragraphs[0]
                     paragraph.font.size = Pt(8)
@@ -1104,10 +1109,11 @@ class PptxReporteEndpoint(ProtectedResourceView):
                 table.cell(i, 0).text = obra['estado']['nombreEstado']
                 table.cell(i, 1).text = str(obra['numeroObras'])
                 table.cell(i, 2).text = str(obra['sumatotal'])
-                i+=1
+                i += 1
 
         prs.save(output)
-        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response = StreamingHttpResponse(FileWrapper(output),
+                                         content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
         response['Content-Disposition'] = 'attachment; filename="resultado_obras.pptx"'
         response['Content-Length'] = output.tell()
 
@@ -1161,7 +1167,9 @@ class ListarEndpoint(ProtectedResourceView):
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
 
-        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is None:
+        elif user.usuario.rol == 'AD' and get_array_or_none(
+                request.GET.get('dependencia')) is None or user.usuario.rol == 'FU' and get_array_or_none(
+                request.GET.get('dependencia')) is None:
 
             for dependencia in user.usuario.dependencia.all():
                 arreglo_dependencias.append(dependencia.id)
@@ -1263,7 +1271,8 @@ class ListarEndpoint(ProtectedResourceView):
         else:
             p_denominacion = denominacion[0]
 
-        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_subdependencias[:-1], p_municipios[:-1], p_instancia_ejecutora[:-1], p_estados[:-1],
+        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_subdependencias[:-1], p_municipios[:-1],
+                                  p_instancia_ejecutora[:-1], p_estados[:-1],
                                   p_inversion_minima, p_inversion_maxima, p_fecha_inicio_primera,
                                   p_fecha_inicio_segunda, p_fecha_fin_primera, p_fecha_fin_segunda, p_impactos[:-1],
                                   p_inauguradores[:-1], p_inversiones[:-1], p_clasificaciones[:-1],
@@ -1326,12 +1335,12 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 8, obra[8])
                 sheet.write(i, 9, obra[9])
 
-                sheet.write(i, 10, "NO")  #F
-                sheet.write(i, 11, "NO")  #E
-                sheet.write(i, 12, "NO")  #M
-                sheet.write(i, 13, "NO")  #S
-                sheet.write(i, 14, "NO")  #P
-                sheet.write(i, 15, "NO")  #O
+                sheet.write(i, 10, "NO")  # F
+                sheet.write(i, 11, "NO")  # E
+                sheet.write(i, 12, "NO")  # M
+                sheet.write(i, 13, "NO")  # S
+                sheet.write(i, 14, "NO")  # P
+                sheet.write(i, 15, "NO")  # O
                 for inv in (obra[10].split(',')):
                     if inv[0] == "F": sheet.write(i, 10, "SI")
                     if inv[0] == "E": sheet.write(i, 11, "SI")
@@ -1346,12 +1355,12 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 19, obra[14])
                 sheet.write(i, 20, obra[15])
 
-                sheet.write(i, 21, "NO")  #CG
-                sheet.write(i, 22, "NO")  #PNG
-                sheet.write(i, 23, "NO")  #PM
-                sheet.write(i, 24, "NO")  #PNI
-                sheet.write(i, 25, "NO")  #CNCH
-                sheet.write(i, 26, "NO")  #OI
+                sheet.write(i, 21, "NO")  # CG
+                sheet.write(i, 22, "NO")  # PNG
+                sheet.write(i, 23, "NO")  # PM
+                sheet.write(i, 24, "NO")  # PNI
+                sheet.write(i, 25, "NO")  # CNCH
+                sheet.write(i, 26, "NO")  # OI
                 if obra[16] is not None:
                     for cla in (obra[16].split(',')):
                         sCla = ''.join(cla)
@@ -1384,7 +1393,7 @@ class ListarEndpoint(ProtectedResourceView):
 
             # construct response
 
-            #output.seek(0)
+            # output.seek(0)
             #response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             #response['Content-Disposition'] = "attachment; filename=test.xlsx"
         else:
@@ -1423,7 +1432,7 @@ class NumeroObrasPendientes(ProtectedResourceView):
         for dependencia in token_model.user.usuario.dependencia.all():
             arreglo_dependencias.append(dependencia.id)
 
-        if token_model.user.usuario.rol == 'AD':
+        if token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU':
             dependencias = Dependencia.objects.filter(
                 Q(id__in=arreglo_dependencias) |
                 Q(dependienteDe__id__in=arreglo_dependencias)
@@ -1467,14 +1476,16 @@ class ReporteInicioEndpoint(ProtectedResourceView):
 
         obras_mapa = obras.exclude(tipoObra_id=4)
         the_list = []
-        reporte_estado = obras.values('latitud', 'longitud','estado__nombreEstado').annotate(numero_obras=Count('estado')).annotate(
+        reporte_estado = obras.values('latitud', 'longitud', 'estado__nombreEstado').annotate(
+            numero_obras=Count('estado')).annotate(
             totalinvertido=Sum('inversionTotal'))
         for obra in reporte_estado:
             self.rename_estado(obra)
             the_list.append(obra)
         reporte['reporte_mapa']['obras_mapa']['obras'] = the_list
         reporte['reporte_mapa']['obras_mapa']['total'] = obras_mapa.count()
-        reporte['reporte_mapa']['obras_mapa']['inversion_total'] = obras_mapa.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+        reporte['reporte_mapa']['obras_mapa']['inversion_total'] = obras_mapa.aggregate(Sum('inversionTotal'))[
+            'inversionTotal__sum']
 
         # Grafico, obras totales
         obras_totales_proceso = obras.filter(tipoObra_id=2)
@@ -1484,7 +1495,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_proceso']['obras'] = the_list
         reporte['reporte_total']['obras_proceso']['total'] = obras_totales_proceso.count()
-        reporte['reporte_total']['obras_proceso']['inversion_total'] = obras_totales_proceso.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+        reporte['reporte_total']['obras_proceso']['inversion_total'] = \
+            obras_totales_proceso.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         obras_totales_proyectadas = obras.filter(tipoObra_id=1)
         the_list = []
@@ -1493,7 +1505,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_proyectadas']['obras'] = the_list
         reporte['reporte_total']['obras_proyectadas']['total'] = obras_totales_proyectadas.count()
-        reporte['reporte_total']['obras_proyectadas']['inversion_total'] = obras_totales_proyectadas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+        reporte['reporte_total']['obras_proyectadas']['inversion_total'] = \
+            obras_totales_proyectadas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         obras_totales_concluidas = obras.filter(tipoObra_id=3)
         the_list = []
@@ -1502,7 +1515,8 @@ class ReporteInicioEndpoint(ProtectedResourceView):
             the_list.append(obra)
         reporte['reporte_total']['obras_concluidas']['obras'] = the_list
         reporte['reporte_total']['obras_concluidas']['total'] = obras_totales_concluidas.count()
-        reporte['reporte_total']['obras_concluidas']['inversion_total'] = obras_totales_concluidas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
+        reporte['reporte_total']['obras_concluidas']['inversion_total'] = \
+            obras_totales_concluidas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
         # Reportes anuales 2012-2015
         obras2015 = obras.filter(fechaInicio__year=2015)
@@ -1615,7 +1629,6 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             'reporte_total': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
         }
 
-
         prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
 
 
@@ -1632,37 +1645,38 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
         obras_total_concluidas = obras_totales_concluidas.count()
         inversion_total_concluidas = obras_totales_concluidas.aggregate(Sum('inversionTotal'))['inversionTotal__sum']
 
-        obras_Total = obras_total_proceso+obras_total_proyectadas+obras_total_concluidas
-        inversion_total = inversion_total_proceso+inversion_total_proyectadas+inversion_total_concluidas
+        obras_Total = obras_total_proceso + obras_total_proyectadas + obras_total_concluidas
+        inversion_total = inversion_total_proceso + inversion_total_proyectadas + inversion_total_concluidas
 
         prs.slides[0].shapes[13].text_frame.paragraphs[0].font.size = Pt(16)
         prs.slides[0].shapes[13].text_frame.paragraphs[0].font.name = 'Arial Black'
         prs.slides[0].shapes[13].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-        prs.slides[0].shapes[13].text= '{0:,}'.format(obras_total_concluidas)
+        prs.slides[0].shapes[13].text = '{0:,}'.format(obras_total_concluidas)
 
         prs.slides[0].shapes[14].text_frame.paragraphs[0].font.size = Pt(16)
         prs.slides[0].shapes[14].text_frame.paragraphs[0].font.name = 'Arial Black'
         prs.slides[0].shapes[14].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-        prs.slides[0].shapes[14].text= '{0:,}'.format(obras_total_proceso)
+        prs.slides[0].shapes[14].text = '{0:,}'.format(obras_total_proceso)
 
         prs.slides[0].shapes[15].text_frame.paragraphs[0].font.size = Pt(16)
         prs.slides[0].shapes[15].text_frame.paragraphs[0].font.name = 'Arial Black'
         prs.slides[0].shapes[15].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-        prs.slides[0].shapes[15].text= '{0:,}'.format(obras_total_proyectadas)
+        prs.slides[0].shapes[15].text = '{0:,}'.format(obras_total_proyectadas)
 
         prs.slides[0].shapes[11].text_frame.paragraphs[0].font.size = Pt(20)
         prs.slides[0].shapes[11].text_frame.paragraphs[0].font.name = 'Arial Black'
         prs.slides[0].shapes[11].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x40, 0x40, 0x40)
-        prs.slides[0].shapes[11].text= '{0:,}'.format(obras_Total)
+        prs.slides[0].shapes[11].text = '{0:,}'.format(obras_Total)
         prs.slides[0].shapes[12].text_frame.paragraphs[0].font.size = Pt(7)
         prs.slides[0].shapes[12].text_frame.paragraphs[0].font.name = 'Arial Black'
         prs.slides[0].shapes[12].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x40, 0x40, 0x40)
-        prs.slides[0].shapes[12].text= '{0:,.2f}'.format(inversion_total)
+        prs.slides[0].shapes[12].text = '{0:,.2f}'.format(inversion_total)
 
         # datos para la diapositiva 2
 
-        #Reporte Dependencia
-        reporte_dependencia = obras.values('dependencia__id','dependencia__nombreDependencia','dependencia__orden_secretaria').annotate(
+        # Reporte Dependencia
+        reporte_dependencia = obras.values('dependencia__id', 'dependencia__nombreDependencia',
+                                           'dependencia__orden_secretaria').annotate(
             numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
         reporte_dependencia = reporte_dependencia.order_by('dependencia__orden_secretaria')
 
@@ -1675,35 +1689,34 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             map['id'] = obra['dependencia__id']
             json_map_dep['reporte_dependencia'].append(map)
 
-        for x in range(20,35):
+        for x in range(20, 35):
             prs.slides[1].shapes[x].text_frame.paragraphs[0].font.size = Pt(10)
             prs.slides[1].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Black'
 
-        for x in range(20,24):
+        for x in range(20, 24):
             prs.slides[1].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-        for x in range(24,26):
+        for x in range(24, 26):
             prs.slides[1].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
         prs.slides[1].shapes[26].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xCC, 0xCC, 0x00)
         prs.slides[1].shapes[27].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
         prs.slides[1].shapes[28].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xCC, 0xCC, 0x00)
-        for x in range(29,31):
+        for x in range(29, 31):
             prs.slides[1].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
         prs.slides[1].shapes[31].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         prs.slides[1].shapes[32].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xCC, 0xCC, 0x00)
         prs.slides[1].shapes[33].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         prs.slides[1].shapes[34].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
 
-
-
-        i=20
+        i = 20
         for obra in json_map_dep['reporte_dependencia']:
-            prs.slides[1].shapes[i].text= obra['dependencia'] + '  ' +str('{0:,}'.format(obra['numero_obras']))
-            i+=1
+            prs.slides[1].shapes[i].text = obra['dependencia'] + '  ' + str('{0:,}'.format(obra['numero_obras']))
+            i += 1
 
         # Datos para la diapositiva 3
         #Reporte Estado
-        reporte_estado = obras.exclude(estado_id= 33).exclude(estado_id= 34).values('estado__nombreEstado','estado__id').annotate(
+        reporte_estado = obras.exclude(estado_id=33).exclude(estado_id=34).values('estado__nombreEstado',
+                                                                                  'estado__id').annotate(
             numero_obras=Count('estado')).annotate(sumatotal=Sum('inversionTotal'))
 
         reporte_estado = reporte_estado.order_by('estado__id')
@@ -1717,21 +1730,22 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             map['total_invertido'] = obra['sumatotal']
             json_map_edo['reporte_estado'].append(map)
 
-        for x in range(7,39):
+        for x in range(7, 39):
             prs.slides[2].shapes[x].text_frame.paragraphs[0].font.size = Pt(9)
             prs.slides[2].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Black'
             prs.slides[2].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-        i=7
+        i = 7
         for obra in json_map_edo['reporte_estado']:
-            prs.slides[2].shapes[i].text= str('{0:,}'.format(obra['numero_obras']))
-            i+=1
+            prs.slides[2].shapes[i].text = str('{0:,}'.format(obra['numero_obras']))
+            i += 1
 
 
         # Datos para las diapositivas 4 a 18
-        islide=3
+        islide = 3
         for obra in json_map_dep['reporte_dependencia']:
-            dependencia_PPC = obras.filter(Q(dependencia_id=obra['id'])).values('dependencia__nombreDependencia','tipoObra_id').annotate(
+            dependencia_PPC = obras.filter(Q(dependencia_id=obra['id'])).values('dependencia__nombreDependencia',
+                                                                                'tipoObra_id').annotate(
                 numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
             dependencia_PPC = dependencia_PPC.order_by('tipoObra_id').reverse()
 
@@ -1745,38 +1759,37 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
                 map['total_invertido'] = obra['sumatotal']
                 json_map_depPPC['reporte_dependencia_PPC'].append(map)
 
-
-            total_obras=0
-            total_invertido=0
+            total_obras = 0
+            total_invertido = 0
             for obra in json_map_depPPC['reporte_dependencia_PPC']:
 
-                for x in range(14,20):
+                for x in range(14, 20):
                     prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Narrow'
                     prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.bold = True
                     prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
                 if obra['tipo_obra'] == 3:
                     prs.slides[islide].shapes[14].text_frame.paragraphs[0].font.size = Pt(24)
-                    prs.slides[islide].shapes[14].text= str('{0:,}'.format(obra['numero_obras']))
+                    prs.slides[islide].shapes[14].text = str('{0:,}'.format(obra['numero_obras']))
                     prs.slides[islide].shapes[17].text_frame.paragraphs[0].font.size = Pt(10)
-                    prs.slides[islide].shapes[17].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
-                    total_obras+=obra['numero_obras']
-                    total_invertido+=obra['total_invertido']
+                    prs.slides[islide].shapes[17].text = str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras += obra['numero_obras']
+                    total_invertido += obra['total_invertido']
 
                 if obra['tipo_obra'] == 2:
                     prs.slides[islide].shapes[15].text_frame.paragraphs[0].font.size = Pt(24)
-                    prs.slides[islide].shapes[15].text= str('{0:,}'.format(obra['numero_obras']))
+                    prs.slides[islide].shapes[15].text = str('{0:,}'.format(obra['numero_obras']))
                     prs.slides[islide].shapes[18].text_frame.paragraphs[0].font.size = Pt(10)
-                    prs.slides[islide].shapes[18].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
-                    total_obras+=obra['numero_obras']
-                    total_invertido+=obra['total_invertido']
+                    prs.slides[islide].shapes[18].text = str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras += obra['numero_obras']
+                    total_invertido += obra['total_invertido']
 
                 if obra['tipo_obra'] == 1:
                     prs.slides[islide].shapes[16].text_frame.paragraphs[0].font.size = Pt(24)
-                    prs.slides[islide].shapes[16].text= str('{0:,}'.format(obra['numero_obras']))
+                    prs.slides[islide].shapes[16].text = str('{0:,}'.format(obra['numero_obras']))
                     prs.slides[islide].shapes[19].text_frame.paragraphs[0].font.size = Pt(10)
-                    prs.slides[islide].shapes[19].text= str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
-                    total_obras+=obra['numero_obras']
-                    total_invertido+=obra['total_invertido']
+                    prs.slides[islide].shapes[19].text = str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras += obra['numero_obras']
+                    total_invertido += obra['total_invertido']
 
             prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(20)
             prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.name = 'Arial Narrow'
@@ -1787,18 +1800,19 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.bold = True
             prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
 
-            prs.slides[islide].shapes[12].text= str('{0:,}'.format(total_obras)) + ' obras'
-            prs.slides[islide].shapes[13].text= str('{0:,.2f}'.format(total_invertido)) + ' MDP'
+            prs.slides[islide].shapes[12].text = str('{0:,}'.format(total_obras)) + ' obras'
+            prs.slides[islide].shapes[13].text = str('{0:,.2f}'.format(total_invertido)) + ' MDP'
 
-            islide+=1
-            total_obras=0
-            total_invertido=0
+            islide += 1
+            total_obras = 0
+            total_invertido = 0
 
         # Datos para las diapositivas de la 19 a la 50
-        islide=18
+        islide = 18
         for estado in json_map_edo['reporte_estado']:
-            obras = Obra.objects.filter(Q(estado_id=estado['id']))\
-                    .values('dependencia__nombreDependencia','dependencia__id').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+            obras = Obra.objects.filter(Q(estado_id=estado['id'])) \
+                .values('dependencia__nombreDependencia', 'dependencia__id').annotate(
+                numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
             obrasMaximas = obras.order_by('numero_obras').reverse()[:2]
 
             prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(24)
@@ -1808,62 +1822,61 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.name = 'Arial Narrow'
             prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
 
-            for x in range(13,26):
-                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Narrow'
-                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.bold = True
-                    prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-
-
+            for x in range(13, 26):
+                prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+                prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.bold = True
+                prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
             prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(36)
-            prs.slides[islide].shapes[11].text= str('{0:,}'.format(estado['numero_obras'])) + ' obras'
+            prs.slides[islide].shapes[11].text = str('{0:,}'.format(estado['numero_obras'])) + ' obras'
             prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(12)
-            prs.slides[islide].shapes[12].text= str('{0:,.2f}'.format(estado['total_invertido'])) + ' MDP'
+            prs.slides[islide].shapes[12].text = str('{0:,.2f}'.format(estado['total_invertido'])) + ' MDP'
 
-            i=13
-            j=15
-            k=19
+            i = 13
+            j = 15
+            k = 19
             for obra in obrasMaximas:
-                obraMax = Obra.objects.filter(Q(estado_id=estado['id']) & Q(dependencia_id=obra['dependencia__id']))\
-                    .values('tipoObra_id').annotate(numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
+                obraMax = Obra.objects.filter(Q(estado_id=estado['id']) & Q(dependencia_id=obra['dependencia__id'])) \
+                    .values('tipoObra_id').annotate(numero_obras=Count('dependencia')).annotate(
+                    sumatotal=Sum('inversionTotal'))
                 obraMax = obraMax.order_by('tipoObra_id').reverse()
                 prs.slides[islide].shapes[i].text_frame.paragraphs[0].font.size = Pt(14)
-                prs.slides[islide].shapes[i].text= obra['dependencia__nombreDependencia']
+                prs.slides[islide].shapes[i].text = obra['dependencia__nombreDependencia']
 
                 prs.slides[islide].shapes[j].text_frame.paragraphs[0].font.size = Pt(28)
-                prs.slides[islide].shapes[j].text= '{0:,}'.format(obra['numero_obras'])
-                j+=1
+                prs.slides[islide].shapes[j].text = '{0:,}'.format(obra['numero_obras'])
+                j += 1
                 prs.slides[islide].shapes[j].text_frame.paragraphs[0].font.size = Pt(10)
-                prs.slides[islide].shapes[j].text= str('{0:,.2f}'.format(obra['sumatotal'])) + ' MDP'
-                j+=1
-                i+=1
-
+                prs.slides[islide].shapes[j].text = str('{0:,.2f}'.format(obra['sumatotal'])) + ' MDP'
+                j += 1
+                i += 1
 
                 prs.slides[islide].shapes[k].text_frame.paragraphs[0].font.size = Pt(18)
-                prs.slides[islide].shapes[k+1].text_frame.paragraphs[0].font.size = Pt(18)
-                prs.slides[islide].shapes[k+2].text_frame.paragraphs[0].font.size = Pt(18)
-                prs.slides[islide].shapes[k].text= str('{0:,}'.format(0))
-                prs.slides[islide].shapes[k+1].text= str('{0:,}'.format(0))
-                prs.slides[islide].shapes[k+2].text= str('{0:,}'.format(0))
+                prs.slides[islide].shapes[k + 1].text_frame.paragraphs[0].font.size = Pt(18)
+                prs.slides[islide].shapes[k + 2].text_frame.paragraphs[0].font.size = Pt(18)
+                prs.slides[islide].shapes[k].text = str('{0:,}'.format(0))
+                prs.slides[islide].shapes[k + 1].text = str('{0:,}'.format(0))
+                prs.slides[islide].shapes[k + 2].text = str('{0:,}'.format(0))
 
                 for tipo in obraMax:
 
                     if tipo['tipoObra_id'] == 3:
-                        prs.slides[islide].shapes[k].text= str('{0:,}'.format(tipo['numero_obras']))
+                        prs.slides[islide].shapes[k].text = str('{0:,}'.format(tipo['numero_obras']))
 
                     if tipo['tipoObra_id'] == 2:
-                        prs.slides[islide].shapes[k+1].text= str('{0:,}'.format(tipo['numero_obras']))
+                        prs.slides[islide].shapes[k + 1].text = str('{0:,}'.format(tipo['numero_obras']))
 
                     if tipo['tipoObra_id'] == 1:
-                        prs.slides[islide].shapes[k+2].text= str('{0:,}'.format(tipo['numero_obras']))
+                        prs.slides[islide].shapes[k + 2].text = str('{0:,}'.format(tipo['numero_obras']))
 
-                k=22
+                k = 22
 
-            islide+=1
+            islide += 1
 
         output = StringIO.StringIO()
         prs.save(output)
-        response = StreamingHttpResponse(FileWrapper(output), content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        response = StreamingHttpResponse(FileWrapper(output),
+                                         content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation')
         response['Content-Disposition'] = 'attachment; filename="presentacionObrasAPF.pptx"'
         response['Content-Length'] = output.tell()
 

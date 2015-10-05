@@ -258,7 +258,7 @@ et$(function() {
                                     {%  if user.usuario.rol == 'SA' %}
                                         <li style="height: 35px"><a href="#" id="obrasPorDependencia">Bitácora por Dependencia <span id="load3" class="glyphicon glyphicon-refresh glyphicon-refresh-animate mfp-hide"></span></a></li>
                                     {% endif %}
-                                    {%  if user.usuario.rol == 'AD' %}
+                                    {%  if user.usuario.rol == 'AD' or user.usuario.rol == 'FU' %}
                                         <li style="height: 35px"><a href="#" id="obrasPorAutorizar">Obras por Autorizar <span id="load3" class="glyphicon glyphicon-refresh glyphicon-refresh-animate mfp-hide"></span></a></li>
                                     {% endif %}
                                 </ul>
