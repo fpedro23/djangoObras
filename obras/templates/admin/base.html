@@ -100,6 +100,7 @@
 <div class="gradiente">
  {% if user.is_active and user.is_staff %}
 
+    {%  if user.usuario.rol != 'FU' %}
       <div class="MOVIMIENTOS" onclick="location.href='/obras/movimientos'"></div>
       <li class="dropdown right-text" style="list-style-type: none;">
             <div class="pto001">
@@ -110,6 +111,7 @@
                             </ul>
             </div>
       </li>
+    {% endif %}
 
 
         <div class="CONSULTAS" onclick="location.href='/obras/consultas'"></div>

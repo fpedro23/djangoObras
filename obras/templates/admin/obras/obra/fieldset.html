@@ -532,7 +532,9 @@
         <div class="submitlineObra" style="">
                 <!--<div class="eliminarOBTN" onclick="location.href='/admin/obras/obra/{ original.pk }}/delete';"></div>-->
                 <div class="salirOBTN" onclick="location.href='/obras/movimientos'"></div>
+              {%  if user.usuario.rol != 'FU' %}
                 <div class="guardarOBTN" onclick="document.getElementById('obra_form').submit('_save');"></div>
+              {% endif %}
         </div>
 
 
