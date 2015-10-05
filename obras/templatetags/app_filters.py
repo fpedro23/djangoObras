@@ -40,4 +40,7 @@ def is_file(field):
 
 @register.filter(name='addcss')
 def addcss(field, css):
-   return field.as_widget(attrs={"class":css})
+    if isinstance(field, dict):
+        return None
+    else:
+        return field.as_widget(attrs={"class":css})
