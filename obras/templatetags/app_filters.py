@@ -15,7 +15,8 @@ def add_attributes(field, css):
         else:
             t, v = d.split(':')
             attrs[t] = v
-
+    if isinstance(field, dict):
+        return None
     return field.as_widget(attrs=attrs)
 
 
@@ -30,7 +31,8 @@ def add_desc(field, css):
         else:
             t, v = d.split('=')
             attrs[t] = v
-
+    if isinstance(field, dict):
+        return None
     return field.as_widget(attrs=attrs)
 
 
