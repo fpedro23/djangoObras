@@ -402,12 +402,8 @@ class ObrasAdmin(admin.ModelAdmin):
     actions = [make_authorized, make_unauthorized]
 
     def get_readonly_fields(self, request, obj=None):
-        if request.user.usuario.rol == 'FU':
-            return Obra._meta.get_all_field_names()
-        else:
-            readonly_fields = ('identificador_unico',)
-
-            return readonly_fields
+        readonly_fields = ('identificador_unico',)
+        return readonly_fields
 
     def save_model(self, request, obj, form, change):
         print request.user.usuario.rol
