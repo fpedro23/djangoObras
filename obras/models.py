@@ -272,12 +272,14 @@ class Usuario(models.Model):
     ADMIN = 'AD'
     USER = 'US'
     FUNC = 'FU'
+    USUARIODEP = 'UD'
 
     ROLES_CHOICES = (
         (SUPERADMIN, 'Administrador General'),
         (FUNC, 'Funcionario de Dependencia'),
         (ADMIN, 'Administrador de Dependencia'),
-        (USER, 'Usuario de Dependencia'),
+        (USUARIODEP, 'Usuario de Dependencia'),
+        (USER, 'Usuario de SubDependencia'),
     )
     rol = models.CharField(max_length=2, choices=ROLES_CHOICES, default=USER)
     user = models.OneToOneField(User)

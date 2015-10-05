@@ -452,7 +452,7 @@ class SubDependenciasiPadEndpoint(ProtectedResourceView):
             )
                         )
 
-        elif token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU':
+        elif token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU' or token_model.user.usuario.rol == 'UD':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
                 Q(dependienteDe__in=token_model.user.usuario.dependencia.all()))
@@ -477,7 +477,7 @@ class DependenciasEndpoint(ProtectedResourceView):
                 Q(obraoprograma='O')
                 & Q(dependienteDe__isnull=True)
             ))
-        elif token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU':
+        elif token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU' or token_model.user.usuario.rol == 'UD':
             dicts = map(lambda dependencia: dependencia.to_serializable_dict(), Dependencia.objects.filter(
                 Q(id__in=token_model.user.usuario.dependencia.all()) |
                 Q(dependienteDe__in=token_model.user.usuario.dependencia.all())
@@ -1169,6 +1169,7 @@ class ListarEndpoint(ProtectedResourceView):
 
         elif user.usuario.rol == 'AD' and get_array_or_none(
                 request.GET.get('dependencia')) is None or user.usuario.rol == 'FU' and get_array_or_none(
+                request.GET.get('dependencia')) is None or user.usuario.rol == 'UD' and get_array_or_none(
                 request.GET.get('dependencia')) is None:
 
             for dependencia in user.usuario.dependencia.all():
@@ -1432,7 +1433,7 @@ class NumeroObrasPendientes(ProtectedResourceView):
         for dependencia in token_model.user.usuario.dependencia.all():
             arreglo_dependencias.append(dependencia.id)
 
-        if token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU':
+        if token_model.user.usuario.rol == 'AD' or token_model.user.usuario.rol == 'FU' or token_model.user.usuario.rol == 'UD':
             dependencias = Dependencia.objects.filter(
                 Q(id__in=arreglo_dependencias) |
                 Q(dependienteDe__id__in=arreglo_dependencias)
