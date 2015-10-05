@@ -399,15 +399,15 @@ class ObrasAdmin(admin.ModelAdmin):
     ordering = ['identificador_unico']
 
     list_filter = [DependenciaListFilter, 'autorizada', SubDependenciaListFilter, EstadoListFilter, MunicipioListFilter,]
-    readonly_fields = ('identificador_unico',)
     actions = [make_authorized, make_unauthorized]
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.usuario.rol == 'FU':
-            return list(self.readonly_fields) + \
-               [field.name for field in obj._meta.fields]
+            return list(self.readonly_fields) + [field.name for field in obj._meta.fields]
         else:
-            return []
+            readonly_fields = ('identificador_unico',)
+
+            return readonly_fields
 
     def save_model(self, request, obj, form, change):
         print request.user.usuario.rol
