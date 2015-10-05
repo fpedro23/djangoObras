@@ -403,7 +403,7 @@ class ObrasAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.usuario.rol == 'FU':
-            return list(self.readonly_fields) + [field.name for field in obj._meta.fields]
+            return Obra._meta.get_all_field_names()
         else:
             readonly_fields = ('identificador_unico',)
 
