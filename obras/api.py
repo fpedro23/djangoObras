@@ -132,6 +132,8 @@ class ObrasIniciadasPptxEndpoint(ProtectedResourceView):
             contador = contador + 1
             json_map['obras'].append(obra)
 
+
+
         output = StringIO.StringIO()
         prs = Presentation()
         slide = prs.slides.add_slide(prs.slide_layouts[5])
@@ -1160,9 +1162,12 @@ class ListarEndpoint(ProtectedResourceView):
         p_subclasificacion = ","
 
         arreglo_dependencias = []
+        arreglo_subdependencias = []
         p_dependencias = ""
         p_subdependencias = ","
         p_municipios = ","
+        bandera_AD=0
+        bandera_US=0
 
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
@@ -1171,6 +1176,7 @@ class ListarEndpoint(ProtectedResourceView):
                 request.GET.get('dependencia')) is None or user.usuario.rol == 'FU' and get_array_or_none(
                 request.GET.get('dependencia')) is None or user.usuario.rol == 'UD' and get_array_or_none(
                 request.GET.get('dependencia')) is None:
+        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is  None:
 
             for dependencia in user.usuario.dependencia.all():
                 arreglo_dependencias.append(dependencia.id)
@@ -1179,20 +1185,34 @@ class ListarEndpoint(ProtectedResourceView):
                 arreglo_dependencias.append(subdependencia.id)
 
             iddependencias = arreglo_dependencias
+            bandera_AD = 1
 
-        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('dependencia')) is None:
+        elif user.usuario.rol == 'US' and get_array_or_none(request.GET.get('subdependencias')) is None:
             for subdependencia in user.usuario.subdependencia.all():
-                arreglo_dependencias.append(subdependencia.id)
+                arreglo_subdependencias.append(subdependencia.id)
 
-            iddependencias = arreglo_dependencias
+            idsubdependencias = arreglo_subdependencias
+            bandera_US = 1
+
+
+
+
 
         if iddependencias[0] is not None:
-            for dependencia in iddependencias[0]:
-                p_dependencias += str(dependencia) + ","
+            if bandera_AD == 1:
+                for dependencia in iddependencias:
+                    p_dependencias += str(dependencia) + ","
+            else:
+                for dependencia in iddependencias[0]:
+                    p_dependencias += str(dependencia) + ","
 
         if idsubdependencias[0] is not None:
-            for subdependencia in idsubdependencias[0]:
-                p_subdependencias += str(subdependencia) + ","
+            if bandera_US == 1:
+                for subdependencia in idsubdependencias:
+                    p_subdependencias += str(subdependencia) + ","
+            else:
+                for subdependencia in idsubdependencias[0]:
+                    p_subdependencias += str(subdependencia) + ","
 
         if idmunicipios[0] is not None:
             for municipio in idmunicipios[0]:
