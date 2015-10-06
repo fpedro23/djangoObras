@@ -1172,10 +1172,6 @@ class ListarEndpoint(ProtectedResourceView):
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
 
-        elif user.usuario.rol == 'AD' and get_array_or_none(
-                request.GET.get('dependencia')) is None or user.usuario.rol == 'FU' and get_array_or_none(
-                request.GET.get('dependencia')) is None or user.usuario.rol == 'UD' and get_array_or_none(
-                request.GET.get('dependencia')) is None:
         elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is  None:
 
             for dependencia in user.usuario.dependencia.all():
@@ -1292,8 +1288,7 @@ class ListarEndpoint(ProtectedResourceView):
         else:
             p_denominacion = denominacion[0]
 
-        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_subdependencias[:-1], p_municipios[:-1],
-                                  p_instancia_ejecutora[:-1], p_estados[:-1],
+        results = Obra.searchList(p_tipoobra[:-1], p_dependencias[:-1], p_subdependencias[:-1], p_municipios[:-1], p_instancia_ejecutora[:-1], p_estados[:-1],
                                   p_inversion_minima, p_inversion_maxima, p_fecha_inicio_primera,
                                   p_fecha_inicio_segunda, p_fecha_fin_primera, p_fecha_fin_segunda, p_impactos[:-1],
                                   p_inauguradores[:-1], p_inversiones[:-1], p_clasificaciones[:-1],
@@ -1356,12 +1351,12 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 8, obra[8])
                 sheet.write(i, 9, obra[9])
 
-                sheet.write(i, 10, "NO")  # F
-                sheet.write(i, 11, "NO")  # E
-                sheet.write(i, 12, "NO")  # M
-                sheet.write(i, 13, "NO")  # S
-                sheet.write(i, 14, "NO")  # P
-                sheet.write(i, 15, "NO")  # O
+                sheet.write(i, 10, "NO")  #F
+                sheet.write(i, 11, "NO")  #E
+                sheet.write(i, 12, "NO")  #M
+                sheet.write(i, 13, "NO")  #S
+                sheet.write(i, 14, "NO")  #P
+                sheet.write(i, 15, "NO")  #O
                 for inv in (obra[10].split(',')):
                     if inv[0] == "F": sheet.write(i, 10, "SI")
                     if inv[0] == "E": sheet.write(i, 11, "SI")
@@ -1376,12 +1371,12 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 19, obra[14])
                 sheet.write(i, 20, obra[15])
 
-                sheet.write(i, 21, "NO")  # CG
-                sheet.write(i, 22, "NO")  # PNG
-                sheet.write(i, 23, "NO")  # PM
-                sheet.write(i, 24, "NO")  # PNI
-                sheet.write(i, 25, "NO")  # CNCH
-                sheet.write(i, 26, "NO")  # OI
+                sheet.write(i, 21, "NO")  #CG
+                sheet.write(i, 22, "NO")  #PNG
+                sheet.write(i, 23, "NO")  #PM
+                sheet.write(i, 24, "NO")  #PNI
+                sheet.write(i, 25, "NO")  #CNCH
+                sheet.write(i, 26, "NO")  #OI
                 if obra[16] is not None:
                     for cla in (obra[16].split(',')):
                         sCla = ''.join(cla)
@@ -1414,7 +1409,7 @@ class ListarEndpoint(ProtectedResourceView):
 
             # construct response
 
-            # output.seek(0)
+            #output.seek(0)
             #response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             #response['Content-Disposition'] = "attachment; filename=test.xlsx"
         else:
@@ -1433,7 +1428,8 @@ class ListarEndpoint(ProtectedResourceView):
 
 
 
-        # return HttpResponse(json.dumps(json_map), 'application/json')
+        #return HttpResponse(json.dumps(json_map), 'application/json')
+
 
 
 class InauguradorEndpoint(ProtectedResourceView):
