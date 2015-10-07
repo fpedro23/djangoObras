@@ -1,7 +1,5 @@
 import json
 from datetime import *
-from django.contrib.admin.models import LogEntry, ADDITION
-from django.contrib.contenttypes.models import ContentType
 
 from django.db.models import Q, Sum
 from django.http import HttpResponse
@@ -643,12 +641,17 @@ class IdUnicoEndpoint(ProtectedResourceView):
     def get(self, request):
         identificador_unico = request.GET.get('identificador_unico', None)
         obra_id = None
+        obra = None
         if identificador_unico is not None:
             obra = Obra.objects.filter(identificador_unico=identificador_unico)
             if obra and obra.count() > 0:
                 obra_id = obra.first().id
-
-        return HttpResponse(json.dumps({'id': obra_id}), 'application/json')
+        if obra_id is None:
+            return HttpResponse(json.dumps({'id': obra_id, 'error': 'No existe la obra con identificador ' + identificador_unico}), 'application/json')
+        elif AccessToken.objects.get(token=request.GET.get('access_token')).user.usuario.rol == 'US' and obra.subdependencia is None:
+            return HttpResponse(json.dumps({'id': obra_id, 'error': 'Privilegios insuficientes'}), 'application/json')
+        else:
+            return HttpResponse(json.dumps({'id': obra_id, 'error': None}), 'application/json')
 
 
 class IdUnicoEndpointIpad(ProtectedResourceView):
@@ -1409,7 +1412,7 @@ class ListarEndpoint(ProtectedResourceView):
 
             # construct response
 
-            #output.seek(0)
+            # output.seek(0)
             #response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             #response['Content-Disposition'] = "attachment; filename=test.xlsx"
         else:
@@ -1428,8 +1431,7 @@ class ListarEndpoint(ProtectedResourceView):
 
 
 
-        #return HttpResponse(json.dumps(json_map), 'application/json')
-
+        # return HttpResponse(json.dumps(json_map), 'application/json')
 
 
 class InauguradorEndpoint(ProtectedResourceView):
