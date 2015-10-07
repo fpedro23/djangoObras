@@ -78,7 +78,7 @@ function verDatos() {
         success: function(data) {
             //$j('#datos').html
            //alert('success!!! ' + data.id);
-            if (data.id!=null){location.href='/admin/obras/obra/'+data.id+'/?m=1';
+            if (data.id!=null && data.error == null){location.href='/admin/obras/obra/'+data.id+'/?m=1';
             }
             else {
                 //alert('No existen registros con el ID Único ' + idUnico);
