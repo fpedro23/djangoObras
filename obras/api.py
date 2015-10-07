@@ -646,7 +646,15 @@ class IdUnicoEndpoint(ProtectedResourceView):
             obra = Obra.objects.filter(identificador_unico=identificador_unico)
             if obra and obra.count() > 0:
                 obra_id = obra.first().id
+                obra = obra.first()
+            else:
+                obra = None
         if obra_id is None:
+            if identificador_unico is not None:
+                return HttpResponse(json.dumps({'id': obra_id, 'error': 'No existe la obra con identificador ' + identificador_unico}), 'application/json')
+            else:
+                return HttpResponse(json.dumps({'id': obra_id, 'error': 'Debes proporcionar un identificador'}), 'application/json')
+        elif obra is None:
             return HttpResponse(json.dumps({'id': obra_id, 'error': 'No existe la obra con identificador ' + identificador_unico}), 'application/json')
         elif AccessToken.objects.get(token=request.GET.get('access_token')).user.usuario.rol == 'US' and obra.subdependencia is None:
             return HttpResponse(json.dumps({'id': obra_id, 'error': 'Privilegios insuficientes'}), 'application/json')
