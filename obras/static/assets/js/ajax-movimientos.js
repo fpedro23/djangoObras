@@ -86,7 +86,7 @@ function verDatos() {
                         items: {
                             src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
                                   + '<div class="textoALERTA">'
-                                  + 'No existen registros con el ID Único: ' + idUnico
+                                  + data.error
                                   + '</div>'
                                   + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
                                   + '</div>'

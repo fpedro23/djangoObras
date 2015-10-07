@@ -12,13 +12,14 @@ $j(document).on('ready', function() {
         Only do the cleanup if the field didn't contain a value already
         this is used for the edit form
      */
-    if ($('#id_municipio').find('option:selected').val() == "")
+
+    var estadoId = $('#id_estado').find('option:selected').val();
+    var municipioId = $('#id_municipio').find('option:selected').val();
+
+    if ( municipioId == "")
         clearMunicipios();
     else {
         // No need to check for nulls here, wel already did in the first if
-        var estadoId = $('#id_estado').find('option:selected').val();
-        var municipioId = $('#id_municipio').find('option:selected').val();
-
         if (estadoId != "") {
             getMunicipiosForEstado(estadoId, function (ans) {
                 populateMunicpiosSelect(ans);
@@ -26,6 +27,14 @@ $j(document).on('ready', function() {
             });
         }
     }
+
+    if (estadoId != "") {
+            getMunicipiosForEstado(estadoId, function (ans) {
+                populateMunicpiosSelect(ans);
+                $('#id_municipio').val(municipioId);
+            });
+     }
+
     // I know, I'm calling this again, I'll get around to fixingt it
     $('#id_estado').on('change', function() {
         var option = $(this).find('option:selected');
