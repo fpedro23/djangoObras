@@ -1172,7 +1172,7 @@ class ListarEndpoint(ProtectedResourceView):
         if user.usuario.rol == 'SA' and get_array_or_none(request.GET.get('dependencia')) is None:
             p_dependencias = ","
 
-        elif user.usuario.rol == 'AD' and get_array_or_none(request.GET.get('dependencia')) is  None:
+        elif (user.usuario.rol == 'AD' or user.usuario.rol == 'FU') and get_array_or_none(request.GET.get('dependencia')) is  None:
 
             for dependencia in user.usuario.dependencia.all():
                 arreglo_dependencias.append(dependencia.id)
