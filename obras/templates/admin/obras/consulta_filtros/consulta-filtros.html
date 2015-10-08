@@ -1,7 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static %}
 {% block extrastyle %}{{ block.super }}
-
+   <link href="{% static "css/menu.css" %}" rel="stylesheet">
     <script type="text/javascript" src="{% static "assets/tablesorter/jquery-latest.min.js"%}"></script>
 
 
@@ -42,6 +42,7 @@
 	</script>
 
     <link rel="stylesheet" type="text/css" href="{% static "assets/bootstrap/css/bootstrap.css"%}" />
+
 
     <link rel="stylesheet" type="text/css" href="{% static "assets/jquery-mulsel/css/jquery.multiselect.css"%}" />
     <link rel="stylesheet" type="text/css" href="{% static "assets/jquery-mulsel/css/style.css"%}" />
@@ -335,7 +336,7 @@ $pp(function () {
 	    e.preventDefault();
 	    $pp.magnificPopup.close();
 	  });
-    pp('#container2').highcharts({
+    $pp('#container2').highcharts({
         chart: {
             type: 'column',
             margin: 75,
@@ -450,6 +451,8 @@ et$(function() {
 {% endblock %}
 
 {% block content %}
+
+
 
 <body style="font: 110% soberana_textoregular;height: 600px;">
 
@@ -1169,7 +1172,7 @@ et$(function() {
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+           <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  LO CANCELO PARA QUE SE MUESTREN LOS MENUS COMO EL DE INICIO DE SESION-->
         <script src="../../static/assets/bootstrap/js/bootstrap-datepicker.js"></script>
            <script type="text/javascript">
             var $dp = jQuery.noConflict();
