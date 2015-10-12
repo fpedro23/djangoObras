@@ -1368,19 +1368,34 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 13, "NO")  #S
                 sheet.write(i, 14, "NO")  #P
                 sheet.write(i, 15, "NO")  #O
-                for inv in (obra[10].split(',')):
-                    if inv[0] == "F": sheet.write(i, 10, "SI")
-                    if inv[0] == "E": sheet.write(i, 11, "SI")
-                    if inv[0] == "M": sheet.write(i, 12, "SI")
-                    if inv[0] == "S": sheet.write(i, 13, "SI")
-                    if inv[0] == "P": sheet.write(i, 14, "SI")
-                    if inv[0] == "O": sheet.write(i, 15, "SI")
 
-                sheet.write(i, 16, obra[11])
-                sheet.write(i, 17, obra[12])
-                sheet.write(i, 18, obra[13])
-                sheet.write(i, 19, obra[14])
-                sheet.write(i, 20, obra[15])
+                lista=[0,0,0,0,0,0]
+                inversionA=[]
+                inversionB=[]
+                for inv in (obra[11].split(',')):
+                    inversionA.append(inv[0])
+                for monto in (obra[12].split(',')):
+                    inversionB.append(monto)
+
+                for x in range (0, len(inversionA)):
+                    lista[int(inversionA[x])-1]=inversionB[x]
+
+                for x in range (0, len(lista)):
+                     sheet.write(i, x+10, float(lista[x]))
+
+                #for inv in (obra[10].split(',')):
+                #    if inv[0] == "F": sheet.write(i, 10, "SI")
+                #    if inv[0] == "E": sheet.write(i, 11, "SI")
+                #    if inv[0] == "M": sheet.write(i, 12, "SI")
+                #    if inv[0] == "S": sheet.write(i, 13, "SI")
+                #    if inv[0] == "P": sheet.write(i, 14, "SI")
+                #    if inv[0] == "O": sheet.write(i, 15, "SI")
+
+                sheet.write(i, 16, obra[13])
+                sheet.write(i, 17, obra[14])
+                sheet.write(i, 18, obra[15])
+                sheet.write(i, 19, obra[16])
+                sheet.write(i, 20, obra[17])
 
                 sheet.write(i, 21, "NO")  #CG
                 sheet.write(i, 22, "NO")  #PNG
@@ -1388,32 +1403,32 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 24, "NO")  #PNI
                 sheet.write(i, 25, "NO")  #CNCH
                 sheet.write(i, 26, "NO")  #OI
-                if obra[16] is not None:
-                    for cla in (obra[16].split(',')):
+                if obra[18] is not None:
+                    for cla in (obra[18].split(',')):
                         sCla = ''.join(cla)
                         if sCla == 'CG':
-                            if obra[17] is not None:
-                                for subscla in (obra[17].split(',')):
+                            if obra[19] is not None:
+                                for subscla in (obra[19].split(',')):
                                     sSubCla = ''.join(subscla)
                                     if sSubCla[:2] == 'CG': sheet.write(i, 21, sSubCla)
                         if sCla == "PNG": sheet.write(i, 22, "SI")
                         if sCla == "PM": sheet.write(i, 23, "SI")
                         if sCla == "PNI":
                             sheet.write(i, 24, "SI")
-                            if obra[17] is not None:
-                                for subscla in (obra[17].split(',')):
+                            if obra[19] is not None:
+                                for subscla in (obra[19].split(',')):
                                     sSubCla = ''.join(subscla)
                                     if sSubCla[:3] == "PNI": sheet.write(i, 24, sSubCla)
                         if sCla == "CNCH": sheet.write(i, 25, "SI")
                         if sCla == "OI": sheet.write(i, 26, "SI")
 
-                sheet.write(i, 27, obra[18])
-                sheet.write(i, 28, obra[19])
-                sheet.write(i, 29, obra[20])
-                sheet.write(i, 30, obra[21])
-                sheet.write(i, 31, obra[22])
-                sheet.write(i, 32, obra[23])
-                sheet.write(i, 33, obra[24])
+                sheet.write(i, 27, obra[20])
+                sheet.write(i, 28, obra[21])
+                sheet.write(i, 29, obra[22])
+                sheet.write(i, 30, obra[23])
+                sheet.write(i, 31, obra[24])
+                sheet.write(i, 32, obra[25])
+                sheet.write(i, 33, obra[26])
 
                 i += 1
             book.close()

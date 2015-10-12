@@ -719,6 +719,7 @@ def ajax_prueba(request):
 
 def fichaTecnica(request):
         prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/FichaTecnicaObras.pptx')
+        #prs = Presentation('obras/static/ppt/FichaTecnicaObras.pptx')
         usuario = request.user.usuario
         buscador = BuscaObra(
             identificador_unico=request.GET.get('identificador_unico', None)
@@ -757,7 +758,7 @@ def fichaTecnica(request):
         prs.slides[0].shapes[11].text = json_map['obras'][0]['estado']['nombreEstado']
         prs.slides[0].shapes[12].text_frame.paragraphs[0].font.size = Pt(8)
         try:
-               prs.slides[0].shapes[12].text = json_map['obras'][0]['municipio']['nombreMunicipio']
+               prs.slides[0].shapes[12].text = json_map['obras'][0]['municipio']
         except Exception as e:
             prs.slides[0].shapes[12].text = ""
         #prs.slides[0].shapes[12].text = json_map['obras'][0]['municipio']
@@ -791,23 +792,23 @@ def fichaTecnica(request):
         for DI in json_map['DInversion']:
             if not (DI['tipoInversion'] is None):
                 if DI['tipoInversion'] == 1:
-                    prs.slides[0].shapes[18].text_frame.paragraphs[0].font.size = Pt(8)
-                    prs.slides[0].shapes[18].text = "Si"
+                    prs.slides[0].shapes[18].text_frame.paragraphs[0].font.size = Pt(7)
+                    prs.slides[0].shapes[18].text = str(DI['monto'])
                 if DI['tipoInversion'] == 2:
-                    prs.slides[0].shapes[19].text_frame.paragraphs[0].font.size = Pt(8)
-                    prs.slides[0].shapes[19].text = "Si"
+                    prs.slides[0].shapes[19].text_frame.paragraphs[0].font.size = Pt(7)
+                    prs.slides[0].shapes[19].text = str(DI['monto'])
                 if DI['tipoInversion'] == 3:
-                    prs.slides[0].shapes[20].text_frame.paragraphs[0].font.size = Pt(8)
-                    prs.slides[0].shapes[20].text = "Si"
+                    prs.slides[0].shapes[20].text_frame.paragraphs[0].font.size = Pt(7)
+                    prs.slides[0].shapes[20].text = str(DI['monto'])
                 if DI['tipoInversion'] == 4:
-                    prs.slides[0].shapes[21].text_frame.paragraphs[0].font.size = Pt(8)
-                    prs.slides[0].shapes[21].text = "Si"
+                    prs.slides[0].shapes[21].text_frame.paragraphs[0].font.size = Pt(7)
+                    prs.slides[0].shapes[21].text = str(DI['monto'])
                 if DI['tipoInversion'] == 5:
-                    prs.slides[0].shapes[22].text_frame.paragraphs[0].font.size = Pt(8)
-                    prs.slides[0].shapes[22].text = "Si"
+                    prs.slides[0].shapes[22].text_frame.paragraphs[0].font.size = Pt(7)
+                    prs.slides[0].shapes[22].text = str(DI['monto'])
                 if DI['tipoInversion'] == 6:
-                    prs.slides[0].shapes[23].text_frame.paragraphs[0].font.size = Pt(8)
-                    prs.slides[0].shapes[23].text = "Si"
+                    prs.slides[0].shapes[23].text_frame.paragraphs[0].font.size = Pt(7)
+                    prs.slides[0].shapes[23].text = str(DI['monto'])
 
         prs.slides[0].shapes[25].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[25].text = str(json_map['obras'][0]['inversionTotal'])
@@ -831,12 +832,16 @@ def fichaTecnica(request):
         #clasificacion y subclasificacion
         prs.slides[0].shapes[30].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[30].text = "No"
+        prs.slides[0].shapes[31].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[31].text = ""
         prs.slides[0].shapes[32].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[32].text = "No"
         prs.slides[0].shapes[33].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[33].text = "No"
         prs.slides[0].shapes[34].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[34].text = "No"
+        prs.slides[0].shapes[41].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[41].text = ""
         prs.slides[0].shapes[35].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[35].text = "No"
         prs.slides[0].shapes[36].text_frame.paragraphs[0].font.size = Pt(8)
@@ -856,6 +861,8 @@ def fichaTecnica(request):
             if DC['tipoClasificacion'] == 4:
                 prs.slides[0].shapes[34].text_frame.paragraphs[0].font.size = Pt(8)
                 prs.slides[0].shapes[34].text = "Si"
+                prs.slides[0].shapes[41].text_frame.paragraphs[0].font.size = Pt(8)
+                prs.slides[0].shapes[41].text = DC['subClasificacion']
             if DC['tipoClasificacion'] == 5:
                 prs.slides[0].shapes[35].text_frame.paragraphs[0].font.size = Pt(8)
                 prs.slides[0].shapes[35].text = "Si"
@@ -876,20 +883,21 @@ def fichaTecnica(request):
         else:
             prs.slides[0].shapes[39].text = "Si"
 
-        prs.slides[0].shapes[40].text_frame.paragraphs[0].font.size = Pt(8)
-        if json_map['obras'][0]['susceptibleInauguracion'] == "false":
-            prs.slides[0].shapes[40].text = "No"
-        else:
-            prs.slides[0].shapes[40].text = "Si"
+        #prs.slides[0].shapes[40].text_frame.paragraphs[0].font.size = Pt(8)
+        #if json_map['obras'][0]['susceptibleInauguracion'] == "false":
+        #    prs.slides[0].shapes[40].text = "No"
+        #else:
+        #    prs.slides[0].shapes[40].text = "Si"
 
         try:
-            prs.slides[0].shapes[41].text_frame.paragraphs[0].font.size = Pt(8)
-            prs.slides[0].shapes[41].text = json_map['obras'][0]['inaugurador']['nombreCargoInaugura']
+            prs.slides[0].shapes[40].text_frame.paragraphs[0].font.size = Pt(8)
+            prs.slides[0].shapes[40].text = json_map['obras'][0]['inaugurador']['nombreCargoInaugura']
         except Exception as e:
-            prs.slides[0].shapes[41].text = ""
+            prs.slides[0].shapes[40].text = ""
         #logo dependencia
         top = Inches(1)
         left = Inches(0.4)
+
         pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras' + json_map['obras'][0]['dependencia']['imagenDependencia'], left, top)
 
         #imagenes de la obra
@@ -912,6 +920,13 @@ def fichaTecnica(request):
         prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
 
         the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx'
+
+        #prs.save('obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
+
+        #the_file = 'obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx'
+
+
+
         filename = os.path.basename(the_file)
         chunk_size = 8192
         response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
