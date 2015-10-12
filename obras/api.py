@@ -1372,10 +1372,18 @@ class ListarEndpoint(ProtectedResourceView):
                 lista=[0,0,0,0,0,0]
                 inversionA=[]
                 inversionB=[]
-                for inv in (obra[11].split(',')):
-                    inversionA.append(inv[0])
-                for monto in (obra[12].split(',')):
-                    inversionB.append(monto)
+
+                try:
+                    for inv in (obra[11].split(',')):
+                        inversionA.append(inv[0])
+                except Exception as e:
+                    print e
+
+                try:
+                    for monto in (obra[12].split(',')):
+                        inversionB.append(monto)
+                except Exception as e:
+                    print e
 
                 for x in range (0, len(inversionA)):
                     lista[int(inversionA[x])-1]=inversionB[x]
