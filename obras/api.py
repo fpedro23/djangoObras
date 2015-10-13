@@ -1331,22 +1331,23 @@ class ListarEndpoint(ProtectedResourceView):
             sheet.write(0, 15, "O", bold)
             sheet.write(0, 16, "Inversion Total", bold)
             sheet.write(0, 17, "Tipo Moneda MDP/MDD", bold)
-            sheet.write(0, 18, "Poblacion Objetivo", bold)
-            sheet.write(0, 19, "Beneficiarios", bold)
-            sheet.write(0, 20, "Impacto", bold)
-            sheet.write(0, 21, "CG", bold)
-            sheet.write(0, 22, "PNG", bold)
-            sheet.write(0, 23, "PM", bold)
-            sheet.write(0, 24, "PNI", bold)
-            sheet.write(0, 25, "CNCH", bold)
-            sheet.write(0, 26, "OI", bold)
-            sheet.write(0, 27, "Senalizacion", bold)
-            sheet.write(0, 28, "Observaciones", bold)
-            sheet.write(0, 29, "Inaugurado por:", bold)
-            sheet.write(0, 30, "Susceptible de inaugurar", bold)
-            sheet.write(0, 31, "Foto Antes", bold)
-            sheet.write(0, 32, "Foto Durante", bold)
-            sheet.write(0, 33, "Foto Despues", bold)
+            sheet.write(0, 18, "Registro de Cartera", bold)        #**************
+            sheet.write(0, 19, "Poblacion Objetivo", bold)
+            sheet.write(0, 20, "Numero de Beneficiarios", bold)
+            sheet.write(0, 21, "Impacto", bold)
+            sheet.write(0, 22, "CG", bold)
+            sheet.write(0, 23, "PNG", bold)
+            sheet.write(0, 24, "PM", bold)
+            sheet.write(0, 25, "PNI", bold)
+            sheet.write(0, 26, "CNCH", bold)
+            sheet.write(0, 27, "OI", bold)
+            sheet.write(0, 28, "Senalizacion", bold)
+            sheet.write(0, 29, "Observaciones", bold)
+            sheet.write(0, 30, "Inaugurado por:", bold)
+            sheet.write(0, 31, "Susceptible de inaugurar", bold)
+            sheet.write(0, 32, "Foto Antes", bold)
+            sheet.write(0, 33, "Foto Durante", bold)
+            sheet.write(0, 34, "Foto Despues", bold)
 
             i = 1
             for obra in results:
@@ -1393,16 +1394,17 @@ class ListarEndpoint(ProtectedResourceView):
 
                 sheet.write(i, 16, obra[13])
                 sheet.write(i, 17, obra[14])
-                sheet.write(i, 18, obra[15])
-                sheet.write(i, 19, obra[16])
-                sheet.write(i, 20, obra[17])
+                sheet.write(i, 18, obra[29])
+                sheet.write(i, 19, obra[15])
+                sheet.write(i, 20, obra[16])
+                sheet.write(i, 21, obra[17])
 
-                sheet.write(i, 21, "NO")  #CG
-                sheet.write(i, 22, "NO")  #PNG
-                sheet.write(i, 23, "NO")  #PM
-                sheet.write(i, 24, "NO")  #PNI
-                sheet.write(i, 25, "NO")  #CNCH
-                sheet.write(i, 26, "NO")  #OI
+                sheet.write(i, 22, "NO")  #CG
+                sheet.write(i, 23, "NO")  #PNG
+                sheet.write(i, 24, "NO")  #PM
+                sheet.write(i, 25, "NO")  #PNI
+                sheet.write(i, 26, "NO")  #CNCH
+                sheet.write(i, 27, "NO")  #OI
                 if obra[18] is not None:
                     for cla in (obra[18].split(',')):
                         sCla = ''.join(cla)
@@ -1410,25 +1412,25 @@ class ListarEndpoint(ProtectedResourceView):
                             if obra[19] is not None:
                                 for subscla in (obra[19].split(',')):
                                     sSubCla = ''.join(subscla)
-                                    if sSubCla[:2] == 'CG': sheet.write(i, 21, sSubCla)
-                        if sCla == "PNG": sheet.write(i, 22, "SI")
-                        if sCla == "PM": sheet.write(i, 23, "SI")
+                                    if sSubCla[:2] == 'CG': sheet.write(i, 22, sSubCla)
+                        if sCla == "PNG": sheet.write(i, 23, "SI")
+                        if sCla == "PM": sheet.write(i, 24, "SI")
                         if sCla == "PNI":
-                            sheet.write(i, 24, "SI")
+                            sheet.write(i, 25, "SI")
                             if obra[19] is not None:
                                 for subscla in (obra[19].split(',')):
                                     sSubCla = ''.join(subscla)
-                                    if sSubCla[:3] == "PNI": sheet.write(i, 24, sSubCla)
-                        if sCla == "CNCH": sheet.write(i, 25, "SI")
-                        if sCla == "OI": sheet.write(i, 26, "SI")
+                                    if sSubCla[:3] == "PNI": sheet.write(i, 25, sSubCla)
+                        if sCla == "CNCH": sheet.write(i, 26, "SI")
+                        if sCla == "OI": sheet.write(i, 27, "SI")
 
-                sheet.write(i, 27, obra[20])
-                sheet.write(i, 28, obra[21])
-                sheet.write(i, 29, obra[22])
-                sheet.write(i, 30, obra[23])
-                sheet.write(i, 31, obra[24])
-                sheet.write(i, 32, obra[25])
-                sheet.write(i, 33, obra[26])
+                sheet.write(i, 28, obra[20])
+                sheet.write(i, 29, obra[21])
+                sheet.write(i, 30, obra[22])
+                sheet.write(i, 31, obra[23])
+                sheet.write(i, 32, obra[24])
+                sheet.write(i, 33, obra[25])
+                sheet.write(i, 34, obra[26])
 
                 i += 1
             book.close()

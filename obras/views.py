@@ -814,7 +814,12 @@ def fichaTecnica(request):
         prs.slides[0].shapes[25].text = str(json_map['obras'][0]['inversionTotal'])
         prs.slides[0].shapes[26].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[26].text = json_map['obras'][0]['tipoMoneda']['nombreTipoDeMoneda']
+        prs.slides[0].shapes[42].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[42].text = json_map['obras'][0]['registroHacendario']
         #poblacion
+        prs.slides[0].shapes[43].text_frame.paragraphs[0].font.size = Pt(8)
+        prs.slides[0].shapes[43].text = str(json_map['obras'][0]['totalBeneficiarios'])
+
         prs.slides[0].shapes[27].text_frame.paragraphs[0].font.size = Pt(8)
         prs.slides[0].shapes[27].text = json_map['obras'][0]['poblacionObjetivo']
         prs.slides[0].shapes[28].text_frame.paragraphs[0].font.size = Pt(8)
