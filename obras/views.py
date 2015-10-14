@@ -883,7 +883,7 @@ def fichaTecnica(request):
         prs.slides[0].shapes[38].text = json_map['obras'][0]['observaciones']
         #inauguracion
         prs.slides[0].shapes[39].text_frame.paragraphs[0].font.size = Pt(8)
-        if json_map['obras'][0]['inaugurada'] == "false":
+        if json_map['obras'][0]['inaugurada'] == False:
             prs.slides[0].shapes[39].text = "No"
         else:
             prs.slides[0].shapes[39].text = "Si"
