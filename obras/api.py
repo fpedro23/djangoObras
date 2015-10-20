@@ -518,9 +518,10 @@ class MunicipiosForEstadosEndpoint(ProtectedResourceView):
                     break
 
         if all_estados:
-            municipios = Municipio.objects.all()
+            municipios = Municipio.objects.order_by('nombreMunicipio').all()
         else:
-            municipios = Municipio.objects.filter(estado_id__in=estado_ids)
+            municipios = Municipio.objects.filter(estado_id__in=estado_ids).order_by('nombreMunicipio').all()
+
 
         the_list = []
         for municipio in municipios.values('id', 'nombreMunicipio'):
@@ -640,6 +641,7 @@ class TipoDeObraEndpoint(ProtectedResourceView):
 class IdUnicoEndpoint(ProtectedResourceView):
     def get(self, request):
         identificador_unico = request.GET.get('identificador_unico', None)
+        usuario = AccessToken.objects.get(token=request.GET.get('access_token')).user.usuario
         obra_id = None
         obra = None
         if identificador_unico is not None:
@@ -656,7 +658,7 @@ class IdUnicoEndpoint(ProtectedResourceView):
                 return HttpResponse(json.dumps({'id': obra_id, 'error': 'Debes proporcionar un identificador'}), 'application/json')
         elif obra is None:
             return HttpResponse(json.dumps({'id': obra_id, 'error': 'No existe la obra con identificador ' + identificador_unico}), 'application/json')
-        elif AccessToken.objects.get(token=request.GET.get('access_token')).user.usuario.rol == 'US' and obra.subdependencia is None:
+        elif usuario.rol == 'US' and (obra.subdependencia is None or not usuario.subdependencia.filter(id=obra.id).exists()):
             return HttpResponse(json.dumps({'id': obra_id, 'error': 'Privilegios insuficientes'}), 'application/json')
         else:
             return HttpResponse(json.dumps({'id': obra_id, 'error': None}), 'application/json')
