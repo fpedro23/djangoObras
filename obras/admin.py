@@ -6,7 +6,7 @@ from django.contrib import messages
 from obras.models import *
 from obras.forms import AddObraForm, DetalleInversionAddForm, DetalleClasificacionAddForm, DocumentoFuenteForm
 from django.contrib.auth.models import Group
-
+from django.contrib.admin.models import LogEntry
 
 # Register your models here.+
 
@@ -592,6 +592,51 @@ class ObrasAdmin(admin.ModelAdmin):
             return qs.filter(
                 Q(subdependencia__id__in=arreglo_dependencias)
             )
+
+
+
+
+class LogEntryAdmin(admin.ModelAdmin):
+
+    date_hierarchy = 'action_time'
+
+
+    list_filter = [
+        'user',
+        'content_type',
+        'action_flag'
+    ]
+
+    search_fields = [
+        'object_repr',
+        'change_message'
+    ]
+
+
+    list_display = [
+        'action_time',
+        'user',
+        'content_type',
+        'action_flag',
+        'change_message',
+    ]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser and request.method != 'POST'
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_queryset(self, request):
+        return super(LogEntryAdmin, self).queryset(request) \
+            .prefetch_related('content_type')
+
+
+admin.site.register(LogEntry, LogEntryAdmin)
+
 
 
 admin.site.unregister(User)
