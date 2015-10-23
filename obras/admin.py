@@ -602,7 +602,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 
     list_filter = [
-        'user',
+        'user__usuario__dependencia',
         'content_type',
         'action_flag'
     ]
@@ -619,6 +619,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         'content_type',
         'action_flag',
         'change_message',
+	'get_dependencia',
     ]
 
     def has_add_permission(self, request):
@@ -633,6 +634,11 @@ class LogEntryAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return super(LogEntryAdmin, self).queryset(request) \
             .prefetch_related('content_type')
+
+    def get_dependencia(self, obj):
+        return ",\n".join([dependencia.nombreDependencia for dependencia in obj.user.usuario.dependencia.all()])
+
+    get_dependencia.short_description = 'Dependencia'
 
 
 admin.site.register(LogEntry, LogEntryAdmin)
