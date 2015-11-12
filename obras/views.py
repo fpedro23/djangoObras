@@ -2,7 +2,7 @@
 import os, sys
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-from django.db.models import Sum
+from django.db.models import Sum,Count
 from django.contrib.auth.decorators import login_required, user_passes_test
 from decimal import *
 from obras.tools import *
@@ -25,6 +25,7 @@ from django.core.servers.basehttp import FileWrapper
 import mimetypes
 from django.http import StreamingHttpResponse
 from pptx.util import Inches
+from pptx.dml.color import RGBColor
 
 
 
@@ -2337,6 +2338,356 @@ def hiper_rangos_ppt(request):
     response['Content-Disposition'] = "attachment; filename=%s" % filename
 
     return response
+
+@login_required()
+@user_passes_test(is_super_admin)
+def logros_resultados_ppt(request):
+    #prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/LOGROS_RESULTADOS.pptx')
+    prs = Presentation('obras/static/ppt/LOGROS_RESULTADOS.pptx')
+    usuario = request.user.usuario
+    dependencias = usuario.dependencia.all()
+    subdependencias = usuario.subdependencia.all()
+    query = Q()
+    if dependencias and dependencias.count() > 0:
+        if usuario.rol == 'US':
+            query = Q(subdependencia__in=get_subdependencias_as_list_flat(subdependencias))
+        else:
+
+            query = Q(dependencia__in=get_subdependencias_as_list_flat(dependencias)) | Q(subdependencia__in=get_subdependencias_as_list_flat(dependencias)
+        )
+
+    obras_concluidas = Obra.objects.filter(
+        Q(tipoObra=3),query
+    )
+
+    obras_proceso = Obra.objects.filter(
+        Q(tipoObra=2),query
+    )
+
+    #obras_proyectadas = Obra.objects.filter(
+    #    Q(tipoObra=1),Q(dependencia__isnull=True),query
+    #)
+
+
+    obras_proyectadas = Obra.objects.filter(
+        Q(tipoObra=1),query
+    )
+
+    obras_totales = Obra.objects.filter(
+        query
+    )
+
+    total_obras_proyectadas=0
+    totalinvertidoproyectadas=0
+    total_obras_proceso =0
+    totalinvertidoproceso=0
+    total_obras_concluidas =0
+    totalinvertidoconcluidas =0
+    totalObras=totalInvertido=0
+
+    if obras_totales.count()>0:
+        totalObras = obras_totales.count()
+        total_invertido = obras_totales.aggregate(Sum('inversionTotal'))
+        totalInvertido = total_invertido.get('inversionTotal__sum',0)
+
+    if obras_proyectadas.count()>0:
+        total_obras_proyectadas = obras_proyectadas.count()
+        total_invertido_proyectadas = obras_proyectadas.aggregate(Sum('inversionTotal'))
+        totalinvertidoproyectadas = total_invertido_proyectadas.get('inversionTotal__sum',0)
+    if obras_proceso.count()>0:
+        total_obras_proceso = obras_proceso.count()
+        total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
+        totalinvertidoproceso = total_invertido_proceso.get('inversionTotal__sum',0)
+
+    if obras_concluidas.count()>0:
+        total_obras_concluidas = obras_concluidas.count()
+        total_invertido_concluidas = obras_concluidas.aggregate(Sum('inversionTotal'))
+        totalinvertidoconcluidas = total_invertido_concluidas.get('inversionTotal__sum',0)
+
+    #para resultados por dependencia
+
+    table = prs.slides[0].shapes[0].table
+    i=1
+
+    for obra in obras_totales.values('dependencia__nombreDependencia')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('dependencia__orden_secretaria'):
+        table.cell(i, 1).text_frame.paragraphs[0].font.size = Pt(11)
+        table.cell(i, 2).text_frame.paragraphs[0].font.size = Pt(11)
+        table.cell(i, 1).text = '{0:,}'.format(obra['numero_obras'])
+        table.cell(i, 2).text = '{0:,.2f}'.format(obra['sumatotal'])
+        i+=1
+
+    table.cell(i, 1).text_frame.paragraphs[0].font.size = Pt(11)
+    table.cell(i, 2).text_frame.paragraphs[0].font.size = Pt(11)
+    table.cell(i, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x80, 0x00)
+    table.cell(i, 2).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x80, 0x00)
+    table.cell(i, 1).text = '{0:,}'.format(totalObras)
+    table.cell(i, 2).text = '{0:,.2f}'.format(totalInvertido)
+
+    tableX = prs.slides[1].shapes[0].table
+    tableY = prs.slides[1].shapes[1].table
+    i=0
+    j=1
+    x=0
+    y=1
+    tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    for obra in obras_concluidas.values('dependencia__nombreDependencia')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('dependencia__orden_secretaria'):
+        if i<=14:
+            tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(i, 0).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableX.cell(j, 0).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            i+=2
+            j+=2
+        else:
+            tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+            tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+            tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            x+=2
+            y+=2
+
+    tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+    tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+    tableY.cell(x, 1).text = '{0:,}'.format(total_obras_concluidas) + ' Obras'
+    tableY.cell(y, 1).text = '{0:,.2f}'.format(totalinvertidoconcluidas)+' mdp'
+
+
+    tableX = prs.slides[2].shapes[0].table
+    tableY = prs.slides[2].shapes[1].table
+    i=0
+    j=1
+    x=0
+    y=1
+    tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    for obra in obras_proceso.values('dependencia__nombreDependencia')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('dependencia__orden_secretaria'):
+        if i<=14:
+            tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(i, 0).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableX.cell(j, 0).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            i+=2
+            j+=2
+        else:
+            tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+            tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+            tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            x+=2
+            y+=2
+
+    tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+    tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+    tableY.cell(x, 1).text = '{0:,}'.format(total_obras_proceso) + ' Obras'
+    tableY.cell(y, 1).text = '{0:,.2f}'.format(totalinvertidoproceso)+' mdp'
+
+
+    tableX = prs.slides[3].shapes[0].table
+    tableY = prs.slides[3].shapes[1].table
+    i=0
+    j=1
+    x=0
+    y=1
+    tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    claveSecretaria=1
+    for obra in obras_proyectadas.values('dependencia__nombreDependencia','dependencia__orden_secretaria')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('dependencia__orden_secretaria'):
+        print(obra)
+        #si hay alguna dependencia sin obras en proyecto se salta
+        if claveSecretaria != obra['dependencia__orden_secretaria']:
+            claveSecretaria+=1
+            if i<=14:
+                i+=2
+                j+=2
+            else:
+                x+=2
+                y+=2
+
+
+        if i<=14:
+                tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
+                tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
+                tableX.cell(i, 0).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableX.cell(j, 0).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                i+=2
+                j+=2
+        else:
+                tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                x+=2
+                y+=2
+
+
+        claveSecretaria+=1
+
+    tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+    tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+    tableY.cell(x, 1).text = '{0:,}'.format(total_obras_proyectadas) + ' Obras'
+    tableY.cell(y, 1).text = '{0:,.2f}'.format(totalinvertidoproyectadas)+' mdp'
+
+
+
+    #para resultados por Estado
+
+    table = prs.slides[4].shapes[0].table
+    table2 = prs.slides[4].shapes[1].table
+    i=2
+    j=2
+    for obra in obras_totales.values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__id'):
+        if i<20:
+            table.cell(i, 1).text_frame.paragraphs[0].font.size = Pt(11)
+            table.cell(i, 2).text_frame.paragraphs[0].font.size = Pt(11)
+            table.cell(i, 1).text = '{0:,}'.format(obra['numero_obras'])
+            table.cell(i, 2).text = '{0:,.2f}'.format(obra['sumatotal'])
+            i+=1
+        else:
+            table2.cell(j, 1).text_frame.paragraphs[0].font.size = Pt(11)
+            table2.cell(j, 2).text_frame.paragraphs[0].font.size = Pt(11)
+            table2.cell(j, 1).text = '{0:,}'.format(obra['numero_obras'])
+            table2.cell(j, 2).text = '{0:,.2f}'.format(obra['sumatotal'])
+            j+=1
+
+
+    table2.cell(j, 1).text_frame.paragraphs[0].font.size = Pt(11)
+    table2.cell(j, 2).text_frame.paragraphs[0].font.size = Pt(11)
+    table2.cell(j, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x80, 0x00)
+    table2.cell(j, 2).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x80, 0x00)
+    table2.cell(j, 1).text = '{0:,}'.format(totalObras)
+    table2.cell(j, 2).text = '{0:,.2f}'.format(totalInvertido)
+
+
+
+    tableX = prs.slides[5].shapes[0].table
+    tableY = prs.slides[5].shapes[1].table
+    tableZ = prs.slides[5].shapes[2].table
+    i=0
+    j=1
+    x=0
+    y=1
+    tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableZ.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    for obra in obras_concluidas.values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__id'):
+        if i<=30:
+            tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(i, 0).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableX.cell(j, 0).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            i+=2
+            j+=2
+        else:
+            if x<=30:
+                tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                x+=2
+                y+=2
+            else:
+                tableZ.cell(x-32, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableZ.cell(y-32, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableZ.cell(x-32, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableZ.cell(y-32, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                x+=2
+                y+=2
+
+    tableX = prs.slides[6].shapes[0].table
+    tableY = prs.slides[6].shapes[1].table
+    tableZ = prs.slides[6].shapes[2].table
+    i=0
+    j=1
+    x=0
+    y=1
+    tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableZ.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    for obra in obras_proceso.values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__id'):
+        if i<=30:
+            tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(i, 0).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableX.cell(j, 0).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            i+=2
+            j+=2
+        else:
+            if x<=30:
+                tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                x+=2
+                y+=2
+            else:
+                tableZ.cell(x-32, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableZ.cell(y-32, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableZ.cell(x-32, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableZ.cell(y-32, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                x+=2
+                y+=2
+
+    tableX = prs.slides[7].shapes[0].table
+    tableY = prs.slides[7].shapes[1].table
+    tableZ = prs.slides[7].shapes[2].table
+    i=0
+    j=1
+    x=0
+    y=1
+    tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    tableZ.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    for obra in obras_proyectadas.values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__id'):
+        if i<=30:
+            tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
+            tableX.cell(i, 0).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableX.cell(j, 0).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            i+=2
+            j+=2
+        else:
+            if x<=30:
+                tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                x+=2
+                y+=2
+            else:
+                tableZ.cell(x-32, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableZ.cell(y-32, 1).text_frame.paragraphs[0].font.size = Pt(8)
+                tableZ.cell(x-32, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableZ.cell(y-32, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                x+=2
+                y+=2
+
+    #prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
+    #the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
+
+    prs.save('obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
+    the_file = 'obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
+
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
+                           content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+
+    return response
+
+
+
+
 
 
 def redirect_admin(request):
