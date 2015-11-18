@@ -2374,7 +2374,7 @@ def logros_resultados_ppt(request):
     )
 
     obras_totales = Obra.objects.filter(
-        query
+        Q(tipoObra__in=[1,2,3]),query
     )
 
     total_obras_proyectadas=0
