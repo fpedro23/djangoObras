@@ -3,7 +3,8 @@ $j(document).on('ready', main_consulta);
 
 var datosJson;
 var newToken
-
+var spanA;
+var htmlA;
 function valida_token(){
 var ajax_datatoken = {
       "access_token"  : 'O9BfPpYQuu6a5ar4rGTd2dRdaYimVa'
@@ -202,9 +203,78 @@ function setImage(){
         }
 
 
+    var normalize = (function() {
+          var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
+              to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+              mapping = {};
+
+          for(var i = 0, j = from.length; i < j; i++ )
+              mapping[ from.charAt( i ) ] = to.charAt( i );
+
+          return function( str ) {
+              var ret = [];
+              for( var i = 0, j = str.length; i < j; i++ ) {
+                  var c = str.charAt( i );
+                  if( mapping.hasOwnProperty( str.charAt( i ) ) )
+                      ret.push( mapping[ c ] );
+                  else
+                      ret.push( c );
+              }
+              return ret.join( '' );
+          }
+
+    })();
+
+    $j(document).on('click',"a", function () {
+             spanA = $j(this);
+             htmlA = spanA.html();
+             //alert(htmlA);
+
+    });
+
+    $j(document).on('change',"input[type=file]", function () {
+            var nomarc =$j(this).val();
+            var input = $j(this);
+            var $jel = $j(this);
+
+            if(/^[:_.\\a-zA-Z0-9- ]*$/.test(nomarc) == false) {
+
+                    $jel.wrap('<form>').closest('form').get(0).reset();
+                    $jel.unwrap();
+                    spanA.html(htmlA);
+                    //lert(spanA.html());
+
+
+                   $j.magnificPopup.open({
+                       items: {
+                           src:  '<div id="test-modal" class="alertaVENTANA" style="top:0px; left: 450px;">'
+                                 + '<div class="textoALERTA">'
+                                 + 'El nombre del archivo no debe tener acentos ni caracteres especiales'
+                                 + '</div>'
+                                 + '<a class="popup-modal-dismiss" href="#"><div class="aceptarBTN" style="left:150px;"> </div></a>'
+                                 + '</div>'
+                       },
+                       type: 'inline',
+                       preloader: true,
+                       modal: true });
+
+                        $j(document).on('click', '.popup-modal-dismiss', function (e) {
+                       e.preventDefault();
+                       $j.magnificPopup.close();
+                       });
+
+
+                }
+        });
 
 
     $j(document).ready(function() {
+         /*$j( "a" ).click(function() {
+             spanA = $j(this);
+             htmlA = spanA.html();
+             alert(htmlA);
+         });*/
+
          $j("input[type=text]").keyup(function () {
              $j(this).val($j(this).val().toUpperCase());
 
