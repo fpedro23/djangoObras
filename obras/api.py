@@ -660,7 +660,9 @@ class IdUnicoEndpoint(ProtectedResourceView):
             return HttpResponse(json.dumps({'id': obra_id, 'error': 'No existe la obra con identificador ' + identificador_unico}), 'application/json')
         elif usuario.rol == 'US' and obra.subdependencia is None:
             return HttpResponse(json.dumps({'id': obra_id, 'error': 'Privilegios insuficientes'}), 'application/json')
-        elif usuario.rol == 'US' and obra.subdependencia is not None and usuario.subdependencia.filter(id=obra.subdepencia.id).exists():
+	elif usuario.rol == 'US' and (usuario.subdependencia is None or usuario.subdependencia.count() == 0):
+            return HttpResponse(json.dumps({'id': obra_id, 'error': 'Privilegios insuficientes'}), 'application/json')
+	elif usuario.rol == 'US' and usuario.subdependencia is not None and obra.subdependencia is not None and not usuario.subdependencia.filter(id=obra.subdependencia.id).exists():
             return HttpResponse(json.dumps({'id': obra_id, 'error': 'Privilegios insuficientes'}), 'application/json')
         else:
             return HttpResponse(json.dumps({'id': obra_id, 'error': None}), 'application/json')
