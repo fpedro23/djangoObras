@@ -217,9 +217,9 @@ function listarObras() {
     var inversionFinal = $l("#inversionFinal").val();
     var denominacion = $l("#denominacion").val();
 
-    var URL="/obras/api/listar?access_token=" + newToken
+    var URL="/obras/api/listar?access_token=" + newToken;
 
-    ;
+
 
     if (fechaInicio1!=""){fechaInicio1 = myDateFormatter($dp('#fechaInicial1').datepicker("getDate"));}
     if (fechaInicio2!=""){ fechaInicio2 = myDateFormatter($dp('#fechaInicial2').datepicker("getDate"));}
@@ -424,7 +424,6 @@ function verDatos() {
     if(inversionFinal!=""){ajax_data.inversionMaxima=inversionFinal;}
     if(denominacion!=""){ajax_data.denominacion=denominacion.toUpperCase();}
     if($j('#inauguradas').is(':checked')){ajax_data.inaugurada = $j('#inauguradas').is(':checked');}
-
 
     $j("#ajaxProgress").show();
     $j.ajax({

@@ -158,7 +158,7 @@ class BuscarObras:
                 query = query & Q(detalleclasificacion__tipoClasificacion__id__in=self.clasificaciones)
 
             if self.inversiones is not None:
-                query = query & Q(tipoInversion__id__in=self.inversiones)
+                query = query & Q(detalleinversion__tipoInversion__id__in=self.inversiones) & Q(detalleinversion__monto__gt=0)
 
             if self.inauguradores is not None:
                 query = query & Q(inaugurador__id__in=self.inauguradores)

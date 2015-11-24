@@ -1394,8 +1394,8 @@ class ListarEndpoint(ProtectedResourceView):
                 except Exception as e:
                     print e
 
-                for x in range (0, len(inversionA)):
-                    lista[int(inversionA[x])-1]=inversionB[x]
+                for x in inversionA:
+                    lista[int(x)-1]=inversionB[int(x)-1]
 
                 for x in range (0, len(lista)):
                      sheet.write(i, x+11, float(lista[x]))
