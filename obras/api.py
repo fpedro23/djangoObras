@@ -1373,12 +1373,12 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 9, obra[8])
                 sheet.write(i, 10, obra[9])
 
-                sheet.write(i, 11, "NO")  #F
-                sheet.write(i, 12, "NO")  #E
-                sheet.write(i, 13, "NO")  #M
-                sheet.write(i, 14, "NO")  #S
-                sheet.write(i, 15, "NO")  #P
-                sheet.write(i, 16, "NO")  #O
+                sheet.write(i, 11, int("0"))  #F
+                sheet.write(i, 12, int("0"))  #E
+                sheet.write(i, 13, int("0"))  #M
+                sheet.write(i, 14, int("0"))  #S
+                sheet.write(i, 15, int("0"))  #P
+                sheet.write(i, 16, int("0"))  #O
 
                 lista=[0,0,0,0,0,0]
                 inversionA=[]
@@ -1396,11 +1396,20 @@ class ListarEndpoint(ProtectedResourceView):
                 except Exception as e:
                     print e
 
-                for x in inversionA:
-                    lista[int(x)-1]=inversionB[int(x)-1]
+                if i==37:
+                    print i
 
-                for x in range (0, len(lista)):
-                     sheet.write(i, x+11, float(lista[x]))
+                if len(inversionB) == 6:
+                    for x in inversionA:
+                        lista[int(x)-1]=inversionB[int(x)-1]
+
+                    for x in range (0, len(lista)):
+                         sheet.write(i, x+11, float(lista[x]))
+                else:
+                    z=0
+                    for x in inversionA:
+                        sheet.write(i, int(x)+10, float(inversionB[z]))
+                        z+=1
 
                 #for inv in (obra[10].split(',')):
                 #    if inv[0] == "F": sheet.write(i, 10, "SI")
