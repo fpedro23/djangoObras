@@ -1464,6 +1464,16 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 36, obra[27])
                 sheet.write(i, 37, obra[28])
 
+                #documentos fuente
+                iDoc = 38
+                try:
+                    for doc in (obra[32].split(',')):
+                        sheet.write(0, iDoc, "Documento-"+str(iDoc-37), bold)
+                        sheet.write(i, iDoc, doc)
+                        iDoc+=1
+                except Exception as e:
+                    print e
+
                 i += 1
             book.close()
 
