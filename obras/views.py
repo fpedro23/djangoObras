@@ -26,7 +26,8 @@ import mimetypes
 from django.http import StreamingHttpResponse
 from pptx.util import Inches
 from pptx.dml.color import RGBColor
-
+import PIL  # MODULO PARA PROCESAR IMAGENES
+from PIL import Image
 
 
 def get_user_for_token(token):
@@ -909,19 +910,50 @@ def fichaTecnica(request):
         #imagenes de la obra
         left = Inches(7.08)
         top = Inches(5.93)
-        width = Inches(0.76)
-        height = Inches(0.78)
-        print "foto antes" + json_map['obras'][0]['fotoAntes']
-        if json_map['obras'][0]['fotoAntes'] != "":
-            pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoAntes'], left, top, width, height)
+        widthP = Inches(0.76)
+        heightP = Inches(0.78)
+
+
+        if (json_map['obras'][0]['fotoAntes']) != "":
+            scad=(json_map['obras'][0]['fotoAntes']).split('/',2)
+            img = Image.open('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoAntes'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
+            width = img.size[0] # CHEQUEAMOS EL ANCHO
+            heigh = img.size[1] # CHEQUEAMOS EL ALTO
+            if width > 800 or heigh > 800:
+                cadena = redimensiona('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/antes_resize.jpg",img,width,heigh)
+                pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/antes_resize.jpg", left, top, widthP, heightP)
+            else:
+                pic = prs.slides[0].shapes.add_picture("/home/obrasapf/djangoObras/obras/media/" + json_map['obras'][0]['fotoAntes'], left, top, widthP, heightP)
+
         left = Inches(7.9291)
         top = Inches(5.93)
-        if json_map['obras'][0]['fotoDurante'] != "":
-            pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoDurante'], left, top, width, height)
+        if (json_map['obras'][0]['fotoDurante']) != "":
+            scad=(json_map['obras'][0]['fotoDurante']).split('/',2)
+            img = Image.open('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoDurante'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
+            width = img.size[0] # CHEQUEAMOS EL ANCHO
+            heigh = img.size[1] # CHEQUEAMOS EL ALTO
+            if width > 800 or heigh > 800:
+                cadena = redimensiona('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/durante_resize.jpg",img,width,heigh)
+                pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/durante_resize.jpg", left, top, widthP, heightP)
+            else:
+                pic = prs.slides[0].shapes.add_picture("/home/obrasapf/djangoObras/obras/media/" + json_map['obras'][0]['fotoDurante'], left, top, widthP, heightP)
+
+
         left = Inches(8.7677)
         top = Inches(5.93)
-        if json_map['obras'][0]['fotoDespues'] != "":
-            pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoDespues'], left, top, width, height)
+        if (json_map['obras'][0]['fotoDespues']) != "":
+            scad=(json_map['obras'][0]['fotoDespues']).split('/',2)
+            img = Image.open('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoDespues'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
+            width = img.size[0] # CHEQUEAMOS EL ANCHO
+            heigh = img.size[1] # CHEQUEAMOS EL ALTO
+            if width > 800 or heigh > 800:
+                cadena = redimensiona('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/despues_resize.jpg",img,width,heigh)
+                pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/despues_resize.jpg", left, top, widthP, heightP)
+            else:
+                pic = prs.slides[0].shapes.add_picture("/home/obrasapf/djangoObras/obras/media/" + json_map['obras'][0]['fotoDespues'], left, top, widthP, heightP)
+
+
+
 
         prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
 
@@ -944,6 +976,23 @@ def fichaTecnica(request):
 
         #print(json_map)
         #return HttpResponse(json.dumps(json_map), 'application/json')
+
+def redimensiona(ruta,img,width,heigh):
+
+
+    if width > heigh: # SI EL ANCHO ES MAYOR QUE EL ALTO (FOTO HORIZONTAL), LO TOMAMOS COMO REFERENCIA
+                basewidth = 400
+                wpercent = (basewidth / float(img.size[0]))
+                hsize = int((float(img.size[1]) * float(wpercent)))
+                img = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+                img.save(ruta)  # SALVAMOS LA IMAGEN EN EL DIRECTORIO
+    else: # SI EL ALTO ES MAYOR QUE EL ANCHO (FOTO VERTICAL) LO TOMAMOS COMO REFERENCIA
+                baseheight = 400
+                hpercent = (baseheight / float(img.size[1]))
+                wsize = int((float(img.size[0]) * float(hpercent)))
+                img = img.resize((wsize, baseheight), PIL.Image.ANTIALIAS)
+                img.save(ruta) # SALVAMOS LA IMAGEN EN EL DIRECTORIO
+
 
 @login_required()
 def reportes_predefinidos(request):
