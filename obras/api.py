@@ -403,6 +403,8 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
 
             json_ans += '"},'
         json_ans = json_ans[:-1]
+        if json_ans=='':
+            json_ans += '['
         json_ans += ']'
 
         return HttpResponse(json_ans, 'application/json')
