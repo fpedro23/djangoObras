@@ -1212,8 +1212,8 @@ def hiper_por_sector_ppt(request):
     prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
     usuario = request.user.usuario
 
-    start_date = datetime.date(2015, 01, 01)
-    end_date = datetime.date(2015, 12, 31)
+    start_date = datetime.date(2016, 01, 01)
+    end_date = datetime.date(2016, 12, 31)
     dependencias = {}
 
     for dependencia in Dependencia.objects.filter(
@@ -1379,6 +1379,11 @@ def hiper_por_entidad_ppt(request):
             Q(tipoObra=3),
             Q(estado=estado),
         )
+        obras_2016_concluidas = Obra.objects.filter(
+            Q(fechaTermino__range=(start_date_2016, end_date_2016)),
+            Q(tipoObra=3),
+            Q(estado=estado),
+        )
 
         obras_proceso = Obra.objects.filter(
             Q(tipoObra=2),
@@ -1430,6 +1435,7 @@ def hiper_por_entidad_ppt(request):
         total_invertido_2013_concluidas = obras_2013_concluidas.aggregate(Sum('inversionTotal'))
         total_invertido_2014_concluidas = obras_2014_concluidas.aggregate(Sum('inversionTotal'))
         total_invertido_2015_concluidas = obras_2015_concluidas.aggregate(Sum('inversionTotal'))
+        total_invertido_2016_concluidas = obras_2016_concluidas.aggregate(Sum('inversionTotal'))
 
         total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
 
@@ -1443,6 +1449,7 @@ def hiper_por_entidad_ppt(request):
         totalinvertido2013=0
         totalinvertido2014=0
         totalinvertido2015=0
+        totalinvertido2016=0
         totalinvertidoproceso=0
         totalinvertidoproyectadas2014=0
         totalinvertidoproyectadas2015=0
@@ -1454,6 +1461,7 @@ def hiper_por_entidad_ppt(request):
         if str(total_invertido_2013_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2013=total_invertido_2013_concluidas.get('inversionTotal__sum',0)
         if str(total_invertido_2014_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2014=total_invertido_2014_concluidas.get('inversionTotal__sum',0)
         if str(total_invertido_2015_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2015=total_invertido_2015_concluidas.get('inversionTotal__sum',0)
+        if str(total_invertido_2016_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2016=total_invertido_2016_concluidas.get('inversionTotal__sum',0)
         if str(total_invertido_proceso.get('inversionTotal__sum',0)) != 'None': totalinvertidoproceso=total_invertido_proceso.get('inversionTotal__sum',0)
         if str(total_invertido_proyectadas_2014.get('inversionTotal__sum',0)) != 'None': totalinvertidoproyectadas2014=total_invertido_proyectadas_2014.get('inversionTotal__sum',0)
         if str(total_invertido_proyectadas_2015.get('inversionTotal__sum',0)) != 'None': totalinvertidoproyectadas2015=total_invertido_proyectadas_2015.get('inversionTotal__sum',0)
@@ -1461,14 +1469,15 @@ def hiper_por_entidad_ppt(request):
         if str(total_invertido_proyectadas_2017.get('inversionTotal__sum',0)) != 'None': totalinvertidoproyectadas2017=total_invertido_proyectadas_2017.get('inversionTotal__sum',0)
         if str(total_invertido_proyectadas_2018.get('inversionTotal__sum',0)) != 'None': totalinvertidoproyectadas2018=total_invertido_proyectadas_2018.get('inversionTotal__sum',0)
 
-        totalObrasConcluidas= total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015
-        totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015
+        totalObrasConcluidas= total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015+total_obras_concluidas_2016
+        totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015+totalinvertido2016
 
-        totalObras15_18 = totalinvertidoproyectadas2015+totalinvertidoproyectadas2016+totalinvertidoproyectadas2017+totalinvertidoproyectadas2018
-        totalInvertido15_18 = total_obras_proyectadas_2015+total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
 
-        totalObrasGeneral = totalObras15_18+total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015+total_obras_proceso
-        totalInvertidoGeneral = totalInvertido15_18+totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015+totalinvertidoproceso
+        totalObras15_18 = totalinvertidoproyectadas2016+totalinvertidoproyectadas2017+totalinvertidoproyectadas2018
+        totalInvertido15_18 = total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
+
+        totalObrasGeneral = totalObras15_18+total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015+total_obras_concluidas_2016+total_obras_proceso
+        totalInvertidoGeneral = totalInvertido15_18+totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015+totalinvertido2016+totalinvertidoproceso
 
         for x in range(12,36):
             prs.slides[indiceSlide].shapes[x].text_frame.paragraphs[0].font.size = Pt(8)
@@ -1482,16 +1491,16 @@ def hiper_por_entidad_ppt(request):
         prs.slides[indiceSlide].shapes[17].text= '{0:,.2f}'.format(totalinvertido2014)
         prs.slides[indiceSlide].shapes[18].text= '{0:,}'.format(total_obras_concluidas_2015)
         prs.slides[indiceSlide].shapes[19].text= '{0:,.2f}'.format(totalinvertido2015)
-        prs.slides[indiceSlide].shapes[20].text= '{0:,}'.format(totalObrasConcluidas)
-        prs.slides[indiceSlide].shapes[21].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
+        prs.slides[indiceSlide].shapes[20].text= '{0:,}'.format(total_obras_concluidas_2016)
+        prs.slides[indiceSlide].shapes[21].text= '{0:,.2f}'.format(totalinvertido2016)
+        prs.slides[indiceSlide].shapes[22].text= '{0:,}'.format(totalObrasConcluidas)
+        prs.slides[indiceSlide].shapes[23].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
 
         #proceso
-        prs.slides[indiceSlide].shapes[22].text= '{0:,}'.format(total_obras_proceso)
-        prs.slides[indiceSlide].shapes[23].text= '{0:,.2f}'.format(totalinvertidoproceso)
+        prs.slides[indiceSlide].shapes[24].text= '{0:,}'.format(total_obras_proceso)
+        prs.slides[indiceSlide].shapes[25].text= '{0:,.2f}'.format(totalinvertidoproceso)
 
         #proyectadas
-        prs.slides[indiceSlide].shapes[24].text= '{0:,}'.format(total_obras_proyectadas_2015)
-        prs.slides[indiceSlide].shapes[25].text= '{0:,.2f}'.format(totalinvertidoproyectadas2015)
         prs.slides[indiceSlide].shapes[26].text= '{0:,}'.format(total_obras_proyectadas_2016)
         prs.slides[indiceSlide].shapes[27].text= '{0:,.2f}'.format(totalinvertidoproyectadas2016)
         prs.slides[indiceSlide].shapes[28].text= '{0:,}'.format(total_obras_proyectadas_2017)
@@ -1568,6 +1577,9 @@ def hiper_concluidas_ppt(request):
     start_date_2015 = datetime.date(2015, 01, 01)
     end_date_2015 = datetime.date(2015, 12, 31)
 
+    start_date_2016 = datetime.date(2016, 01, 01)
+    end_date_2016 = datetime.date(2016, 12, 31)
+
     obras_2012_concluidas = Obra.objects.filter(
         Q(fechaTermino__range=(start_date_2012, end_date_2012)),
         Q(tipoObra=3),query,
@@ -1584,6 +1596,10 @@ def hiper_concluidas_ppt(request):
         Q(fechaTermino__range=(start_date_2015, end_date_2015)),
         Q(tipoObra=3),query,
     )
+    obras_2016_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2016, end_date_2016)),
+        Q(tipoObra=3),query,
+    )
 
     obras_proceso = Obra.objects.filter(
         Q(tipoObra=2),query,
@@ -1597,6 +1613,7 @@ def hiper_concluidas_ppt(request):
     total_obras_concluidas_2013 = obras_2013_concluidas.count()
     total_obras_concluidas_2014 = obras_2014_concluidas.count()
     total_obras_concluidas_2015 = obras_2015_concluidas.count()
+    total_obras_concluidas_2016 = obras_2016_concluidas.count()
     total_obras_proceso = obras_proceso.count()
     total_obras_proyectadas = obras_proyectadas.count()
 
@@ -1605,6 +1622,7 @@ def hiper_concluidas_ppt(request):
     total_invertido_2013_concluidas = obras_2013_concluidas.aggregate(Sum('inversionTotal'))
     total_invertido_2014_concluidas = obras_2014_concluidas.aggregate(Sum('inversionTotal'))
     total_invertido_2015_concluidas = obras_2015_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2016_concluidas = obras_2016_concluidas.aggregate(Sum('inversionTotal'))
 
     total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
     total_invertido_proyectadas = obras_proyectadas.aggregate(Sum('inversionTotal'))
@@ -1613,6 +1631,7 @@ def hiper_concluidas_ppt(request):
     totalinvertido2013=0
     totalinvertido2014=0
     totalinvertido2015=0
+    totalinvertido2016=0
     totalinvertidoproceso=0
     totalinvertidoproyectadas=0
 
@@ -1620,11 +1639,12 @@ def hiper_concluidas_ppt(request):
     if str(total_invertido_2013_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2013=total_invertido_2013_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_2014_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2014=total_invertido_2014_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_2015_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2015=total_invertido_2015_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2016_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2016=total_invertido_2016_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_proceso.get('inversionTotal__sum',0)) != 'None': totalinvertidoproceso=total_invertido_proceso.get('inversionTotal__sum',0)
     if str(total_invertido_proyectadas.get('inversionTotal__sum',0)) != 'None': totalinvertidoproyectadas=total_invertido_proyectadas.get('inversionTotal__sum',0)
 
-    totalObrasConcluidas= total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015
-    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015
+    totalObrasConcluidas= total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015+total_obras_concluidas_2016
+    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015+totalinvertido2016
 
     for x in range(2,12):
         prs.slides[0].shapes[x].text_frame.paragraphs[0].font.size = Pt(14)
@@ -1646,6 +1666,8 @@ def hiper_concluidas_ppt(request):
     prs.slides[0].shapes[9].text= '{0:,.2f}'.format(totalinvertido2014)
     prs.slides[0].shapes[10].text= '{0:,}'.format(total_obras_concluidas_2015)
     prs.slides[0].shapes[11].text= '{0:,.2f}'.format(totalinvertido2015)
+    prs.slides[0].shapes[12].text= '{0:,}'.format(total_obras_concluidas_2016)
+    prs.slides[0].shapes[13].text= '{0:,.2f}'.format(totalinvertido2016)
 
     #proceso
     prs.slides[1].shapes[2].text= '{0:,}'.format(total_obras_proceso)
@@ -1694,6 +1716,9 @@ def hiper_inauguradas_ppt(request):
     start_date_2015 = datetime.date(2015, 01, 01)
     end_date_2015 = datetime.date(2015, 12, 31)
 
+    start_date_2015 = datetime.date(2016, 01, 01)
+    end_date_2015 = datetime.date(2016, 12, 31)
+
     #inauguradas presidente
     obras_2012_inauguradas_P = Obra.objects.filter(
         Q(fechaTermino__range=(start_date_2012, end_date_2012)),
@@ -1711,6 +1736,10 @@ def hiper_inauguradas_ppt(request):
         Q(fechaTermino__range=(start_date_2015, end_date_2015)),
         Q(inaugurador_id=1),query,
     )
+    obras_2016_inauguradas_P = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2016, end_date_2016)),
+        Q(inaugurador_id=1),query,
+    )
     #inauguradas otros
     obras_2012_inauguradas_O = Obra.objects.filter(
         Q(fechaTermino__range=(start_date_2012, end_date_2012)),
@@ -1726,6 +1755,10 @@ def hiper_inauguradas_ppt(request):
     )
     obras_2015_inauguradas_O = Obra.objects.filter(
         Q(fechaTermino__range=(start_date_2015, end_date_2015)),
+        Q(inaugurador_id=7),query,
+    )
+    obras_2016_inauguradas_O = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2016, end_date_2016)),
         Q(inaugurador_id=7),query,
     )
 
@@ -1746,6 +1779,11 @@ def hiper_inauguradas_ppt(request):
         Q(fechaTermino__range=(start_date_2015, end_date_2015)),
         Q(tipoObra=3),Q(senalizacion=1),query,
     )
+    obras_2016_senializadas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2016, end_date_2016)),
+        Q(tipoObra=3),Q(senalizacion=1),query,
+    )
+
 
     obras_proceso = Obra.objects.filter(
         Q(tipoObra=2),Q(senalizacion=1),query,
@@ -1759,24 +1797,27 @@ def hiper_inauguradas_ppt(request):
     total_obras_inauguradas_P_2013 = obras_2013_inauguradas_P.count()
     total_obras_inauguradas_P_2014 = obras_2014_inauguradas_P.count()
     total_obras_inauguradas_P_2015 = obras_2015_inauguradas_P.count()
+    total_obras_inauguradas_P_2016 = obras_2016_inauguradas_P.count()
 
     total_obras_inauguradas_O_2012 = obras_2012_inauguradas_O.count()
     total_obras_inauguradas_O_2013 = obras_2013_inauguradas_O.count()
     total_obras_inauguradas_O_2014 = obras_2014_inauguradas_O.count()
     total_obras_inauguradas_O_2015 = obras_2015_inauguradas_O.count()
+    total_obras_inauguradas_O_2016 = obras_2016_inauguradas_O.count()
 
-    total_obras_inauguradas_P= total_obras_inauguradas_P_2012+total_obras_inauguradas_P_2013+total_obras_inauguradas_P_2014+total_obras_inauguradas_P_2015
-    total_obras_inauguradas_O= total_obras_inauguradas_O_2012+total_obras_inauguradas_O_2013+total_obras_inauguradas_O_2014+total_obras_inauguradas_O_2015
+    total_obras_inauguradas_P= total_obras_inauguradas_P_2012+total_obras_inauguradas_P_2013+total_obras_inauguradas_P_2014+total_obras_inauguradas_P_2015+total_obras_inauguradas_P_2016
+    total_obras_inauguradas_O= total_obras_inauguradas_O_2012+total_obras_inauguradas_O_2013+total_obras_inauguradas_O_2014+total_obras_inauguradas_O_2015+total_obras_inauguradas_O_2016
 
     total_obras_senializadas_2012 = obras_2012_senializadas.count()
     total_obras_senializadas_2013 = obras_2013_senializadas.count()
     total_obras_senializadas_2014 = obras_2014_senializadas.count()
     total_obras_senializadas_2015 = obras_2015_senializadas.count()
+    total_obras_senializadas_2016 = obras_2016_senializadas.count()
 
     total_obras_proceso = obras_proceso.count()
     total_obras_proyectadas = obras_proyectadas.count()
 
-    total_obras_senializadas =  total_obras_senializadas_2012+total_obras_senializadas_2013+total_obras_senializadas_2014+total_obras_senializadas_2015+total_obras_proceso+total_obras_proyectadas
+    total_obras_senializadas =  total_obras_senializadas_2012+total_obras_senializadas_2013+total_obras_senializadas_2014+total_obras_senializadas_2015+total_obras_senializadas_2016+total_obras_proceso+total_obras_proyectadas
 
 
     for x in range(8,25):
@@ -1791,16 +1832,19 @@ def hiper_inauguradas_ppt(request):
     prs.slides[0].shapes[13].text= '{0:,}'.format(total_obras_inauguradas_O_2014)
     prs.slides[0].shapes[14].text= '{0:,}'.format(total_obras_inauguradas_P_2015)
     prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_inauguradas_O_2015)
-    prs.slides[0].shapes[16].text= '{0:,}'.format(total_obras_inauguradas_P)
-    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_inauguradas_O)
+    prs.slides[0].shapes[16].text= '{0:,}'.format(total_obras_inauguradas_P_2016)
+    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_inauguradas_O_2016)
+    prs.slides[0].shapes[18].text= '{0:,}'.format(total_obras_inauguradas_P)
+    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_inauguradas_O)
     #SENIALIZADAS
-    prs.slides[0].shapes[18].text= '{0:,}'.format(total_obras_senializadas_2012)
-    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_senializadas_2013)
-    prs.slides[0].shapes[20].text= '{0:,}'.format(total_obras_senializadas_2014)
-    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_senializadas_2015)
-    prs.slides[0].shapes[22].text= '{0:,}'.format(total_obras_proceso)
-    prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_proyectadas)
-    prs.slides[0].shapes[24].text= '{0:,}'.format(total_obras_senializadas)
+    prs.slides[0].shapes[20].text= '{0:,}'.format(total_obras_senializadas_2012)
+    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_senializadas_2013)
+    prs.slides[0].shapes[22].text= '{0:,}'.format(total_obras_senializadas_2014)
+    prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_senializadas_2015)
+    prs.slides[0].shapes[24].text= '{0:,}'.format(total_obras_senializadas_2016)
+    prs.slides[0].shapes[25].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[0].shapes[26].text= '{0:,}'.format(total_obras_proyectadas)
+    prs.slides[0].shapes[27].text= '{0:,}'.format(total_obras_senializadas)
 
 
     prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx')
@@ -1867,6 +1911,10 @@ def hiper_interestatal_ppt(request):
         Q(fechaTermino__range=(start_date_2015, end_date_2015)),
         Q(estado_id=34),Q(tipoObra=3),query,
     )
+    obras_2016_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2016, end_date_2016)),
+        Q(estado_id=34),Q(tipoObra=3),query,
+    )
 
     obras_proceso = Obra.objects.filter(
         Q(estado_id=34),Q(tipoObra=2),query,
@@ -1893,19 +1941,21 @@ def hiper_interestatal_ppt(request):
     total_obras_concluidas_2013 = obras_2013_concluidas.count()
     total_obras_concluidas_2014 = obras_2014_concluidas.count()
     total_obras_concluidas_2015 = obras_2015_concluidas.count()
-    total_obras_concluidas = total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015
+    total_obras_concluidas_2016 = obras_2016_concluidas.count()
+    total_obras_concluidas = total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015+total_obras_concluidas_2016
     total_obras_proceso = obras_proceso.count()
     total_obras_proyectadas_2015 = obras_2015_proyectadas.count()
     total_obras_proyectadas_2016 = obras_2016_proyectadas.count()
     total_obras_proyectadas_2017 = obras_2017_proyectadas.count()
     total_obras_proyectadas_2018 = obras_2018_proyectadas.count()
-    total_obras_proyectadas = total_obras_proyectadas_2015+total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
+    total_obras_proyectadas = total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
     total_obras = total_obras_concluidas+total_obras_proceso+total_obras_proyectadas
 
     total_invertido_2012_concluidas = obras_2012_concluidas.aggregate(Sum('inversionTotal'))
     total_invertido_2013_concluidas = obras_2013_concluidas.aggregate(Sum('inversionTotal'))
     total_invertido_2014_concluidas = obras_2014_concluidas.aggregate(Sum('inversionTotal'))
     total_invertido_2015_concluidas = obras_2015_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2016_concluidas = obras_2016_concluidas.aggregate(Sum('inversionTotal'))
 
     total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
 
@@ -1918,6 +1968,7 @@ def hiper_interestatal_ppt(request):
     totalinvertido2013=0
     totalinvertido2014=0
     totalinvertido2015=0
+    totalinvertido2016=0
     totalinvertidoproceso=0
     totalproyectadas2015=0
     totalproyectadas2016=0
@@ -1928,14 +1979,15 @@ def hiper_interestatal_ppt(request):
     if str(total_invertido_2013_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2013=total_invertido_2013_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_2014_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2014=total_invertido_2014_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_2015_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2015=total_invertido_2015_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2016_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2016=total_invertido_2016_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_proceso.get('inversionTotal__sum',0)) != 'None': totalinvertidoproceso=total_invertido_proceso.get('inversionTotal__sum',0)
     if str(total_invertido_2015_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2015=total_invertido_2015_proyectadas.get('inversionTotal__sum',0)
     if str(total_invertido_2016_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2016=total_invertido_2016_proyectadas.get('inversionTotal__sum',0)
     if str(total_invertido_2017_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2017=total_invertido_2017_proyectadas.get('inversionTotal__sum',0)
     if str(total_invertido_2018_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2018=total_invertido_2018_proyectadas.get('inversionTotal__sum',0)
 
-    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015
-    totalInvertidoProyectadas=totalproyectadas2015+totalproyectadas2016+totalproyectadas2017+totalproyectadas2018
+    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015+totalinvertido2016
+    totalInvertidoProyectadas=totalproyectadas2016+totalproyectadas2017+totalproyectadas2018
     totalInvertido = totalInvertidoConcluidas+totalinvertidoproceso+totalInvertidoProyectadas
 
     for x in range(9,31):
@@ -1954,20 +2006,20 @@ def hiper_interestatal_ppt(request):
     prs.slides[0].shapes[14].text= '{0:,.2f}'.format(totalinvertido2014)
     prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_concluidas_2015)
     prs.slides[0].shapes[16].text= '{0:,.2f}'.format(totalinvertido2015)
-    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_concluidas)
-    prs.slides[0].shapes[18].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
+    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_concluidas_2016)
+    prs.slides[0].shapes[18].text= '{0:,.2f}'.format(totalinvertido2016)
+    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_concluidas)
+    prs.slides[0].shapes[20].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
     #proceso
-    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_proceso)
-    prs.slides[0].shapes[20].text= '{0:,.2f}'.format(totalinvertidoproceso)
+    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[0].shapes[22].text= '{0:,.2f}'.format(totalinvertidoproceso)
     #proyectadas
-    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_proyectadas_2015)
-    prs.slides[0].shapes[22].text= '{0:,.2f}'.format(totalproyectadas2015)
     prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_proyectadas_2016)
     prs.slides[0].shapes[24].text= '{0:,.2f}'.format(totalproyectadas2016)
     prs.slides[0].shapes[25].text= '{0:,}'.format(total_obras_proyectadas_2017)
     prs.slides[0].shapes[26].text= '{0:,.2f}'.format(totalproyectadas2017)
     prs.slides[0].shapes[27].text= '{0:,}'.format(total_obras_proyectadas_2018)
-    prs.slides[0].shapes[28].text= '{0:,.2f}'.format(totalproyectadas2017)
+    prs.slides[0].shapes[28].text= '{0:,.2f}'.format(totalproyectadas2018)
 
     prs.slides[0].shapes[29].text= '{0:,}'.format(total_obras_proyectadas)
     prs.slides[0].shapes[30].text= '{0:,.2f}'.format(totalInvertidoProyectadas)
@@ -2042,6 +2094,10 @@ def hiper_nacional_ppt(request):
         Q(fechaTermino__range=(start_date_2015, end_date_2015)),
         Q(estado_id=33),Q(tipoObra=3),query,
     )
+    obras_2016_concluidas = Obra.objects.filter(
+        Q(fechaTermino__range=(start_date_2016, end_date_2016)),
+        Q(estado_id=33),Q(tipoObra=3),query,
+    )
 
     obras_proceso = Obra.objects.filter(
         Q(estado_id=33),Q(tipoObra=2),query,
@@ -2068,19 +2124,21 @@ def hiper_nacional_ppt(request):
     total_obras_concluidas_2013 = obras_2013_concluidas.count()
     total_obras_concluidas_2014 = obras_2014_concluidas.count()
     total_obras_concluidas_2015 = obras_2015_concluidas.count()
-    total_obras_concluidas = total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015
+    total_obras_concluidas_2016 = obras_2016_concluidas.count()
+    total_obras_concluidas = total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015+total_obras_concluidas_2016
     total_obras_proceso = obras_proceso.count()
     total_obras_proyectadas_2015 = obras_2015_proyectadas.count()
     total_obras_proyectadas_2016 = obras_2016_proyectadas.count()
     total_obras_proyectadas_2017 = obras_2017_proyectadas.count()
     total_obras_proyectadas_2018 = obras_2018_proyectadas.count()
-    total_obras_proyectadas = total_obras_proyectadas_2015+total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
+    total_obras_proyectadas = total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
     total_obras = total_obras_concluidas+total_obras_proceso+total_obras_proyectadas
 
     total_invertido_2012_concluidas = obras_2012_concluidas.aggregate(Sum('inversionTotal'))
     total_invertido_2013_concluidas = obras_2013_concluidas.aggregate(Sum('inversionTotal'))
     total_invertido_2014_concluidas = obras_2014_concluidas.aggregate(Sum('inversionTotal'))
     total_invertido_2015_concluidas = obras_2015_concluidas.aggregate(Sum('inversionTotal'))
+    total_invertido_2016_concluidas = obras_2016_concluidas.aggregate(Sum('inversionTotal'))
 
     total_invertido_proceso = obras_proceso.aggregate(Sum('inversionTotal'))
 
@@ -2093,6 +2151,7 @@ def hiper_nacional_ppt(request):
     totalinvertido2013=0
     totalinvertido2014=0
     totalinvertido2015=0
+    totalinvertido2016=0
     totalinvertidoproceso=0
     totalproyectadas2015=0
     totalproyectadas2016=0
@@ -2103,14 +2162,15 @@ def hiper_nacional_ppt(request):
     if str(total_invertido_2013_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2013=total_invertido_2013_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_2014_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2014=total_invertido_2014_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_2015_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2015=total_invertido_2015_concluidas.get('inversionTotal__sum',0)
+    if str(total_invertido_2016_concluidas.get('inversionTotal__sum',0)) != 'None': totalinvertido2016=total_invertido_2016_concluidas.get('inversionTotal__sum',0)
     if str(total_invertido_proceso.get('inversionTotal__sum',0)) != 'None': totalinvertidoproceso=total_invertido_proceso.get('inversionTotal__sum',0)
     if str(total_invertido_2015_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2015=total_invertido_2015_proyectadas.get('inversionTotal__sum',0)
     if str(total_invertido_2016_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2016=total_invertido_2016_proyectadas.get('inversionTotal__sum',0)
     if str(total_invertido_2017_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2017=total_invertido_2017_proyectadas.get('inversionTotal__sum',0)
     if str(total_invertido_2018_proyectadas.get('inversionTotal__sum',0)) != 'None': totalproyectadas2018=total_invertido_2018_proyectadas.get('inversionTotal__sum',0)
 
-    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015
-    totalInvertidoProyectadas=totalproyectadas2015+totalproyectadas2016+totalproyectadas2017+totalproyectadas2018
+    totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015+totalinvertido2016
+    totalInvertidoProyectadas=totalproyectadas2016+totalproyectadas2017+totalproyectadas2018
     totalInvertido = totalInvertidoConcluidas+totalinvertidoproceso+totalInvertidoProyectadas
 
     for x in range(9,31):
