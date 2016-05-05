@@ -74,6 +74,7 @@ function datosConcluidas() {
     $j('#info2013').html(formato_numero(datosJson.reporte2013.obras_concluidas.total, 0, '.', ','));
     $j('#info2014').html(formato_numero(datosJson.reporte2014.obras_concluidas.total, 0, '.', ','));
     $j('#info2015').html(formato_numero(datosJson.reporte2015.obras_concluidas.total, 0, '.', ','));
+    $j('#info2016').html(formato_numero(datosJson.reporte2016.obras_concluidas.total, 0, '.', ','));
 
 }
 

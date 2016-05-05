@@ -251,7 +251,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 40px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 228px;
+	width: 182px;
 	height: 79px;
 	position: absolute;
 	top: 25px;
@@ -264,11 +264,11 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 40px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 228px;
+	width: 182px;
 	height: 79px;
 	position: absolute;
 	top: 25px;
-	left: 235px;
+	left: 189px;
 	background-color: #CF242A;
 }
 
@@ -277,11 +277,11 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 40px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 228px;
+	width: 182px;
 	height: 79px;
 	position: absolute;
 	top: 25px;
-	left: 462px;
+	left: 371px;
 	background-color: #B92025;
 }
 
@@ -290,24 +290,24 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 40px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 228px;
+	width: 182px;
 	height: 79px;
 	position: absolute;
 	top: 25px;
-	left: 690px;
+	left: 553px;
 	background-color: #A31D20;
 }
 
 #info2016{
 	font-family: 'soberana_sansregular';
-	font-size: 15px;
+	font-size: 40px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 147px;
+	width: 182px;
 	height: 79px;
 	position: absolute;
-	top: 12px;
-	left: 619px;
+	top: 25px;
+	left: 735px;
 	background-color: #911A1D;
 }
 
@@ -331,7 +331,7 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 15px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 228px;
+	width: 182px;
 	height: 20px;
 	position: absolute;
 	top: 105px;
@@ -343,11 +343,11 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 15px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 228px;
+	width: 182px;
 	height: 20px;
 	position: absolute;
 	top: 105px;
-	left: 235px;
+	left: 189px;
 }
 
 #year2014{
@@ -355,11 +355,11 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 15px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 228px;
+	width: 182px;
 	height: 20px;
 	position: absolute;
 	top: 105px;
-	left: 462px;
+	left: 371px;
 }
 
 #year2015{
@@ -367,11 +367,11 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 15px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 228px;
+	width: 182px;
 	height: 20px;
 	position: absolute;
 	top: 105px;
-	left: 690px;
+	left: 553px;
 }
 
 #year2016{
@@ -379,11 +379,11 @@ url('../fonts/Soberana%20Sans/soberanasans-regular-webfont.svg#soberana_sansregu
 	font-size: 15px;
 	color: #FFFFFF;
 	text-align: center;
-	width: 147px;
+	width: 182px;
 	height: 20px;
 	position: absolute;
-	top: 100px;
-	left: 619px;
+	top: 105px;
+	left: 735px;
 }
 
 #year2017{

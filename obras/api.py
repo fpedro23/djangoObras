@@ -1556,6 +1556,7 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte = {
             'reporte_mapa': {'obras_mapa': {}},
             'reporte_total': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
+            'reporte2016': {'obras_concluidas': {}},
             'reporte2015': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
             'reporte2014': {'obras_concluidas': {}},
             'reporte2013': {'obras_concluidas': {}},
@@ -1637,6 +1638,13 @@ class ReporteInicioEndpoint(ProtectedResourceView):
         reporte['reporte2015']['obras_concluidas']['total'] = obras2015_concluidas.count()
 
         # Obras Concluidas, barra inferior
+
+        obras2016 = obras.filter(Q(fechaTermino__year=2016) & Q(tipoObra_id=3))
+        the_list = []
+        for obra in obras2016.values('latitud', 'longitud', 'estado__nombreEstado'):
+            self.rename_estado(obra)
+            the_list.append(obra)
+        reporte['reporte2016']['obras_concluidas']['total'] = obras2016.count()
 
         obras2014 = obras.filter(Q(fechaTermino__year=2014) & Q(tipoObra_id=3))
         the_list = []
