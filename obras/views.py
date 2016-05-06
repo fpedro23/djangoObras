@@ -2475,8 +2475,8 @@ def hiper_rangos_ppt(request):
 @login_required()
 @user_passes_test(is_super_admin)
 def logros_resultados_ppt(request):
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/LOGROS_RESULTADOS.pptx')
-    #prs = Presentation('obras/static/ppt/LOGROS_RESULTADOS.pptx')
+    #prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/LOGROS_RESULTADOS.pptx')
+    prs = Presentation('obras/static/ppt/LOGROS_RESULTADOS.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
     subdependencias = usuario.subdependencia.all()
@@ -2548,6 +2548,7 @@ def logros_resultados_ppt(request):
         table.cell(i, 2).text_frame.paragraphs[0].font.size = Pt(11)
         table.cell(i, 1).text = '{0:,}'.format(obra['numero_obras'])
         table.cell(i, 2).text = '{0:,.2f}'.format(obra['sumatotal'])
+        print (obra['dependencia__nombreDependencia'])
         i+=1
 
     table.cell(i, 1).text_frame.paragraphs[0].font.size = Pt(11)
@@ -2584,8 +2585,8 @@ def logros_resultados_ppt(request):
 
     tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
     tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
-    tableY.cell(x, 1).text = '{0:,}'.format(total_obras_concluidas) + ' Obras'
-    tableY.cell(y, 1).text = '{0:,.2f}'.format(totalinvertidoconcluidas)+' mdp'
+    tableY.cell(x, 1).text = str('{0:,}'.format(total_obras_concluidas)) + ' Obras'
+    tableY.cell(y, 1).text = str('{0:,.2f}'.format(totalinvertidoconcluidas))+' mdp'
 
 
     tableX = prs.slides[2].shapes[0].table
@@ -2613,10 +2614,13 @@ def logros_resultados_ppt(request):
             x+=2
             y+=2
 
+    if x<15: # si Cultura no tiene obras en proceso
+        x+=2
+        y+=2
     tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
     tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
-    tableY.cell(x, 1).text = '{0:,}'.format(total_obras_proceso) + ' Obras'
-    tableY.cell(y, 1).text = '{0:,.2f}'.format(totalinvertidoproceso)+' mdp'
+    tableY.cell(x, 1).text = str('{0:,}'.format(total_obras_proceso)) + ' Obras'
+    tableY.cell(y, 1).text = str('{0:,.2f}'.format(totalinvertidoproceso))+' mdp'
 
 
     tableX = prs.slides[3].shapes[0].table
@@ -2660,6 +2664,9 @@ def logros_resultados_ppt(request):
 
         claveSecretaria+=1
 
+    if x<15: # si Cultura no tiene obras proyectadas
+        x+=2
+        y+=2
     tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
     tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
     tableY.cell(x, 1).text = '{0:,}'.format(total_obras_proyectadas) + ' Obras'
@@ -2803,11 +2810,11 @@ def logros_resultados_ppt(request):
                 x+=2
                 y+=2
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
+    #prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
+    #the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
 
-    #prs.save('obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
-    #the_file = 'obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
+    prs.save('obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
+    the_file = 'obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
 
     filename = os.path.basename(the_file)
     chunk_size = 8192
