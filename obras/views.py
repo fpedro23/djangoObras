@@ -2475,8 +2475,8 @@ def hiper_rangos_ppt(request):
 @login_required()
 @user_passes_test(is_super_admin)
 def logros_resultados_ppt(request):
-    #prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/LOGROS_RESULTADOS.pptx')
-    prs = Presentation('obras/static/ppt/LOGROS_RESULTADOS.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/LOGROS_RESULTADOS.pptx')
+    #prs = Presentation('obras/static/ppt/LOGROS_RESULTADOS.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
     subdependencias = usuario.subdependencia.all()
@@ -2810,11 +2810,11 @@ def logros_resultados_ppt(request):
                 x+=2
                 y+=2
 
-    #prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
-    #the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
 
-    prs.save('obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
-    the_file = 'obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
+    #prs.save('obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
+    #the_file = 'obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
 
     filename = os.path.basename(the_file)
     chunk_size = 8192
