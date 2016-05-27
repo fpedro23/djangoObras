@@ -1209,6 +1209,7 @@ def hiper_info_general_ppt(request):
 @login_required()
 @user_passes_test(is_super_admin)
 def hiper_por_sector_ppt(request):
+    #prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
     prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
     usuario = request.user.usuario
 
@@ -1260,13 +1261,14 @@ def hiper_por_sector_ppt(request):
         elif dependencia.nombreDependencia =='SEP': indiceSlide = 10
         elif dependencia.nombreDependencia =='SS': indiceSlide = 12
         elif dependencia.nombreDependencia =='SEDATU': indiceSlide = 14
-        elif dependencia.nombreDependencia =='SECTUR': indiceSlide = 16
-        elif dependencia.nombreDependencia =='PEMEX': indiceSlide = 18
-        elif dependencia.nombreDependencia =='CFE': indiceSlide = 20
-        elif dependencia.nombreDependencia =='IMSS': indiceSlide = 22
-        elif dependencia.nombreDependencia =='ISSSTE': indiceSlide = 24
-        elif dependencia.nombreDependencia =='CONAGUA': indiceSlide = 26
-        else: indiceSlide =28
+        elif dependencia.nombreDependencia =='CULTURA': indiceSlide = 16
+        elif dependencia.nombreDependencia =='SECTUR': indiceSlide = 18
+        elif dependencia.nombreDependencia =='PEMEX': indiceSlide = 20
+        elif dependencia.nombreDependencia =='CFE': indiceSlide = 22
+        elif dependencia.nombreDependencia =='IMSS': indiceSlide = 24
+        elif dependencia.nombreDependencia =='ISSSTE': indiceSlide = 26
+        elif dependencia.nombreDependencia =='CONAGUA': indiceSlide = 28
+        else: indiceSlide =30
 
         totalinvertidoproceso=0
         totalinvertidoconcluidas=0
@@ -1293,9 +1295,12 @@ def hiper_por_sector_ppt(request):
 
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
+    #prs.save('obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
+    #the_file = 'obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx'
 
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
     the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx'
+
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),

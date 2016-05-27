@@ -1725,6 +1725,7 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             'reporte_total': {'obras_proceso': {}, 'obras_proyectadas': {}, 'obras_concluidas': {}},
         }
 
+        #prs = Presentation('obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
         prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
 
 
@@ -1785,11 +1786,11 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             map['id'] = obra['dependencia__id']
             json_map_dep['reporte_dependencia'].append(map)
 
-        for x in range(20, 35):
+        for x in range(19, 35):
             prs.slides[1].shapes[x].text_frame.paragraphs[0].font.size = Pt(10)
             prs.slides[1].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Black'
 
-        for x in range(20, 24):
+        for x in range(19, 24):
             prs.slides[1].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
         for x in range(24, 26):
@@ -1804,7 +1805,7 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
         prs.slides[1].shapes[33].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         prs.slides[1].shapes[34].text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0xCC, 0x00)
 
-        i = 20
+        i = 19
         for obra in json_map_dep['reporte_dependencia']:
             prs.slides[1].shapes[i].text = obra['dependencia'] + '  ' + str('{0:,}'.format(obra['numero_obras']))
             i += 1
@@ -1837,7 +1838,7 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             i += 1
 
 
-        # Datos para las diapositivas 4 a 18
+        # Datos para las diapositivas 4 a 19
         islide = 3
         for obra in json_map_dep['reporte_dependencia']:
             dependencia_PPC = obras.filter(Q(dependencia_id=obra['id'])).values('dependencia__nombreDependencia',
@@ -1859,11 +1860,19 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             total_invertido = 0
             for obra in json_map_depPPC['reporte_dependencia_PPC']:
 
-                for x in range(14, 20):
+                for x in range(13, 19):
                     prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Narrow'
                     prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.bold = True
                     prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
                 if obra['tipo_obra'] == 3:
+                    prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.size = Pt(24)
+                    prs.slides[islide].shapes[13].text = str('{0:,}'.format(obra['numero_obras']))
+                    prs.slides[islide].shapes[16].text_frame.paragraphs[0].font.size = Pt(10)
+                    prs.slides[islide].shapes[16].text = str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
+                    total_obras += obra['numero_obras']
+                    total_invertido += obra['total_invertido']
+
+                if obra['tipo_obra'] == 2:
                     prs.slides[islide].shapes[14].text_frame.paragraphs[0].font.size = Pt(24)
                     prs.slides[islide].shapes[14].text = str('{0:,}'.format(obra['numero_obras']))
                     prs.slides[islide].shapes[17].text_frame.paragraphs[0].font.size = Pt(10)
@@ -1871,7 +1880,7 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
                     total_obras += obra['numero_obras']
                     total_invertido += obra['total_invertido']
 
-                if obra['tipo_obra'] == 2:
+                if obra['tipo_obra'] == 1:
                     prs.slides[islide].shapes[15].text_frame.paragraphs[0].font.size = Pt(24)
                     prs.slides[islide].shapes[15].text = str('{0:,}'.format(obra['numero_obras']))
                     prs.slides[islide].shapes[18].text_frame.paragraphs[0].font.size = Pt(10)
@@ -1879,58 +1888,50 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
                     total_obras += obra['numero_obras']
                     total_invertido += obra['total_invertido']
 
-                if obra['tipo_obra'] == 1:
-                    prs.slides[islide].shapes[16].text_frame.paragraphs[0].font.size = Pt(24)
-                    prs.slides[islide].shapes[16].text = str('{0:,}'.format(obra['numero_obras']))
-                    prs.slides[islide].shapes[19].text_frame.paragraphs[0].font.size = Pt(10)
-                    prs.slides[islide].shapes[19].text = str('{0:,.2f}'.format(obra['total_invertido'])) + ' MDP'
-                    total_obras += obra['numero_obras']
-                    total_invertido += obra['total_invertido']
-
-            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(20)
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(20)
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.bold = True
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
+            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(10)
             prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.name = 'Arial Narrow'
             prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.bold = True
             prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
-            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.size = Pt(10)
-            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.name = 'Arial Narrow'
-            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.bold = True
-            prs.slides[islide].shapes[13].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
 
-            prs.slides[islide].shapes[12].text = str('{0:,}'.format(total_obras)) + ' obras'
-            prs.slides[islide].shapes[13].text = str('{0:,.2f}'.format(total_invertido)) + ' MDP'
+            prs.slides[islide].shapes[11].text = str('{0:,}'.format(total_obras)) + ' obras'
+            prs.slides[islide].shapes[12].text = str('{0:,.2f}'.format(total_invertido)) + ' MDP'
 
             islide += 1
             total_obras = 0
             total_invertido = 0
 
         # Datos para las diapositivas de la 19 a la 50
-        islide = 18
+        islide = 19
         for estado in json_map_edo['reporte_estado']:
             obras = Obra.objects.filter(Q(estado_id=estado['id'])) \
                 .values('dependencia__nombreDependencia', 'dependencia__id').annotate(
                 numero_obras=Count('dependencia')).annotate(sumatotal=Sum('inversionTotal'))
             obrasMaximas = obras.order_by('numero_obras').reverse()[:2]
 
-            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(24)
+            prs.slides[islide].shapes[10].text_frame.paragraphs[0].font.size = Pt(24)
+            prs.slides[islide].shapes[10].text_frame.paragraphs[0].font.name = 'Arial Narrow'
+            prs.slides[islide].shapes[10].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(10)
             prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.name = 'Arial Narrow'
             prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
-            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(10)
-            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.name = 'Arial Narrow'
-            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0x80, 0x00)
 
-            for x in range(13, 26):
+            for x in range(12, 25):
                 prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Narrow'
                 prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.bold = True
                 prs.slides[islide].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(36)
-            prs.slides[islide].shapes[11].text = str('{0:,}'.format(estado['numero_obras'])) + ' obras'
-            prs.slides[islide].shapes[12].text_frame.paragraphs[0].font.size = Pt(12)
-            prs.slides[islide].shapes[12].text = str('{0:,.2f}'.format(estado['total_invertido'])) + ' MDP'
+            prs.slides[islide].shapes[10].text_frame.paragraphs[0].font.size = Pt(36)
+            prs.slides[islide].shapes[10].text = str('{0:,}'.format(estado['numero_obras'])) + ' obras'
+            prs.slides[islide].shapes[11].text_frame.paragraphs[0].font.size = Pt(12)
+            prs.slides[islide].shapes[11].text = str('{0:,.2f}'.format(estado['total_invertido'])) + ' MDP'
 
-            i = 13
-            j = 15
-            k = 19
+            i = 12
+            j = 14
+            k = 18
             for obra in obrasMaximas:
                 obraMax = Obra.objects.filter(Q(estado_id=estado['id']) & Q(dependencia_id=obra['dependencia__id'])) \
                     .values('tipoObra_id').annotate(numero_obras=Count('dependencia')).annotate(
