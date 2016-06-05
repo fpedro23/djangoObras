@@ -80,7 +80,7 @@ function verDocPdf(nombrePdf,titulo){
 
     $('#titulo').html(titulo);
     //$j('#descripcion').html(descripcion);
-    $('#vistaPdf').html('<embed src="http://obrasapf.mx/media/tutorialesPDF/'+ nombrePdf +'.pdf" width="720" height="375">');
+    $('#vistaPdf').html('<embed src="https://obrasapf.mx/media/tutorialesPDF/'+ nombrePdf +'.pdf" width="720" height="375">');
 
 
 }
