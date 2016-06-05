@@ -1828,7 +1828,7 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
             json_map_edo['reporte_estado'].append(map)
 
         for x in range(7, 39):
-            prs.slides[2].shapes[x].text_frame.paragraphs[0].font.size = Pt(9)
+            prs.slides[2].shapes[x].text_frame.paragraphs[0].font.size = Pt(8)
             prs.slides[2].shapes[x].text_frame.paragraphs[0].font.name = 'Arial Black'
             prs.slides[2].shapes[x].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
@@ -1966,7 +1966,7 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
                     if tipo['tipoObra_id'] == 1:
                         prs.slides[islide].shapes[k + 2].text = str('{0:,}'.format(tipo['numero_obras']))
 
-                k = 22
+                k = 21
 
             islide += 1
 

@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.db.models import Sum,Count
 from django.contrib.auth.decorators import login_required, user_passes_test
 from decimal import *
+import itertools
 from obras.tools import *
 from obras.BuscarObras import BuscaObra
 from pptx.util import Pt
@@ -1213,7 +1214,7 @@ def hiper_por_sector_ppt(request):
     prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
     usuario = request.user.usuario
 
-    start_date = datetime.date(2016, 01, 01)
+    start_date = datetime.date(2000, 01, 01)
     end_date = datetime.date(2016, 12, 31)
     dependencias = {}
 
@@ -1482,8 +1483,8 @@ def hiper_por_entidad_ppt(request):
         totalInvertidoConcluidas=totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015+totalinvertido2016
 
 
-        totalObras15_18 = totalinvertidoproyectadas2016+totalinvertidoproyectadas2017+totalinvertidoproyectadas2018
-        totalInvertido15_18 = total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
+        totalObras15_18 = total_obras_proyectadas_2016+total_obras_proyectadas_2017+total_obras_proyectadas_2018
+        totalInvertido15_18 = totalinvertidoproyectadas2016+totalinvertidoproyectadas2017+totalinvertidoproyectadas2018
 
         totalObrasGeneral = totalObras15_18+total_obras_concluidas_2012+total_obras_concluidas_2013+total_obras_concluidas_2014+total_obras_concluidas_2015+total_obras_concluidas_2016+total_obras_proceso
         totalInvertidoGeneral = totalInvertido15_18+totalinvertido2012+totalinvertido2013+totalinvertido2014+totalinvertido2015+totalinvertido2016+totalinvertidoproceso
@@ -2215,14 +2216,15 @@ def hiper_nacional_ppt(request):
     prs.slides[0].shapes[14].text= '{0:,.2f}'.format(totalinvertido2014)
     prs.slides[0].shapes[15].text= '{0:,}'.format(total_obras_concluidas_2015)
     prs.slides[0].shapes[16].text= '{0:,.2f}'.format(totalinvertido2015)
-    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_concluidas)
-    prs.slides[0].shapes[18].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
+    prs.slides[0].shapes[17].text= '{0:,}'.format(total_obras_concluidas_2016)
+    prs.slides[0].shapes[18].text= '{0:,.2f}'.format(totalinvertido2016)
+    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_concluidas)
+    prs.slides[0].shapes[20].text= '{0:,.2f}'.format(totalInvertidoConcluidas)
     #proceso
-    prs.slides[0].shapes[19].text= '{0:,}'.format(total_obras_proceso)
-    prs.slides[0].shapes[20].text= '{0:,.2f}'.format(totalinvertidoproceso)
+    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_proceso)
+    prs.slides[0].shapes[22].text= '{0:,.2f}'.format(totalinvertidoproceso)
     #proyectadas
-    prs.slides[0].shapes[21].text= '{0:,}'.format(total_obras_proyectadas_2015)
-    prs.slides[0].shapes[22].text= '{0:,.2f}'.format(totalproyectadas2015)
+
     prs.slides[0].shapes[23].text= '{0:,}'.format(total_obras_proyectadas_2016)
     prs.slides[0].shapes[24].text= '{0:,.2f}'.format(totalproyectadas2016)
     prs.slides[0].shapes[25].text= '{0:,}'.format(total_obras_proyectadas_2017)
@@ -2242,8 +2244,8 @@ def hiper_nacional_ppt(request):
     prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx')
     the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx'
 
-    #prs.save('obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx')
-    #the_file = 'obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx'
+    prs.save('obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx')
+    the_file = 'obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx'
 
     filename = os.path.basename(the_file)
     chunk_size = 8192
@@ -2571,8 +2573,20 @@ def logros_resultados_ppt(request):
     y=1
     tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
     tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
-    for obra in obras_concluidas.values('dependencia__nombreDependencia')\
+    claveSecretaria=1
+    for obra in obras_concluidas.values('dependencia__nombreDependencia','dependencia__orden_secretaria')\
             .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('dependencia__orden_secretaria'):
+
+        #si hay alguna dependencia sin obras en proceso se salta
+        while claveSecretaria != obra['dependencia__orden_secretaria']:
+            claveSecretaria+=1
+            if i<=14:
+                i+=2
+                j+=2
+            else:
+                x+=2
+                y+=2
+
         if i<=14:
             tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
             tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
@@ -2581,17 +2595,18 @@ def logros_resultados_ppt(request):
             i+=2
             j+=2
         else:
-            tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
-            tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
-            tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
-            tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            tableY.cell(x, 3).text_frame.paragraphs[0].font.size = Pt(8)
+            tableY.cell(y, 3).text_frame.paragraphs[0].font.size = Pt(8)
+            tableY.cell(x, 3).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableY.cell(y, 3).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
             x+=2
             y+=2
+        claveSecretaria+=1
 
-    tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
-    tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
-    tableY.cell(x, 1).text = str('{0:,}'.format(total_obras_concluidas)) + ' Obras'
-    tableY.cell(y, 1).text = str('{0:,.2f}'.format(totalinvertidoconcluidas))+' mdp'
+    #tableY.cell(x, 2).text_frame.paragraphs[0].font.size = Pt(8)
+    #tableY.cell(y, 2).text_frame.paragraphs[0].font.size = Pt(8)
+    #tableY.cell(x, 2).text = str('{0:,}'.format(total_obras_concluidas)) + ' Obras'
+    #tableY.cell(y, 2).text = str('{0:,.2f}'.format(totalinvertidoconcluidas))+' mdp'
 
 
     tableX = prs.slides[2].shapes[0].table
@@ -2602,8 +2617,20 @@ def logros_resultados_ppt(request):
     y=1
     tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
     tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
-    for obra in obras_proceso.values('dependencia__nombreDependencia')\
+    claveSecretaria=1
+    for obra in obras_proceso.values('dependencia__nombreDependencia','dependencia__orden_secretaria')\
             .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('dependencia__orden_secretaria'):
+
+        #si hay alguna dependencia sin obras en proceso se salta
+        while claveSecretaria != obra['dependencia__orden_secretaria']:
+            claveSecretaria+=1
+            if i<=14:
+                i+=2
+                j+=2
+            else:
+                x+=2
+                y+=2
+
         if i<=14:
             tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
             tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
@@ -2612,20 +2639,21 @@ def logros_resultados_ppt(request):
             i+=2
             j+=2
         else:
-            tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
-            tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
-            tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
-            tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+            tableY.cell(x, 3).text_frame.paragraphs[0].font.size = Pt(8)
+            tableY.cell(y, 3).text_frame.paragraphs[0].font.size = Pt(8)
+            tableY.cell(x, 3).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+            tableY.cell(y, 3).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
             x+=2
             y+=2
+        claveSecretaria+=1
 
     if x<15: # si Cultura no tiene obras en proceso
         x+=2
         y+=2
-    tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
-    tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
-    tableY.cell(x, 1).text = str('{0:,}'.format(total_obras_proceso)) + ' Obras'
-    tableY.cell(y, 1).text = str('{0:,.2f}'.format(totalinvertidoproceso))+' mdp'
+    #tableY.cell(x, 2).text_frame.paragraphs[0].font.size = Pt(8)
+    #tableY.cell(y, 2).text_frame.paragraphs[0].font.size = Pt(8)
+    #tableY.cell(x, 2).text = str('{0:,}'.format(total_obras_proceso)) + ' Obras'
+    #tableY.cell(y, 2).text = str('{0:,.2f}'.format(totalinvertidoproceso))+' mdp'
 
 
     tableX = prs.slides[3].shapes[0].table
@@ -2641,7 +2669,7 @@ def logros_resultados_ppt(request):
             .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('dependencia__orden_secretaria'):
         print(obra)
         #si hay alguna dependencia sin obras en proyecto se salta
-        if claveSecretaria != obra['dependencia__orden_secretaria']:
+        while claveSecretaria != obra['dependencia__orden_secretaria']:
             claveSecretaria+=1
             if i<=14:
                 i+=2
@@ -2659,10 +2687,10 @@ def logros_resultados_ppt(request):
                 i+=2
                 j+=2
         else:
-                tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
-                tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
-                tableY.cell(x, 1).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
-                tableY.cell(y, 1).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
+                tableY.cell(x, 3).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(y, 3).text_frame.paragraphs[0].font.size = Pt(8)
+                tableY.cell(x, 3).text = '{0:,}'.format(obra['numero_obras']) + ' Obras'
+                tableY.cell(y, 3).text = '{0:,.2f}'.format(obra['sumatotal'])+' mdp'
                 x+=2
                 y+=2
 
@@ -2672,10 +2700,10 @@ def logros_resultados_ppt(request):
     if x<15: # si Cultura no tiene obras proyectadas
         x+=2
         y+=2
-    tableY.cell(x, 1).text_frame.paragraphs[0].font.size = Pt(8)
-    tableY.cell(y, 1).text_frame.paragraphs[0].font.size = Pt(8)
-    tableY.cell(x, 1).text = '{0:,}'.format(total_obras_proyectadas) + ' Obras'
-    tableY.cell(y, 1).text = '{0:,.2f}'.format(totalinvertidoproyectadas)+' mdp'
+    #tableY.cell(x, 2).text_frame.paragraphs[0].font.size = Pt(8)
+    #tableY.cell(y, 2).text_frame.paragraphs[0].font.size = Pt(8)
+    #tableY.cell(x, 2).text = '{0:,}'.format(total_obras_proyectadas) + ' Obras'
+    #tableY.cell(y, 2).text = '{0:,.2f}'.format(totalinvertidoproyectadas)+' mdp'
 
 
 
@@ -2685,8 +2713,16 @@ def logros_resultados_ppt(request):
     table2 = prs.slides[4].shapes[1].table
     i=2
     j=2
-    for obra in obras_totales.values('estado__nombreEstado')\
-            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__id'):
+    obras1=obras_totales.values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).exclude(estado__id=33).exclude(estado__id=34)\
+        .order_by('estado__nombreEstado')
+    obras2 = obras_totales.filter(Q(estado__id__in=[33,34])).values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal'))\
+        .order_by('estado__nombreEstado')
+
+    obrasU=itertools.chain(obras1,obras2)
+
+    for obra in obrasU:
         if i<20:
             table.cell(i, 1).text_frame.paragraphs[0].font.size = Pt(11)
             table.cell(i, 2).text_frame.paragraphs[0].font.size = Pt(11)
@@ -2720,8 +2756,19 @@ def logros_resultados_ppt(request):
     tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
     tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
     tableZ.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
-    for obra in obras_concluidas.values('estado__nombreEstado')\
-            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__id'):
+
+    obras1=obras_concluidas.values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).exclude(estado__id=33).exclude(estado__id=34)\
+        .order_by('estado__nombreEstado')
+    obras2 = obras_concluidas.filter(Q(estado__id__in=[33,34])).values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal'))\
+        .order_by('estado__nombreEstado')
+
+    obrasU=itertools.chain(obras1,obras2)
+
+    #for obra in obras_concluidas.values('estado__nombreEstado')\
+     #       .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__nombreEstado'):
+    for obra in obrasU:
         if i<=30:
             tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
             tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
@@ -2755,8 +2802,16 @@ def logros_resultados_ppt(request):
     tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
     tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
     tableZ.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
-    for obra in obras_proceso.values('estado__nombreEstado')\
-            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__id'):
+    obras1=obras_proceso.values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).exclude(estado__id=33).exclude(estado__id=34)\
+        .order_by('estado__nombreEstado')
+    obras2 = obras_proceso.filter(Q(estado__id__in=[33,34])).values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal'))\
+        .order_by('estado__nombreEstado')
+
+    obrasU=itertools.chain(obras1,obras2)
+
+    for obra in obrasU:
         if i<=30:
             tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
             tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
@@ -2790,8 +2845,16 @@ def logros_resultados_ppt(request):
     tableX.cell(0, 0).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
     tableY.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
     tableZ.cell(0, 1).text_frame.paragraphs[0].font.color.rgb = RGBColor(0x00, 0x00, 0x00)
-    for obra in obras_proyectadas.values('estado__nombreEstado')\
-            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('estado__id'):
+    obras1=obras_proyectadas.values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).exclude(estado__id=33).exclude(estado__id=34)\
+        .order_by('estado__nombreEstado')
+    obras2 = obras_proyectadas.filter(Q(estado__id__in=[33,34])).values('estado__nombreEstado')\
+            .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal'))\
+        .order_by('estado__nombreEstado')
+
+    obrasU=itertools.chain(obras1,obras2)
+
+    for obra in obrasU:
         if i<=30:
             tableX.cell(i, 0).text_frame.paragraphs[0].font.size = Pt(8)
             tableX.cell(j, 0).text_frame.paragraphs[0].font.size = Pt(8)
