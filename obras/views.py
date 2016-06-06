@@ -1287,12 +1287,12 @@ def hiper_por_sector_ppt(request):
 
         prs.slides[indiceSlide].shapes[5].text= '{0:,}'.format(total_obras_concluidas)
         prs.slides[indiceSlide].shapes[6].text= '$ {0:,.2f}'.format(totalinvertidoconcluidas)
-        prs.slides[indiceSlide].shapes[7].text= '{0:,}'.format(TOTAL_OBRAS)
-        prs.slides[indiceSlide].shapes[8].text= '$ {0:,.2f}'.format(TOTAL_INVERTIDO)
-        prs.slides[indiceSlide].shapes[9].text= '{0:,}'.format(total_obras_proceso)
-        prs.slides[indiceSlide].shapes[10].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
+        prs.slides[indiceSlide].shapes[7].text= '{0:,}'.format(total_obras_proceso)
+        prs.slides[indiceSlide].shapes[8].text= '$ {0:,.2f}'.format(totalinvertidoproceso)
         prs.slides[indiceSlide].shapes[11].text= '{0:,}'.format(total_obras_proyectadas)
         prs.slides[indiceSlide].shapes[12].text= '$ {0:,.2f}'.format(totalinvertidoproyectadas)
+        prs.slides[indiceSlide].shapes[9].text= '{0:,}'.format(TOTAL_OBRAS)
+        prs.slides[indiceSlide].shapes[10].text= '$ {0:,.2f}'.format(TOTAL_INVERTIDO)
 
 
 
@@ -1314,8 +1314,8 @@ def hiper_por_sector_ppt(request):
 @user_passes_test(is_super_admin)
 def hiper_por_entidad_ppt(request):
 
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
-    #prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
+    #prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
+    prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
 
     usuario = request.user.usuario
     start_date_2012 = datetime.date(2012, 01, 01)
@@ -1340,7 +1340,7 @@ def hiper_por_entidad_ppt(request):
     end_date_2018 = datetime.date(2018, 12, 31)
     indiceSlide=0
     estados = {}
-    listaEstados = Estado.objects.exclude(nombreEstado='INTERESTATAL').exclude(nombreEstado='NACIONAL')
+    listaEstados = Estado.objects.exclude(nombreEstado='INTERESTATAL').exclude(nombreEstado='NACIONAL').order_by('nombreEstado')
     listaEstados = listaEstados.order_by('nombreEstado')
 
     obras = Obra.objects.exclude(tipoObra__id=4)
@@ -1547,11 +1547,11 @@ def hiper_por_entidad_ppt(request):
         indiceSlide=indiceSlide+1
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
+    #prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
+    #the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
 
-    #prs.save('obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
-    #the_file = 'obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
+    prs.save('obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
+    the_file = 'obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
 
     filename = os.path.basename(the_file)
     chunk_size = 8192
