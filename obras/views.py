@@ -1314,8 +1314,8 @@ def hiper_por_sector_ppt(request):
 @user_passes_test(is_super_admin)
 def hiper_por_entidad_ppt(request):
 
-    #prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
-    prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
+    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
+    #prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
 
     usuario = request.user.usuario
     start_date_2012 = datetime.date(2012, 01, 01)
@@ -1547,11 +1547,11 @@ def hiper_por_entidad_ppt(request):
         indiceSlide=indiceSlide+1
 
 
-    #prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
-    #the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
+    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
+    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
 
-    prs.save('obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
-    the_file = 'obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
+    #prs.save('obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
+    #the_file = 'obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
 
     filename = os.path.basename(the_file)
     chunk_size = 8192
