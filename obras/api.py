@@ -1359,6 +1359,7 @@ class ListarEndpoint(ProtectedResourceView):
             sheet.write(0, 35, "Foto Despues", bold)
             sheet.write(0, 36, "Latitud", bold)
             sheet.write(0, 37, "Longitud", bold)
+            sheet.write(0, 38, "id Interno", bold)
 
             i = 1
             for obra in results:
@@ -1465,12 +1466,13 @@ class ListarEndpoint(ProtectedResourceView):
                 sheet.write(i, 35, obra[26])
                 sheet.write(i, 36, obra[27])
                 sheet.write(i, 37, obra[28])
+                sheet.write(i, 38, obra[32])
 
                 #documentos fuente
-                iDoc = 38
+                iDoc = 39
                 try:
-                    for doc in (obra[32].split(',')):
-                        sheet.write(0, iDoc, "Documento-"+str(iDoc-37), bold)
+                    for doc in (obra[33].split(',')):
+                        sheet.write(0, iDoc, "Documento-"+str(iDoc-38), bold)
                         sheet.write(i, iDoc, doc)
                         iDoc+=1
                 except Exception as e:
