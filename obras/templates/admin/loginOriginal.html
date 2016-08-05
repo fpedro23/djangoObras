@@ -39,82 +39,20 @@
         </div>-->
 
         <div class="logIn" id="logIn" hidden="true">
-        <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-        	<p class="titulo">INICIAR SESIÓN</p>
+
+        	<p class="titulo" align="justify">
+            Estimado usuario: <br><br></p>
+            <p class="tituloConcluidas" align="justify">
+            El sistema ha sido migrado, la nueva URL de acceso es: <B>coseo.presidencia.gob.mx</B>
+            <br><br>
+                Podr&aacute;n acceder una vez terminado su proceso de Acceso Remoto VPN.
+            </p>
             <br />
-            <table  width="100%">
-                <tr>
-                    <td align="left" width="40%" valign="top">
-                        <label for="id_username" id="tit_1">
-                            <span class="error__msg">*</span>
-                            Usuario :
-                        </label>
-                    </td>
-                    <td align="right" width="60%">
-                        {{ form.username }}
-                         {% if form.username.errors %}
-                         <!--    <img id="imgerr-id_username" data-toggle="tooltip" data-placement="left"  title="{% for error in form.username.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="13px" height="13px">
-                            <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
-                            <script> $(document).ready(function($) {
-                                var $te = jQuery.noConflict();
-                                $te('#imgerr-id_username').tooltip({html:true});});</script> -->
-                    {% endif %}<br><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left" width="40%" valign="top">
-                    <label for="id_password" id="tit_1"><span class="error__msg">*</span>
-                            Contraseña :</label>&nbsp;
-                    </td>
-                    <td align="right" width="60%">    {{ form.password }}
-                        {% if form.password.errors %}
-                        <!--     <img id="imgerr-id_password" data-toggle="tooltip" data-placement="left"  title="{% for error in form.password.errors %}{{ error }}{% endfor %}" src="{% static "img/iconoExclamacion.gif" %}" width="13px" height="13px">
-                            <script type="text/javascript" src="{% static 'assets/bootstrap/js/bootstrap.js' %}"></script>
-                            <script> $(document).ready(function($) {
-                                var $te = jQuery.noConflict();
-                                $te('#imgerr-id_password').tooltip({html:true});});</script>-->
-                    {% endif %}
 
-                        <br><br>
-                            <input type="hidden" name="next" value="{{ next }}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="justify">
-                        {% if form.errors and not form.non_field_errors %}
-                            <p class="error__msg">
-                            {% if form.errors.items|length == 1 %} {{"Campos marcados con (*) son obligatorios"}} {% else %}{{ "Campos marcados con (*) son obligatorios" }} {% endif %}
-                           <br>
-
-                            </p>
-                        {% endif %}
-                        {% if form.non_field_errors %}
-                            {% for error in form.non_field_errors %}
-                                <p class="error__msg">
-                                     {# error #}
-                                    El Nombre de Usuario y/o la Contraseña son incorrectos; ambos campos son sensibles a mayúsculas.
-                                </p>
-                            {% endfor %}
-                        {% endif %}
-                    </td>
-
-                </tr>
-                <tr>
-                    <td align="right">
-                        <div id="botLI" onclick="document.getElementById('login-form').submit();">
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </form>
-                {% url 'admin_password_reset' as password_reset_url %}
-                <div id="olvidarPW" onclick="location.href='{{ password_reset_url }}'">
-                </div>
 		</div>
 
                 <script src="{% static "galeria/jquery.bxslider.min.js" %}"></script>
                 <script type="text/javascript">
-                    document.getElementById('id_username').focus()
                     var $j = jQuery.noConflict()
                    $j(document).ready(function(){
                     $j('.bxslider').bxSlider({
@@ -125,3 +63,6 @@
                 </script>
 
 {% endblock %}
+
+
+
