@@ -906,7 +906,7 @@ def fichaTecnica(request):
         top = Inches(1)
         left = Inches(0.4)
 
-        pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras' + json_map['obras'][0]['dependencia']['imagenDependencia'], left, top)
+        pic = prs.slides[0].shapes.add_picture('/var/www/html/djangoObras/obras' + json_map['obras'][0]['dependencia']['imagenDependencia'], left, top)
 
         #imagenes de la obra
         left = Inches(7.08)
@@ -917,41 +917,41 @@ def fichaTecnica(request):
 
         if (json_map['obras'][0]['fotoAntes']) != "":
             scad=(json_map['obras'][0]['fotoAntes']).split('/',2)
-            img = Image.open('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoAntes'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
+            img = Image.open('/var/www/html/djangoObras/obras/media/' + json_map['obras'][0]['fotoAntes'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
             width = img.size[0] # CHEQUEAMOS EL ANCHO
             heigh = img.size[1] # CHEQUEAMOS EL ALTO
             if width > 800 or heigh > 800:
-                cadena = redimensiona('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/antes_resize.jpg",img,width,heigh)
-                pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/antes_resize.jpg", left, top, widthP, heightP)
+                cadena = redimensiona('/var/www/html/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/antes_resize.jpg",img,width,heigh)
+                pic = prs.slides[0].shapes.add_picture('/var/www/html/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/antes_resize.jpg", left, top, widthP, heightP)
             else:
-                pic = prs.slides[0].shapes.add_picture("/home/obrasapf/djangoObras/obras/media/" + json_map['obras'][0]['fotoAntes'], left, top, widthP, heightP)
+                pic = prs.slides[0].shapes.add_picture("/var/www/html/djangoObras/obras/media/" + json_map['obras'][0]['fotoAntes'], left, top, widthP, heightP)
 
         left = Inches(7.9291)
         top = Inches(5.93)
         if (json_map['obras'][0]['fotoDurante']) != "":
             scad=(json_map['obras'][0]['fotoDurante']).split('/',2)
-            img = Image.open('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoDurante'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
+            img = Image.open('/var/www/html/djangoObras/obras/media/' + json_map['obras'][0]['fotoDurante'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
             width = img.size[0] # CHEQUEAMOS EL ANCHO
             heigh = img.size[1] # CHEQUEAMOS EL ALTO
             if width > 800 or heigh > 800:
-                cadena = redimensiona('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/durante_resize.jpg",img,width,heigh)
-                pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/durante_resize.jpg", left, top, widthP, heightP)
+                cadena = redimensiona('/var/www/html/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/durante_resize.jpg",img,width,heigh)
+                pic = prs.slides[0].shapes.add_picture('/var/www/html/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/durante_resize.jpg", left, top, widthP, heightP)
             else:
-                pic = prs.slides[0].shapes.add_picture("/home/obrasapf/djangoObras/obras/media/" + json_map['obras'][0]['fotoDurante'], left, top, widthP, heightP)
+                pic = prs.slides[0].shapes.add_picture("/var/www/html/djangoObras/obras/media/" + json_map['obras'][0]['fotoDurante'], left, top, widthP, heightP)
 
 
         left = Inches(8.7677)
         top = Inches(5.93)
         if (json_map['obras'][0]['fotoDespues']) != "":
             scad=(json_map['obras'][0]['fotoDespues']).split('/',2)
-            img = Image.open('/home/obrasapf/djangoObras/obras/media/' + json_map['obras'][0]['fotoDespues'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
+            img = Image.open('/var/www/html/djangoObras/obras/media/' + json_map['obras'][0]['fotoDespues'])  # ABRIMOS LA IMAGEN PARA TRABAJAR SOBRE ELLA
             width = img.size[0] # CHEQUEAMOS EL ANCHO
             heigh = img.size[1] # CHEQUEAMOS EL ALTO
             if width > 800 or heigh > 800:
-                cadena = redimensiona('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/despues_resize.jpg",img,width,heigh)
-                pic = prs.slides[0].shapes.add_picture('/home/obrasapf/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/despues_resize.jpg", left, top, widthP, heightP)
+                cadena = redimensiona('/var/www/html/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/despues_resize.jpg",img,width,heigh)
+                pic = prs.slides[0].shapes.add_picture('/var/www/html/djangoObras/obras/media/' + scad[0]+ "/"+scad[1] + "/despues_resize.jpg", left, top, widthP, heightP)
             else:
-                pic = prs.slides[0].shapes.add_picture("/home/obrasapf/djangoObras/obras/media/" + json_map['obras'][0]['fotoDespues'], left, top, widthP, heightP)
+                pic = prs.slides[0].shapes.add_picture("/var/www/html/djangoObras/obras/media/" + json_map['obras'][0]['fotoDespues'], left, top, widthP, heightP)
 
 
 
