@@ -29,6 +29,8 @@ from pptx.util import Inches
 from pptx.dml.color import RGBColor
 import PIL  # MODULO PARA PROCESAR IMAGENES
 from PIL import Image
+# Settings.
+from django.conf import settings
 
 
 def get_user_for_token(token):
@@ -721,7 +723,7 @@ def ajax_prueba(request):
 # reportes de power point ************************************************************************************
 
 def fichaTecnica(request):
-        prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/FichaTecnicaObras.pptx')
+        prs = Presentation(settings.STATIC_ROOT +'/ppt/FichaTecnicaObras.pptx')
         #prs = Presentation('obras/static/ppt/FichaTecnicaObras.pptx')
         usuario = request.user.usuario
         buscador = BuscaObra(
@@ -956,9 +958,9 @@ def fichaTecnica(request):
 
 
 
-        prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
+        prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
 
-        the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx'
+        the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx'
 
         #prs.save('obras/static/ppt/ppt-generados/FichaTecnicaObras_' + str(usuario.user.id) + '.pptx')
 
@@ -1020,7 +1022,7 @@ def balance_general_ppt(request):
 
 
 
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/PRINCIPAL_BALANCE_GENERAL_APF.pptx')
 
     # informacion para el 2013
     start_date = datetime.date(2012, 12, 01)
@@ -1107,9 +1109,9 @@ def balance_general_ppt(request):
     prs.slides[0].shapes[22].text= '$ {0:,.2f}'.format(total_invertido)
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx')
 
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/balance_general_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
@@ -1122,7 +1124,7 @@ def balance_general_ppt(request):
 
 @login_required()
 def hiper_info_general_ppt(request):
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INFORMACION_GENERAL.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/HIPERVINCULO_INFORMACION_GENERAL.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
     subdependencias = usuario.subdependencia.all()
@@ -1192,9 +1194,9 @@ def hiper_info_general_ppt(request):
 
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx')
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx')
 
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx'
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_info_general_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
@@ -1211,7 +1213,7 @@ def hiper_info_general_ppt(request):
 @user_passes_test(is_super_admin)
 def hiper_por_sector_ppt(request):
     #prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_SECTOR.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/HIPERVINCULO_POR_SECTOR.pptx')
     usuario = request.user.usuario
 
     start_date = datetime.date(2000, 01, 01)
@@ -1299,8 +1301,8 @@ def hiper_por_sector_ppt(request):
     #prs.save('obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
     #the_file = 'obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx'
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx'
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx')
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_por_sector_' + str(usuario.user.id) + '.pptx'
 
     filename = os.path.basename(the_file)
     chunk_size = 8192
@@ -1314,7 +1316,7 @@ def hiper_por_sector_ppt(request):
 @user_passes_test(is_super_admin)
 def hiper_por_entidad_ppt(request):
 
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
     #prs = Presentation('obras/static/ppt/HIPERVINCULO_POR_ENTIDAD.pptx')
 
     usuario = request.user.usuario
@@ -1547,8 +1549,8 @@ def hiper_por_entidad_ppt(request):
         indiceSlide=indiceSlide+1
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
 
     #prs.save('obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx')
     #the_file = 'obras/static/ppt/ppt-generados/hiper_por_entidad_' + str(usuario.user.id) + '.pptx'
@@ -1566,7 +1568,7 @@ def hiper_por_entidad_ppt(request):
 @login_required()
 def hiper_concluidas_ppt(request):
     #prs = Presentation('obras/static/ppt/HIPERVINCULO_CONCLUIDAS.pptx')
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_CONCLUIDAS.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/HIPERVINCULO_CONCLUIDAS.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
     subdependencias = usuario.subdependencia.all()
@@ -1691,8 +1693,8 @@ def hiper_concluidas_ppt(request):
     prs.slides[2].shapes[2].text= '{0:,}'.format(total_obras_proyectadas)
     prs.slides[2].shapes[3].text= '{0:,.2f}'.format(totalinvertidoproyectadas)
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx'
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx')
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx'
 
     #prs.save('obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx')
     #the_file = 'obras/static/ppt/ppt-generados/hiper_concluidas_' + str(usuario.user.id) + '.pptx'
@@ -1709,7 +1711,7 @@ def hiper_concluidas_ppt(request):
 
 @login_required()
 def hiper_inauguradas_ppt(request):
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INAUGURADAS.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/HIPERVINCULO_INAUGURADAS.pptx')
     #prs = Presentation('obras/static/ppt/HIPERVINCULO_INAUGURADAS.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
@@ -1866,8 +1868,8 @@ def hiper_inauguradas_ppt(request):
     prs.slides[0].shapes[27].text= '{0:,}'.format(total_obras_senializadas)
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx'
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx')
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx'
 
     #prs.save('obras/static/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx')
     #the_file = 'obras/static/ppt/ppt-generados/hiper_inauguradas_senalizadas_' + str(usuario.user.id) + '.pptx'
@@ -1883,7 +1885,7 @@ def hiper_inauguradas_ppt(request):
 
 @login_required
 def hiper_interestatal_ppt(request):
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_INTERESTATAL.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/HIPERVINCULO_INTERESTATAL.pptx')
     #prs = Presentation('obras/static/ppt/HIPERVINCULO_INTERESTATAL.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
@@ -2053,8 +2055,8 @@ def hiper_interestatal_ppt(request):
 
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_interestatal_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_interestatal_' + str(usuario.user.id) + '.pptx'
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_interestatal_' + str(usuario.user.id) + '.pptx')
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_interestatal_' + str(usuario.user.id) + '.pptx'
 
     #prs.save('obras/static/ppt/ppt-generados/hiper_interestatal_' + str(usuario.user.id) + '.pptx')
     #the_file = 'obras/static/ppt/ppt-generados/hiper_interestatal_' + str(usuario.user.id) + '.pptx'
@@ -2070,7 +2072,7 @@ def hiper_interestatal_ppt(request):
 
 @login_required()
 def hiper_nacional_ppt(request):
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_NACIONAL.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/HIPERVINCULO_NACIONAL.pptx')
     #prs = Presentation('obras/static/ppt/HIPERVINCULO_NACIONAL.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
@@ -2241,8 +2243,8 @@ def hiper_nacional_ppt(request):
 
 
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx'
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx')
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx'
 
     #prs.save('obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx')
     #the_file = 'obras/static/ppt/ppt-generados/hiper_nacional_' + str(usuario.user.id) + '.pptx'
@@ -2258,7 +2260,7 @@ def hiper_nacional_ppt(request):
 
 @login_required()
 def hiper_rangos_ppt(request):
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/HIPERVINCULO_RANGOS.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/HIPERVINCULO_RANGOS.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
     subdependencias = usuario.subdependencia.all()
@@ -2467,9 +2469,9 @@ def hiper_rangos_ppt(request):
     #size = f.tell()
     #f.seek(0)
     #response.headers.extend({'Content-Length': size,'Cache-Control': 'no-cache' })
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_rangos_' + str(usuario.user.id) + '.pptx')
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_rangos_' + str(usuario.user.id) + '.pptx')
 
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/hiper_rangos_' + str(usuario.user.id) + '.pptx'
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/hiper_rangos_' + str(usuario.user.id) + '.pptx'
     filename = os.path.basename(the_file)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(open(the_file,"rb"), chunk_size),
@@ -2482,7 +2484,7 @@ def hiper_rangos_ppt(request):
 @login_required()
 @user_passes_test(is_super_admin)
 def logros_resultados_ppt(request):
-    prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/LOGROS_RESULTADOS.pptx')
+    prs = Presentation(settings.STATIC_ROOT +'/ppt/LOGROS_RESULTADOS.pptx')
     #prs = Presentation('obras/static/ppt/LOGROS_RESULTADOS.pptx')
     usuario = request.user.usuario
     dependencias = usuario.dependencia.all()
@@ -2549,7 +2551,7 @@ def logros_resultados_ppt(request):
     table = prs.slides[0].shapes[0].table
     i=1
 
-    for obra in obras_totales.values('dependencia__nombreDependencia')\
+    for obra in obras_totales.values('dependencia__nombreDependencia','dependencia__orden_secretaria')\
             .annotate(numero_obras=Count('id')).annotate(sumatotal=Sum('inversionTotal')).order_by('dependencia__orden_secretaria'):
         table.cell(i, 1).text_frame.paragraphs[0].font.size = Pt(11)
         table.cell(i, 2).text_frame.paragraphs[0].font.size = Pt(11)
@@ -2878,8 +2880,8 @@ def logros_resultados_ppt(request):
                 x+=2
                 y+=2
 
-    prs.save('/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
-    the_file = '/home/obrasapf/djangoObras/obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
+    prs.save(settings.STATIC_ROOT +'/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
+    the_file = settings.STATIC_ROOT +'/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'
 
     #prs.save('obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx')
     #the_file = 'obras/static/ppt/ppt-generados/logros_resultados_' + str(usuario.user.id) + '.pptx'

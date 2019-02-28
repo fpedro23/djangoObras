@@ -26,6 +26,9 @@ from xlsxwriter.workbook import Workbook
 from django.core.servers.basehttp import FileWrapper
 from django.http import StreamingHttpResponse
 
+# Settings.
+from django.conf import settings
+
 
 def from_utc_to_local(utc_dt):
     local_tz = pytz.timezone('America/Mexico_City')
@@ -387,7 +390,7 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
             query = query & (Q(dependencia__in=subdependencias) | Q(subdependencia__in=subdependencias))
         obras = Obra.objects.filter(query)
 
-        json_ans = '['
+        '''json_ans = '['
         for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
             json_ans += '{"id":"'
             json_ans += str(obra['id'])
@@ -406,8 +409,13 @@ class ObrasIniciadasEndpoint(ProtectedResourceView):
         if json_ans=='':
             json_ans += '['
         json_ans += ']'
+        '''
 
-        return HttpResponse(json_ans, 'application/json')
+        the_list = []
+        for obra in obras.values('id', 'identificador_unico', 'estado__nombreEstado', 'denominacion'):
+            the_list.append(obra)
+
+        return HttpResponse(json.dumps(the_list), 'application/json')
 
 
 class ObrasVencidasEndpoint(ProtectedResourceView):
@@ -1728,7 +1736,7 @@ class ReporteImagenesEndpoint(ProtectedResourceView):
         }
 
         #prs = Presentation('obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
-        prs = Presentation('/home/obrasapf/djangoObras/obras/static/ppt/PRESENTACION_OBRAS_APF.pptx')
+        prs = Presentation(settings.STATIC_ROOT +'/ppt/PRESENTACION_OBRAS_APF.pptx')
 
 
         # Datos diapositiva 1
