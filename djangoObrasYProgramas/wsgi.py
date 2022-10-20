@@ -15,15 +15,15 @@ os.environ['PYTHON_EGG_CACHE'] = '/eggCache'
 
 
 # Add the site-packages of the chosen virtualenv to work with
-site.addsitedir('/home/obrasapf/djangoObras/venv/lib/python2.7/site-packages/')
+#site.addsitedir('/home/obrasapf/djangoObras/venv/lib/python2.7/site-packages/')
 
 # Add the app's directory to the PYTHONPATH
-sys.path.append('/home/obrasapf/djangoObras')
-sys.path.append('/home/obrasapf/djangoObras/djangoObrasYProgramas')
+#sys.path.append('/home/obrasapf/djangoObras')
+#sys.path.append('/home/obrasapf/djangoObras/djangoObrasYProgramas')
 
 # Activate your virtual env
-activate_env = os.path.expanduser("/home/obrasapf/djangoObras/venv/bin/activate_this.py")
-execfile(activate_env, dict(__file__=activate_env))
+#activate_env = os.path.expanduser("/home/obrasapf/djangoObras/venv/bin/activate_this.py")
+#execfile(activate_env, dict(__file__=activate_env))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangoObrasYProgramas.settings")
 

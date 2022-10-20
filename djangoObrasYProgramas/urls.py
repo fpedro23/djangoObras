@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.http import HttpResponseRedirect
+from oauth2_provider import urls as urls_oauth
 
 admin.autodiscover()
 
@@ -13,7 +14,7 @@ urlpatterns = patterns(
     '',
     url(r'^$', 'obras.views.redirect_admin', name='redirect_admin'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^o/', include(urls_oauth), name='oauth2_provider'),
     url(r'^obras/', include('obras.urls')),
     url(r'^admin/password_reset/$', auth_views.password_reset, name='admin_password_reset'),
     url(r'^admin/password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
